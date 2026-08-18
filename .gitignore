@@ -53,3 +53,6 @@ app/.externalNativeBuild/
 # cache local do gate de validacao
 .claude/.cache/
 .claude/settings.local.json
+
+# telas capturadas pelo harness — geradas, não versionadas
+app/build/vidro-screens/

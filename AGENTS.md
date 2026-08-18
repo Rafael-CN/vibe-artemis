@@ -30,7 +30,31 @@ node tools/validate.mjs --fast         # só o que não precisa de SDK
 node tools/codemap/codemap.mjs         # regerar mapas
 node tools/codemap/jni-check.mjs       # integridade da fronteira JNI
 node tools/test-hooks.mjs              # testar os hooks
+node tools/screens.mjs                 # capturar as telas em PNG, sem emulador
 ```
+
+## Ver o desenho sem gerar APK
+
+`node tools/screens.mjs` renderiza as telas em `app/build/vidro-screens/` usando o
+Robolectric em modo de gráficos NATIVO — o layout é rasterizado de verdade na JVM, com as
+fontes empacotadas e os drawables reais, em segundos. É o loop para conferir composição,
+medida, cor, contraste e tipografia contra o protótipo, sem instalar nada num aparelho.
+
+Duas formas de captura, em `app/src/test/java/com/limelight/VidroScreenshotTest.java`:
+
+- **`shootActivity`** sobe a Activity de verdade (onCreate → onResume, com o adapter
+  montado). Mostra a tela como ela fica, com o texto que só existe em runtime.
+- **`shoot`** infla apenas o layout. É o caminho para as camadas de sobreposição — ilha,
+  folha, conectando, pareamento — que nascem `GONE` e por isso pedem `forceVisible`.
+
+**O que ele não pega, e é bom saber antes de confiar:** vídeo (`SurfaceView` desenha numa
+camada de hardware que não existe aqui), animação, gesto, e qualquer dado que só chegue
+pela rede. `PcView` sai quase vazia porque espera o `ComputerManagerService` — isso é
+comportamento real dela, não falha da ferramenta. Para esses casos ainda é preciso
+aparelho ou emulador.
+
+Ao reportar o desenho, diga qual das duas formas gerou a imagem. Uma captura de layout
+inflado mostra a casca, não a tela.
 
 ## Mapa do repositório
 

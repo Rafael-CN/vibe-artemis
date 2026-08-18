@@ -208,6 +208,11 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
             .replace(R.id.pcFragmentContainer, new AdapterFragment())
             .commitAllowingStateLoss();
 
+        // A saudação e o título precisam existir antes do primeiro polling responder.
+        // Sem isto a home abre com dois espaços em branco no topo e só ganha texto quando
+        // um host aparece — que no caso de quem não tem nenhum é nunca.
+        updateVidroHeader();
+
         noPcFoundLayout = findViewById(R.id.no_pc_found_layout);
         if (pcGridAdapter.getCount() == 0) {
             noPcFoundLayout.setVisibility(View.VISIBLE);

@@ -4,7 +4,7 @@
 
 > Busca `símbolo -> arquivo:linha`. Use `Grep` neste arquivo para localizar uma classe ou método sem varrer o codebase inteiro.
 
-2137 símbolos indexados.
+2140 símbolos indexados.
 
 | Símbolo | Tipo | Local |
 |---|---|---|
@@ -200,7 +200,7 @@
 | `ComputerManagerBinder` | class | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:196` |
 | `ComputerManagerListener` | interface | `app/src/main/java/com/limelight/computers/ComputerManagerListener.java:5` |
 | `ComputerManagerService` | class | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:45` |
-| `ComputerObject` | class | `app/src/main/java/com/limelight/PcView.java:1071` |
+| `ComputerObject` | class | `app/src/main/java/com/limelight/PcView.java:1076` |
 | `ConfirmDeleteKeyboardPreference` | class | `app/src/main/java/com/limelight/preferences/ConfirmDeleteKeyboardPreference.java:19` |
 | `ConfirmDeleteOscPreference` | class | `app/src/main/java/com/limelight/preferences/ConfirmDeleteOscPreference.java:17` |
 | `ConnectionContext` | class | `app/src/main/java/com/limelight/nvstream/ConnectionContext.java:9` |
@@ -403,7 +403,7 @@
 | `getActiveName()` | method | `app/src/main/java/com/limelight/profiles/ProfilesManager.java:169` |
 | `getActiveVideoFormat()` | method | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java:531` |
 | `getAdapterFragmentLayoutId()` | method | `app/src/main/java/com/limelight/AppView.java:731` |
-| `getAdapterFragmentLayoutId()` | method | `app/src/main/java/com/limelight/PcView.java:1043` |
+| `getAdapterFragmentLayoutId()` | method | `app/src/main/java/com/limelight/PcView.java:1048` |
 | `getAdaptiveResolutionEnabled()` | method | `app/src/main/java/com/limelight/nvstream/StreamConfiguration.java:218` |
 | `getAll()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:342` |
 | `getAllComputers()` | method | `app/src/main/java/com/limelight/computers/ComputerDatabaseManager.java:183` |
@@ -599,7 +599,7 @@
 | `guessControllerType()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:437` |
 | `GuessControllerType()` | method | `app/src/main/jni/moonlight-core/controller_type.h:74` |
 | `guessExternalPort()` | method | `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java:102` |
-| `guessManagementUrl()` | method | `app/src/main/java/com/limelight/PcView.java:1085` |
+| `guessManagementUrl()` | method | `app/src/main/java/com/limelight/PcView.java:1090` |
 | `handleButtonDown()` | method | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java:2708` |
 | `handleButtonUp()` | method | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java:2461` |
 | `handleCommitText()` | method | `app/src/main/java/com/limelight/Game.java:4613` |
@@ -989,7 +989,7 @@
 | `notifyComputerAdded()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:397` |
 | `notifyComputerAdded()` | method | `app/src/main/java/com/limelight/discovery/DiscoveryService.java:44` |
 | `notifyComputerUpdated()` | method | `app/src/main/java/com/limelight/AppView.java:202` |
-| `notifyComputerUpdated()` | method | `app/src/main/java/com/limelight/PcView.java:305` |
+| `notifyComputerUpdated()` | method | `app/src/main/java/com/limelight/PcView.java:310` |
 | `notifyComputerUpdated()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:104` |
 | `notifyCrash()` | method | `app/src/main/java/com/limelight/Game.java:678` |
 | `notifyDeviceAdded()` | method | `app/src/main/java/com/limelight/binding/input/driver/AbstractController.java:84` |
@@ -1052,7 +1052,7 @@
 | `onClick()` | method | `app/src/main/java/com/limelight/PcView.java:180` |
 | `onClick()` | method | `app/src/main/java/com/limelight/PcView.java:188` |
 | `onClick()` | method | `app/src/main/java/com/limelight/PcView.java:195` |
-| `onClick()` | method | `app/src/main/java/com/limelight/PcView.java:528` |
+| `onClick()` | method | `app/src/main/java/com/limelight/PcView.java:533` |
 | `onClick()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStick.java:27` |
 | `onClick()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStickFree.java:29` |
 | `onClick()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftTrigger.java:14` |
@@ -1087,16 +1087,16 @@
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:316` |
 | `onConnected()` | method | `app/src/main/java/com/limelight/ui/VidroSession.java:112` |
 | `onContextItemSelected()` | method | `app/src/main/java/com/limelight/AppView.java:498` |
-| `onContextItemSelected()` | method | `app/src/main/java/com/limelight/PcView.java:819` |
+| `onContextItemSelected()` | method | `app/src/main/java/com/limelight/PcView.java:824` |
 | `onContextMenuClosed()` | method | `app/src/main/java/com/limelight/AppView.java:494` |
-| `onContextMenuClosed()` | method | `app/src/main/java/com/limelight/PcView.java:474` |
+| `onContextMenuClosed()` | method | `app/src/main/java/com/limelight/PcView.java:479` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/AppView.java:296` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/ArtemisApplication.java:10` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:41` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:39` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/Game.java:362` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/HelpActivity.java:25` |
-| `onCreate()` | method | `app/src/main/java/com/limelight/PcView.java:222` |
+| `onCreate()` | method | `app/src/main/java/com/limelight/PcView.java:227` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/PosterContentProvider.java:124` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/ProfilesActivity.java:24` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:354` |
@@ -1107,7 +1107,7 @@
 | `onCreate()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:92` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:114` |
 | `onCreateContextMenu()` | method | `app/src/main/java/com/limelight/AppView.java:437` |
-| `onCreateContextMenu()` | method | `app/src/main/java/com/limelight/PcView.java:410` |
+| `onCreateContextMenu()` | method | `app/src/main/java/com/limelight/PcView.java:415` |
 | `onCreateInputConnection()` | method | `app/src/main/java/com/limelight/ui/ExternalControllerView.java:59` |
 | `onCreateInputConnection()` | method | `app/src/main/java/com/limelight/ui/StreamContainer.java:186` |
 | `onCreateInputConnection()` | method | `app/src/main/java/com/limelight/ui/StreamView.java:131` |
@@ -1123,7 +1123,7 @@
 | `onDestroy()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:197` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/Game.java:1906` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/HelpActivity.java:96` |
-| `onDestroy()` | method | `app/src/main/java/com/limelight/PcView.java:373` |
+| `onDestroy()` | method | `app/src/main/java/com/limelight/PcView.java:378` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/ProfilesActivity.java:57` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/binding/input/driver/UsbDriverService.java:349` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:777` |
@@ -1150,7 +1150,7 @@
 | `onDraw()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java:109` |
 | `onDraw()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyBoardVirtualControllerElement.java:165` |
 | `onDraw()` | method | `app/src/main/java/com/limelight/ui/VidroLightView.java:225` |
-| `onDrawFrame()` | method | `app/src/main/java/com/limelight/PcView.java:257` |
+| `onDrawFrame()` | method | `app/src/main/java/com/limelight/PcView.java:262` |
 | `onDrawFrame()` | method | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:414` |
 | `onEditorAction()` | method | `app/src/main/java/com/limelight/preferences/AddComputerManually.java:333` |
 | `onElementDraw()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:221` |
@@ -1194,7 +1194,7 @@
 | `onInputDeviceRemoved()` | method | `app/src/main/java/com/limelight/binding/input/capture/AndroidNativePointerCaptureProvider.java:153` |
 | `onInterrupt()` | method | `app/src/main/java/com/limelight/KeyboardAccessibilityService.java:68` |
 | `onItemClick()` | method | `app/src/main/java/com/limelight/AppView.java:741` |
-| `onItemClick()` | method | `app/src/main/java/com/limelight/PcView.java:1052` |
+| `onItemClick()` | method | `app/src/main/java/com/limelight/PcView.java:1057` |
 | `onKey()` | method | `app/src/main/java/com/limelight/Game.java:4282` |
 | `onKey()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:333` |
 | `onKeyboardControllerVisibilityChange()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:221` |
@@ -1235,7 +1235,7 @@
 | `onPageStarted()` | method | `app/src/main/java/com/limelight/HelpActivity.java:57` |
 | `onPause()` | method | `app/src/main/java/com/limelight/AppView.java:410` |
 | `onPause()` | method | `app/src/main/java/com/limelight/Game.java:1954` |
-| `onPause()` | method | `app/src/main/java/com/limelight/PcView.java:395` |
+| `onPause()` | method | `app/src/main/java/com/limelight/PcView.java:400` |
 | `onPause()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:207` |
 | `onPerfUpdate()` | method | `app/src/main/java/com/limelight/Game.java:4254` |
 | `onPictureInPictureRequested()` | method | `app/src/main/java/com/limelight/Game.java:1501` |
@@ -1265,7 +1265,7 @@
 | `onRelease()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java:339` |
 | `onRequestPermissionsResult()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:551` |
 | `onResume()` | method | `app/src/main/java/com/limelight/AppView.java:398` |
-| `onResume()` | method | `app/src/main/java/com/limelight/PcView.java:382` |
+| `onResume()` | method | `app/src/main/java/com/limelight/PcView.java:387` |
 | `onResume()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:199` |
 | `onRevoke()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStick.java:40` |
 | `onRevoke()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStickFree.java:42` |
@@ -1308,15 +1308,15 @@
 | `onStartTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:127` |
 | `onStereo3DSurfaceReady()` | method | `app/src/main/java/com/limelight/ui/StreamContainer.java:261` |
 | `onStop()` | method | `app/src/main/java/com/limelight/Game.java:1969` |
-| `onStop()` | method | `app/src/main/java/com/limelight/PcView.java:403` |
+| `onStop()` | method | `app/src/main/java/com/limelight/PcView.java:408` |
 | `onStop()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:512` |
 | `onStop()` | method | `app/src/main/java/com/limelight/preferences/AddComputerManually.java:262` |
 | `onStopDiscoveryFailed()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:49` |
 | `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:177` |
 | `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:130` |
-| `onSurfaceChanged()` | method | `app/src/main/java/com/limelight/PcView.java:253` |
+| `onSurfaceChanged()` | method | `app/src/main/java/com/limelight/PcView.java:258` |
 | `onSurfaceChanged()` | method | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:756` |
-| `onSurfaceCreated()` | method | `app/src/main/java/com/limelight/PcView.java:236` |
+| `onSurfaceCreated()` | method | `app/src/main/java/com/limelight/PcView.java:241` |
 | `onSurfaceCreated()` | method | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:236` |
 | `onSurfaceDestroyed()` | method | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:160` |
 | `OnSurfaceReadyListener` | interface | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:132` |
@@ -1490,7 +1490,7 @@
 | `readNvctlPacketTcp()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c:516` |
 | `reassembleFrame()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c:467` |
 | `receiveAbsListView()` | method | `app/src/main/java/com/limelight/AppView.java:737` |
-| `receiveAbsListView()` | method | `app/src/main/java/com/limelight/PcView.java:1048` |
+| `receiveAbsListView()` | method | `app/src/main/java/com/limelight/PcView.java:1053` |
 | `reconstructFrame()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c:192` |
 | `RecordingSink` | class | `app/src/test/java/com/limelight/binding/input/TextInputPumpTest.java:47` |
 | `recvUdpSocket()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c:181` |
@@ -1595,18 +1595,18 @@
 | `run()` | method | `app/src/main/java/com/limelight/Game.java:4063` |
 | `run()` | method | `app/src/main/java/com/limelight/Game.java:4257` |
 | `run()` | method | `app/src/main/java/com/limelight/PcView.java:92` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:246` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:309` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:494` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:545` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:567` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:651` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:728` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:740` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:761` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:792` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:846` |
-| `run()` | method | `app/src/main/java/com/limelight/PcView.java:878` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:251` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:314` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:499` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:550` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:572` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:656` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:733` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:745` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:766` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:797` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:851` |
+| `run()` | method | `app/src/main/java/com/limelight/PcView.java:883` |
 | `run()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:69` |
 | `run()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:130` |
 | `run()` | method | `app/src/main/java/com/limelight/ShortcutTrampoline.java:163` |
@@ -2012,6 +2012,8 @@
 | `switchShowHide()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:142` |
 | `switchTouchSensitivity()` | method | `app/src/main/java/com/limelight/Game.java:4533` |
 | `tearDown()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:45` |
+| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:87` |
+| `telasEmRetrato()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:60` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:56` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:64` |
 | `testActivityLifecycleTransitions()` | method | `app/src/test/java/com/limelight/StartupCrashTest.java:227` |
@@ -2069,7 +2071,7 @@
 | `toInt()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:188` |
 | `toInt()` | method | `app/src/test/java/com/limelight/shadows/ShadowMoonBridge.java:22` |
 | `toString()` | method | `app/src/main/java/com/limelight/AppView.java:784` |
-| `toString()` | method | `app/src/main/java/com/limelight/PcView.java:1082` |
+| `toString()` | method | `app/src/main/java/com/limelight/PcView.java:1087` |
 | `toString()` | method | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java:2278` |
 | `toString()` | method | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java:2298` |
 | `toString()` | method | `app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java:392` |
@@ -2131,6 +2133,7 @@
 | `VideoStatsFps` | class | `app/src/main/java/com/limelight/binding/video/VideoStats.java:88` |
 | `VidroIsland` | class | `app/src/main/java/com/limelight/ui/VidroIsland.java:24` |
 | `VidroLightView` | class | `app/src/main/java/com/limelight/ui/VidroLightView.java:35` |
+| `VidroScreenshotTest` | class | `app/src/test/java/com/limelight/VidroScreenshotTest.java:43` |
 | `VidroSession` | class | `app/src/main/java/com/limelight/ui/VidroSession.java:18` |
 | `ViewCallbacks` | interface | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardLayoutController.java:376` |
 | `VirtualController` | class | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:28` |

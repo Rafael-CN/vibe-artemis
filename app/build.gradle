@@ -190,6 +190,18 @@ android {
 
     testOptions {
         unitTests.includeAndroidResources = true
+
+        // A JVM dos testes é outra: um -D na linha do Gradle não chega nela sozinho.
+        // Sem este repasse o harness de captura de tela pulava em silêncio e o build
+        // ficava verde sem escrever imagem nenhuma.
+        unitTests.all {
+            if (System.getProperty('vidro.screens') != null) {
+                systemProperty 'vidro.screens', System.getProperty('vidro.screens')
+            }
+            testLogging {
+                showStandardStreams = System.getProperty('vidro.screens') != null
+            }
+        }
     }
 }
 

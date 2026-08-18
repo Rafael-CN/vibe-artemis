@@ -1,12 +1,12 @@
 {
  "generatedFrom": "tools/codemap/codemap.mjs",
  "totals": {
-  "files": 219,
-  "javaFiles": 176,
+  "files": 220,
+  "javaFiles": 177,
   "nativeFiles": 42,
-  "lines": 65394,
-  "types": 272,
-  "methods": 2594,
+  "lines": 65654,
+  "types": 273,
+  "methods": 2602,
   "packages": 30,
   "todos": 35
  },
@@ -2452,7 +2452,7 @@
   {
    "path": "app/src/main/java/com/limelight/PcView.java",
    "lang": "java",
-   "lines": 1091,
+   "lines": 1096,
    "package": "com.limelight",
    "imports": [
     "java.io.FileNotFoundException",
@@ -2530,7 +2530,7 @@
     {
      "kind": "class",
      "name": "ComputerObject",
-     "line": 1071
+     "line": 1076
     }
    ],
    "methods": [
@@ -2609,308 +2609,308 @@
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 222
+     "line": 227
     },
     {
      "name": "onSurfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, EGLConfig eglConfig",
-     "line": 236
+     "line": 241
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 246
+     "line": 251
     },
     {
      "name": "onSurfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, int i, int i1",
-     "line": 253
+     "line": 258
     },
     {
      "name": "onDrawFrame",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10",
-     "line": 257
+     "line": 262
     },
     {
      "name": "completeOnCreate",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 282
+     "line": 287
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 298
+     "line": 303
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 305
+     "line": 310
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 309
+     "line": 314
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean wait",
-     "line": 339
+     "line": 344
     },
     {
      "name": "refreshProfileButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 357
+     "line": 362
     },
     {
      "name": "onDestroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 373
+     "line": 378
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 382
+     "line": 387
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 395
+     "line": 400
     },
     {
      "name": "onStop",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 403
+     "line": 408
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 410
+     "line": 415
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 474
+     "line": 479
     },
     {
      "name": "showVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "final String pinStr",
-     "line": 491
+     "line": 496
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 494
+     "line": 499
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 528
+     "line": 533
     },
     {
      "name": "hideVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 542
+     "line": 547
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 545
+     "line": 550
     },
     {
      "name": "doPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer, String otp, String passphrase",
-     "line": 554
+     "line": 559
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 567
+     "line": 572
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 651
+     "line": 656
     },
     {
      "name": "doOTPPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 670
+     "line": 675
     },
     {
      "name": "doWakeOnLan",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 715
+     "line": 720
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 728
+     "line": 733
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 740
+     "line": 745
     },
     {
      "name": "doUnpair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 748
+     "line": 753
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 761
+     "line": 766
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 792
+     "line": 797
     },
     {
      "name": "doAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails computer, boolean newlyPaired, boolean showHiddenGames",
-     "line": 800
+     "line": 805
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 819
+     "line": 824
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 846
+     "line": 851
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 878
+     "line": 883
     },
     {
      "name": "removeComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 910
+     "line": 915
     },
     {
      "name": "updateComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 942
+     "line": 947
     },
     {
      "name": "updateVidroHeader",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 981
+     "line": 986
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 1043
+     "line": 1048
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 1048
+     "line": 1053
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 1052
+     "line": 1057
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1082
+     "line": 1087
     },
     {
      "name": "guessManagementUrl",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1085
+     "line": 1090
     }
    ],
    "nativeMethods": [],
@@ -26764,6 +26764,101 @@
      "returns": "void",
      "params": "String s",
      "line": 30
+    }
+   ],
+   "nativeMethods": [],
+   "androidApis": [],
+   "todos": []
+  },
+  {
+   "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
+   "lang": "java",
+   "lines": 255,
+   "package": "com.limelight",
+   "imports": [
+    "android.content.Context",
+    "android.graphics.Bitmap",
+    "android.graphics.Canvas",
+    "android.view.LayoutInflater",
+    "android.view.View",
+    "android.widget.FrameLayout",
+    "androidx.test.core.app.ApplicationProvider",
+    "org.junit.Assume",
+    "org.junit.BeforeClass",
+    "org.junit.Test",
+    "org.junit.runner.RunWith",
+    "org.robolectric.Robolectric",
+    "org.robolectric.RobolectricTestRunner",
+    "org.robolectric.android.controller.ActivityController",
+    "org.robolectric.annotation.Config",
+    "org.robolectric.annotation.GraphicsMode",
+    "java.io.File",
+    "java.io.FileOutputStream",
+    "java.io.IOException"
+   ],
+   "types": [
+    {
+     "kind": "class",
+     "name": "VidroScreenshotTest",
+     "line": 43
+    }
+   ],
+   "methods": [
+    {
+     "name": "suppressInvalidIdLogs",
+     "modifiers": "static",
+     "returns": "void",
+     "params": "",
+     "line": 52
+    },
+    {
+     "name": "telasEmRetrato",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 60
+    },
+    {
+     "name": "telasEmPaisagem",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 87
+    },
+    {
+     "name": "onlyWhenAsked",
+     "modifiers": "static",
+     "returns": "void",
+     "params": "",
+     "line": 102
+    },
+    {
+     "name": "shoot",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "String name, int layoutId, int widthDp, int heightDp",
+     "line": 110
+    },
+    {
+     "name": "shootActivity",
+     "modifiers": "private",
+     "returns": "<T extends android.app.Activity> void",
+     "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
+     "line": 187
+    },
+    {
+     "name": "write",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "String name, Bitmap bitmap, int w, int h",
+     "line": 227
+    },
+    {
+     "name": "revealAll",
+     "modifiers": "static",
+     "returns": "void",
+     "params": "View view",
+     "line": 242
     }
    ],
    "nativeMethods": [],
