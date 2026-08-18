@@ -1,6 +1,12 @@
 <!--
-    O catálogo. O nome do host vira o título da tela — é a única coisa que precisa
-    ser dita aqui, porque tudo o mais já está nas capas.
+    Catálogo do host. Hierarquia da tela 02 do handoff:
+
+        "‹ Lugares" → nome do host + linha de estado → contagem de apps · "Recarregar"
+        → faixa de sessão aberta (quando existe) → grade de 2 colunas → luz atrás do
+        app aberto.
+
+    Sem abas e sem categorias: o protocolo entrega nome, UUID e box art, e nada mais.
+    Inventar "Jogos / Trabalho" seria uma taxonomia que nenhum dado sustenta.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,48 +16,163 @@
     android:background="@color/vidro_void"
     tools:context=".AppView">
 
-    <TextView
-        android:id="@+id/appListText"
-        style="@style/VidroText.Display"
+    <com.limelight.ui.VidroLightView
+        android:id="@+id/vidroLight"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.07"
+        app:vidro_quality="good" />
+
+    <LinearLayout
+        android:id="@+id/vidroCatalogHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_5"
-        android:paddingRight="@dimen/vidro_space_5"
-        android:paddingBottom="@dimen/vidro_space_4"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:preferKeepClear="true" />
+        android:paddingTop="@dimen/vidro_space_3"
+        android:paddingRight="@dimen/vidro_space_5">
+
+        <TextView
+            android:id="@+id/vidroBack"
+            style="@style/VidroText.Support"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/vidro_touch_target"
+            android:text="@string/vidro_back_places"
+            android:textColor="@color/vidro_text_2" />
+
+        <TextView
+            android:id="@+id/appListText"
+            style="@style/VidroText.Display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:preferKeepClear="true"
+            tools:text="PC-RAFAEL" />
+
+        <!-- Contagem e recarregar. Nada de número técnico: quantos apps não é telemetria. -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_3">
+
+            <TextView
+                android:id="@+id/vidroAppCount"
+                style="@style/VidroText.Support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                tools:text="6 aplicativos publicados pelo host" />
+
+            <TextView
+                android:id="@+id/vidroReload"
+                style="@style/VidroText.Support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="@font/manrope_semibold"
+                android:minHeight="@dimen/vidro_touch_target"
+                android:gravity="center_vertical"
+                android:text="@string/vidro_reload"
+                android:textColor="@color/vidro_accent_text" />
+        </RelativeLayout>
+
+        <!--
+            Faixa de sessão aberta. Só existe quando há sessão de verdade no host, e é a
+            forma de voltar sem procurar o card certo na grade.
+        -->
+        <RelativeLayout
+            android:id="@+id/vidroResumeStrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_3"
+            android:background="@drawable/vidro_card_accent"
+            android:paddingLeft="16dp"
+            android:paddingTop="13dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="13dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:id="@+id/vidroResumeDot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/vidro_dot_on" />
+
+            <TextView
+                android:id="@+id/vidroResumeAction"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/vidro_pill"
+                android:fontFamily="@font/manrope_bold"
+                android:paddingLeft="15dp"
+                android:paddingTop="9dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="9dp"
+                android:text="@string/vidro_return"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="13dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_toStartOf="@id/vidroResumeAction"
+                android:layout_toLeftOf="@id/vidroResumeAction"
+                android:layout_toEndOf="@id/vidroResumeDot"
+                android:layout_toRightOf="@id/vidroResumeDot"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/vidroResumeTitle"
+                    style="@style/VidroText.Item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="15.5sp"
+                    tools:text="Desktop está aberto" />
+
+                <TextView
+                    style="@style/VidroText.Support"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/vidro_session_return"
+                    android:textColor="@color/vidro_text_2"
+                    android:textSize="12.5sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/appFragmentContainer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appListText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/profilesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/vidro_space_4"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="@string/profile_manager_choose_profile"
-        android:textColor="@color/vidro_on_accent"
-        app:backgroundTint="@color/vidro_accent_fill"
-        app:elevation="0dp"
-        app:icon="@drawable/ic_profiles"
-        app:iconTint="@color/vidro_on_accent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/vidroCatalogHeader"
+        android:layout_marginTop="@dimen/vidro_space_3" />
 
 </RelativeLayout>

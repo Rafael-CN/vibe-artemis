@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A ilha. Fosca em sessão: alpha 0,88 e borda de 1px, custo zero de GPU. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/vidro_glass_fill_session" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/vidro_stroke_glass" />
+    <corners android:radius="@dimen/vidro_radius_l" />
+</shape>

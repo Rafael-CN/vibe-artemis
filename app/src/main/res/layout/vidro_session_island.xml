@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ilha de controle da sessão. Tela 04 do handoff.
+
+    Vive nos 96 dp de baixo — alcance do polegar de quem segura o tablet pelas bordas —
+    e recolhe sozinha em pílula depois de 6,2 s. Toque em qualquer lugar reabre.
+
+    FOSCO, nunca blur. O vídeo desenha num SurfaceView, numa camada de hardware separada
+    da árvore de views: RenderEffect por cima borraria só a própria camada, ou seja,
+    nada. O protótipo roda no navegador, onde backdrop-filter funciona; no Android não
+    funciona, e essa é a diferença que o handoff resolve a favor do fosco.
+
+    Qualidade em PALAVRA. Número só se a pessoa ligar "Números na tela".
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Ambilight: presença, não brilho. Fica atrás de tudo, nas bordas do vídeo. -->
+    <com.limelight.ui.VidroLightView
+        android:id="@+id/vidroSessionLight"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
+
+    <!-- ================= ilha aberta ================= -->
+
+    <HorizontalScrollView
+        android:id="@+id/vidroIsland"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/vidro_island"
+        android:fillViewport="true"
+        android:paddingLeft="16dp"
+        android:paddingTop="14dp"
+        android:paddingRight="14dp"
+        android:paddingBottom="14dp"
+        android:scrollbars="none"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:layout_marginRight="18dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/vidroIslandApp"
+                    style="@style/VidroText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="-0.025"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    tools:text="Remote Display" />
+
+                <TextView
+                    android:id="@+id/vidroIslandQuality"
+                    style="@style/VidroText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/manrope_medium"
+                    android:maxLines="1"
+                    android:textColor="@color/vidro_text_2"
+                    android:textSize="11.5sp"
+                    tools:text="tudo fluindo bem" />
+            </LinearLayout>
+
+            <include
+                android:id="@+id/vidroTileKeyboard"
+                layout="@layout/vidro_island_tile" />
+
+            <include
+                android:id="@+id/vidroTileMouse"
+                layout="@layout/vidro_island_tile" />
+
+            <include
+                android:id="@+id/vidroTileDetails"
+                layout="@layout/vidro_island_tile" />
+
+            <TextView
+                android:id="@+id/vidroIslandLeave"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginLeft="9dp"
+                android:background="@drawable/vidro_button_accent"
+                android:fontFamily="@font/manrope_extrabold"
+                android:gravity="center"
+                android:letterSpacing="-0.02"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/vidro_leave_screen"
+                android:textColor="@color/vidro_on_accent"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- ================= pílula recolhida ================= -->
+
+    <LinearLayout
+        android:id="@+id/vidroPill"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/vidro_glass_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/vidroPillDot"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginRight="9dp"
+            android:background="@drawable/vidro_dot_on" />
+
+        <TextView
+            style="@style/VidroText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_bold"
+            android:letterSpacing="-0.01"
+            android:text="@string/vidro_controls"
+            android:textSize="12.5sp" />
+    </LinearLayout>
+
+</merge>

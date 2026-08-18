@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Card de antecipação. Único lugar da home que recebe tinta do acento no fundo — ele
+    é um palpite do app, não um item da lista, e precisa se declarar como tal.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#141E8FEE" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="#3D1E8FEE" />
+    <corners android:radius="@dimen/vidro_radius_l" />
+</shape>

@@ -51,62 +51,53 @@ public class PcGridAdapter extends GenericGridAdapter<PcView.ComputerObject> {
 
     @Override
     public void populateView(View parentView, ImageView imgView, RelativeLayout gridMask, ProgressBar prgView, TextView txtView, ImageView overlayView, PcView.ComputerObject obj) {
-        imgView.setImageResource(R.drawable.ic_computer);
-        if (obj.details.state == ComputerDetails.State.ONLINE) {
-            imgView.setAlpha(1.0f);
-        }
-        else {
-            imgView.setAlpha(0.4f);
+        Context context = parentView.getContext();
+        ComputerDetails.State state = obj.details.state;
+        boolean paired = obj.details.pairState == PairingManager.PairState.PAIRED;
+
+        txtView.setText(obj.details.name);
+
+        TextView stateView = parentView.findViewById(R.id.grid_state);
+        boolean probing = state == ComputerDetails.State.UNKNOWN;
+
+        // Enquanto o polling não respondeu não afirmamos nada: some a palavra e fica só
+        // o giro. Dizer "fora do ar" antes de saber é a mentira mais fácil desta tela.
+        prgView.setVisibility(probing ? View.VISIBLE : View.GONE);
+        if (stateView != null) {
+            stateView.setVisibility(probing ? View.GONE : View.VISIBLE);
         }
 
-        // A luz atrás do ícone é quem diz o estado. Intensidade, nunca matiz: o
-        // acento é o mesmo nos três casos, então quem não distingue o azul ainda lê
-        // a diferença. Os valores vêm do handoff do design.
-        View haloView = parentView.findViewById(R.id.grid_halo);
-        if (haloView != null) {
-            switch (obj.details.state) {
-                case ONLINE:
-                    haloView.setAlpha(0.72f);
-                    break;
-                case UNKNOWN:
-                    haloView.setAlpha(0.34f);
-                    break;
-                default:
-                    haloView.setAlpha(0.20f);
-                    break;
+        if (state == ComputerDetails.State.ONLINE) {
+            imgView.setImageResource(R.drawable.vidro_dot_on);
+            if (stateView != null) {
+                stateView.setText(paired ? R.string.vidro_state_ready : R.string.vidro_state_unpaired);
+            }
+        }
+        else if (probing) {
+            imgView.setImageResource(R.drawable.vidro_dot_off);
+        }
+        else {
+            // Dormindo e fora do ar são estados diferentes para quem está olhando: um
+            // pode ser acordado daqui, o outro não. O que separa os dois é ter MAC
+            // guardado, que é o que o Wake-on-LAN precisa.
+            boolean canWake = obj.details.macAddress != null && !obj.details.macAddress.isEmpty();
+            imgView.setImageResource(canWake ? R.drawable.vidro_dot_off : R.drawable.vidro_dot_far);
+            if (stateView != null) {
+                stateView.setText(canWake ? R.string.vidro_state_asleep : R.string.vidro_state_offline);
             }
         }
 
-        if (obj.details.state == ComputerDetails.State.UNKNOWN) {
-            prgView.setVisibility(View.VISIBLE);
-        }
-        else {
-            prgView.setVisibility(View.INVISIBLE);
-        }
-
-        txtView.setText(obj.details.name);
-        if (obj.details.state == ComputerDetails.State.ONLINE) {
-            txtView.setAlpha(1.0f);
-        }
-        else {
-            txtView.setAlpha(0.4f);
-        }
-
-        if (obj.details.state == ComputerDetails.State.OFFLINE) {
-            overlayView.setImageResource(R.drawable.ic_pc_offline);
-            overlayView.setAlpha(0.4f);
-            overlayView.setVisibility(View.VISIBLE);
-        }
-        // We must check if the status is exactly online and unpaired
-        // to avoid colliding with the loading spinner when status is unknown
-        else if (obj.details.state == ComputerDetails.State.ONLINE &&
-                obj.details.pairState == PairingManager.PairState.NOT_PAIRED) {
+        // O cadeado só aparece quando há o que destrancar.
+        if (state == ComputerDetails.State.ONLINE && !paired) {
             overlayView.setImageResource(R.drawable.ic_lock);
-            overlayView.setAlpha(1.0f);
             overlayView.setVisibility(View.VISIBLE);
         }
         else {
             overlayView.setVisibility(View.GONE);
         }
+
+        // A linha inteira recua quando o lugar não está acessível — é a mesma gramática
+        // da luz: intensidade dizendo estado, sem trocar de cor.
+        parentView.setAlpha(state == ComputerDetails.State.ONLINE ? 1.0f : 0.55f);
     }
 }

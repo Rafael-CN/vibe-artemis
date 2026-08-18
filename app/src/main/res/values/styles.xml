@@ -33,6 +33,13 @@
         <item name="colorAccent">@color/vidro_accent_text</item>
         <item name="colorPrimary">@color/vidro_accent_text</item>
         <item name="android:colorAccent">@color/vidro_accent_text</item>
+        <!--
+            Manrope no tema inteiro. Sem isto sobra Roboto em tudo que não recebeu estilo
+            explícito — diálogo, preferência, Toast — e a voz da identidade se perde
+            justamente nas telas que ninguém redesenha.
+        -->
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="fontFamily">@font/manrope</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">
@@ -77,78 +84,100 @@
         ================================================================
         Escala tipográfica Vidro
 
-        A face ainda é a do sistema — o handoff deixou a tipografia em aberto e
-        embutir uma face de verdade é a maior lacuna de personalidade que resta.
-        O que já está aqui é a escala, os pesos e o tracking, que é o que carrega
-        a maior parte do caráter. Trocar a face depois é mexer só em vidro_font_*.
+        Da tabela do handoff, seção 4. Manrope carrega a voz em tudo; JetBrains Mono
+        aparece SÓ onde o valor é técnico e precisa de dígito tabular — código de
+        pareamento, ms do overlay, endereço IP. Nenhuma fonte de sistema.
+
+        Os pesos apontam direto para o TTF do peso certo em vez de pedir 600 a uma
+        família: abaixo da API 28 o Android não resolve peso numérico e sintetiza um
+        falso-negrito, que numa geométrica fica visivelmente sujo.
         ================================================================
     -->
     <style name="VidroText">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/manrope_regular</item>
         <item name="android:textColor">@color/vidro_text</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <!-- Título da tela. Grande e apertado: a gramática do título grande, sem imitar ninguém. -->
+    <!-- Título de tela · 29–34 sp · 800 · -0.035em -->
     <style name="VidroText.Display" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:letterSpacing">-0.035</item>
-        <item name="android:lineSpacingMultiplier">1.14</item>
+        <item name="android:lineSpacingMultiplier">1.06</item>
     </style>
 
+    <!-- Variante curta, para quando o nome do host é longo -->
+    <style name="VidroText.Display.Small" parent="VidroText.Display">
+        <item name="android:textSize">29sp</item>
+    </style>
+
+    <!-- Título de card · 19–21 sp · 700 · -0.03em -->
     <style name="VidroText.Title" parent="VidroText">
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/manrope_bold</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:letterSpacing">-0.03</item>
     </style>
 
-    <style name="VidroText.Heading" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:letterSpacing">-0.01</item>
+    <!-- Item de lista · 15–16 sp · 600 · -0.02em -->
+    <style name="VidroText.Item" parent="VidroText">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">-0.02</item>
     </style>
 
+    <!-- Corpo / apoio · 13–14 sp · 400–500 · sem tracking -->
     <style name="VidroText.Body" parent="VidroText">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/vidro_text_2</item>
-        <item name="android:lineSpacingMultiplier">1.5</item>
+        <item name="android:lineSpacingMultiplier">1.45</item>
     </style>
 
-    <style name="VidroText.Label" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">12.5sp</item>
+    <!--
+        Terciário. L 76%, não 60% — na medição APCA o tom antigo dava Lc 35 sobre o
+        fundo da home, abaixo do piso de 60. Subir a luz do texto é a correção; peso
+        e tamanho não resolvem contraste.
+    -->
+    <style name="VidroText.Support" parent="VidroText">
+        <item name="android:fontFamily">@font/manrope_medium</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/vidro_text_3</item>
     </style>
 
-    <!-- Rótulo de seção. Caixa alta com tracking aberto, senão vira ruído. -->
+    <!-- Rótulo de seção · 12 sp · 700–800 · +0.10em caixa alta -->
     <style name="VidroText.Overline" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">11.5sp</item>
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:textColor">@color/vidro_text_3</item>
     </style>
 
-    <!--
-        Números em tabular. Latência, resolução e taxa mudam em tempo real; sem tnum
-        a linha inteira dança a cada leitura. Invariante do design system.
-    -->
+    <!-- Número técnico · JetBrains Mono · tabular -->
     <style name="VidroText.Numeric" parent="VidroText">
-        <item name="android:fontFamily">monospace</item>
+        <item name="android:fontFamily">@font/jetbrains_mono_regular</item>
         <item name="android:fontFeatureSettings">tnum</item>
-        <item name="android:textSize">13.5sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/vidro_text_2</item>
+    </style>
+
+    <!-- Código de pareamento: quatro dígitos grandes, um por caixa -->
+    <style name="VidroText.Code" parent="VidroText">
+        <item name="android:fontFamily">@font/jetbrains_mono_bold</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <!-- ================= Componentes ================= -->
 
     <style name="VidroButton.Accent" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/manrope_bold</item>
         <item name="android:background">@drawable/vidro_button_accent</item>
         <item name="android:textColor">@color/vidro_on_accent</item>
         <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:minHeight">@dimen/vidro_touch_target</item>
         <item name="android:paddingLeft">26dp</item>
@@ -158,10 +187,11 @@
     </style>
 
     <style name="VidroButton.Ghost" parent="VidroText">
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
         <item name="android:background">@drawable/vidro_button_ghost_bg</item>
         <item name="android:textColor">@color/vidro_text</item>
         <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:minHeight">@dimen/vidro_touch_target</item>
         <item name="android:paddingLeft">22dp</item>
@@ -176,6 +206,18 @@
         <item name="android:padding">12dp</item>
         <item name="android:tint">@color/vidro_text_2</item>
     </style>
+
+    <declare-styleable name="VidroLightView">
+        <!-- Estado do host. 0,72 aceso · 0,20 dormindo · 0,07 nenhum host · 0,10 em sessão. -->
+        <attr name="vidro_intensity" format="float" />
+        <!-- Qualidade da rede: encolhe o alcance e esfria o croma no mesmo gesto. -->
+        <attr name="vidro_quality" format="enum">
+            <enum name="good" value="0" />
+            <enum name="unstable" value="1" />
+            <enum name="poor" value="2" />
+        </attr>
+        <attr name="vidro_core_color" format="color" />
+    </declare-styleable>
 
     <declare-styleable name="ApertureViewGroup">
         <attr name="aperture_color1" format="color" />

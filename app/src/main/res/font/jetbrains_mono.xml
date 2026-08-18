@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    JetBrains Mono, empacotada. Aparece só em número técnico: código de pareamento,
+    valores do overlay de desempenho e endereço IP. Em qualquer outro lugar é Manrope.
+
+    Monoespaçada já resolve o alinhamento de dígito, então aqui `tnum` é redundante —
+    mas ele fica nos estilos mesmo assim, porque é o que garante a coluna estável se
+    alguém trocar a face depois.
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <font
+        android:font="@font/jetbrains_mono_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        app:font="@font/jetbrains_mono_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+
+    <font
+        android:font="@font/jetbrains_mono_medium"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        app:font="@font/jetbrains_mono_medium"
+        app:fontStyle="normal"
+        app:fontWeight="500" />
+
+    <font
+        android:font="@font/jetbrains_mono_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        app:font="@font/jetbrains_mono_bold"
+        app:fontStyle="normal"
+        app:fontWeight="700" />
+
+</font-family>

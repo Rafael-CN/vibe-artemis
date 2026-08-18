@@ -1,70 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    O host não é uma linha numa lista: é um lugar, e ele está aceso ou não.
-    Quem lê o estado é a luz atrás do ícone, não um rótulo — e como o que muda é
-    intensidade e não matiz, a hierarquia continua legível para quem não distingue
-    o azul. O rótulo de texto fica como reforço, nunca como única fonte.
+    Um lugar, não um ladrilho. O protótipo lista hosts como linhas: ponto de estado,
+    nome, e a condição dita em PALAVRA à direita — "pronto", "dormindo", "fora do ar".
+    Nada de número, nada de ícone de computador.
+
+    O ponto muda de forma junto com a cor: aceso é preenchido, o resto é só contorno.
+    Assim o estado sobrevive a quem não distingue o azul.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/vidro_space_2">
+    android:paddingLeft="@dimen/vidro_space_5"
+    android:paddingTop="@dimen/vidro_space_1"
+    android:paddingRight="@dimen/vidro_space_5"
+    android:paddingBottom="@dimen/vidro_space_1">
 
     <RelativeLayout
-        android:layout_width="152dp"
-        android:layout_height="184dp"
-        android:background="@drawable/vidro_card_bg"
-        android:padding="@dimen/vidro_space_3">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vidro_row_bg"
+        android:minHeight="52dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="14dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="14dp">
 
-        <!-- A luz. Fica atrás de tudo; a alpha dela é definida pelo estado no adapter. -->
         <ImageView
-            android:id="@+id/grid_halo"
-            android:layout_width="match_parent"
-            android:layout_height="118dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="-8dp"
-            android:importantForAccessibility="no"
-            android:scaleType="fitXY"
-            android:src="@drawable/vidro_halo_awake" />
+            android:id="@+id/grid_image"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:importantForAccessibility="no" />
 
-        <RelativeLayout
-            android:id="@+id/grid_image_layout"
+        <ProgressBar
+            android:id="@+id/grid_spinner"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/vidro_text_3" />
+
+        <TextView
+            android:id="@+id/grid_state"
+            style="@style/VidroText.Support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/vidro_space_3">
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            tools:text="pronto" />
 
-            <ImageView
-                android:id="@+id/grid_image"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
-                android:layout_centerHorizontal="true" />
-
-            <ImageView
-                android:id="@+id/grid_overlay"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="21dp" />
-
-            <ProgressBar
-                android:id="@+id/grid_spinner"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="21dp"
-                android:indeterminate="true" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/grid_overlay"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/vidro_space_2"
+            android:layout_marginRight="@dimen/vidro_space_2"
+            android:layout_toStartOf="@id/grid_state"
+            android:layout_toLeftOf="@id/grid_state"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/grid_text"
-            style="@style/VidroText.Heading"
+            style="@style/VidroText.Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/grid_image_layout"
-            android:layout_marginTop="@dimen/vidro_space_3"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/vidro_space_3"
+            android:layout_marginLeft="@dimen/vidro_space_3"
+            android:layout_marginEnd="@dimen/vidro_space_3"
+            android:layout_marginRight="@dimen/vidro_space_3"
+            android:layout_toStartOf="@id/grid_overlay"
+            android:layout_toLeftOf="@id/grid_overlay"
+            android:layout_toEndOf="@id/grid_image"
+            android:layout_toRightOf="@id/grid_image"
             android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2" />
+            android:maxLines="1"
+            tools:text="PC-RAFAEL" />
+
+        <!-- O adapter pinta esta camada quando o item precisa recuar. -->
+        <RelativeLayout
+            android:id="@+id/grid_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 </FrameLayout>

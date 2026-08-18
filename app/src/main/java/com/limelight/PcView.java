@@ -3,8 +3,8 @@ package com.limelight;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.limelight.binding.PlatformBinding;
 import com.limelight.binding.crypto.AndroidCryptoProvider;
 import com.limelight.computers.ComputerManagerListener;
@@ -23,6 +23,7 @@ import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.preferences.StreamSettings;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.AdapterFragment;
+import com.limelight.ui.VidroLightView;
 import com.limelight.ui.AdapterFragmentCallbacks;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.HelpLauncher;
@@ -58,6 +59,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -158,7 +160,7 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         ImageButton addComputerButton = findViewById(R.id.manuallyAddPc);
         ImageButton helpButton = findViewById(R.id.helpButton);
-        ExtendedFloatingActionButton profilesButton = findViewById(R.id.profilesButton);
+        TextView profilesButton = findViewById(R.id.profilesButton);
 
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -179,6 +181,15 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                 HelpLauncher.launchSetupGuide(PcView.this);
             }
         });
+        View addPlace = findViewById(R.id.vidroAddPlace);
+        if (addPlace != null) {
+            addPlace.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(PcView.this, AddComputerManually.class));
+                }
+            });
+        }
         profilesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,19 +355,18 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
     }
 
     private void refreshProfileButton() {
-        ExtendedFloatingActionButton profilesButton = findViewById(R.id.profilesButton);
+        TextView profilesButton = findViewById(R.id.profilesButton);
         // User report Samsung and Xiaomi devices have this problem
         // Why just these two brands have the most problems?
         if (profilesButton == null) {
             return;
         }
+        // O rodapé diz "Cenas" quando nenhuma está ativa e o nome da cena quando há uma.
+        // O botão não some nem encolhe: no protótipo o rodapé é um par fixo, e um par que
+        // muda de largura sozinho faz a tela inteira dançar.
         String activeProfileName = ProfilesManager.getInstance().getActiveName();
-        if (activeProfileName.isEmpty()) {
-            profilesButton.shrink();
-        } else {
-            profilesButton.setText(activeProfileName);
-            profilesButton.extend();
-        }
+        profilesButton.setText(activeProfileName.isEmpty()
+                ? getString(R.string.vidro_scenes) : activeProfileName);
     }
 
     @Override
@@ -881,6 +891,77 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
 
         // Notify the view that the data has changed
         pcGridAdapter.notifyDataSetChanged();
+
+        updateVidroHeader();
+    }
+
+    /**
+     * Saudação, título de estado e intensidade da luz.
+     *
+     * O título é a única frase da home e ele muda com o que está lá fora — "O PC está
+     * acordado", "O PC está dormindo", "Nenhum PC por perto". A luz atrás dele carrega
+     * o mesmo estado em intensidade, e as duas coisas precisam concordar sempre, senão
+     * a tela diz duas coisas ao mesmo tempo.
+     */
+    private void updateVidroHeader() {
+        TextView greeting = findViewById(R.id.vidroGreeting);
+        TextView stateTitle = findViewById(R.id.vidroStateTitle);
+        VidroLightView light = findViewById(R.id.vidroLight);
+
+        if (greeting == null || stateTitle == null) {
+            return;
+        }
+
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int greetingRes;
+        if (hour < 12) {
+            greetingRes = R.string.vidro_greeting_morning;
+        }
+        else if (hour < 18) {
+            greetingRes = R.string.vidro_greeting_afternoon;
+        }
+        else {
+            greetingRes = R.string.vidro_greeting_evening;
+        }
+        greeting.setText(greetingRes);
+
+        boolean anyAwake = false, anyAsleep = false, stillProbing = false;
+        int count = pcGridAdapter.getCount();
+        for (int i = 0; i < count; i++) {
+            ComputerDetails details = ((ComputerObject)pcGridAdapter.getItem(i)).details;
+            if (details.state == ComputerDetails.State.ONLINE) {
+                anyAwake = true;
+            }
+            else if (details.state == ComputerDetails.State.UNKNOWN) {
+                stillProbing = true;
+            }
+            else if (details.macAddress != null && !details.macAddress.isEmpty()) {
+                anyAsleep = true;
+            }
+        }
+
+        float intensity;
+        if (anyAwake) {
+            stateTitle.setText(R.string.vidro_host_awake);
+            intensity = VidroLightView.INTENSITY_AWAKE;
+        }
+        else if (stillProbing && count > 0) {
+            // Ainda perguntando. Não afirmamos que dormiu antes de saber.
+            stateTitle.setText(R.string.vidro_host_searching);
+            intensity = VidroLightView.INTENSITY_ASLEEP;
+        }
+        else if (anyAsleep) {
+            stateTitle.setText(R.string.vidro_host_asleep);
+            intensity = VidroLightView.INTENSITY_ASLEEP;
+        }
+        else {
+            stateTitle.setText(R.string.vidro_host_none);
+            intensity = VidroLightView.INTENSITY_NONE;
+        }
+
+        if (light != null) {
+            light.setIntensity(intensity, true);
+        }
     }
 
     @Override

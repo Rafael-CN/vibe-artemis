@@ -33,11 +33,11 @@
     <!--
         Vidro composto. Em sessão o painel é FOSCO, não embaçado: o vídeo desenha num
         SurfaceView, numa camada de hardware separada, e RenderEffect não consegue
-        amostrar o que está lá. Um blur por cima borraria o nada. Alpha 0,82 resolve
+        amostrar o que está lá. Um blur por cima borraria o nada. Alpha 0,88 resolve
         pelo mesmo efeito visual e não custa GPU nenhuma — que é o que o decodificador
         precisa. Fora da sessão o fundo é composto pela própria hierarquia e o blur vale.
     -->
-    <color name="vidro_glass_fill_session">#D107090E</color> <!-- alpha 0,82 -->
+    <color name="vidro_glass_fill_session">#E007090E</color> <!-- alpha 0,88 -->
     <color name="vidro_glass_fill_idle">#8C07090E</color>    <!-- alpha 0,55 -->
 
     <!-- Bordas por peso. Sempre 1px; o que muda é quanto ela aparece. -->
@@ -51,4 +51,6 @@
     <color name="vidro_halo_awake">#B81E8FEE</color>  <!-- 0,72 -->
     <color name="vidro_halo_night">#571E8FEE</color>  <!-- 0,34 -->
     <color name="vidro_halo_asleep">#331E8FEE</color> <!-- 0,20 -->
+    <color name="vidro_halo_none">#121E8FEE</color>   <!-- 0,07 · nenhum host -->
+    <color name="vidro_halo_session">#1A1E8FEE</color><!-- 0,10 · bordas do vídeo -->
 </resources>

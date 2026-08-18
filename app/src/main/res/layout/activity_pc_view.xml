@@ -1,8 +1,16 @@
-<!-- Portrait orientation only -->
 <!--
-    A home do Vidro é ambiente, não painel: quase nenhuma cromagem, nenhum número
-    técnico, e a informação vindo dos próprios lugares acesos. Por isso não há título
-    nem barra — o que ocupa a tela são os hosts, e o resto sai da frente.
+    Home · início. Hierarquia da seção 6 do handoff, tela 01:
+
+        saudação → título de estado do host → card de antecipação → "Continuar" →
+        "Seus lugares" → rodapé Cenas · Ajustes, com a luz atrás do topo.
+
+    ZERO número técnico nesta tela. Nem ms, nem Mbps, nem FPS — o estado do host é dito
+    em palavra e a luz diz o resto.
+
+    O cabeçalho é fixo e só a lista de lugares rola. O protótipo rola a página inteira,
+    mas ali a lista é estática; aqui ela é um AdapterView de verdade, com menu de
+    contexto para parear, acordar e remover, e aninhar isso num scroll quebraria o
+    arrasto. Foi a única liberdade estrutural tomada nesta tela.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,22 +20,259 @@
     android:background="@color/vidro_void"
     tools:context=".PcView">
 
-    <RelativeLayout
-        android:id="@+id/pcFragmentContainer"
-        android:layout_width="fill_parent"
+    <!-- A luz vem de onde está a coisa viva: atrás do nome do host, no topo. -->
+    <com.limelight.ui.VidroLightView
+        android:id="@+id/vidroLight"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.07"
+        app:vidro_quality="good" />
+
+    <!-- ================= topo ================= -->
+
+    <LinearLayout
+        android:id="@+id/vidroHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settingsButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="center">
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingTop="@dimen/vidro_space_4"
+        android:paddingRight="@dimen/vidro_space_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/vidroHeaderActions"
+                android:layout_toLeftOf="@+id/vidroHeaderActions"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/vidroGreeting"
+                    style="@style/VidroText.Support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Boa noite" />
+
+                <TextView
+                    android:id="@+id/vidroStateTitle"
+                    style="@style/VidroText.Display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    tools:text="O PC está acordado" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vidroHeaderActions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/helpButton"
+                    style="@style/VidroIconButton"
+                    android:layout_width="@dimen/vidro_touch_target"
+                    android:layout_height="@dimen/vidro_touch_target"
+                    android:contentDescription="@string/help"
+                    android:src="@drawable/ic_help" />
+
+                <ImageButton
+                    android:id="@+id/manuallyAddPc"
+                    style="@style/VidroIconButton"
+                    android:layout_width="@dimen/vidro_touch_target"
+                    android:layout_height="@dimen/vidro_touch_target"
+                    android:contentDescription="@string/vidro_add"
+                    android:src="@drawable/ic_add" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <!--
-            Estado de procura. É o primeiro estado que qualquer pessoa vê, e antes
-            ele era uma barrinha cinza ao lado de um texto de sistema.
+            Card de antecipação. Só existe quando há palpite de verdade — histórico
+            local de sessão, mesma faixa de horário. Sem histórico, some inteiro:
+            um palpite inventado é pior que nenhum.
         -->
+        <LinearLayout
+            android:id="@+id/vidroAnticipation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_5"
+            android:background="@drawable/vidro_card_accent"
+            android:orientation="vertical"
+            android:paddingLeft="19dp"
+            android:paddingTop="18dp"
+            android:paddingRight="19dp"
+            android:paddingBottom="14dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                style="@style/VidroText.Overline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vidro_likely_now"
+                android:textColor="@color/vidro_accent_text" />
+
+            <TextView
+                android:id="@+id/vidroAnticipationTitle"
+                style="@style/VidroText.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Retomar Desktop" />
+
+            <TextView
+                android:id="@+id/vidroAnticipationWhy"
+                style="@style/VidroText.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                tools:text="Você faz isso quase toda noite por volta desta hora, no PC-RAFAEL." />
+
+            <!-- As saídas. Um palpite sem recusa fácil vira imposição. -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/vidroNotNow"
+                    style="@style/VidroText.Support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/vidro_space_4"
+                    android:paddingEnd="@dimen/vidro_space_4"
+                    android:text="@string/vidro_not_now" />
+
+                <TextView
+                    android:id="@+id/vidroNotToday"
+                    style="@style/VidroText.Support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:gravity="center_vertical"
+                    android:text="@string/vidro_not_today" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ================= Continuar ================= -->
+
+        <LinearLayout
+            android:id="@+id/vidroContinueSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                style="@style/VidroText.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginBottom="@dimen/vidro_space_2"
+                android:text="@string/vidro_continue"
+                android:textColor="@color/vidro_text_2" />
+
+            <LinearLayout
+                android:id="@+id/vidroContinueList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <!-- ================= Seus lugares ================= -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_5"
+            android:layout_marginBottom="@dimen/vidro_space_2">
+
+            <TextView
+                style="@style/VidroText.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/vidro_your_places"
+                android:textColor="@color/vidro_text_2" />
+
+            <TextView
+                android:id="@+id/vidroAddPlace"
+                style="@style/VidroText.Support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/vidro_add"
+                android:textColor="@color/vidro_accent_text" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- ================= rodapé ================= -->
+
+    <LinearLayout
+        android:id="@+id/vidroFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/vidro_space_4"
+        android:paddingTop="@dimen/vidro_space_3"
+        android:paddingRight="@dimen/vidro_space_4"
+        android:paddingBottom="@dimen/vidro_space_4">
+
+        <TextView
+            android:id="@+id/profilesButton"
+            style="@style/VidroButton.Ghost"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/profile_manager_choose_profile"
+            android:gravity="center"
+            android:text="@string/vidro_scenes" />
+
+        <TextView
+            android:id="@+id/settingsButton"
+            style="@style/VidroButton.Ghost"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/vidro_settings" />
+    </LinearLayout>
+
+    <!-- ================= lista de lugares ================= -->
+
+    <RelativeLayout
+        android:id="@+id/pcFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/vidroFooter"
+        android:layout_below="@id/vidroHeader">
+
         <LinearLayout
             android:id="@+id/no_pc_found_layout"
             android:layout_width="wrap_content"
@@ -40,70 +285,20 @@
 
             <ProgressBar
                 android:id="@+id/pcs_loading"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:indeterminate="true"
                 android:indeterminateTint="@color/vidro_accent_text" />
 
             <TextView
-                style="@style/VidroText.Body"
+                style="@style/VidroText.Support"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginTop="@dimen/vidro_space_4"
                 android:gravity="center"
-                android:text="@string/searching_pc"
-                android:textColor="@color/vidro_text_3" />
+                android:text="@string/searching_pc" />
         </LinearLayout>
 
     </RelativeLayout>
-
-    <ImageButton
-        android:id="@+id/settingsButton"
-        style="@style/VidroIconButton"
-        android:layout_width="@dimen/vidro_thumb_reach"
-        android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:preferKeepClear="true"
-        android:src="@drawable/ic_settings" />
-
-    <ImageButton
-        android:id="@+id/helpButton"
-        style="@style/VidroIconButton"
-        android:layout_width="@dimen/vidro_thumb_reach"
-        android:layout_height="64dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/settingsButton"
-        android:layout_toRightOf="@+id/settingsButton"
-        android:preferKeepClear="true"
-        android:src="@drawable/ic_help" />
-
-    <ImageButton
-        android:id="@+id/manuallyAddPc"
-        style="@style/VidroIconButton"
-        android:layout_width="@dimen/vidro_thumb_reach"
-        android:layout_height="64dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:preferKeepClear="true"
-        android:src="@drawable/ic_add" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/profilesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/vidro_space_4"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="@string/profile_manager_choose_profile"
-        android:textColor="@color/vidro_on_accent"
-        app:backgroundTint="@color/vidro_accent_fill"
-        app:elevation="0dp"
-        app:icon="@drawable/ic_profiles"
-        app:iconTint="@color/vidro_on_accent" />
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.limelight.AppView;
 import com.limelight.LimeLog;
 import com.limelight.R;
+import com.limelight.nvstream.http.NvApp;
 import com.limelight.grid.assets.CachedAppAssetLoader;
 import com.limelight.grid.assets.DiskAssetLoader;
 import com.limelight.grid.assets.MemoryAssetLoader;
@@ -183,11 +184,44 @@ public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
             gridMask.setBackgroundColor(0x00000000);
         }
 
+        // A pílula é o que diferencia tela e entrada de um jogo qualquer — não existe
+        // botão especial para "virar tela": o host publica e o app lista.
+        TextView pill = parentView.findViewById(R.id.grid_pill);
+        if (pill != null) {
+            if (obj.isRunning) {
+                pill.setText(R.string.vidro_pill_open);
+                pill.setVisibility(View.VISIBLE);
+            }
+            else if (NvApp.REMOTE_INPUT_UUID.equals(obj.app.getAppUUID())) {
+                pill.setText(R.string.vidro_pill_input);
+                pill.setVisibility(View.VISIBLE);
+            }
+            else if (isRemoteDisplay(obj.app.getAppName())) {
+                pill.setText(R.string.vidro_pill_screen);
+                pill.setVisibility(View.VISIBLE);
+            }
+            else {
+                pill.setVisibility(View.GONE);
+            }
+        }
+
         if (obj.isHidden) {
             parentView.setAlpha(0.40f);
         }
         else {
             parentView.setAlpha(1.0f);
         }
+    }
+
+    /**
+     * Entrada tem UUID conhecido; tela não tem nada.
+     *
+     * O protocolo entrega nome, UUID e box art — não há campo de tipo. O Vibeshine
+     * publica o display virtual com este nome exato, então é por ele que dá para
+     * reconhecer. Heurística assumida: se o host renomear, a pílula some, e sumir uma
+     * pílula é bem menos grave que rotular o app errado.
+     */
+    private static boolean isRemoteDisplay(String appName) {
+        return appName != null && appName.equalsIgnoreCase("Remote Display");
     }
 }

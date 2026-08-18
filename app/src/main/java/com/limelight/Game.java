@@ -45,6 +45,7 @@ import com.limelight.nvstream.jni.MoonBridge;
 import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
+import com.limelight.ui.VidroIsland;
 import com.limelight.ui.ExternalControllerView;
 import com.limelight.ui.GameGestures;
 import com.limelight.ui.StreamContainer;
@@ -308,6 +309,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     public boolean allowChangeMouseMode = true;
     private boolean onExternelDisplay = false;
     private ImageButton floatingMenuButton;
+    private VidroIsland vidroIsland;
     private ImageButton overlayToggleButton;
     private float floatingButtonDX, floatingButtonDY;
     private boolean isButtonMoving = false;
@@ -905,6 +907,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         gameMenuCallbacks = new GameMenu(this);
 
         floatingMenuButton = findViewById(R.id.floatingMenuButton);
+
+        setupVidroIsland();
         updateFloatingButtonVisibility(prefConfig.enableBackMenu && prefConfig.enableFloatingButton);
         initFloatingButton();
 
@@ -1135,6 +1139,79 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     }
 
     //显示隐藏虚拟特殊按键
+
+    /**
+     * A ilha de controle da sessão.
+     *
+     * Ela substitui o botão flutuante como superfície principal: aparece ao entrar,
+     * recolhe sozinha em pílula depois de 6,2 s e volta ao toque. Os blocos que já têm
+     * ação equivalente no app vão direto; o resto abre o menu existente, porque um botão
+     * que não faz nada é pior que um botão que não existe.
+     */
+    private void setupVidroIsland() {
+        vidroIsland = new VidroIsland(this);
+        if (!vidroIsland.isAvailable()) {
+            return;
+        }
+
+        vidroIsland.setAppName(appName != null ? appName : "");
+        vidroIsland.setQuality(VidroIsland.QUALITY_GOOD);
+
+        vidroIsland.setTile(R.id.vidroTileKeyboard, R.string.vidro_keyboard,
+                getString(R.string.vidro_without_leaving));
+        vidroIsland.setTileClickListener(R.id.vidroTileKeyboard, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleKeyboard();
+                vidroIsland.reopen();
+            }
+        });
+
+        vidroIsland.setTile(R.id.vidroTileMouse, R.string.vidro_mouse, "");
+        vidroIsland.setTileClickListener(R.id.vidroTileMouse, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGameMenu(null);
+            }
+        });
+
+        vidroIsland.setTile(R.id.vidroTileDetails, R.string.vidro_details, "");
+        vidroIsland.setTileClickListener(R.id.vidroTileDetails, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGameMenu(null);
+            }
+        });
+
+        View leave = findViewById(R.id.vidroIslandLeave);
+        if (leave != null) {
+            leave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+
+        // A pílula é alvo de toque: encostar nela devolve a ilha inteira.
+        View pill = vidroIsland.getPill();
+        if (pill != null) {
+            pill.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vidroIsland.reopen();
+                }
+            });
+        }
+
+        // O botão flutuante era a porta de entrada do menu; com a ilha ele vira ruído.
+        if (floatingMenuButton != null) {
+            floatingMenuButton.setVisibility(View.GONE);
+        }
+
+        vidroIsland.setOpen(true, false);
+    }
+
     public void toggleKeyboardController(){
         if (keyBoardController==null) {
             initKeyboardController();
@@ -1821,6 +1898,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     @Override
     protected void onDestroy() {
+        if (vidroIsland != null) {
+            vidroIsland.destroy();
+        }
+
         super.onDestroy();
 
         instance = null;

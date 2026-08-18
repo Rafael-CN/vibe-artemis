@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Uma coluna. O protótipo lista lugares, não os dispõe em grade: uma linha por host,
+    com o estado em palavra à direita. Grade de ladrilhos era a herança do Moonlight.
+-->
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:numColumns="auto_fit"
-    android:columnWidth="160dp"
-    android:stretchMode="spacingWidthUniform"
+    android:numColumns="1"
+    android:clipToPadding="false"
+    android:divider="@null"
+    android:dividerHeight="0dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:listSelector="@android:color/transparent"
     android:nextFocusLeft="@id/settingsButton"
-    android:clipToPadding="false"
-    android:paddingLeft="@dimen/vidro_space_3"
-    android:paddingRight="@dimen/vidro_space_3"
-    android:paddingBottom="@dimen/vidro_thumb_reach"
+    android:paddingBottom="@dimen/vidro_space_4"
     android:scrollbars="none"
-    android:gravity="center"/>
+    android:stretchMode="columnWidth" />

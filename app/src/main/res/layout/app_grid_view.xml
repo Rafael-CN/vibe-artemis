@@ -3,14 +3,14 @@
     android:id="@+id/fragmentView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:numColumns="auto_fit"
-    android:columnWidth="170dp"
+    android:numColumns="2"
+    
     android:stretchMode="spacingWidthUniform"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:clipToPadding="false"
-    android:paddingLeft="@dimen/vidro_space_3"
-    android:paddingRight="@dimen/vidro_space_3"
+    android:paddingLeft="17dp"
+    android:paddingRight="17dp"
     android:paddingBottom="@dimen/vidro_thumb_reach"
     android:scrollbars="none"
     android:gravity="center"/>

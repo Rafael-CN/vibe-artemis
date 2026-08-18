@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+html,body{margin:0}
+body{background:oklch(13% .008 265);color:oklch(92% .006 265);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:oklch(72% .150 250);text-decoration:none}
+a:hover{color:oklch(82% .120 250)}
+@keyframes respira{0%,100%{opacity:.5}50%{opacity:.95}}
+*::-webkit-scrollbar{width:0;height:0;display:none}
+*{scrollbar-width:none}
+@keyframes entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulsa{0%,100%{opacity:.22;transform:scale(.94)}50%{opacity:.6;transform:scale(1.04)}}
+</style></helmet>
+
+<section id="t7" style="--acc:{{ accVar }};--void:oklch(9.5% .008 265);--sur:oklch(100% 0 0 / .06);--sur2:oklch(100% 0 0 / .11);--brd:oklch(100% 0 0 / .11);--brd2:oklch(100% 0 0 / .06);--txt:oklch(97% .004 265);--txt2:oklch(77% .010 265);--txt3:oklch(60% .010 265);padding:36px 40px 34px">
+
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 6px">
+<a href="#t7" style="font-size:10px;font-weight:800;padding:4px 9px;border-radius:99px;background:oklch(64% .17 250);color:oklch(14% .04 265)">7</a>
+<span style="font-size:13px;font-weight:700;letter-spacing:-.02em;color:oklch(95% .006 265)">Vidro v2 — a luz tem fonte, e o painel de cenário manda no app</span>
+</div>
+<p style="margin:0 0 8px;max-width:104ch;font-size:12.5px;line-height:1.7;color:oklch(72% .010 265)">A crítica estava certa: duas manchas de cor aleatórias no fundo é papel de parede, não produto. Agora existe <b>uma luz só</b>, com regra: a fonte é o PC, o tom é sempre o do acento, a <b>intensidade diz o estado do host</b> (aceso, dormindo, ausente) e o <b>raio diz a qualidade da rede</b> — quando a rede piora, a luz encolhe e esfria em vez de trocar de cor. Em sessão a fonte muda de lugar: o brilho passa a vir do vídeo, como um ambilight fraco. Nada mais no fundo é decorativo.</p>
+<p style="margin:0 0 18px;max-width:104ch;font-size:12.5px;line-height:1.7;color:oklch(62% .010 265)">Mexa no painel abaixo e o aparelho reage: o app inteiro é derivado desses cinco estados. Toque numa capa e ela vira o vídeo (transição compartilhada); em sessão, a ilha encolhe em pílula sozinha; arraste da borda esquerda para voltar.</p>
+
+<div style="display:flex;flex-wrap:wrap;gap:18px;margin:0 0 22px;padding:14px 16px;border-radius:16px;background:oklch(15% .008 265);border:1px solid oklch(100% 0 0 / .07)">
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:oklch(58% .010 265)">PC</span>
+<div style="display:flex;gap:5px">
+<span onClick="{{ cen.pcAceso }}" style="{{ estPcAceso }}">Aceso</span>
+<span onClick="{{ cen.pcDormindo }}" style="{{ estPcDormindo }}">Dormindo</span>
+<span onClick="{{ cen.pcNenhum }}" style="{{ estPcNenhum }}">Nenhum na rede</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:oklch(58% .010 265)">Rede</span>
+<div style="display:flex;gap:5px">
+<span onClick="{{ cen.redeOtima }}" style="{{ estRedeOtima }}">Ótima</span>
+<span onClick="{{ cen.redeInstavel }}" style="{{ estRedeInstavel }}">Instável</span>
+<span onClick="{{ cen.redeRuim }}" style="{{ estRedeRuim }}">Ruim</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:oklch(58% .010 265)">Palpite</span>
+<div style="display:flex;gap:5px">
+<span onClick="{{ cen.palpiteCerto }}" style="{{ estPalpiteCerto }}">Acertou</span>
+<span onClick="{{ cen.palpiteErrado }}" style="{{ estPalpiteErrado }}">Errou</span>
+<span onClick="{{ cen.palpiteMudo }}" style="{{ estPalpiteMudo }}">Silenciado</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:oklch(58% .010 265)">Pareamento</span>
+<div style="display:flex;gap:5px">
+<span onClick="{{ cen.pareado }}" style="{{ estPareado }}">Pareado</span>
+<span onClick="{{ cen.naoPareado }}" style="{{ estNaoPareado }}">Primeiro encontro</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:oklch(58% .010 265)">Ir para</span>
+<div style="display:flex;gap:5px">
+<span onClick="{{ irCatalogo }}" style="{{ estNeutro }}">Catálogo</span>
+<span onClick="{{ irCenas }}" style="{{ estNeutro }}">Cenas</span>
+<span onClick="{{ irSessao }}" style="{{ estNeutro }}">Sessão</span>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:30px;align-items:flex-start">
+
+<div id="7a" style="flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px">
+<div style="display:flex;align-items:baseline;gap:8px">
+<a href="#7a" style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;background:oklch(24% .010 265);color:oklch(92% .006 265)">7a</a>
+<span style="font-size:11px;color:oklch(64% .010 265);font-weight:500">{{ medidaQuadro }} · <b>{{ nomeTela }}</b> · luz {{ nomeLuz }}</span>
+</div>
+
+<sc-if value="{{ naoEhSessao }}" hint-placeholder-val="{{ true }}">
+<div onPointerDown="{{ aoTocar }}" onPointerUp="{{ aoSoltar }}" style="width:393px;height:852px;position:relative;overflow:hidden;display:flex;flex-direction:column;border-radius:30px;color:var(--txt);border:1px solid var(--brd);background:var(--void);box-shadow:0 24px 70px oklch(6% .02 265/.7);touch-action:none">
+
+<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2;mix-blend-mode:screen"><div style="position:absolute;left:50%;top:{{ luzTopo }};width:{{ luzTam }};aspect-ratio:1;transform:translate(-50%,-50%);border-radius:99px;background:radial-gradient(circle,{{ luzCor }} 0%,transparent 66%);opacity:{{ luzForca }};transition:opacity .8s ease,width .8s cubic-bezier(.2,.8,.3,1),top .8s cubic-bezier(.2,.8,.3,1)"></div></div>
+
+<div style="height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:11px;font-weight:600;color:var(--txt2);white-space:nowrap;position:relative;z-index:8">
+<span>21:04</span><span>{{ statusRede }}</span>
+</div>
+
+<sc-if value="{{ ehHome }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:4;animation:entra .34s cubic-bezier(.2,.9,.3,1) both">
+<div style="flex:none;padding:14px 22px 0">
+<div style="font-size:13px;color:var(--txt3);font-weight:500">Boa noite, Rafael</div>
+<div style="font-size:33px;font-weight:800;letter-spacing:-.04em;line-height:1.06;margin-top:2px">{{ tituloHome }}</div>
+</div>
+
+<sc-if value="{{ mostraPalpite }}">
+<div style="flex:none;margin:18px 18px 0;border-radius:24px;position:relative;overflow:hidden;border:1px solid var(--brd);background:oklch(100% 0 0 / .07)">
+<div onClick="{{ abrirPalpite }}" style="padding:18px 19px 15px;cursor:pointer">
+<div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--acc,oklch(64% .17 250))">{{ rotuloPalpite }}</div>
+<div style="font-size:21px;font-weight:700;letter-spacing:-.028em;margin:7px 0 3px">{{ tituloPalpite }}</div>
+<div style="font-size:13px;color:var(--txt2);line-height:1.45;max-width:28ch">{{ subPalpite }}</div>
+</div>
+<div style="display:flex;border-top:1px solid var(--brd2)">
+<div onClick="{{ abrirPalpite }}" style="flex:1;min-height:46px;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:700;color:var(--acc,oklch(64% .17 250));border-right:1px solid var(--brd2);cursor:pointer">{{ acaoPalpite }}</div>
+<div onClick="{{ adiarPalpite }}" style="flex:none;min-height:46px;display:flex;align-items:center;padding:0 18px;font-size:13px;font-weight:600;color:var(--txt3);border-right:1px solid var(--brd2);cursor:pointer">Agora não</div>
+<div onClick="{{ silenciarPalpite }}" style="flex:none;min-height:46px;display:flex;align-items:center;padding:0 18px;font-size:13px;font-weight:600;color:var(--txt3);cursor:pointer">Hoje não</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ palpiteMudo }}">
+<div onClick="{{ religarPalpite }}" style="flex:none;margin:18px 18px 0;padding:14px 17px;border-radius:20px;border:1px dashed var(--brd);display:flex;align-items:center;gap:11px;min-height:46px;cursor:pointer">
+<span style="font-size:12.5px;color:var(--txt3);line-height:1.4">Sugestões silenciadas até amanhã.</span>
+<span style="margin-left:auto;font-size:12.5px;font-weight:700;color:var(--acc,oklch(64% .17 250));white-space:nowrap">Religar</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ temHost }}">
+<div style="flex:none;padding:20px 22px 8px;font-size:13px;font-weight:600;color:var(--txt2)">Continuar</div>
+<div style="flex:none;padding:0 18px;display:flex;flex-direction:column;gap:9px">
+<div onClick="{{ abrirDesktop }}" style="display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:19px;background:var(--sur);border:1px solid var(--brd);cursor:pointer;transition:transform .22s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.975)">
+<div style="width:44px;height:44px;border-radius:14px;flex:none;background:oklch(30% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply"></div>
+<div style="min-width:0">
+<div style="font-size:15.5px;font-weight:600;letter-spacing:-.02em">Desktop</div>
+<div style="font-size:12.5px;color:var(--txt3);white-space:nowrap">{{ subDesktop }}</div>
+</div>
+<span style="margin-left:auto;width:8px;height:8px;border-radius:99px;background:var(--acc,oklch(64% .17 250));animation:respira 3s ease-in-out infinite"></span>
+</div>
+<div onClick="{{ irCenas }}" style="display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:19px;background:var(--sur);border:1px solid var(--brd);cursor:pointer;transition:transform .22s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.975)">
+<div style="width:44px;height:44px;border-radius:14px;flex:none;background:oklch(30% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply"></div>
+<div style="min-width:0">
+<div style="font-size:15.5px;font-weight:600;letter-spacing:-.02em">Cenas</div>
+<div style="font-size:12.5px;color:var(--txt3);white-space:nowrap">Trabalho, Jogo à noite, Só entrada</div>
+</div>
+<span style="margin-left:auto;font-size:17px;color:var(--txt3)">›</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mostraDormindo }}">
+<div style="flex:none;margin:18px 18px 0;padding:19px 20px;border-radius:24px;border:1px solid var(--brd);background:oklch(100% 0 0 / .05)">
+<div style="font-size:19px;font-weight:700;letter-spacing:-.028em">Ele responde ao seu toque</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:7px;line-height:1.5;max-width:30ch">Mando o pacote de acordar pela rede. Costuma levar meia dúzia de segundos até a lista voltar.</div>
+<div onClick="{{ acordarPc }}" style="margin-top:16px;min-height:52px;border-radius:19px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;letter-spacing:-.02em;cursor:pointer">Acordar o PC-RAFAEL</div>
+</div>
+</sc-if>
+
+<div style="flex:none;padding:20px 22px 8px;display:flex;align-items:baseline;gap:8px">
+<span style="font-size:13px;font-weight:600;color:var(--txt2)">Seus lugares</span>
+<span onClick="{{ irPareamento }}" style="margin-left:auto;min-height:44px;display:flex;align-items:center;font-size:12.5px;color:var(--acc,oklch(64% .17 250));font-weight:700;cursor:pointer">Adicionar</span>
+</div>
+<div style="flex:none;padding:0 18px;display:flex;flex-direction:column;gap:8px">
+<div onClick="{{ tocarHost }}" style="display:flex;align-items:center;gap:12px;padding:15px;border-radius:19px;background:{{ fundoHost }};border:1px solid var(--brd);cursor:pointer;transition:transform .22s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.985)">
+<span style="width:9px;height:9px;border-radius:99px;background:{{ pontoHost }};border:1px solid {{ bordaPontoHost }};flex:none"></span>
+<div style="min-width:0">
+<div style="font-size:15.5px;font-weight:600;letter-spacing:-.02em;white-space:nowrap">PC-RAFAEL</div>
+<div style="font-size:12.5px;color:var(--txt3);white-space:nowrap">{{ subHost }}</div>
+</div>
+<span style="margin-left:auto;font-size:12.5px;font-weight:700;color:{{ corAcaoHost }};white-space:nowrap">{{ acaoHost }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:15px;border-radius:19px;background:var(--sur);border:1px solid var(--brd2);cursor:pointer">
+<span style="width:9px;height:9px;border-radius:99px;border:1px solid oklch(48% .008 265);flex:none"></span>
+<span style="font-size:15px;font-weight:500;color:var(--txt2);letter-spacing:-.02em">Notebook</span>
+<span style="margin-left:auto;font-size:12.5px;color:var(--txt3);white-space:nowrap">dormindo</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:15px;border-radius:19px;background:var(--sur);border:1px solid var(--brd2);cursor:pointer">
+<span style="width:9px;height:9px;border-radius:99px;border:1px solid oklch(42% .008 265);flex:none"></span>
+<span style="font-size:15px;font-weight:500;color:var(--txt3);letter-spacing:-.02em">Sala</span>
+<span style="margin-left:auto;font-size:12.5px;color:var(--txt3);white-space:nowrap">fora do ar</span>
+</div>
+</div>
+
+<div style="flex:1"></div>
+<div style="flex:none;padding:14px 18px 18px;display:flex;gap:9px">
+<div onClick="{{ irCenas }}" style="flex:1;min-height:52px;border-radius:19px;background:var(--sur);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--txt2);cursor:pointer">Cenas</div>
+<div onClick="{{ irAjustes }}" style="flex:1;min-height:52px;border-radius:19px;background:var(--sur);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--txt2);cursor:pointer">Ajustes</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehCatalogo }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:4;animation:entra .3s cubic-bezier(.2,.9,.3,1) both">
+<div style="flex:none;padding:4px 16px 0;display:flex;align-items:center">
+<div onClick="{{ voltar }}" style="min-height:44px;display:flex;align-items:center;gap:9px;padding:0 6px;cursor:pointer">
+<span style="font-size:17px;color:var(--txt2)">‹</span>
+<span style="font-size:13.5px;font-weight:600;color:var(--txt2)">Lugares</span>
+</div>
+</div>
+<div style="flex:none;padding:8px 22px 0">
+<div style="font-size:34px;font-weight:800;letter-spacing:-.04em;line-height:1.04">PC-RAFAEL</div>
+<div style="font-size:13px;color:var(--txt3);margin-top:4px">{{ subCatalogo }}</div>
+</div>
+<div style="flex:none;margin:12px 22px 0;display:flex;align-items:baseline;gap:8px">
+<span style="font-size:12.5px;color:var(--txt3);white-space:nowrap">6 aplicativos publicados pelo host</span>
+<span style="margin-left:auto;min-height:44px;display:flex;align-items:center;padding-left:14px;font-size:12.5px;font-weight:700;color:var(--acc,oklch(64% .17 250));white-space:nowrap;cursor:pointer">Recarregar</span>
+</div>
+
+<div style="flex:1;min-height:0;overflow-y:auto;padding:4px 18px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start">
+<div onClick="{{ tocarCapa.Desktop }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="position:relative;height:229px;border-radius:19px;border:1px solid oklch(64% .17 250 / .5);background:oklch(34% .03 258) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · Desktop</span>
+<span style="position:absolute;right:11px;top:11px;padding:4px 9px;border-radius:99px;background:oklch(100% 0 0 / .14);font-size:10px;font-weight:700;white-space:nowrap">aberto</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">Desktop</div>
+</div>
+<div onClick="{{ tocarCapa.Display }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="position:relative;height:229px;border-radius:19px;border:1px solid var(--brd);background:oklch(29% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · Remote Display</span>
+<span style="position:absolute;right:11px;top:11px;padding:4px 9px;border-radius:99px;background:oklch(100% 0 0 / .14);font-size:10px;font-weight:700;white-space:nowrap">tela</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">Remote Display</div>
+</div>
+<div onClick="{{ tocarCapa.Control }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="position:relative;height:229px;border-radius:19px;border:1px solid var(--brd);background:oklch(29% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · Remote Control</span>
+<span style="position:absolute;right:11px;top:11px;padding:4px 9px;border-radius:99px;background:oklch(100% 0 0 / .14);font-size:10px;font-weight:700;white-space:nowrap">entrada</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">Remote Control</div>
+</div>
+<div onClick="{{ tocarCapa.Steam }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="height:229px;border-radius:19px;border:1px solid var(--brd);background:oklch(29% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · Steam</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">Steam</div>
+</div>
+<div onClick="{{ tocarCapa.RetroArch }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="height:229px;border-radius:19px;border:1px solid var(--brd);background:oklch(29% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · RetroArch</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">RetroArch</div>
+</div>
+<div onClick="{{ tocarCapa.OBS }}" style="display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.965)">
+<div style="height:229px;border-radius:19px;border:1px solid var(--brd);background:oklch(29% .012 265) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;box-shadow:inset 0 -70px 60px -30px oklch(9% .008 265);display:flex;align-items:flex-end;padding:12px">
+<span style="font-size:10px;color:var(--txt3);font-weight:500;white-space:nowrap">capa · OBS</span>
+</div>
+<div style="font-size:15px;font-weight:600;letter-spacing:-.02em;padding-left:2px;white-space:nowrap">OBS</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehCenas }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:4;animation:entra .3s cubic-bezier(.2,.9,.3,1) both">
+<div style="flex:none;padding:4px 16px 0;display:flex;align-items:center">
+<div onClick="{{ voltar }}" style="min-height:44px;display:flex;align-items:center;gap:9px;padding:0 6px;cursor:pointer">
+<span style="font-size:17px;color:var(--txt2)">‹</span>
+<span style="font-size:13.5px;font-weight:600;color:var(--txt2)">Início</span>
+</div>
+</div>
+<div style="flex:none;padding:8px 22px 0">
+<div style="font-size:33px;font-weight:800;letter-spacing:-.04em;line-height:1.05">Cenas</div>
+<div style="font-size:13px;color:var(--txt3);margin-top:5px;line-height:1.5;max-width:32ch">Um toque troca papel, tela, taxa e entrada. A cena ativa aparece no topo da sessão.</div>
+</div>
+
+<div style="flex:1;padding:18px 18px 0;display:flex;flex-direction:column;gap:11px;align-content:start">
+<div onClick="{{ aplicarCena.Trabalho }}" style="padding:17px 18px;border-radius:23px;border:1px solid {{ bordaTrabalho }};background:{{ fundoTrabalho }};cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.98)">
+<div style="display:flex;align-items:baseline;gap:9px">
+<span style="font-size:19px;font-weight:700;letter-spacing:-.03em">Trabalho</span>
+<span style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:{{ corSelo }}">{{ seloTrabalho }}</span>
+</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:7px;line-height:1.5">Segunda tela do PC · 2960×1848 · 120 Hz · teclado acoplado</div>
+</div>
+
+<div onClick="{{ aplicarCena.Jogo }}" style="padding:17px 18px;border-radius:23px;border:1px solid {{ bordaJogo }};background:{{ fundoJogo }};cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.98)">
+<div style="display:flex;align-items:baseline;gap:9px">
+<span style="font-size:19px;font-weight:700;letter-spacing:-.03em">Jogo à noite</span>
+<span style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:{{ corSeloJogo }}">{{ seloJogo }}</span>
+</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:7px;line-height:1.5">Sessão principal · 60 Mbps · gamepad · brilho alto</div>
+</div>
+
+<div onClick="{{ aplicarCena.Entrada }}" style="padding:17px 18px;border-radius:23px;border:1px solid {{ bordaEntrada }};background:{{ fundoEntrada }};cursor:pointer;transition:transform .24s cubic-bezier(.22,1.2,.36,1)" style-active="transform:scale(.98)">
+<div style="display:flex;align-items:baseline;gap:9px">
+<span style="font-size:19px;font-weight:700;letter-spacing:-.03em">Só entrada</span>
+<span style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:{{ corSeloEntrada }}">{{ seloEntrada }}</span>
+</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:7px;line-height:1.5">Sem vídeo · teclado e trackpad do tablet no PC</div>
+</div>
+
+<div style="padding:15px 18px;border-radius:23px;border:1px dashed var(--brd);display:flex;align-items:center;gap:11px;min-height:52px;cursor:pointer">
+<span style="font-size:14px;font-weight:600;color:var(--txt3)">Salvar a sessão atual como cena</span>
+</div>
+</div>
+
+<div style="flex:none;padding:14px 18px 18px">
+<div onClick="{{ abrirCenaAtiva }}" style="min-height:54px;border-radius:19px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;letter-spacing:-.02em;cursor:pointer">Abrir {{ cenaAtiva }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehPareamento }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:4;animation:entra .3s cubic-bezier(.2,.9,.3,1) both">
+<div style="flex:none;padding:4px 16px 0;display:flex;align-items:center">
+<div onClick="{{ voltar }}" style="min-height:44px;display:flex;align-items:center;gap:9px;padding:0 6px;cursor:pointer">
+<span style="font-size:17px;color:var(--txt2)">‹</span>
+<span style="font-size:13.5px;font-weight:600;color:var(--txt2)">Início</span>
+</div>
+</div>
+
+<sc-if value="{{ parBusca }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:8px 22px 0">
+<div style="font-size:31px;font-weight:800;letter-spacing:-.038em;line-height:1.06">Adicionar um PC</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.5;max-width:32ch">O app escuta a rede sozinho. Deixe o Vibeshine aberto no PC — ele se anuncia.</div>
+
+<div style="margin-top:22px;display:flex;align-items:center;gap:10px">
+<span style="width:9px;height:9px;border-radius:99px;background:var(--acc,oklch(64% .17 250));animation:respira 1.8s ease-in-out infinite"></span>
+<span style="font-size:12.5px;font-weight:600;color:var(--txt3)">Encontrados na rede</span>
+</div>
+
+<div onClick="{{ escolherEncontrado }}" style="margin-top:12px;padding:16px 17px;border-radius:21px;background:var(--sur2);border:1px solid var(--brd);display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer">
+<div style="min-width:0">
+<div style="font-size:16px;font-weight:700;letter-spacing:-.02em;white-space:nowrap">PC-RAFAEL</div>
+<div style="font-size:12.5px;color:var(--txt3);white-space:nowrap">192.168.0.14 · Vibeshine 1.19</div>
+</div>
+<span style="margin-left:auto;font-size:13px;font-weight:700;color:var(--acc,oklch(64% .17 250));white-space:nowrap">Parear</span>
+</div>
+
+<div style="margin-top:9px;padding:16px 17px;border-radius:21px;background:var(--sur);border:1px solid var(--brd2);display:flex;align-items:center;gap:12px;opacity:.75">
+<div style="min-width:0">
+<div style="font-size:15.5px;font-weight:600;letter-spacing:-.02em;color:var(--txt2);white-space:nowrap">Notebook</div>
+<div style="font-size:12.5px;color:var(--txt3);white-space:nowrap">192.168.0.31 · já pareado</div>
+</div>
+</div>
+
+<div style="flex:1"></div>
+<div onClick="{{ irManual }}" style="margin-bottom:22px;min-height:52px;border-radius:19px;background:oklch(100% 0 0 / .08);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer">Não apareceu — inserir endereço</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ parManual }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:8px 22px 0">
+<div style="font-size:31px;font-weight:800;letter-spacing:-.038em;line-height:1.06">Endereço do PC</div>
+<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.5;max-width:32ch">IP ou nome na rede. A porta padrão é 47989 — só mude se você trocou no host.</div>
+
+<div style="margin-top:22px;padding:16px 18px;border-radius:20px;background:oklch(100% 0 0 / .07);border:1px solid var(--acc,oklch(64% .17 250));display:flex;align-items:center">
+<span style="font-size:19px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums">192.168.0.14</span>
+<span style="width:2px;height:24px;margin-left:3px;background:var(--acc,oklch(64% .17 250));animation:respira 1.2s steps(1) infinite"></span>
+</div>
+<div style="margin-top:10px;padding:15px 18px;border-radius:20px;background:oklch(100% 0 0 / .05);border:1px solid var(--brd2);display:flex;align-items:center;gap:10px">
+<span style="font-size:12.5px;color:var(--txt3)">Porta</span>
+<span style="margin-left:auto;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--txt2)">47989</span>
+</div>
+
+<div style="flex:1"></div>
+<div onClick="{{ pedirPin }}" style="min-height:54px;border-radius:19px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;letter-spacing:-.02em;cursor:pointer">Conectar</div>
+<div onClick="{{ irBusca }}" style="margin:8px 0 18px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:600;color:var(--txt3);cursor:pointer">Voltar à busca</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ parPin }}">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:0;padding:0 24px 30px;text-align:center">
+<div style="font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--txt3)">Digite no PC</div>
+<div style="display:flex;gap:10px;margin-top:18px">
+<span style="width:60px;height:78px;border-radius:18px;background:oklch(100% 0 0 / .07);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">4</span>
+<span style="width:60px;height:78px;border-radius:18px;background:oklch(100% 0 0 / .07);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">7</span>
+<span style="width:60px;height:78px;border-radius:18px;background:oklch(100% 0 0 / .07);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">1</span>
+<span style="width:60px;height:78px;border-radius:18px;background:oklch(100% 0 0 / .07);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">2</span>
+</div>
+<div style="font-size:15px;color:var(--txt2);margin-top:22px;line-height:1.55;max-width:29ch">O Vibeshine vai pedir este código na tela do PC. Quando você confirmar lá, este aparelho entra sozinho.</div>
+<div style="display:flex;align-items:center;gap:10px;margin-top:26px">
+<span style="width:9px;height:9px;border-radius:99px;background:var(--acc,oklch(64% .17 250));animation:pulsa 2s ease-in-out infinite"></span>
+<span style="font-size:13px;font-weight:600;color:var(--txt3)">Esperando o PC confirmar…</span>
+</div>
+<div onClick="{{ irBusca }}" style="margin-top:26px;min-height:48px;display:flex;align-items:center;padding:0 22px;font-size:13.5px;font-weight:600;color:var(--txt3);cursor:pointer">Cancelar</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ parPronto }}">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:0;padding:0 24px 30px;text-align:center">
+<div style="width:96px;height:96px;border-radius:32px;border:1px solid var(--acc,oklch(64% .17 250));background:oklch(100% 0 0 / .05);display:flex;align-items:center;justify-content:center">
+<span style="width:16px;height:16px;border-radius:99px;background:var(--acc,oklch(64% .17 250))"></span>
+</div>
+<div style="font-size:28px;font-weight:800;letter-spacing:-.035em;margin-top:26px;line-height:1.14">PC-RAFAEL está pareado</div>
+<div style="font-size:14px;color:var(--txt2);margin-top:11px;line-height:1.55;max-width:31ch">Ele já aparece em Seus lugares e abre direto da próxima vez.</div>
+</div>
+<div style="flex:none;padding:0 18px 22px">
+<div onClick="{{ verAplicativos }}" style="min-height:54px;border-radius:19px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;letter-spacing:-.02em;cursor:pointer">Ver os aplicativos</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehAjustes }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:4;animation:entra .3s cubic-bezier(.2,.9,.3,1) both">
+<div style="flex:none;padding:4px 16px 0;display:flex;align-items:center">
+<div onClick="{{ voltar }}" style="min-height:44px;display:flex;align-items:center;gap:9px;padding:0 6px;cursor:pointer">
+<span style="font-size:17px;color:var(--txt2)">‹</span>
+<span style="font-size:13.5px;font-weight:600;color:var(--txt2)">Início</span>
+</div>
+</div>
+<div style="flex:none;padding:8px 22px 0">
+<div style="font-size:33px;font-weight:800;letter-spacing:-.04em;line-height:1.05">Ajustes</div>
+<div style="font-size:13px;color:var(--txt3);margin-top:5px;line-height:1.5;max-width:32ch">Valem para toda sessão nova. A cena pode sobrescrever cada um deles.</div>
+</div>
+
+<div style="height:640px;flex:none;overflow-y:auto;padding:14px 18px 16px;display:flex;flex-direction:column;gap:12px">
+<div>
+<div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding:0 4px 8px">Vídeo</div>
+<div style="border-radius:21px;background:var(--sur);border:1px solid var(--brd);overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Resolução</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">2340×1080</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Taxa de quadros</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">120 FPS</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Taxa de bits</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">40 Mbps</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Decodificador</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">HEVC automático</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:none;cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Ritmo de quadros</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">Equilibrado</span></div>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding:0 4px 8px">Entrada</div>
+<div style="border-radius:21px;background:var(--sur);border:1px solid var(--brd);overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Modo do mouse</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">Multitoque</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Vibração</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">Ligada</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:none;cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Teclado físico</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">ABNT2</span></div>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding:0 4px 8px">Sessão</div>
+<div style="border-radius:21px;background:var(--sur);border:1px solid var(--brd);overflow:hidden">
+<div onClick="{{ alternarPaisagem }}" style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer">
+<div>
+<div style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Girar ao entrar</div>
+<div style="font-size:12px;color:var(--txt3);margin-top:2px">a sessão abre em paisagem</div>
+</div>
+<span style="margin-left:auto;width:44px;height:26px;border-radius:99px;background:{{ fundoChave }};border:1px solid var(--brd);display:flex;align-items:center;padding:0 3px;justify-content:{{ ladoChave }}"><i style="width:18px;height:18px;border-radius:99px;background:{{ bolaChave }};display:block"></i></span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:1px solid var(--brd2);cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Overlay de desempenho</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">Só em Detalhes</span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:0 16px;min-height:52px;border-bottom:none;cursor:pointer"><span style="font-size:14.5px;font-weight:600;letter-spacing:-.015em">Endereço remoto</span><span style="margin-left:auto;font-size:13px;color:var(--txt3);white-space:nowrap;font-variant-numeric:tabular-nums">Automático</span></div>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehProcurando }}">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 34px;text-align:center;position:relative;z-index:4">
+<div style="width:74px;height:74px;border-radius:99px;border:1px solid var(--brd);background:oklch(100% 0 0 / .06);display:flex;align-items:center;justify-content:center">
+<span style="width:12px;height:12px;border-radius:99px;background:var(--acc,oklch(64% .17 250));animation:respira 2s ease-in-out infinite"></span>
+</div>
+<div style="font-size:25px;font-weight:800;letter-spacing:-.035em;margin-top:26px;line-height:1.15">Procurando na sua rede</div>
+<div style="font-size:14px;color:var(--txt2);margin-top:9px;line-height:1.5;max-width:30ch">Nenhum PC respondeu ainda. Deixe o app aberto — ele continua ouvindo.</div>
+<div style="margin-top:30px;display:flex;flex-direction:column;gap:10px;width:100%">
+<div onClick="{{ irPareamento }}" style="min-height:52px;border-radius:19px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer">Adicionar um PC pelo endereço</div>
+<div onClick="{{ cen.pcAceso }}" style="min-height:52px;border-radius:19px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--txt3);cursor:pointer">Procurar de novo</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ temGhost }}">
+<div style="position:absolute;z-index:7;left:{{ gL }}px;top:{{ gT }}px;width:{{ gW }}px;height:{{ gH }}px;border-radius:{{ gR }}px;opacity:{{ gO }};background:oklch(32% .02 258) url(assets/no_app_image.png) center/cover;background-blend-mode:multiply;border:1px solid oklch(64% .17 250 / .35);transition:left .62s cubic-bezier(.3,.9,.25,1),top .62s cubic-bezier(.3,.9,.25,1),width .62s cubic-bezier(.3,.9,.25,1),height .62s cubic-bezier(.3,.9,.25,1),border-radius .62s ease,opacity .4s ease .34s;pointer-events:none;display:flex;align-items:flex-end;padding:14px">
+<span style="font-size:11px;color:oklch(72% .01 265);font-weight:600;white-space:nowrap">{{ passoTexto }}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ temGhost }}">
+<div style="position:absolute;left:0;right:0;bottom:74px;z-index:21;display:flex;flex-direction:column;align-items:center;gap:14px;pointer-events:none">
+<div style="font-size:24px;font-weight:800;letter-spacing:-.035em;white-space:nowrap">{{ appAtual }}</div>
+<div style="width:214px;height:3px;border-radius:99px;background:oklch(100% 0 0 / .14);overflow:hidden">
+<i style="display:block;height:100%;width:{{ progresso }};border-radius:99px;background:var(--acc,oklch(64% .17 250));transition:width .8s cubic-bezier(.3,.6,.2,1)"></i>
+</div>
+<div style="font-size:13px;color:var(--txt2);font-weight:600;white-space:nowrap">{{ passoTexto }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ehTomada }}">
+<div style="position:absolute;inset:0;z-index:22;background:oklch(9.5% .008 265 / .82);display:flex;flex-direction:column;justify-content:flex-end;animation:entra .28s ease both">
+<div style="margin:0 12px 12px;padding:22px 20px 18px;border-radius:28px;background:oklch(16% .010 265);border:1px solid var(--brd)">
+<div style="font-size:23px;font-weight:800;letter-spacing:-.032em;line-height:1.16">Outro aparelho está usando este PC</div>
+<div style="font-size:13.5px;color:var(--txt2);margin-top:10px;line-height:1.55">A sessão de <b style="color:var(--txt)">Steam</b> foi aberta pelo celular da sala há 40 minutos. Só uma sessão por vez.</div>
+<div style="margin-top:20px;display:flex;flex-direction:column;gap:9px">
+<div onClick="{{ assumirSessao }}" style="min-height:52px;border-radius:19px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;cursor:pointer">Assumir a sessão</div>
+<div onClick="{{ entrarComoTela }}" style="min-height:52px;border-radius:19px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer">Entrar só como tela</div>
+<div onClick="{{ fecharTomada }}" style="min-height:48px;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:600;color:var(--txt3);cursor:pointer">Voltar</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ ehSessao }}">
+<div style="width:852px;height:393px;position:relative;overflow:hidden;display:flex;flex-direction:column;border-radius:26px;color:var(--txt);border:1px solid var(--brd);background:var(--void);box-shadow:0 24px 70px oklch(6% .02 265/.7)">
+<div style="position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(115deg,oklch(15% .014 265) 0 10px,oklch(12.5% .012 265) 10px 20px)"></div>
+<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2;mix-blend-mode:screen"><div style="position:absolute;left:50%;top:104%;width:{{ luzTam }};aspect-ratio:1;transform:translate(-50%,-50%);border-radius:99px;background:radial-gradient(circle,{{ luzCor }} 0%,transparent 66%);opacity:{{ luzForca }};transition:opacity .8s ease,width .8s cubic-bezier(.2,.8,.3,1)"></div></div>
+<div style="position:absolute;left:0;right:0;top:44%;z-index:3;text-align:center;font-size:11px;letter-spacing:.06em;color:oklch(48% .010 265);font-weight:500">vídeo do PC · 2340×1080 · paisagem</div>
+
+<div style="flex:1"></div>
+
+<sc-if value="{{ ilhaPilula }}">
+<div onClick="{{ abrirIlha }}" style="position:relative;z-index:6;margin:0 auto 14px;padding:0 18px;min-height:44px;border-radius:99px;border:1px solid var(--brd);background:oklch(100% 0 0 / .09);backdrop-filter:blur(14px);display:flex;align-items:center;gap:10px;cursor:pointer;animation:entra .3s cubic-bezier(.2,.9,.3,1.05) both">
+<span style="width:7px;height:7px;border-radius:99px;background:{{ corQualidade }}"></span>
+<span style="font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap">controles</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ ilhaAberta }}">
+<div style="position:relative;z-index:6;margin:0 14px 14px;padding:12px 14px;border-radius:24px;border:1px solid var(--brd);background:oklch(100% 0 0 / .09);backdrop-filter:blur(16px);display:flex;align-items:center;gap:10px;animation:entra .3s cubic-bezier(.2,.9,.3,1.05) both">
+<div style="min-width:0;padding-right:4px">
+<div style="font-size:16px;font-weight:700;letter-spacing:-.025em;white-space:nowrap">{{ appAtual }}</div>
+<div style="font-size:11.5px;color:var(--txt2);white-space:nowrap">Cena {{ cenaAtiva }} · {{ frasePlaca }}</div>
+</div>
+<div onClick="{{ alternarTeclado }}" style="min-height:52px;padding:0 16px;border-radius:17px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;flex-direction:column;justify-content:center;cursor:pointer">
+<span style="font-size:13px;font-weight:600;letter-spacing:-.02em;white-space:nowrap">Teclado</span>
+<span style="font-size:11px;color:var(--txt3);white-space:nowrap">{{ estadoTeclado }}</span>
+</div>
+<div onClick="{{ alternarMouse }}" style="min-height:52px;padding:0 16px;border-radius:17px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;flex-direction:column;justify-content:center;cursor:pointer">
+<span style="font-size:13px;font-weight:600;letter-spacing:-.02em;white-space:nowrap">Mouse</span>
+<span style="font-size:11px;color:var(--txt3);white-space:nowrap">{{ estadoMouse }}</span>
+</div>
+<div onClick="{{ alternarZoom }}" style="min-height:52px;padding:0 16px;border-radius:17px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;flex-direction:column;justify-content:center;cursor:pointer">
+<span style="font-size:13px;font-weight:600;letter-spacing:-.02em;white-space:nowrap">Zoom</span>
+<span style="font-size:11px;color:var(--txt3);white-space:nowrap">{{ estadoZoom }}</span>
+</div>
+<div onClick="{{ abrirFolha }}" style="min-height:52px;padding:0 16px;border-radius:17px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);display:flex;flex-direction:column;justify-content:center;cursor:pointer">
+<span style="font-size:13px;font-weight:600;letter-spacing:-.02em;white-space:nowrap">Ajustes</span>
+<span style="font-size:11px;color:var(--txt3);white-space:nowrap">sem sair</span>
+</div>
+<div onClick="{{ alternarDetalhes }}" style="min-height:52px;display:flex;align-items:center;padding:0 16px;border-radius:17px;background:oklch(100% 0 0 / .09);border:1px solid var(--brd);font-size:12.5px;font-weight:700;white-space:nowrap;cursor:pointer">Detalhes</div>
+<div onClick="{{ sairSessao }}" style="margin-left:auto;min-height:52px;padding:0 22px;border-radius:17px;background:var(--acc,oklch(64% .17 250));color:oklch(15% .04 265);display:flex;align-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;cursor:pointer">Sair</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ folhaSessao }}">
+<div onClick="{{ fecharFolha }}" style="position:absolute;inset:0;z-index:7;background:oklch(8% .01 265 / .5);cursor:pointer"></div>
+<div style="position:absolute;right:0;top:0;bottom:0;width:352px;box-sizing:border-box;overflow-y:auto;z-index:8;padding:15px 18px;background:oklch(14% .012 265 / .82);backdrop-filter:blur(22px);border-left:1px solid var(--brd);display:flex;flex-direction:column;gap:10px;animation:entra .28s cubic-bezier(.2,.9,.3,1) both">
+<div style="display:flex;align-items:baseline;gap:9px">
+<span style="font-size:18px;font-weight:800;letter-spacing:-.03em">Ajustes desta sessão</span>
+<span onClick="{{ fecharFolha }}" style="margin-left:auto;font-size:12.5px;font-weight:700;color:var(--txt3);cursor:pointer;padding:6px">Fechar</span>
+</div>
+<div style="font-size:11.5px;color:var(--txt3);line-height:1.45;margin-top:-6px">Valem agora, sem cortar o vídeo. O resto fica em Ajustes.</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding-bottom:7px">Taxa de bits</div>
+<div style="display:flex;gap:7px">
+<div onClick="{{ porBits20 }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ c20 }};background:{{ f20 }};color:{{ t20 }}">20 Mbps</div>
+<div onClick="{{ porBits40 }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ c40 }};background:{{ f40 }};color:{{ t40 }}">40 Mbps</div>
+<div onClick="{{ porBits60 }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ c60 }};background:{{ f60 }};color:{{ t60 }}">60 Mbps</div>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding-bottom:7px">Ritmo de quadros</div>
+<div style="display:flex;gap:7px">
+<div onClick="{{ porRitmoSuave }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ cSuave }};background:{{ fSuave }};color:{{ tSuave }}">Suave</div>
+<div onClick="{{ porRitmoEquil }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ cEquil }};background:{{ fEquil }};color:{{ tEquil }}">Equilibrado</div>
+<div onClick="{{ porRitmoMin }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ cMin }};background:{{ fMin }};color:{{ tMin }}">Menor atraso</div>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--txt3);padding-bottom:7px">Modo do mouse</div>
+<div style="display:flex;gap:7px">
+<div onClick="{{ porMouseMulti }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ cMulti }};background:{{ fMulti }};color:{{ tMulti }}">Multitoque</div>
+<div onClick="{{ porMouseTrack }}" style="flex:1;min-height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;border:1px solid {{ cTrack }};background:{{ fTrack }};color:{{ tTrack }}">Trackpad</div>
+</div>
+</div>
+
+<div onClick="{{ alternarDetalhes }}" style="margin-top:auto;padding:10px 15px;border-radius:18px;background:oklch(100% 0 0 / .06);border:1px solid var(--brd);display:flex;align-items:center;gap:12px;min-height:52px;cursor:pointer">
+<div>
+<div style="font-size:14px;font-weight:600;letter-spacing:-.015em">Números na tela</div>
+<div style="font-size:11.5px;color:var(--txt3);margin-top:2px">latência, quadros, decodificação</div>
+</div>
+<span style="margin-left:auto;width:44px;height:26px;border-radius:99px;background:{{ fundoNum }};border:1px solid var(--brd);display:flex;align-items:center;padding:0 3px;justify-content:{{ ladoNum }}"><i style="width:18px;height:18px;border-radius:99px;background:{{ bolaNum }};display:block"></i></span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ verDetalhes }}">
+<div style="position:absolute;right:14px;top:14px;z-index:6;padding:12px 14px;border-radius:18px;background:oklch(100% 0 0 / .08);border:1px solid var(--brd2);backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:var(--txt2);min-width:196px">
+<div style="display:flex;justify-content:space-between;gap:12px"><span>Latência</span><span style="color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums">{{ msTexto }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span>Quadros</span><span style="color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums">{{ fpsTexto }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span>Decodificação</span><span style="color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums">2,41 ms</span></div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+</div>
+
+<p style="margin:22px 0 0;font-size:12px;line-height:1.6;color:oklch(66% .010 265)">Próximos passos: “a luz de <a href="#7a">7a</a> reagindo em tempo real à latência” · “o tablet herdando a mesma luz” · “tokens em styles.xml e mapa de estados”</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;acento&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Azul 250&quot;,&quot;Violeta 288&quot;,&quot;Verde 175&quot;],&quot;default&quot;:&quot;Azul 250&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Luz&quot;}}">
+const ACC = {
+  "Azul 250":    "oklch(64% .17 250)",
+  "Violeta 288": "oklch(64% .17 288)",
+  "Verde 175":   "oklch(70% .14 175)"
+};
+const PASSOS = ["Falando com PC-RAFAEL", "Reservando a tela no PC", "Chegando o vídeo"];
+const NOMES = { home: "início", catalogo: "catálogo", cenas: "cenas", pareamento: "pareamento",
+                procurando: "procurando", sessao: "em sessão" };
+const CENAS = { Trabalho: "Trabalho", Jogo: "Jogo à noite", Entrada: "Só entrada" };
+const pill = (ativo) => "min-height:34px;display:flex;align-items:center;padding:0 12px;border-radius:99px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;border:1px solid " +
+  (ativo ? "oklch(64% .17 250 / .6);background:oklch(30% .06 258);color:oklch(92% .02 265)"
+         : "oklch(100% 0 0 / .09);background:oklch(19% .008 265);color:oklch(70% .010 265)");
+
+class Component extends DCLogic {
+  state = {
+    tela: "home", pc: "aceso", rede: "otima", palpite: "certo", pareado: true,
+    app: "Desktop", cena: "Trabalho", passo: 0, detalhes: false, ilha: "aberta",
+    tomada: false, par: "busca", paisagem: true, folha: false, bits: 40, ritmo: "equil", ghost: null, ghostAberto: false,
+    teclado: "na tela", mouse: "multitoque", zoom: "desligado"
+  };
+
+  pilha = [];
+  marca(nome, ativo, acc) {
+    return {
+      ["c" + nome]: ativo ? acc : "oklch(100% 0 0 / .12)",
+      ["f" + nome]: ativo ? "oklch(64% .17 250 / .16)" : "oklch(100% 0 0 / .05)",
+      ["t" + nome]: ativo ? acc : "oklch(72% .010 265)"
+    };
+  }
+  recolher() {
+    this.timers = [setTimeout(() => this.setState({ ilha: "pilula" }), 6200)];
+  }
+  pedirPin() {
+    this.limpar();
+    this.setState({ par: "pin" });
+    this.timers = [setTimeout(() => this.setState({ par: "pronto", pareado: true }), 3400)];
+  }
+  limpar() { (this.timers || []).forEach(clearTimeout); this.timers = []; }
+  componentWillUnmount() { this.limpar(); }
+
+  ir(tela, extra) {
+    if (tela !== this.state.tela) this.pilha.push(this.state.tela);
+    this.limpar();
+    this.setState(Object.assign({ tela: tela }, extra || {}));
+  }
+  voltar() {
+    const anterior = this.pilha.pop() || "home";
+    this.limpar();
+    this.setState({ tela: anterior, ghost: null, tomada: false });
+  }
+
+  conectar(app, ev) {
+    if (this.state.pc !== "aceso") { this.setState({ tela: "home" }); return; }
+    let g = { l: 130, t: 330, w: 132, h: 122, r: 19 };
+    const alvo = ev && ev.currentTarget;
+    const raiz = alvo && alvo.closest("div[style*='852px']");
+    if (alvo && raiz) {
+      const a = alvo.getBoundingClientRect(), b = raiz.getBoundingClientRect();
+      const s = b.height / 852;
+      g = { l: (a.left - b.left) / s, t: (a.top - b.top) / s, w: a.width / s, h: (a.height - 24) / s, r: 19 };
+    }
+    this.pilha.push(this.state.tela);
+    this.limpar();
+    this.setState({ tela: "conectando", app: app, passo: 0, ghost: g, ghostAberto: false, ilha: "aberta", detalhes: false });
+    requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ ghostAberto: true })));
+    this.timers = [
+      setTimeout(() => this.setState({ passo: 1 }), 800),
+      setTimeout(() => this.setState({ passo: 2 }), 1600),
+      setTimeout(() => this.setState({ tela: "sessao", ghost: null }), 2500),
+      setTimeout(() => this.setState({ ilha: "pilula" }), 6200)
+    ];
+  }
+
+  sair() {
+    this.limpar();
+    this.setState({ tela: "home", ghost: null, ilha: "aberta" });
+    this.pilha = [];
+  }
+
+  ciclo(chave, valores) {
+    const i = valores.indexOf(this.state[chave]);
+    this.setState({ [chave]: valores[(i + 1) % valores.length] });
+  }
+
+  cenario(campo, valor) {
+    const extra = { [campo]: valor };
+    if (campo === "pc") {
+      extra.tela = valor === "nenhum" ? "procurando" : "home";
+      extra.ghost = null;
+    }
+    if (campo === "pareado") { extra.tela = valor ? "home" : "pareamento"; extra.par = "busca"; }
+    this.limpar();
+    this.setState(extra);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const acc = ACC[this.props.acento] || ACC["Azul 250"];
+    const aceso = s.pc === "aceso", dormindo = s.pc === "dormindo", semPc = s.pc === "nenhum";
+    const emSessao = s.tela === "sessao";
+    const qual = { otima: 1, instavel: .62, ruim: .34 }[s.rede];
+
+    // A luz: uma só. Fonte = o PC (topo) ou o vídeo (centro, em sessão).
+    // Intensidade = estado do host · raio = qualidade da rede · tom = sempre o acento.
+    const forca = semPc ? 0.07 : dormindo ? 0.20 : emSessao ? 0.30 + 0.26 * qual : 0.42 + 0.30 * qual;
+    const tam = Math.round((emSessao ? 760 : 560) * (0.6 + 0.4 * (semPc ? 0.4 : qual)));
+    const g = s.ghost || { l: 0, t: 0, w: 0, h: 0, r: 19 };
+    const aberto = s.ghostAberto;
+    const cenaNome = CENAS[s.cena];
+    const selo = (k) => (s.cena === k ? "cena ativa" : "");
+    const borda = (k) => (s.cena === k ? "oklch(64% .17 250 / .55)" : "oklch(100% 0 0 / .10)");
+    const fundo = (k) => (s.cena === k ? "oklch(20% .035 258)" : "oklch(100% 0 0 / .05)");
+
+    return {
+      accVar: acc,
+      medidaQuadro: emSessao ? "Celular deitado · 852×393" : "Celular · 393×852",
+      nomeTela: NOMES[s.tela] || s.tela,
+      nomeLuz: semPc ? "apagada" : dormindo ? "em brasa" : s.rede === "otima" ? "cheia" : s.rede === "instavel" ? "contraída" : "mínima",
+      luzCor: acc.replace(")", " / .46)"),
+      luzForca: String(forca),
+      luzTam: tam + "px",
+      luzTopo: emSessao ? "62%" : "-2%",
+      statusRede: semPc ? "Sem PC · 84%" : s.rede === "otima" ? "Wi-Fi · 84%" : s.rede === "instavel" ? "Wi-Fi fraco · 84%" : "Rede ruim · 84%",
+
+      ehHome: s.tela === "home", ehCatalogo: s.tela === "catalogo", ehCenas: s.tela === "cenas",
+      ehPareamento: s.tela === "pareamento", ehProcurando: s.tela === "procurando",
+      ehSessao: emSessao, ehTomada: s.tomada,
+      temGhost: s.tela === "conectando" && !!s.ghost,
+      temHost: aceso,
+      mostraDormindo: dormindo,
+      progresso: (s.passo === 0 ? 18 : s.passo === 1 ? 62 : 100) + "%",
+
+      tituloHome: aceso ? "O PC está acordado" : dormindo ? "O PC está dormindo" : "Nenhum PC por perto",
+      subDesktop: s.rede === "ruim" ? "PC-RAFAEL · rede ruim agora" : "PC-RAFAEL · aberto agora",
+      subHost: aceso ? "3 telas · pronto" : dormindo ? "responde ao toque em alguns segundos" : "sem resposta",
+      acaoHost: aceso ? "Abrir" : dormindo ? "Acordar" : "",
+      corAcaoHost: aceso ? "var(--txt3)" : acc,
+      fundoHost: aceso ? "oklch(100% 0 0 / .11)" : "oklch(100% 0 0 / .06)",
+      pontoHost: aceso ? acc : "transparent",
+      bordaPontoHost: aceso ? acc : "oklch(52% .008 265)",
+
+      mostraPalpite: aceso && s.palpite === "certo" || aceso && s.palpite === "errado",
+      palpiteMudo: s.palpite === "mudo",
+      rotuloPalpite: s.palpite === "errado" ? "Não era isso?" : "Provável agora",
+      tituloPalpite: s.palpite === "errado" ? "Abrir o catálogo" : "Retomar Desktop",
+      subPalpite: s.palpite === "errado"
+        ? "Você recusou esta sugestão duas vezes esta semana — vou parar de oferecer por aqui."
+        : "Você faz isso quase toda noite por volta desta hora, no PC-RAFAEL.",
+      acaoPalpite: s.palpite === "errado" ? "Ver tudo" : "Retomar",
+
+      subCatalogo: aceso ? "Desktop aberto · três telas prontas" : "host indisponível",
+      cenaAtiva: cenaNome,
+      seloTrabalho: selo("Trabalho"), seloJogo: selo("Jogo"), seloEntrada: selo("Entrada"),
+      corSelo: acc, corSeloJogo: acc, corSeloEntrada: acc,
+      bordaTrabalho: borda("Trabalho"), bordaJogo: borda("Jogo"), bordaEntrada: borda("Entrada"),
+      fundoTrabalho: fundo("Trabalho"), fundoJogo: fundo("Jogo"), fundoEntrada: fundo("Entrada"),
+
+      folhaSessao: s.folha,
+      abrirFolha: () => { this.limpar(); this.setState({ folha: true, ilha: "aberta" }); },
+      fecharFolha: () => { this.setState({ folha: false }); this.recolher(); },
+      porBits20: () => this.setState({ bits: 20 }), porBits40: () => this.setState({ bits: 40 }), porBits60: () => this.setState({ bits: 60 }),
+      porRitmoSuave: () => this.setState({ ritmo: "suave" }), porRitmoEquil: () => this.setState({ ritmo: "equil" }), porRitmoMin: () => this.setState({ ritmo: "min" }),
+      porMouseMulti: () => this.setState({ mouse: "multitoque" }), porMouseTrack: () => this.setState({ mouse: "trackpad" }),
+      ...this.marca("20", s.bits === 20, acc), ...this.marca("40", s.bits === 40, acc), ...this.marca("60", s.bits === 60, acc),
+      ...this.marca("Suave", s.ritmo === "suave", acc), ...this.marca("Equil", s.ritmo === "equil", acc), ...this.marca("Min", s.ritmo === "min", acc),
+      ...this.marca("Multi", s.mouse === "multitoque", acc), ...this.marca("Track", s.mouse === "trackpad", acc),
+      fundoNum: s.detalhes ? acc : "oklch(100% 0 0 / .10)",
+      ladoNum: s.detalhes ? "flex-end" : "flex-start",
+      bolaNum: s.detalhes ? "oklch(15% .04 265)" : "oklch(70% .01 265)",
+      parBusca: s.par === "busca", parManual: s.par === "manual", parPin: s.par === "pin", parPronto: s.par === "pronto",
+      naoEhSessao: !emSessao,
+      ehAjustes: s.tela === "ajustes",
+      fundoChave: s.paisagem ? acc : "oklch(100% 0 0 / .10)",
+      ladoChave: s.paisagem ? "flex-end" : "flex-start",
+      bolaChave: s.paisagem ? "oklch(15% .04 265)" : "oklch(70% .01 265)",
+
+      appAtual: s.app,
+      frasePlaca: s.rede === "otima" ? "tudo fluindo bem" : s.rede === "instavel" ? "oscilando um pouco" : "a rede está apertada",
+      corQualidade: s.rede === "ruim" ? "oklch(58% .03 265)" : acc,
+      msTexto: s.rede === "otima" ? "18 ms · variação 4 ms" : s.rede === "instavel" ? "34 ms · variação 12 ms" : "68 ms · variação 26 ms",
+      fpsTexto: s.rede === "otima" ? "119,94 FPS" : s.rede === "instavel" ? "104,20 FPS" : "71,60 FPS",
+      passoTexto: PASSOS[s.passo],
+      verDetalhes: s.detalhes,
+      ilhaAberta: s.ilha === "aberta", ilhaPilula: s.ilha === "pilula",
+      estadoTeclado: s.teclado, estadoMouse: s.mouse, estadoZoom: s.zoom,
+
+      gL: aberto ? 0 : Math.round(g.l), gT: aberto ? 0 : Math.round(g.t),
+      gW: aberto ? 391 : Math.round(g.w), gH: aberto ? 850 : Math.round(g.h),
+      gR: aberto ? 29 : g.r, gO: aberto && s.passo === 2 ? 0.45 : 1,
+
+      estPcAceso: pill(aceso), estPcDormindo: pill(dormindo), estPcNenhum: pill(semPc),
+      estRedeOtima: pill(s.rede === "otima"), estRedeInstavel: pill(s.rede === "instavel"), estRedeRuim: pill(s.rede === "ruim"),
+      estPalpiteCerto: pill(s.palpite === "certo"), estPalpiteErrado: pill(s.palpite === "errado"), estPalpiteMudo: pill(s.palpite === "mudo"),
+      estPareado: pill(s.pareado), estNaoPareado: pill(!s.pareado), estNeutro: pill(false),
+
+      cen: {
+        pcAceso: () => this.cenario("pc", "aceso"),
+        pcDormindo: () => this.cenario("pc", "dormindo"),
+        pcNenhum: () => this.cenario("pc", "nenhum"),
+        redeOtima: () => this.setState({ rede: "otima" }),
+        redeInstavel: () => this.setState({ rede: "instavel" }),
+        redeRuim: () => this.setState({ rede: "ruim" }),
+        palpiteCerto: () => this.setState({ palpite: "certo" }),
+        palpiteErrado: () => this.setState({ palpite: "errado" }),
+        palpiteMudo: () => this.setState({ palpite: "mudo" }),
+        pareado: () => this.cenario("pareado", true),
+        naoPareado: () => this.cenario("pareado", false)
+      },
+
+      irCatalogo: () => this.ir("catalogo"),
+      irCenas: () => this.ir("cenas"),
+      irSessao: () => { this.ir("sessao", { ilha: "aberta", folha: false }); this.recolher(); },
+      irPareamento: () => this.ir("pareamento", { par: "busca" }),
+      voltar: () => this.voltar(),
+      tocarHost: () => (aceso ? this.ir("catalogo") : this.setState({ pc: "aceso" })),
+      acordarPc: () => this.setState({ pc: "aceso" }),
+      abrirDesktop: (e) => this.conectar("Desktop", e),
+      abrirPalpite: (e) => (s.palpite === "errado" ? this.ir("catalogo") : this.conectar("Desktop", e)),
+      adiarPalpite: () => this.setState({ palpite: "errado" }),
+      silenciarPalpite: () => this.setState({ palpite: "mudo" }),
+      religarPalpite: () => this.setState({ palpite: "certo" }),
+      abrirCenaAtiva: (e) => this.conectar(s.cena === "Entrada" ? "Remote Control" : s.cena === "Jogo" ? "Steam" : "Remote Display", e),
+      aplicarCena: {
+        Trabalho: () => this.setState({ cena: "Trabalho" }),
+        Jogo: () => this.setState({ cena: "Jogo" }),
+        Entrada: () => this.setState({ cena: "Entrada" })
+      },
+      tocarCapa: {
+        Desktop: (e) => this.conectar("Desktop", e),
+        Display: (e) => this.conectar("Remote Display", e),
+        Control: (e) => this.conectar("Remote Control", e),
+        Steam: () => this.setState({ tomada: true }),
+        RetroArch: (e) => this.conectar("RetroArch", e),
+        OBS: (e) => this.conectar("OBS", e)
+      },
+      assumirSessao: (e) => { this.setState({ tomada: false }); this.conectar("Steam", e); },
+      entrarComoTela: (e) => { this.setState({ tomada: false }); this.conectar("Remote Display", e); },
+      fecharTomada: () => this.setState({ tomada: false }),
+      irAjustes: () => this.ir("ajustes"),
+      alternarPaisagem: () => this.setState({ paisagem: !s.paisagem }),
+      irManual: () => this.setState({ par: "manual" }),
+      irBusca: () => { this.limpar(); this.setState({ par: "busca" }); },
+      escolherEncontrado: () => this.pedirPin(),
+      pedirPin: () => this.pedirPin(),
+      verAplicativos: () => { this.setState({ pareado: true, par: "busca" }); this.ir("catalogo"); },
+      sairSessao: () => this.sair(),
+      abrirIlha: () => {
+        this.limpar();
+        this.setState({ ilha: "aberta" });
+        this.timers = [setTimeout(() => this.setState({ ilha: "pilula" }), 6000)];
+      },
+      alternarDetalhes: () => this.setState({ detalhes: !s.detalhes }),
+      alternarTeclado: () => this.ciclo("teclado", ["na tela", "físico", "escondido"]),
+      alternarMouse: () => this.ciclo("mouse", ["multitoque", "trackpad", "cursor local"]),
+      alternarZoom: () => this.ciclo("zoom", ["desligado", "ligado"]),
+      aoTocar: (e) => { this.toqueX = e.clientX; this.toqueY = e.clientY; },
+      aoSoltar: (e) => {
+        if (this.toqueX == null) return;
+        const dx = e.clientX - this.toqueX, dy = Math.abs(e.clientY - this.toqueY);
+        this.toqueX = null;
+        if (dx > 55 && dy < 60 && s.tela !== "home") this.voltar();
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

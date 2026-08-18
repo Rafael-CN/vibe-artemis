@@ -1,73 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    O card de app é a origem da transição: ele cresce até virar o vídeo e recua até
-    virar card de novo. Por isso ele tem forma própria e borda de 1px — precisa ser
-    reconhecível como o lugar de onde a sessão saiu e para onde ela volta.
+    Card de app do catálogo. Capa de 132 dp com raio 20, e o nome POR FORA, embaixo —
+    não sobreposto. Sobrepor obrigaria um véu sobre toda capa para garantir contraste,
+    e o véu apaga justamente a arte que faz a grade valer a pena.
+
+    Remote Display e Remote Control usam este mesmo card: o que os diferencia é a
+    pílula ("tela", "entrada"), nunca um botão especial. O host publica, o app lista.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="170dp"
-    android:layout_height="230dp"
-    android:padding="@dimen/vidro_space_2">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/vidro_surface"
-        app:cardCornerRadius="@dimen/vidro_radius_s"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/grid_image"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/vidro_poster_bg"
-            android:cropToPadding="false"
-            android:scaleType="centerCrop" />
+            android:layout_height="132dp">
 
-        <!--
-            O véu embaixo existe para o nome sobreviver a qualquer capa, inclusive uma
-            clara. Sem ele o contraste depende da arte, que não é nossa.
-        -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/vidro_poster_scrim" />
+            <ImageView
+                android:id="@+id/grid_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/vidro_placeholder"
+                android:cropToPadding="false"
+                android:scaleType="centerCrop" />
+
+            <!-- Camada de estado; o adapter pinta o fundo dela quando o app está aberto. -->
+            <RelativeLayout
+                android:id="@+id/grid_mask"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/grid_overlay"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/grid_pill"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/vidro_pill"
+                android:fontFamily="@font/manrope_bold"
+                android:paddingLeft="9dp"
+                android:paddingTop="4dp"
+                android:paddingRight="9dp"
+                android:paddingBottom="4dp"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:text="aberto"
+                tools:visibility="visible" />
+
+            <!-- Borda de acento quando o app está em execução; senão, fio de 1px. -->
+            <View
+                android:id="@+id/grid_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/vidro_poster_frame"
+                android:duplicateParentState="true" />
+
+            <ProgressBar
+                android:id="@+id/grid_spinner"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/vidro_accent_text"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/grid_text"
-            style="@style/VidroText.Heading"
+            style="@style/VidroText.Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:padding="@dimen/vidro_space_3"
-            android:shadowColor="#CC000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="6" />
-
-        <!-- Camada do estado "aberto agora"; o adapter pinta o fundo dela. -->
-        <RelativeLayout
-            android:id="@+id/grid_mask"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/grid_overlay"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
-
-        <!-- Foco e seleção acendem a borda, que é a mesma linguagem da luz do host. -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/vidro_poster_frame"
-            android:duplicateParentState="true" />
-    </androidx.cardview.widget.CardView>
+            android:maxLines="1"
+            android:textSize="15sp"
+            tools:text="Desktop" />
+    </LinearLayout>
 </FrameLayout>

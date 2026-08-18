@@ -110,6 +110,13 @@
 
     </LinearLayout>
 
+    <!--
+        A ilha de controle e a pílula em que ela vira. Ficam por último no merge
+        para desenhar por cima do vídeo, e nos 96 dp de baixo, onde o polegar chega
+        sem soltar o aparelho.
+    -->
+    <include layout="@layout/vidro_session_island" />
+
     <!-- Floating Menu Button -->
     <ImageButton
         android:id="@+id/floatingMenuButton"

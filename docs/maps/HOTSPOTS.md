@@ -8,7 +8,7 @@
 
 | Arquivo | Linhas | Métodos | Fan-in | Fan-out |
 |---|--:|--:|--:|--:|
-| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4539 | 155 | 10 | 45 |
+| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4620 | 161 | 10 | 46 |
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
@@ -20,11 +20,11 @@
 | [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 2 | 10 |
 | [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1079 | 21 | 33 | 2 |
 | [`app/src/main/java/com/limelight/utils/KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 2 | 4 | 0 |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1016 | 49 | 4 | 24 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c) | 1001 | 24 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h) | 978 | 52 | — | — |
 | [`app/src/main/java/com/limelight/computers/ComputerManagerService.java`](../../app/src/main/java/com/limelight/computers/ComputerManagerService.java) | 969 | 42 | 5 | 13 |
 | [`app/src/main/java/com/limelight/nvstream/http/NvHTTP.java`](../../app/src/main/java/com/limelight/nvstream/http/NvHTTP.java) | 939 | 59 | 13 | 4 |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 935 | 47 | 4 | 23 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c) | 802 | 12 | — | — |
 
 ## Mais dependidos (fan-in alto — mudanças aqui propagam)
@@ -36,9 +36,9 @@
 | `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java` | 21 | 240 |
 | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java` | 15 | 445 |
 | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java` | 13 | 939 |
-| `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 11 | 101 |
+| `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 12 | 101 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 11 | 296 |
-| `app/src/main/java/com/limelight/Game.java` | 10 | 4539 |
+| `app/src/main/java/com/limelight/Game.java` | 10 | 4620 |
 | `app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java` | 10 | 27 |
 | `app/src/main/java/com/limelight/profiles/ProfilesManager.java` | 10 | 266 |
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 8 | 629 |
@@ -48,7 +48,7 @@
 | `app/src/main/java/com/limelight/nvstream/http/PairingManager.java` | 6 | 357 |
 | `app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java` | 6 | 13 |
 | `app/src/main/java/com/limelight/utils/Dialog.java` | 6 | 114 |
-| `app/src/main/java/com/limelight/AppView.java` | 5 | 796 |
+| `app/src/main/java/com/limelight/AppView.java` | 5 | 789 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 5 | 15 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 5 | 969 |
 
@@ -56,9 +56,9 @@
 
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
-| `app/src/main/java/com/limelight/Game.java` | 45 | 4539 |
-| `app/src/main/java/com/limelight/PcView.java` | 23 | 935 |
-| `app/src/main/java/com/limelight/AppView.java` | 17 | 796 |
+| `app/src/main/java/com/limelight/Game.java` | 46 | 4620 |
+| `app/src/main/java/com/limelight/PcView.java` | 24 | 1016 |
+| `app/src/main/java/com/limelight/AppView.java` | 17 | 789 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
 | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java` | 12 | 3473 |
@@ -66,8 +66,8 @@
 | `app/src/main/java/com/limelight/utils/ServerHelper.java` | 12 | 278 |
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 11 | 629 |
 | `app/src/main/java/com/limelight/preferences/StreamSettings.java` | 10 | 1088 |
+| `app/src/main/java/com/limelight/grid/AppGridAdapter.java` | 9 | 228 |
 | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java` | 8 | 796 |
-| `app/src/main/java/com/limelight/grid/AppGridAdapter.java` | 8 | 194 |
 | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java` | 7 | 591 |
 | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java` | 7 | 567 |
 | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java` | 6 | 2447 |
@@ -102,8 +102,8 @@
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:598` | This is a workaround for the fact that GFE doesn't appear to synchronize keyboard |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1047` | We previously used a short for the buttonFlags argument, but we switched to an |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c:945` | In order to get GFE to respect our request for a lower audio bitrate, we must |
-| TODO | `app/src/main/java/com/limelight/Game.java:1659` | Improve this |
-| TODO | `app/src/main/java/com/limelight/Game.java:1673` | Do we want to use WindowInsetsController here on R+ instead of |
+| TODO | `app/src/main/java/com/limelight/Game.java:1736` | Improve this |
+| TODO | `app/src/main/java/com/limelight/Game.java:1750` | Do we want to use WindowInsetsController here on R+ instead of |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:93` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStickFree.java:95` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyAnalogStick.java:95` | implement square sick for simulations |

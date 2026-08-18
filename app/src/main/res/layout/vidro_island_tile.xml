@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Bloco da ilha: rótulo em cima, estado atual embaixo. O estado é sempre uma palavra,
+    nunca um ícone sozinho — no meio de um jogo ninguém decifra pictograma.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="52dp"
+    android:layout_marginStart="9dp"
+    android:layout_marginLeft="9dp"
+    android:background="@drawable/vidro_island_tile_bg"
+    android:gravity="center_vertical"
+    android:minWidth="88dp"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:id="@+id/tile_label"
+        style="@style/VidroText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_semibold"
+        android:letterSpacing="-0.02"
+        android:textSize="14sp"
+        tools:text="Teclado" />
+
+    <TextView
+        android:id="@+id/tile_value"
+        style="@style/VidroText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textColor="@color/vidro_text_3"
+        android:textSize="11.5sp"
+        tools:text="na tela" />
+</LinearLayout>

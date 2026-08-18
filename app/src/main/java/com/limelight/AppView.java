@@ -313,9 +313,9 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
 
         UiHelper.notifyNewRootView(this);
 
-        // Setup the profiles button
-        findViewById(R.id.profilesButton)
-            .setOnClickListener(v -> startActivity(new Intent(this, ProfilesActivity.class)));
+        // Voltar para os lugares. No protótipo o catálogo tem uma só saída, no topo,
+        // e nenhum botão de perfis — cena é assunto da home.
+        findViewById(R.id.vidroBack).setOnClickListener(v -> finish());
 
         showHiddenApps = getIntent().getBooleanExtra(SHOW_HIDDEN_APPS_EXTRA, false);
         uuidString = getIntent().getStringExtra(UUID_EXTRA);
@@ -330,6 +330,12 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         TextView label = findViewById(R.id.appListText);
         setTitle(computerName);
         label.setText(computerName);
+
+        findViewById(R.id.vidroReload).setOnClickListener(v -> {
+            if (managerBinder != null) {
+                managerBinder.invalidateStateForComputer(computer.uuid);
+            }
+        });
 
         this.prefConfig = PreferenceConfiguration.readPreferences(this);
 
@@ -398,19 +404,6 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         inForeground = true;
         startComputerUpdates();
 
-        ExtendedFloatingActionButton profilesButton = findViewById(R.id.profilesButton);
-        // User report Samsung and Xiaomi devices have this problem
-        // Why just these two brands have the most problems?
-        if (profilesButton == null) {
-            return;
-        }
-        String activeProfileName = ProfilesManager.getInstance().getActiveName();
-        if (activeProfileName.isEmpty()) {
-            profilesButton.shrink();
-        } else {
-            profilesButton.setText(activeProfileName);
-            profilesButton.extend();
-        }
     }
 
     @Override

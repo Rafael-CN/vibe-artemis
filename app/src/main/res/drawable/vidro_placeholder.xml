@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Placeholder listrado, como no protótipo. Quando o host não publica box art, o lugar
+    da capa continua existindo com o nome por cima — nada de ícone inventado.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/vidro_surface_alt" />
+            <corners android:radius="@dimen/vidro_radius_m" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#0AFFFFFF"
+                android:endColor="#00FFFFFF"
+                android:type="linear" />
+            <corners android:radius="@dimen/vidro_radius_m" />
+        </shape>
+    </item>
+</layer-list>
