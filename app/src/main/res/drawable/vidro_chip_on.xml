@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Chip selecionado. É o único padrão de seleção do app: borda no acento, fundo com um
+    véu do acento, texto no acento de TEXTO (L 80%) — nunca no de brilho, que reprova.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#291E8FEE" />
+    <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_accent_text" />
+    <corners android:radius="14dp" />
+</shape>

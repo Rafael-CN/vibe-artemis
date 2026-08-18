@@ -811,4 +811,39 @@
     <string name="vidro_adjust">Adjust</string>
     <string name="vidro_without_leaving">without leaving</string>
     <string name="vidro_details">Details</string>
+
+    <!-- Vidro - telas restantes -->
+    <string name="vidro_sheet_title">Settings for this session</string>
+    <string name="vidro_close">Close</string>
+    <string name="vidro_sheet_sub">They apply now, without cutting the video. The rest lives in Settings.</string>
+    <string name="vidro_bitrate">Bit rate</string>
+    <string name="vidro_frame_pacing">Frame pacing</string>
+    <string name="vidro_mouse_mode">Mouse mode</string>
+    <string name="vidro_pacing_smooth">Smooth</string>
+    <string name="vidro_pacing_balanced">Balanced</string>
+    <string name="vidro_pacing_latency">Least delay</string>
+    <string name="vidro_mouse_multitouch">Multitouch</string>
+    <string name="vidro_mouse_trackpad">Trackpad</string>
+    <string name="vidro_numbers_sub">latency, frames, decoding</string>
+    <string name="vidro_scenes_sub">One tap swaps role, screen, rate and input. The active scene shows at the top of the session.</string>
+    <string name="vidro_scene_active">active scene</string>
+    <string name="vidro_scene_save">Save the current session as a scene</string>
+    <string name="vidro_scene_open">Open %1$s</string>
+    <string name="vidro_pair_title">Add a PC</string>
+    <string name="vidro_pair_sub">The app listens to the network on its own. Leave the host open on the PC — it announces itself.</string>
+    <string name="vidro_pair_found">Found on the network</string>
+    <string name="vidro_pair_action">Pair</string>
+    <string name="vidro_pair_already">already paired</string>
+    <string name="vidro_pair_manual">Did not show up — enter the address</string>
+    <string name="vidro_pair_type_on_pc">Type on the PC</string>
+    <string name="vidro_pair_code_help">The host will ask for this code on the PC screen. Once you confirm there, this device comes in on its own.</string>
+    <string name="vidro_pair_waiting">Waiting for the PC to confirm…</string>
+    <string name="vidro_pair_done">%1$s is paired</string>
+    <string name="vidro_pair_done_sub">It shows up in Your places now and opens straight away next time.</string>
+    <string name="vidro_pair_see_apps">See the apps</string>
+    <string name="vidro_searching_title">Looking around your network</string>
+    <string name="vidro_searching_sub">No PC has answered yet. Leave the app open — it keeps listening.</string>
+    <string name="vidro_search_by_address">Add a PC by address</string>
+    <string name="vidro_search_again">Look again</string>
+    <string name="vidro_next_session">applies to the next session</string>
 </resources>

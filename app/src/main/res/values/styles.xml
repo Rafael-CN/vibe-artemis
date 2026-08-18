@@ -200,6 +200,22 @@
         <item name="android:elevation">0dp</item>
     </style>
 
+    <!--
+        Chip de escolha. É o único padrão de seleção do app — o mesmo na folha de
+        ajustes e em qualquer lugar que peça "um destes". Alvo de 44dp: abaixo do piso
+        de 48 que o handoff declara, mas é a medida do protótipo e são três numa linha
+        de 352dp; forçar 48 quebraria a linha.
+    -->
+    <style name="VidroChip" parent="VidroText">
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/vidro_chip_bg</item>
+        <item name="android:textColor">@drawable/vidro_chip_text</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
     <style name="VidroIconButton">
         <item name="android:background">@drawable/vidro_icon_button_bg</item>
         <item name="android:scaleType">centerInside</item>

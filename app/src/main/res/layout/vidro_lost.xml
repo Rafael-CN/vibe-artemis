@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Interrupção 09 · caiu. O app não mente, mas continua calmo: nada de "erro", nada de
+    código de status. A frase de apoio é literal do protótipo e diz a coisa que importa —
+    a sessão ainda está lá do outro lado.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/vidroLost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/vidro_scrim"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_space_6"
+            android:paddingRight="@dimen/vidro_space_6">
+
+            <TextView
+                android:id="@+id/vidroLostTitle"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_extrabold"
+                android:letterSpacing="-0.03"
+                android:textSize="25sp"
+                tools:text="Perdemos o PC-RAFAEL" />
+
+            <TextView
+                style="@style/VidroText.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:gravity="center"
+                android:maxWidth="360dp"
+                android:text="@string/vidro_lost_support" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/vidroLostRetry"
+                    style="@style/VidroButton.Accent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="@string/vidro_try_again" />
+
+                <TextView
+                    android:id="@+id/vidroLostLeave"
+                    style="@style/VidroButton.Ghost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:gravity="center"
+                    android:text="@string/vidro_leave" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/vidroLostRetryCount"
+                style="@style/VidroText.Support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:visibility="gone"
+                tools:text="tentando sozinho · 3ª de 5"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
+
+</merge>

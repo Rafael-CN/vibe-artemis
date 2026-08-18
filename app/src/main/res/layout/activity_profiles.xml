@@ -1,67 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<!--
+    Cenas. Tela 06 do handoff.
 
-    <TextView
-        android:id="@+id/profilesDescription"
+    O que o app já chamava de perfil é o que o protótipo chama de cena: um toque troca
+    papel, tela, taxa e entrada. É preferência local do cliente — o host não sabe de cena,
+    e nada disto viaja pela rede.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vidro_void">
+
+    <com.limelight.ui.VidroLightView
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.07" />
+
+    <LinearLayout
+        android:id="@+id/vidroScenesHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/profile_manager_profiles_description"
-        android:textColor="#CCCCCC"
-        android:textSize="14sp" />
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingTop="@dimen/vidro_space_5"
+        android:paddingRight="@dimen/vidro_space_5">
+
+        <TextView
+            style="@style/VidroText.Display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vidro_scenes" />
+
+        <TextView
+            android:id="@+id/profilesDescription"
+            style="@style/VidroText.Support"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/vidro_scenes_sub" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profilesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/profilesDescription"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_below="@id/vidroScenesHeader"
+        android:layout_marginTop="@dimen/vidro_space_4"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingRight="@dimen/vidro_space_5"
+        android:paddingBottom="@dimen/vidro_thumb_reach"
+        android:scrollbars="none" />
 
     <LinearLayout
         android:id="@+id/emptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <TextView
+            style="@style/VidroText.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_manager_no_profiles_yet"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="@string/profile_manager_no_profiles_yet" />
 
         <TextView
+            style="@style/VidroText.Support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/profile_manager_tap_create_profile"
-            android:textColor="#CCCCCC"
-            android:textSize="14sp" />
-
+            android:gravity="center"
+            android:text="@string/profile_manager_tap_create_profile" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--
+        "Salvar a sessão atual como cena". Tracejado porque é o lugar de uma cena que
+        ainda não existe — a forma diz que ali cabe algo, sem fingir que já tem.
+    -->
+    <TextView
         android:id="@+id/addProfileFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        style="@style/VidroText"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="@dimen/vidro_space_5"
+        android:background="@drawable/vidro_dashed"
         android:contentDescription="@string/profile_manager_new_profile"
-        android:src="@drawable/ic_add_base" />
+        android:fontFamily="@font/manrope_semibold"
+        android:gravity="center"
+        android:text="@string/vidro_scene_save"
+        android:textColor="@color/vidro_text_2"
+        android:textSize="14sp" />
 
 </RelativeLayout>

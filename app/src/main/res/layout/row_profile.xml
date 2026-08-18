@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Card de cena. Raio 23, e o estado ativo dito por borda no acento além do rádio — um
+    ponto de 20dp num card de 300 é invisível para quem não distingue o matiz, então a
+    borda inteira carrega a mesma informação.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/vidro_scene_card_bg"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:gravity="center_vertical">
+    android:paddingLeft="18dp"
+    android:paddingTop="17dp"
+    android:paddingRight="18dp"
+    android:paddingBottom="17dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -15,47 +25,45 @@
 
         <TextView
             android:id="@+id/profileName"
+            style="@style/VidroText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope_bold"
+            android:letterSpacing="-0.03"
             android:singleLine="true"
-            android:ellipsize="end" />
+            android:textSize="19sp"
+            tools:text="Trabalho" />
 
         <TextView
             android:id="@+id/profileTimestamp"
+            style="@style/VidroText.Support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#CCCCCC"
-            android:textSize="12sp" />
-
+            tools:text="Segunda tela do PC" />
     </LinearLayout>
 
     <RadioButton
         android:id="@+id/profileActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:buttonTint="@color/vidro_accent_text" />
 
     <ImageButton
         android:id="@+id/editProfile"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Edit profile"
+        style="@style/VidroIconButton"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:src="@drawable/ic_edit" />
 
     <ImageButton
         android:id="@+id/deleteProfile"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Delete profile"
+        style="@style/VidroIconButton"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:src="@drawable/ic_delete" />
 
 </LinearLayout>

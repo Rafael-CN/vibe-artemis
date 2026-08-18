@@ -301,4 +301,6 @@
 
     </RelativeLayout>
 
+    <include layout="@layout/vidro_pairing" />
+
 </RelativeLayout>

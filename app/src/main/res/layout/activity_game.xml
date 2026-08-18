@@ -117,6 +117,15 @@
     -->
     <include layout="@layout/vidro_session_island" />
 
+    <!--
+        Folha de ajustes, aviso de queda e a tela de conectar. Vêm DEPOIS da ilha no
+        merge porque precisam cobri-la: enquanto a conexão não voltou, mexer nos
+        controles não leva a lugar nenhum.
+    -->
+    <include layout="@layout/vidro_session_sheet" />
+    <include layout="@layout/vidro_lost" />
+    <include layout="@layout/vidro_connecting" />
+
     <!-- Floating Menu Button -->
     <ImageButton
         android:id="@+id/floatingMenuButton"

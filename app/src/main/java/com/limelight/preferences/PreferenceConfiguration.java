@@ -744,6 +744,21 @@ private static int getFramePacingValue(Context context) {
                 Build.FINGERPRINT.contains("PPR1.180610.011/4079208_2235.1395");
     }
 
+    /**
+     * A taxa de bits entra na StreamConfiguration na hora de conectar e não há caminho
+     * para mudá-la com a sessão de pé — por isso isto grava a preferência, que vale da
+     * próxima vez, e a folha de ajustes diz isso em letra na tela em vez de deixar a
+     * pessoa achar que mudou agora.
+     */
+    public static void writeBitrate(Context context, int bitrateKbps) {
+        // Mesmo acessador que resetStreamingSettings usa: a taxa de bits pertence ao
+        // perfil ativo, então gravar fora dele faria a cena perder o próprio valor.
+        ProfilesManager.getInstance().getOverlayingSharedPreferences(context)
+                .edit()
+                .putInt(BITRATE_PREF_STRING, bitrateKbps)
+                .apply();
+    }
+
     public static PreferenceConfiguration readPreferences(Context context) {
         return readPreferences(context, null);
     }

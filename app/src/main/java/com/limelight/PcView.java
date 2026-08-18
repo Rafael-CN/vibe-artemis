@@ -478,6 +478,79 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         startComputerUpdates();
     }
 
+
+    /**
+     * Mostra os quatro dígitos que o host vai pedir na tela do PC.
+     *
+     * Chamada de uma thread de rede — o {@code pm.pair()} logo abaixo bloqueia até o PC
+     * confirmar ou o código expirar —, então tudo aqui passa pelo runOnUiThread.
+     *
+     * Sem {@code pinStr} é o fluxo de senha do Apollo, que não mostra código nenhum: aí a
+     * tela existe só para dizer que está esperando.
+     */
+    private void showVidroPairing(final String pinStr) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                View pairing = findViewById(R.id.vidroPairing);
+                if (pairing == null) {
+                    return;
+                }
+
+                int[] digitIds = {
+                        R.id.vidroPairDigit0, R.id.vidroPairDigit1,
+                        R.id.vidroPairDigit2, R.id.vidroPairDigit3
+                };
+
+                boolean hasCode = pinStr != null && pinStr.length() >= digitIds.length;
+                for (int i = 0; i < digitIds.length; i++) {
+                    TextView digit = findViewById(digitIds[i]);
+                    if (digit != null) {
+                        digit.setText(hasCode ? String.valueOf(pinStr.charAt(i)) : "");
+                        digit.setVisibility(hasCode ? View.VISIBLE : View.GONE);
+                    }
+                }
+
+                TextView step = findViewById(R.id.vidroPairingStep);
+                if (step != null) {
+                    step.setVisibility(hasCode ? View.VISIBLE : View.GONE);
+                }
+
+                VidroLightView light = findViewById(R.id.vidroPairingLight);
+                if (light != null) {
+                    light.setIntensity(VidroLightView.INTENSITY_AWAKE, true);
+                }
+
+                View cancel = findViewById(R.id.vidroPairCancel);
+                if (cancel != null) {
+                    cancel.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Só tira a tela da frente. O pedido continua no ar até o host
+                            // responder ou o código virar — não há caminho para abortar um
+                            // pareamento já enviado, e fingir que há seria pior.
+                            hideVidroPairing();
+                        }
+                    });
+                }
+
+                pairing.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void hideVidroPairing() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                View pairing = findViewById(R.id.vidroPairing);
+                if (pairing != null) {
+                    pairing.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void doPair(final ComputerDetails computer, String otp, String passphrase) {
         if (computer.state == ComputerDetails.State.OFFLINE || computer.activeAddress == null) {
             Toast.makeText(PcView.this, getResources().getString(R.string.pair_pc_offline), Toast.LENGTH_SHORT).show();
@@ -513,15 +586,13 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                             pinStr = PairingManager.generatePinString();
                         }
 
-                        // Spin the dialog off in a thread because it blocks
+                        // A tela de pareamento no lugar do diálogo. O código é o assunto
+                        // inteiro deste momento, e um AlertDialog o enterra numa linha de
+                        // corpo de texto entre dois parágrafos.
                         if (passphrase == null) {
-                            Dialog.displayDialog(PcView.this, getResources().getString(R.string.pair_pairing_title),
-                                    getResources().getString(R.string.pair_pairing_msg)+" "+pinStr+"\n\n"+
-                                            getResources().getString(R.string.pair_pairing_help), false);
+                            showVidroPairing(pinStr);
                         } else {
-                            Dialog.displayDialog(PcView.this, getResources().getString(R.string.pair_pairing_title),
-                                    getResources().getString(R.string.pair_otp_pairing_msg)+"\n\n"+
-                                            getResources().getString(R.string.pair_otp_pairing_help), false);
+                            showVidroPairing(null);
                         }
 
                         PairingManager pm = httpConn.getPairingManager();
@@ -568,6 +639,10 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                 }
 
                 Dialog.closeDialogs();
+                // Terminou de um jeito ou de outro: a tela do código sai. Ela some
+                // aqui e não em cada ramo acima porque todo caminho passa por este
+                // ponto, inclusive as exceções de rede.
+                hideVidroPairing();
 
                 final String toastMessage = message;
                 final boolean toastSuccess = success;

@@ -55,7 +55,10 @@ public class ProfilesActivityUiTest {
         ActivityController<ProfilesActivity> controller = Robolectric.buildActivity(ProfilesActivity.class).setup();
         ProfilesActivity activity = controller.get();
 
-        ImageButton fab = activity.findViewById(R.id.addProfileFab);
+        // View, e não ImageButton: o controle de criar cena deixou de ser um FAB
+        // circular e virou a linha tracejada do rodapé. O que o teste garante — que
+        // clicar nele abre o editor — não mudou, e é isso que ele continua checando.
+        View fab = activity.findViewById(R.id.addProfileFab);
         assertNotNull(fab);
         fab.performClick();
 

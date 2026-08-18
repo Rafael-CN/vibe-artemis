@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pareamento · passo do código. Tela 07 do handoff.
+
+    Nunca chamar de "emparelhar dispositivo": aqui é um lugar novo. E nunca dizer "erro"
+    nem mostrar código de status — a causa quase sempre é o código ter virado, e é isso
+    que a tela diz.
+
+    Os quatro dígitos são o único lugar da home onde JetBrains Mono aparece: número que a
+    pessoa vai copiar à mão para outra tela precisa de dígito inconfundível e de largura
+    fixa, senão o olho perde a posição no meio da digitação.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/vidroPairing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vidro_void"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- A luz vem de onde está a coisa viva: atrás do código. -->
+        <com.limelight.ui.VidroLightView
+            android:id="@+id/vidroPairingLight"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_space_5"
+            android:paddingRight="@dimen/vidro_space_5">
+
+            <TextView
+                android:id="@+id/vidroPairingStep"
+                style="@style/VidroText.Overline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.16"
+                android:text="@string/vidro_pair_type_on_pc"
+                android:textSize="10.5sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_4"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/vidroPairDigit0"
+                    style="@style/VidroText.Code"
+                    android:layout_width="60dp"
+                    android:layout_height="78dp"
+                    android:background="@drawable/vidro_code_box"
+                    tools:text="4" />
+
+                <TextView
+                    android:id="@+id/vidroPairDigit1"
+                    style="@style/VidroText.Code"
+                    android:layout_width="60dp"
+                    android:layout_height="78dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/vidro_code_box"
+                    tools:text="7" />
+
+                <TextView
+                    android:id="@+id/vidroPairDigit2"
+                    style="@style/VidroText.Code"
+                    android:layout_width="60dp"
+                    android:layout_height="78dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/vidro_code_box"
+                    tools:text="1" />
+
+                <TextView
+                    android:id="@+id/vidroPairDigit3"
+                    style="@style/VidroText.Code"
+                    android:layout_width="60dp"
+                    android:layout_height="78dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/vidro_code_box"
+                    tools:text="2" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/VidroText.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_4"
+                android:maxWidth="340dp"
+                android:text="@string/vidro_pair_code_help" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/vidroPairWaitDot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginEnd="9dp"
+                    android:layout_marginRight="9dp"
+                    android:background="@drawable/vidro_dot_on" />
+
+                <TextView
+                    android:id="@+id/vidroPairStatus"
+                    style="@style/VidroText.Support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vidro_pair_waiting" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/vidroPairCancel"
+                style="@style/VidroButton.Ghost"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/vidro_space_5"
+                android:gravity="center"
+                android:text="@string/vidro_cancel" />
+        </LinearLayout>
+    </FrameLayout>
+
+</merge>

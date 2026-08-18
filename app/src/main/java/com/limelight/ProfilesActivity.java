@@ -36,7 +36,10 @@ public class ProfilesActivity extends AppCompatActivity implements ProfilesManag
         emptyState = findViewById(R.id.emptyState);
 
         // Setup FloatingActionButton
-        FloatingActionButton fab = findViewById(R.id.addProfileFab);
+        // Deixou de ser FAB: no protótipo salvar uma cena é uma linha tracejada no
+        // rodapé, e um FAB circular flutuando por cima de cards não pertence a esta
+        // gramática.
+        View fab = findViewById(R.id.addProfileFab);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditProfileActivity.class);
             startActivity(intent);

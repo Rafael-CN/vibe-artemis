@@ -46,6 +46,7 @@ import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.VidroIsland;
+import com.limelight.ui.VidroSession;
 import com.limelight.ui.ExternalControllerView;
 import com.limelight.ui.GameGestures;
 import com.limelight.ui.StreamContainer;
@@ -310,6 +311,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private boolean onExternelDisplay = false;
     private ImageButton floatingMenuButton;
     private VidroIsland vidroIsland;
+    private VidroSession vidroSession;
     private ImageButton overlayToggleButton;
     private float floatingButtonDX, floatingButtonDY;
     private boolean isButtonMoving = false;
@@ -909,6 +911,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         floatingMenuButton = findViewById(R.id.floatingMenuButton);
 
         setupVidroIsland();
+        vidroSession = new VidroSession(this, prefConfig);
         updateFloatingButtonVisibility(prefConfig.enableBackMenu && prefConfig.enableFloatingButton);
         initFloatingButton();
 
@@ -1167,11 +1170,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
         });
 
-        vidroIsland.setTile(R.id.vidroTileMouse, R.string.vidro_mouse, "");
+        vidroIsland.setTile(R.id.vidroTileMouse, R.string.vidro_adjust,
+                getString(R.string.vidro_without_leaving));
         vidroIsland.setTileClickListener(R.id.vidroTileMouse, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showGameMenu(null);
+                if (vidroSession != null) {
+                    vidroSession.openSheet();
+                }
             }
         });
 
@@ -3727,6 +3733,13 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 if (spinner != null) {
                     spinner.setMessage(getResources().getString(R.string.conn_starting) + " " + stage);
                 }
+
+                // Os três passos do protótipo esperam evento real, não temporizador: os
+                // tempos de lá (800/1600/2500 ms) eram encenação para o protótipo andar
+                // sozinho. Aqui quem manda é a máquina de estados da conexão.
+                if (vidroSession != null) {
+                    vidroSession.onStageStarting(stage);
+                }
             }
         });
     }
@@ -3937,17 +3950,24 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 }
 
                 if (connectionStatus == MoonBridge.CONN_STATUS_POOR) {
-                    if (prefConfig.bitrate > 5000) {
-                        notificationOverlayView.setText(getResources().getString(R.string.slow_connection_msg));
-                    }
-                    else {
-                        notificationOverlayView.setText(getResources().getString(R.string.poor_connection_msg));
-                    }
+                    // Interrupção 08. Aviso mora no topo e não se toca; o texto diz o que
+                    // está acontecendo sem número e sem alarme — "erro" e código de status
+                    // não ajudam quem está no meio de uma partida.
+                    notificationOverlayView.setText(getResources().getString(R.string.vidro_holding_signal)
+                            + " · " + getResources().getString(R.string.vidro_holding_support));
 
                     requestedNotificationOverlayVisibility = View.VISIBLE;
+
+                    if (vidroIsland != null) {
+                        vidroIsland.setQuality(VidroIsland.QUALITY_POOR);
+                    }
                 }
                 else if (connectionStatus == MoonBridge.CONN_STATUS_OKAY) {
                     requestedNotificationOverlayVisibility = View.GONE;
+
+                    if (vidroIsland != null) {
+                        vidroIsland.setQuality(VidroIsland.QUALITY_GOOD);
+                    }
                 }
 
                 if (!isHidingOverlays) {
@@ -3970,6 +3990,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 connected = true;
                 connecting = false;
                 updatePipAutoEnter();
+
+                if (vidroSession != null) {
+                    vidroSession.onConnected();
+                }
 
                 // Hide the mouse cursor now after a short delay.
                 // Doing it before dismissing the spinner seems to be undone

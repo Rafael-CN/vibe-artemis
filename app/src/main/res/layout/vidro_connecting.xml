@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Conectando. Tela 03 do handoff.
+
+    Três passos, e cada um espera o EVENTO REAL da conexão — os tempos do protótipo eram
+    encenação. Sem spinner: a barra e a luz já dizem que está vivo, e um spinner girando
+    sobre "Reservando a tela no PC" só acrescentaria ansiedade.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/vidroConnecting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vidro_void"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.limelight.ui.VidroLightView
+            android:id="@+id/vidroConnectingLight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="74dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_space_5"
+            android:paddingRight="@dimen/vidro_space_5">
+
+            <TextView
+                android:id="@+id/vidroConnectingApp"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/manrope_extrabold"
+                android:letterSpacing="-0.035"
+                android:maxLines="1"
+                android:textSize="24sp"
+                tools:text="Remote Display" />
+
+            <ProgressBar
+                android:id="@+id/vidroConnectingBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="214dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="22dp"
+                android:max="100"
+                android:progress="18"
+                android:progressDrawable="@drawable/vidro_progress_track" />
+
+            <TextView
+                android:id="@+id/vidroConnectingStep"
+                style="@style/VidroText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/manrope_semibold"
+                android:textColor="@color/vidro_text_2"
+                android:textSize="13sp"
+                tools:text="Falando com PC-RAFAEL" />
+
+            <TextView
+                android:id="@+id/vidroConnectingCancel"
+                style="@style/VidroButton.Ghost"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="26dp"
+                android:gravity="center"
+                android:text="@string/vidro_cancel" />
+        </LinearLayout>
+    </FrameLayout>
+
+</merge>
