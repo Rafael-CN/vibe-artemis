@@ -14,15 +14,25 @@
         -->
     </style>
 
-    <!-- Application theme. -->
+    <!-- Application theme. Identidade Vidro. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:statusBarColor">#1A1A1A</item>
-        <item name="android:navigationBarColor">#1A1A1A</item>
-        <item name="android:colorBackground">#1A1A1A</item>
-        <item name="android:windowBackground">#1A1A1A</item>
+        <item name="android:statusBarColor">@color/vidro_void</item>
+        <item name="android:navigationBarColor">@color/vidro_void</item>
+        <item name="android:colorBackground">@color/vidro_void</item>
+        <item name="android:windowBackground">@color/vidro_void</item>
+        <item name="android:textColorPrimary">@color/vidro_text</item>
+        <item name="android:textColorSecondary">@color/vidro_text_3</item>
+        <!--
+            O acento aqui é o papel de TEXTO (L 80%), não o de brilho (L 64%). O tom de
+            brilho foi medido e reprova em APCA como texto sobre qualquer um dos nossos
+            fundos — ele serve para acender, não para escrever.
+        -->
+        <item name="colorAccent">@color/vidro_accent_text</item>
+        <item name="colorPrimary">@color/vidro_accent_text</item>
+        <item name="android:colorAccent">@color/vidro_accent_text</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">
@@ -61,6 +71,110 @@
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!--
+        ================================================================
+        Escala tipográfica Vidro
+
+        A face ainda é a do sistema — o handoff deixou a tipografia em aberto e
+        embutir uma face de verdade é a maior lacuna de personalidade que resta.
+        O que já está aqui é a escala, os pesos e o tracking, que é o que carrega
+        a maior parte do caráter. Trocar a face depois é mexer só em vidro_font_*.
+        ================================================================
+    -->
+    <style name="VidroText">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Título da tela. Grande e apertado: a gramática do título grande, sem imitar ninguém. -->
+    <style name="VidroText.Display" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">-0.035</item>
+        <item name="android:lineSpacingMultiplier">1.14</item>
+    </style>
+
+    <style name="VidroText.Title" parent="VidroText">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+    </style>
+
+    <style name="VidroText.Heading" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="VidroText.Body" parent="VidroText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/vidro_text_2</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="VidroText.Label" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:textColor">@color/vidro_text_3</item>
+    </style>
+
+    <!-- Rótulo de seção. Caixa alta com tracking aberto, senão vira ruído. -->
+    <style name="VidroText.Overline" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/vidro_text_3</item>
+    </style>
+
+    <!--
+        Números em tabular. Latência, resolução e taxa mudam em tempo real; sem tnum
+        a linha inteira dança a cada leitura. Invariante do design system.
+    -->
+    <style name="VidroText.Numeric" parent="VidroText">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="android:textColor">@color/vidro_text_2</item>
+    </style>
+
+    <!-- ================= Componentes ================= -->
+
+    <style name="VidroButton.Accent" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:background">@drawable/vidro_button_accent</item>
+        <item name="android:textColor">@color/vidro_on_accent</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">@dimen/vidro_touch_target</item>
+        <item name="android:paddingLeft">26dp</item>
+        <item name="android:paddingRight">26dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="VidroButton.Ghost" parent="VidroText">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:background">@drawable/vidro_button_ghost_bg</item>
+        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">@dimen/vidro_touch_target</item>
+        <item name="android:paddingLeft">22dp</item>
+        <item name="android:paddingRight">22dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="VidroIconButton">
+        <item name="android:background">@drawable/vidro_icon_button_bg</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:tint">@color/vidro_text_2</item>
     </style>
 
     <declare-styleable name="ApertureViewGroup">

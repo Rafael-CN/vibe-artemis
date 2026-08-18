@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Enquanto a capa não chega, o lugar dela já existe. Nada de buraco branco. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/vidro_surface" />
+    <corners android:radius="@dimen/vidro_radius_s" />
+</shape>

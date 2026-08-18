@@ -119,14 +119,14 @@ public class TrackpadContext implements TouchContext {
             double frameVelocityY = velocityY * MOMENTUM_FRAME_INTERVAL_MS;
 
             if (Math.abs(frameVelocityX) > Math.abs(frameVelocityY)) {
-                conn.sendMouseHighResHScroll((short)(-frameVelocityX * SCROLL_SPEED_FACTOR_X));
+                conn.sendMouseHighResHScroll(scrollAmount(-frameVelocityX * SCROLL_SPEED_FACTOR_X));
                 if (Math.abs(frameVelocityY) * 1.05 > Math.abs(frameVelocityX)) {
-                    conn.sendMouseHighResScroll((short)(frameVelocityY * SCROLL_SPEED_FACTOR_Y));
+                    conn.sendMouseHighResScroll(scrollAmount(frameVelocityY * SCROLL_SPEED_FACTOR_Y));
                 }
             } else {
-                conn.sendMouseHighResScroll((short)(frameVelocityY * SCROLL_SPEED_FACTOR_Y));
+                conn.sendMouseHighResScroll(scrollAmount(frameVelocityY * SCROLL_SPEED_FACTOR_Y));
                 if (Math.abs(frameVelocityX) * 1.05 >= Math.abs(frameVelocityY)) {
-                    conn.sendMouseHighResHScroll((short)(-frameVelocityX * SCROLL_SPEED_FACTOR_X));
+                    conn.sendMouseHighResHScroll(scrollAmount(-frameVelocityX * SCROLL_SPEED_FACTOR_X));
                 }
             }
 
@@ -389,14 +389,14 @@ public class TrackpadContext implements TouchContext {
                         checkForConfirmedScroll();
                         if (confirmedScroll) {
                             if (absDeltaX > absDeltaY) {
-                                conn.sendMouseHighResHScroll((short)(-sendDeltaX * SCROLL_SPEED_FACTOR_X));
+                                conn.sendMouseHighResHScroll(scrollAmount((double)-sendDeltaX * SCROLL_SPEED_FACTOR_X));
                                 if (absDeltaY * 1.05 > absDeltaX) {
-                                    conn.sendMouseHighResScroll((short)(sendDeltaY * SCROLL_SPEED_FACTOR_Y));
+                                    conn.sendMouseHighResScroll(scrollAmount((double)sendDeltaY * SCROLL_SPEED_FACTOR_Y));
                                 }
                             } else {
-                                conn.sendMouseHighResScroll((short)(sendDeltaY * SCROLL_SPEED_FACTOR_Y));
+                                conn.sendMouseHighResScroll(scrollAmount((double)sendDeltaY * SCROLL_SPEED_FACTOR_Y));
                                 if (absDeltaX * 1.05 >= absDeltaY) {
-                                    conn.sendMouseHighResHScroll((short)(-sendDeltaX * SCROLL_SPEED_FACTOR_X));
+                                    conn.sendMouseHighResHScroll(scrollAmount((double)-sendDeltaX * SCROLL_SPEED_FACTOR_X));
                                 }
                             }
                         }
@@ -481,5 +481,17 @@ public class TrackpadContext implements TouchContext {
 
     private void checkForConfirmedScroll() {
         confirmedScroll = (actionIndex == 1 && pointerCount == 2 && confirmedMove);
+    }
+
+    // Narrowing a double straight to short truncates the bit pattern instead of saturating,
+    // so a fast flick used to wrap past 32767 and reverse the scroll mid-gesture. Saturate.
+    private static short scrollAmount(double value) {
+        if (value >= Short.MAX_VALUE) {
+            return Short.MAX_VALUE;
+        }
+        if (value <= Short.MIN_VALUE) {
+            return Short.MIN_VALUE;
+        }
+        return (short)value;
     }
 }

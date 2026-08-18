@@ -146,6 +146,7 @@ public class PreferenceConfiguration {
     private static final String CHECKBOX_TRACKPAD_DRAG_DROP_VIBRATION = "checkbox_trackpad_drag_drop_vibration";
     private static final String SEEKBAR_TRACKPAD_DRAG_DROP_THRESHOLD = "seekbar_trackpad_drag_drop_threshold";
     private static final String CHECKBOX_TRACKPAD_SWAP_AXIS = "checkbox_trackpad_swap_axis";
+    private static final String CHECKBOX_PHYSICAL_TRACKPAD_NATIVE = "checkbox_physical_trackpad_native";
 
     private static final String CHECKBOX_ENABLE_COMMIT_TEXT = "checkbox_enable_commit_text";
 
@@ -216,6 +217,7 @@ public class PreferenceConfiguration {
     private static final boolean DEFAULT_TRACKPAD_DRAG_DROP_VIBRATION = false;
     private static final int DEFAULT_TRACKPAD_DRAG_DROP_THRESHOLD = 250;
     private static final boolean DEFAULT_TRACKPAD_SWAP_AXIS = false;
+    private static final boolean DEFAULT_PHYSICAL_TRACKPAD_NATIVE = true;
     // On by default: this is the path that carries Unicode code points instead of scancodes,
     // so accented characters, cedilla and non-QWERTY layouts reach the host correctly.
     // It also enables swipe typing and voice dictation. Turn it off only if the host does
@@ -368,6 +370,7 @@ public class PreferenceConfiguration {
     public boolean trackpadDragDropVibration;
     public int trackpadDragDropThreshold;
     public boolean trackpadSwapAxis;
+    public boolean physicalTrackpadNative;
 
     public boolean bindAllUsb;
     public boolean mouseEmulation;
@@ -1034,6 +1037,7 @@ private static int getFramePacingValue(Context context) {
         config.trackpadDragDropVibration = prefs.getBoolean(CHECKBOX_TRACKPAD_DRAG_DROP_VIBRATION, DEFAULT_TRACKPAD_DRAG_DROP_VIBRATION);
         config.trackpadDragDropThreshold = prefs.getInt(SEEKBAR_TRACKPAD_DRAG_DROP_THRESHOLD, DEFAULT_TRACKPAD_DRAG_DROP_THRESHOLD);
         config.trackpadSwapAxis = prefs.getBoolean(CHECKBOX_TRACKPAD_SWAP_AXIS, DEFAULT_TRACKPAD_SWAP_AXIS);
+        config.physicalTrackpadNative = prefs.getBoolean(CHECKBOX_PHYSICAL_TRACKPAD_NATIVE, DEFAULT_PHYSICAL_TRACKPAD_NATIVE);
 
         config.absoluteMouseMode = prefs.getBoolean(ABSOLUTE_MOUSE_MODE_PREF_STRING, DEFAULT_ABSOLUTE_MOUSE_MODE);
         config.enableBatteryReport = prefs.getBoolean(CHECKBOX_ENABLE_BATTERY_REPORT, DEFAULT_GAMEPAD_ENABLE_BATTERY_REPORT);

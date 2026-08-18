@@ -19,6 +19,8 @@ análise estão marcadas — são as de maior confiança.
 | Código | Proposta | Estado |
 |---|---|---|
 | [**E01**](epics/E01-teclado-anydesk.md) | Teclado no padrão AnyDesk | implementado, pendente de validação em dispositivo |
+| **D01** | Identidade visual Vidro aplicada ao app | tokens, tema, home, catálogo e overlays em sessão prontos; falta embutir a face tipográfica |
+| [**B65**](planos/BUGS.md#b65) | Trackpad físico no padrão nativo | corrigido atrás de preferência, pendente de validação no S8 Ultra |
 
 ## EPICs
 
@@ -240,6 +242,7 @@ análise estão marcadas — são as de maior confiança.
 | [**B62**](planos/BUGS.md#b62) | Configuração de shadows do Robolectric fora do classpath — nunca é lida | small | Build, CI, Testes e Qualidade |
 | [**B63**](planos/BUGS.md#b63) | Repositório sem nenhum CI; o único arquivo de pipeline é herança quebrada do upstream | small | Build, CI, Testes e Qualidade |
 | [**B64**](planos/BUGS.md#b64) | AppVeyor publica um artefato de lint com nome de flavor inexistente | small | Build, CI, Testes e Qualidade |
+| [**B65**](planos/BUGS.md#b65) | Trackpad físico roteado para o emulador de dedo na tela; dois sistemas de scroll competem — **corrigido**, pendente de validação no S8 Ultra | small | Entrada |
 
 
 ✱ = levantado por mais de uma análise independente.

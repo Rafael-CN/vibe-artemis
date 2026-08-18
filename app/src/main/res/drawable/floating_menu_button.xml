@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Botão flutuante em sessão: mesmo vidro fosco do resto, borda de 1px. -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#80FFFFFF">
+    android:color="@color/vidro_surface_overlay_alt">
     <item>
         <shape android:shape="oval">
-            <solid android:color="#CC000000" />
-            <stroke android:color="#AAFFFFFF" android:width="2dp" />
+            <solid android:color="@color/vidro_glass_fill_session" />
+            <stroke android:color="@color/vidro_stroke_glass" android:width="@dimen/vidro_stroke_width" />
             <size android:width="36dp" android:height="36dp" />
         </shape>
     </item>

@@ -1,92 +1,94 @@
 <!-- Portrait orientation only -->
+<!--
+    A home do Vidro é ambiente, não painel: quase nenhuma cromagem, nenhum número
+    técnico, e a informação vindo dos próprios lugares acesos. Por isso não há título
+    nem barra — o que ocupa a tela são os hosts, e o resto sai da frente.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#1A1A1A"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/vidro_void"
     tools:context=".PcView">
 
     <RelativeLayout
         android:id="@+id/pcFragmentContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_below="@+id/settingsButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        >
+        android:gravity="center">
 
-        <RelativeLayout
+        <!--
+            Estado de procura. É o primeiro estado que qualquer pessoa vê, e antes
+            ele era uma barrinha cinza ao lado de um texto de sistema.
+        -->
+        <LinearLayout
             android:id="@+id/no_pc_found_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_space_6"
+            android:paddingRight="@dimen/vidro_space_6">
+
             <ProgressBar
                 android:id="@+id/pcs_loading"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:indeterminate="true"/>
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/vidro_accent_text" />
+
             <TextView
+                style="@style/VidroText.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/pcs_loading"
-                android:layout_toEndOf="@+id/pcs_loading"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_centerVertical="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginTop="@dimen/vidro_space_5"
                 android:gravity="center"
-                android:text="@string/searching_pc"/>
-        </RelativeLayout>
+                android:text="@string/searching_pc"
+                android:textColor="@color/vidro_text_3" />
+        </LinearLayout>
 
     </RelativeLayout>
 
     <ImageButton
         android:id="@+id/settingsButton"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
+        style="@style/VidroIconButton"
+        android:layout_width="@dimen/vidro_thumb_reach"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_settings"
         android:preferKeepClear="true"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:src="@drawable/ic_settings" />
 
     <ImageButton
         android:id="@+id/helpButton"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
+        style="@style/VidroIconButton"
+        android:layout_width="@dimen/vidro_thumb_reach"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/settingsButton"
         android:layout_toRightOf="@+id/settingsButton"
-        android:layout_toEndOf="@+id/profilesButton"
-        android:src="@drawable/ic_help"
         android:preferKeepClear="true"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:src="@drawable/ic_help" />
 
     <ImageButton
         android:id="@+id/manuallyAddPc"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:layout_alignParentTop="true"
+        style="@style/VidroIconButton"
+        android:layout_width="@dimen/vidro_thumb_reach"
+        android:layout_height="64dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_add"
+        android:layout_alignParentTop="true"
         android:preferKeepClear="true"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:src="@drawable/ic_add" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/profilesButton"
@@ -94,10 +96,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="@dimen/vidro_space_4"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/profile_manager_choose_profile"
-        android:layout_margin="16dp"
-        app:icon="@drawable/ic_profiles" />
+        android:textColor="@color/vidro_on_accent"
+        app:backgroundTint="@color/vidro_accent_fill"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_profiles"
+        app:iconTint="@color/vidro_on_accent" />
 
 </RelativeLayout>

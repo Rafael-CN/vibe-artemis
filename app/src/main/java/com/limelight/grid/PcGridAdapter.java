@@ -59,6 +59,24 @@ public class PcGridAdapter extends GenericGridAdapter<PcView.ComputerObject> {
             imgView.setAlpha(0.4f);
         }
 
+        // A luz atrás do ícone é quem diz o estado. Intensidade, nunca matiz: o
+        // acento é o mesmo nos três casos, então quem não distingue o azul ainda lê
+        // a diferença. Os valores vêm do handoff do design.
+        View haloView = parentView.findViewById(R.id.grid_halo);
+        if (haloView != null) {
+            switch (obj.details.state) {
+                case ONLINE:
+                    haloView.setAlpha(0.72f);
+                    break;
+                case UNKNOWN:
+                    haloView.setAlpha(0.34f);
+                    break;
+                default:
+                    haloView.setAlpha(0.20f);
+                    break;
+            }
+        }
+
         if (obj.details.state == ComputerDetails.State.UNKNOWN) {
             prgView.setVisibility(View.VISIBLE);
         }

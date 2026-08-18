@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Vidro FOSCO. Em sessão isto nunca leva blur: o vídeo desenha num SurfaceView,
+    numa camada de hardware separada da árvore de views, e RenderEffect só borra o
+    que está na mesma camada — ou seja, nada. Alpha 0,82 entrega a mesma sensação
+    por custo zero de GPU, que é exatamente o que o decodificador precisa que sobre.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/vidro_glass_fill_session" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/vidro_stroke_glass" />
+    <corners android:radius="@dimen/vidro_radius_l" />
+</shape>

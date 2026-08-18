@@ -535,6 +535,8 @@
     <string name="summary_trackpad_drag_drop_threshold">Set the duration to hold on the trackpad before activating drag-and-drop on Samsung devices.</string>
     <string name="title_trackpad_swap_axis">Swap X and Y axis of the trackpad input</string>
     <string name="summary_trackpad_swap_axis">On some devices, trackpad input may be rotated in axis. Enabling this option may help.</string>
+    <string name="title_physical_trackpad_native">Physical trackpad uses native mode</string>
+    <string name="summary_physical_trackpad_native">Send input from a keyboard cover or Bluetooth trackpad straight to the host instead of through the on-screen trackpad emulator. Fixes erratic two-finger scrolling and inverted axes. Turn off to restore the old behaviour.</string>
     <string name="title_checkbox_force_qwerty">Force QWERTY layout</string>
     <string name="summary_checkbox_force_qwerty">Force use QWERTY keyboard layout.\nRequired by GFE.\nTurn off if you want to use a different keyboard layout.</string>
     <string name="title_checkbox_back_as_meta">Back button as Meta</string>

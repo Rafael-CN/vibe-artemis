@@ -445,6 +445,12 @@
             android:title="@string/title_trackpad_drag_drop_threshold"
             app:iconSpaceReserved="false" />
         <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="checkbox_physical_trackpad_native"
+            android:summary="@string/summary_physical_trackpad_native"
+            android:title="@string/title_physical_trackpad_native"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="checkbox_trackpad_swap_axis"
             android:summary="@string/summary_trackpad_swap_axis"

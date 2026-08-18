@@ -4,14 +4,14 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **216 arquivos**, **64.193 linhas**, **268 tipos**, **2530 métodos**.
+Total: **216 arquivos**, **64.330 linhas**, **268 tipos**, **2535 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4437 | 14.9 | Game, GameMenuCallbacks | `onServiceConnected()`:247 `onServiceDisconnected()`:256 `sendText()`:324 `sendBackspaces()`:331 `onCreate()`:353 `onCapturedPointer()`:543 `notifyCrash()`:669 `onDisplayAdded()`:1034 |
-| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 934 | 4.8 | PcView, ComputerObject | `onServiceConnected()`:82 `run()`:89 `onServiceDisconnected()`:105 `onConfigurationChanged()`:111 `onClick()`:164 `onClick()`:170 `onClick()`:177 `onClick()`:183 |
+| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4539 | 14.9 | Game, GameMenuCallbacks | `onServiceConnected()`:252 `onServiceDisconnected()`:261 `sendText()`:329 `sendBackspaces()`:336 `onCreate()`:358 `onCapturedPointer()`:548 `notifyCrash()`:674 `onDisplayAdded()`:1039 |
+| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 935 | 4.8 | PcView, ComputerObject | `onServiceConnected()`:83 `run()`:90 `onServiceDisconnected()`:106 `onConfigurationChanged()`:112 `onClick()`:165 `onClick()`:171 `onClick()`:178 `onClick()`:184 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 796 | 6.6 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.5 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.6 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
@@ -88,7 +88,7 @@ Total: **216 arquivos**, **64.193 linhas**, **268 tipos**, **2530 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`TrackpadContext.java`](../../app/src/main/java/com/limelight/binding/input/touch/TrackpadContext.java) | 486 | 3.2 | TrackpadContext | `run()`:70 `run()`:77 `run()`:113 `getActionIndex()`:147 `touchDownEvent()`:182 `touchUpEvent()`:238 `touchMoveEvent()`:305 `cancelTouch()`:415 |
+| [`TrackpadContext.java`](../../app/src/main/java/com/limelight/binding/input/touch/TrackpadContext.java) | 498 | 3.2 | TrackpadContext | `run()`:70 `run()`:77 `run()`:113 `getActionIndex()`:147 `touchDownEvent()`:182 `touchUpEvent()`:238 `touchMoveEvent()`:305 `cancelTouch()`:415 |
 | [`RelativeTouchContext.java`](../../app/src/main/java/com/limelight/binding/input/touch/RelativeTouchContext.java) | 332 | 3.2 | RelativeTouchContext | `run()`:36 `run()`:57 `run()`:63 `run()`:69 `run()`:75 `run()`:81 `cancelTouch()`:306 `isCancelled()`:319 |
 | [`AbsoluteTouchContext.java`](../../app/src/main/java/com/limelight/binding/input/touch/AbsoluteTouchContext.java) | 262 | 3.2 | AbsoluteTouchContext | `run()`:28 `run()`:43 `run()`:56 `cancelTouch()`:234 `isCancelled()`:251 `setPointerCount()`:256 |
 | [`TouchContext.java`](../../app/src/main/java/com/limelight/binding/input/touch/TouchContext.java) | 12 | 3.2 | TouchContext | — |
@@ -161,7 +161,7 @@ Total: **216 arquivos**, **64.193 linhas**, **268 tipos**, **2530 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`AppGridAdapter.java`](../../app/src/main/java/com/limelight/grid/AppGridAdapter.java) | 194 | 3.3 | AppGridAdapter | `updateHiddenApps()`:52 `updateLayoutWithPreferences()`:86 `cancelQueuedOperations()`:119 `compare()`:128 `addApp()`:140 `removeApp()`:159 `clear()`:165 `populateView()`:171 |
-| [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 95 | 3.1 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
+| [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 113 | 3.1 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
 | [`GenericGridAdapter.java`](../../app/src/main/java/com/limelight/grid/GenericGridAdapter.java) | 77 | 2.9 | GenericGridAdapter | `clear()`:39 `getCount()`:44 `getItem()`:49 `getItemId()`:54 `getView()`:61 |
 
 ## `app/src/main/java/com/limelight/grid/assets/`
@@ -247,7 +247,7 @@ Total: **216 arquivos**, **64.193 linhas**, **268 tipos**, **2530 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 4.2 | StreamSettings, SettingsFragment | `onCreate()`:92 `onAttachedToWindow()`:106 `onConfigurationChanged()`:124 `onBackPressed()`:143 `getPrefs()`:174 `onCreateView()`:320 `onCreateView()`:326 `onCreatePreferences()`:331 |
-| [`PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1075 | 51.5 | PreferenceConfiguration, ScaleMode, ImeDisplayMode, FormatOption, AnalogStickForScrolling | — |
+| [`PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1079 | 51.5 | PreferenceConfiguration, ScaleMode, ImeDisplayMode, FormatOption, AnalogStickForScrolling | — |
 | [`AddComputerManually.java`](../../app/src/main/java/com/limelight/preferences/AddComputerManually.java) | 408 | 3.1 | AddComputerManually | `onServiceConnected()`:49 `onServiceDisconnected()`:54 `run()`:197 `run()`:227 `onStop()`:262 `onDestroy()`:270 `onCreate()`:280 `onEditorAction()`:333 |
 | [`SeekBarPreference.java`](../../app/src/main/java/com/limelight/preferences/SeekBarPreference.java) | 206 | 2.9 | SeekBarPreference | `getDialog()`:72 `onProgressChanged()`:102 `onStartTrackingTouch()`:127 `onStopTrackingTouch()`:130 `updateSeekbar()`:164 `setProgress()`:184 `getProgress()`:190 `showDialog()`:194 |
 | [`ConfirmDeleteKeyboardPreference.java`](../../app/src/main/java/com/limelight/preferences/ConfirmDeleteKeyboardPreference.java) | 56 | 2.9 | ConfirmDeleteKeyboardPreference, DialogFragmentCompat | `onDialogClosed()`:47 |

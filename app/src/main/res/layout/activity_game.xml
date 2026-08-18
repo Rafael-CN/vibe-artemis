@@ -36,18 +36,31 @@
 <!--        app:aperture_middle_color="#6CD2F8">-->
 <!--    </com.limelight.ui.ApertureViewGroup>-->
 
+    <!--
+        Em sessão o vidro é FOSCO, nunca embaçado. O vídeo desenha num SurfaceView,
+        numa camada de hardware separada da árvore de views, então RenderEffect só
+        borraria o que está na mesma camada — ou seja, nada. Alpha 0,82 entrega a
+        mesma leitura e devolve a GPU inteira para o decodificador.
+
+        Aviso mora no topo porque aviso não se toca: ação vive nos 96dp de baixo.
+    -->
     <TextView
         android:id="@+id/notificationOverlay"
+        style="@style/VidroText.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
         android:layout_gravity="right"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="@dimen/vidro_space_3"
+        android:layout_marginRight="@dimen/vidro_space_3"
+        android:layout_marginEnd="@dimen/vidro_space_3"
+        android:background="@drawable/vidro_glass_pill"
         android:gravity="right"
-        android:background="#80000000"
+        android:paddingLeft="@dimen/vidro_space_4"
+        android:paddingTop="@dimen/vidro_space_2"
+        android:paddingRight="@dimen/vidro_space_4"
+        android:paddingBottom="@dimen/vidro_space_2"
         android:preferKeepClear="true"
+        android:textColor="@color/vidro_text"
         android:visibility="gone" />
 
     <LinearLayout
@@ -56,35 +69,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!--
+            Números em tabular. Latência, FPS e perda mudam a cada quadro; sem tnum a
+            linha inteira dança e vira impossível de ler durante o jogo.
+        -->
         <TextView
             android:id="@+id/performanceOverlayBig"
+            style="@style/VidroText.Numeric"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_gravity="left"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginLeft="@dimen/vidro_space_3"
+            android:layout_marginStart="@dimen/vidro_space_3"
+            android:layout_marginTop="@dimen/vidro_space_3"
+            android:background="@drawable/vidro_glass_session"
             android:gravity="left"
-            android:background="#80000000"
+            android:lineSpacingMultiplier="1.45"
+            android:paddingLeft="@dimen/vidro_space_3"
+            android:paddingTop="@dimen/vidro_space_2"
+            android:paddingRight="@dimen/vidro_space_3"
+            android:paddingBottom="@dimen/vidro_space_2"
             android:preferKeepClear="true"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/performanceOverlayLite"
-            tools:text="延迟/解码：109ms/7ms 丢包率：69% FPS：60"
-            android:textSize="10sp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/ic_hud_bg"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:visibility="gone"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_gravity="center_horizontal"
+            style="@style/VidroText.Numeric"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/vidro_space_1"
+            android:background="@drawable/vidro_glass_pill"
+            android:paddingLeft="@dimen/vidro_space_3"
+            android:paddingTop="3dp"
+            android:paddingRight="@dimen/vidro_space_3"
+            android:paddingBottom="3dp"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:text="18ms · 7ms · 0% · 120fps" />
 
     </LinearLayout>
 

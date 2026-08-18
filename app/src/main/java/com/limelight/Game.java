@@ -212,6 +212,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private boolean waitingForAllModifiersUp = false;
     private int specialKeyCode = KeyEvent.KEYCODE_UNKNOWN;
     private StreamContainer streamContainer;
+
+    private int physicalTouchpadPointerId = -1;
+    private int physicalTouchpadLastX;
+    private int physicalTouchpadLastY;
+    private float physicalTouchpadScale;
     private long synthTouchDownTime = 0;
 
     private boolean pendingDrag = false;
@@ -2898,7 +2903,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             // This case is for mice and non-finger touch devices
             if (
                     eventSource == InputDevice.SOURCE_MOUSE ||
-                            ((eventSource & InputDevice.SOURCE_CLASS_POSITION) != 0 && hasActionButton) || // SOURCE_TOUCHPAD
+                            ((eventSource & InputDevice.SOURCE_CLASS_POSITION) != 0 && (hasActionButton || isPhysicalTouchpad(event))) || // SOURCE_TOUCHPAD
                             (eventSource == InputDevice.SOURCE_MOUSE_RELATIVE ||
                                     (event.getPointerCount() >= 1 &&
                                             (event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE ||
@@ -2952,6 +2957,13 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                             conn.sendMouseMove(deltaX, deltaY);
                         }
                     }
+                }
+                else if (isPhysicalTouchpad(event)) {
+                    // A trackpad in a keyboard cover reports absolute positions on its own
+                    // surface. The host wants deltas, so we differentiate here instead of
+                    // falling into sendMousePosition below, which would teleport the cursor to
+                    // wherever the finger happened to land.
+                    handlePhysicalTouchpadMotion(event);
                 }
                 else if ((eventSource & InputDevice.SOURCE_CLASS_POSITION) != 0) {
                     // If this input device is not associated with the view itself (like a trackpad),
@@ -3232,6 +3244,96 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         // Unknown class
         return false;
+    }
+
+    // A trackpad built into a keyboard cover advertises SOURCE_TOUCHPAD without
+    // SOURCE_TOUCHSCREEN; the tablet's own panel advertises both. Only the former should
+    // bypass TrackpadContext, which exists to emulate a trackpad from a finger on glass and
+    // brings its own scroll physics that fight the pad's real scroll events.
+    private boolean isPhysicalTouchpad(MotionEvent event) {
+        if (!prefConfig.physicalTrackpadNative) {
+            return false;
+        }
+
+        InputDevice device = event.getDevice();
+        if (device == null) {
+            return false;
+        }
+
+        int sources = device.getSources();
+        return (sources & InputDevice.SOURCE_TOUCHPAD) == InputDevice.SOURCE_TOUCHPAD &&
+                (sources & InputDevice.SOURCE_TOUCHSCREEN) != InputDevice.SOURCE_TOUCHSCREEN;
+    }
+
+    // Pads report in their own resolution, which has no relation to screen pixels. Map a full
+    // sweep across the pad to a full sweep across the stream so the speed feels the same
+    // whatever the hardware's raw scale is.
+    private float getPhysicalTouchpadScale(MotionEvent event) {
+        if (physicalTouchpadScale > 0) {
+            return physicalTouchpadScale;
+        }
+
+        InputDevice device = event.getDevice();
+        InputDevice.MotionRange xRange = device != null ?
+                device.getMotionRange(MotionEvent.AXIS_X, event.getSource()) : null;
+        float range = xRange != null ? xRange.getRange() : 0;
+
+        if (range > 0 && streamContainer != null && streamContainer.getWidth() > 0) {
+            physicalTouchpadScale = streamContainer.getWidth() / range;
+        }
+        else {
+            // Unknown geometry: pass the pad's own units through rather than guessing.
+            physicalTouchpadScale = 1;
+        }
+
+        return physicalTouchpadScale;
+    }
+
+    private void handlePhysicalTouchpadMotion(MotionEvent event) {
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                break;
+            default:
+                // Any finger going down or up re-anchors. Carrying an anchor across a lift is
+                // what makes the cursor jump when a second finger touches down.
+                physicalTouchpadPointerId = -1;
+                return;
+        }
+
+        // Two fingers on the pad is a scroll gesture, which arrives separately as ACTION_SCROLL.
+        // Moving the cursor from it as well is what dragged the pointer around while scrolling.
+        if (event.getPointerCount() != 1) {
+            physicalTouchpadPointerId = -1;
+            return;
+        }
+
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+
+        if (physicalTouchpadPointerId != event.getPointerId(0)) {
+            physicalTouchpadPointerId = event.getPointerId(0);
+            physicalTouchpadLastX = x;
+            physicalTouchpadLastY = y;
+            return;
+        }
+
+        float scale = getPhysicalTouchpadScale(event);
+        int deltaX = Math.round((x - physicalTouchpadLastX) * scale);
+        int deltaY = Math.round((y - physicalTouchpadLastY) * scale);
+
+        physicalTouchpadLastX = x;
+        physicalTouchpadLastY = y;
+
+        if (deltaX == 0 && deltaY == 0) {
+            return;
+        }
+
+        conn.sendMouseMove(clampToShort(deltaX), clampToShort(deltaY));
+    }
+
+    private static short clampToShort(int value) {
+        return (short)Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, value));
     }
 
     private boolean handleTouchInput(MotionEvent event, TouchContext[] inputContextMap, boolean isTouchScreen) {

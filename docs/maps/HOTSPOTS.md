@@ -8,7 +8,7 @@
 
 | Arquivo | Linhas | Métodos | Fan-in | Fan-out |
 |---|--:|--:|--:|--:|
-| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4437 | 151 | 10 | 45 |
+| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4539 | 155 | 10 | 45 |
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
@@ -18,13 +18,13 @@
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c) | 1189 | 32 | — | — |
 | [`app/src/main/java/com/limelight/utils/Stereo3DRenderer.java`](../../app/src/main/java/com/limelight/utils/Stereo3DRenderer.java) | 1149 | 36 | 2 | 2 |
 | [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 2 | 10 |
+| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1079 | 21 | 33 | 2 |
 | [`app/src/main/java/com/limelight/utils/KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 2 | 4 | 0 |
-| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1075 | 21 | 33 | 2 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c) | 1001 | 24 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h) | 978 | 52 | — | — |
 | [`app/src/main/java/com/limelight/computers/ComputerManagerService.java`](../../app/src/main/java/com/limelight/computers/ComputerManagerService.java) | 969 | 42 | 5 | 13 |
 | [`app/src/main/java/com/limelight/nvstream/http/NvHTTP.java`](../../app/src/main/java/com/limelight/nvstream/http/NvHTTP.java) | 939 | 59 | 13 | 4 |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 934 | 47 | 4 | 23 |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 935 | 47 | 4 | 23 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c) | 802 | 12 | — | — |
 
 ## Mais dependidos (fan-in alto — mudanças aqui propagam)
@@ -32,13 +32,13 @@
 | Arquivo | Fan-in | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/LimeLog.java` | 47 | 26 |
-| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 33 | 1075 |
+| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 33 | 1079 |
 | `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java` | 21 | 240 |
 | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java` | 15 | 445 |
 | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java` | 13 | 939 |
 | `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 11 | 101 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 11 | 296 |
-| `app/src/main/java/com/limelight/Game.java` | 10 | 4437 |
+| `app/src/main/java/com/limelight/Game.java` | 10 | 4539 |
 | `app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java` | 10 | 27 |
 | `app/src/main/java/com/limelight/profiles/ProfilesManager.java` | 10 | 266 |
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 8 | 629 |
@@ -56,8 +56,8 @@
 
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
-| `app/src/main/java/com/limelight/Game.java` | 45 | 4437 |
-| `app/src/main/java/com/limelight/PcView.java` | 23 | 934 |
+| `app/src/main/java/com/limelight/Game.java` | 45 | 4539 |
+| `app/src/main/java/com/limelight/PcView.java` | 23 | 935 |
 | `app/src/main/java/com/limelight/AppView.java` | 17 | 796 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
@@ -102,15 +102,15 @@
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:598` | This is a workaround for the fact that GFE doesn't appear to synchronize keyboard |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1047` | We previously used a short for the buttonFlags argument, but we switched to an |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c:945` | In order to get GFE to respect our request for a lower audio bitrate, we must |
-| TODO | `app/src/main/java/com/limelight/Game.java:1654` | Improve this |
-| TODO | `app/src/main/java/com/limelight/Game.java:1668` | Do we want to use WindowInsetsController here on R+ instead of |
+| TODO | `app/src/main/java/com/limelight/Game.java:1659` | Improve this |
+| TODO | `app/src/main/java/com/limelight/Game.java:1673` | Do we want to use WindowInsetsController here on R+ instead of |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:93` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStickFree.java:95` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyAnalogStick.java:95` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyAnalogStickFree.java:93` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java:883` | Test some AV1 decoders |
 | TODO | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java:349` | Shield Hub uses HTTP for this and is able to get an accurate PairStatus with HTTP. |
-| TODO | `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java:524` | Collect some empirical data to see if these defaults make sense. |
+| TODO | `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java:527` | Collect some empirical data to see if these defaults make sense. |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:781` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:842` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1085` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |

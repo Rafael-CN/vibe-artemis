@@ -1,4 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Identidade Vidro. Os valores vêm do handoff 8e do Claude Design, onde foram
+    definidos em OKLCH e medidos por APCA no navegador contra o pior fundo possível
+    (uma cena de vídeo clara). Estão aqui já convertidos para sRGB.
+
+    Regra que não se negocia: o acento tem TRÊS papéis e eles não são intercambiáveis.
+    O tom a L 64% reprova como texto e como preenchimento — serve só de brilho.
+-->
 <resources>
     <color name="profileAccent">#FF4081</color>
+
+    <!-- Fundos -->
+    <color name="vidro_void">#020305</color>          <!-- oklch(9.5% .008 265) · fora da sessão -->
+    <color name="vidro_surface">#090B0F</color>       <!-- oklch(15% .010 265) · cartão, folha -->
+    <color name="vidro_surface_alt">#111419</color>   <!-- oklch(19% .012 265) · cartão elevado -->
+    <color name="vidro_glass_session">#07090E</color> <!-- oklch(14% .012 265) · base do vidro -->
+    <color name="vidro_stroke">#222429</color>        <!-- oklch(26% .010 265) · borda sólida -->
+
+    <!-- Texto -->
+    <color name="vidro_text">#F4F5F8</color>          <!-- oklch(97% .004 265) -->
+    <color name="vidro_text_2">#D5D7DD</color>        <!-- oklch(88% .008 265) -->
+    <color name="vidro_text_3">#AEB1B6</color>        <!-- oklch(76% .008 265) -->
+    <color name="vidro_text_night">#DDDEE1</color>    <!-- oklch(90% .004 265) · sala escura -->
+
+    <!-- O acento, nos seus três papéis -->
+    <color name="vidro_accent_glow">#1E8FEE</color>   <!-- oklch(64% .17 250) · SÓ brilho -->
+    <color name="vidro_accent_text">#80C3FF</color>   <!-- oklch(80% .12 250) · texto -->
+    <color name="vidro_accent_fill">#69BDFF</color>   <!-- oklch(78% .145 250) · preenchimento -->
+    <color name="vidro_on_accent">#030819</color>     <!-- oklch(14% .04 265) · tinta sobre ele -->
+    <color name="vidro_light_core">#4378AD</color>    <!-- oklch(56% .10 250) · núcleo do halo -->
+
+    <!--
+        Vidro composto. Em sessão o painel é FOSCO, não embaçado: o vídeo desenha num
+        SurfaceView, numa camada de hardware separada, e RenderEffect não consegue
+        amostrar o que está lá. Um blur por cima borraria o nada. Alpha 0,82 resolve
+        pelo mesmo efeito visual e não custa GPU nenhuma — que é o que o decodificador
+        precisa. Fora da sessão o fundo é composto pela própria hierarquia e o blur vale.
+    -->
+    <color name="vidro_glass_fill_session">#D107090E</color> <!-- alpha 0,82 -->
+    <color name="vidro_glass_fill_idle">#8C07090E</color>    <!-- alpha 0,55 -->
+
+    <!-- Bordas por peso. Sempre 1px; o que muda é quanto ela aparece. -->
+    <color name="vidro_stroke_glass">#29FFFFFF</color>   <!-- 0,16 · sobre vidro em sessão -->
+    <color name="vidro_stroke_hairline">#1CFFFFFF</color><!-- 0,11 · cartão comum -->
+    <color name="vidro_stroke_faint">#0FFFFFFF</color>   <!-- 0,06 · divisória interna -->
+    <color name="vidro_surface_overlay">#0FFFFFFF</color><!-- 0,06 · realce sobre fundo -->
+    <color name="vidro_surface_overlay_alt">#1CFFFFFF</color><!-- 0,11 · pressionado -->
+
+    <!-- Estado do host, dito pela luz e não por rótulo -->
+    <color name="vidro_halo_awake">#B81E8FEE</color>  <!-- 0,72 -->
+    <color name="vidro_halo_night">#571E8FEE</color>  <!-- 0,34 -->
+    <color name="vidro_halo_asleep">#331E8FEE</color> <!-- 0,20 -->
 </resources>

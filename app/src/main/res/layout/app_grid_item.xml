@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    O card de app é a origem da transição: ele cresce até virar o vídeo e recua até
+    virar card de novo. Por isso ele tem forma própria e borda de 1px — precisa ser
+    reconhecível como o lugar de onde a sessão saiu e para onde ela volta.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="170dp"
-    android:layout_height="220dp">
+    android:layout_height="230dp"
+    android:padding="@dimen/vidro_space_2">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
-        app:cardMaxElevation="8dp">
+        app:cardBackgroundColor="@color/vidro_surface"
+        app:cardCornerRadius="@dimen/vidro_radius_s"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp">
 
         <ImageView
             android:id="@+id/grid_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/vidro_poster_bg"
             android:cropToPadding="false"
             android:scaleType="centerCrop" />
 
+        <!--
+            O véu embaixo existe para o nome sobreviver a qualquer capa, inclusive uma
+            clara. Sem ele o contraste depende da arte, que não é nossa.
+        -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/vidro_poster_scrim" />
+
+        <TextView
+            android:id="@+id/grid_text"
+            style="@style/VidroText.Heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="@dimen/vidro_space_3"
+            android:shadowColor="#CC000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="6" />
+
+        <!-- Camada do estado "aberto agora"; o adapter pinta o fundo dela. -->
         <RelativeLayout
             android:id="@+id/grid_mask"
             android:layout_width="match_parent"
@@ -26,22 +58,16 @@
 
             <ImageView
                 android:id="@+id/grid_overlay"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp" />
-
-            <TextView
-                android:id="@+id/grid_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/grid_overlay"
-                android:layout_margin="5dp"
-                android:gravity="center|center_vertical"
-                android:background="#00FFFFFF"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
 
+        <!-- Foco e seleção acendem a borda, que é a mesma linguagem da luz do host. -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/vidro_poster_frame"
+            android:duplicateParentState="true" />
     </androidx.cardview.widget.CardView>
-</RelativeLayout>
+</FrameLayout>

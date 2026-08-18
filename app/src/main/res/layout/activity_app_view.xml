@@ -1,9 +1,28 @@
+<!--
+    O catálogo. O nome do host vira o título da tela — é a única coisa que precisa
+    ser dita aqui, porque tudo o mais já está nas capas.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/vidro_void"
     tools:context=".AppView">
+
+    <TextView
+        android:id="@+id/appListText"
+        style="@style/VidroText.Display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingTop="@dimen/vidro_space_5"
+        android:paddingRight="@dimen/vidro_space_5"
+        android:paddingBottom="@dimen/vidro_space_4"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:preferKeepClear="true" />
 
     <FrameLayout
         android:id="@+id/appFragmentContainer"
@@ -15,20 +34,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:gravity="center" >
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/appListText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:preferKeepClear="true"
-        android:textSize="28sp" />
+        android:gravity="center" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/profilesButton"
@@ -37,11 +43,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="@dimen/vidro_space_4"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/profile_manager_choose_profile"
-        android:layout_margin="16dp"
-        app:icon="@drawable/ic_profiles" />
+        android:textColor="@color/vidro_on_accent"
+        app:backgroundTint="@color/vidro_accent_fill"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_profiles"
+        app:iconTint="@color/vidro_on_accent" />
 
 </RelativeLayout>

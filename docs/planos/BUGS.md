@@ -73,6 +73,7 @@ citar o código.
 | **B62** | [Configuração de shadows do Robolectric fora do classpath — nunca é lida](#b62) | small |
 | **B63** | [Repositório sem nenhum CI; o único arquivo de pipeline é herança quebrada do upstream](#b63) | small |
 | **B64** | [AppVeyor publica um artefato de lint com nome de flavor inexistente](#b64) | small |
+| **B65** | [Trackpad físico é roteado para o emulador de dedo na tela; dois sistemas de scroll competem](#b65) | small |
 
 ---
 
@@ -1486,3 +1487,54 @@ Severidade high.
 
 ---
 
+## B65
+
+### Trackpad físico é roteado para o emulador de dedo na tela; dois sistemas de scroll competem
+
+**Tamanho:** small · **Severidade:** high · **Local:** `Game.java:2901`, `Game.java:3181`, `binding/input/touch/TrackpadContext.java:122`
+
+**Subsistema:** Entrada — teclado, mouse e toque
+
+**Por quê**
+
+Um trackpad de capa de teclado se anuncia como `SOURCE_TOUCHPAD`, que é
+`SOURCE_CLASS_POSITION`. Em `Game.java:2901` o evento só alcança o caminho de mouse
+nativo quando `hasActionButton` é verdadeiro — ou seja, só no clique. Movimento e scroll
+caem no `else` de `Game.java:3181` e vão para `handleTouchInput(event, trackpadContextMap,
+false)`, que é o **emulador de trackpad para o dedo no vidro**. O aparelho físico passa a
+ser tratado como se fosse um dedo na tela.
+
+Daí saem dois sintomas que parecem separados e são o mesmo:
+
+1. **Eixos invertidos.** `trackpadSwapAxis` e `trackpadSensitivityX/Y` só alimentam o
+   `TrackpadContext` (construído em `Game.java:832`). Como o trackpad físico está passando
+   por ele, o usuário precisa compensar à mão um mapeamento errado na origem — foi
+   necessário inverter os eixos e pôr a sensibilidade de Y em -100%.
+
+2. **Scroll errático.** Dois sistemas emitem scroll com convenções diferentes: o
+   `ACTION_SCROLL` nativo em `Game.java:3084` (`axisValue * 120`, sem preferência aplicada)
+   e a emulação própria do `TrackpadContext`, com velocidade, inércia, fatores
+   `SCROLL_SPEED_FACTOR_X = 2` / `SCROLL_SPEED_FACTOR_Y = 3` e — repare — **X negado e Y
+   não**. Pior: a sensibilidade de Y a -100%, ajustada para consertar o *movimento*, negava
+   o *scroll* junto, porque a mesma preferência governa os dois.
+
+Há ainda um defeito independente do roteamento: as oito emissões de scroll do
+`TrackpadContext` estreitavam `double` direto para `short`. Java trunca o padrão de bits em
+vez de saturar, então um flick rápido passava de 32767 e **invertia a direção no meio do
+gesto**.
+
+**Plano de implementação**
+
+Distinguir trackpad externo de dedo na tela: um pad de capa anuncia `SOURCE_TOUCHPAD` sem
+`SOURCE_TOUCHSCREEN`, enquanto o painel do tablet anuncia os dois. Com essa checagem, o pad
+físico vai para o caminho nativo, com deltas diferenciados a partir do plano absoluto dele
+(nunca `sendMousePosition`, que teleportaria o cursor para onde o dedo pousasse), e o scroll
+fica por conta do `ACTION_SCROLL` do Android. Saturar as conversões para `short`.
+
+**Risco**
+
+Severidade high. A mudança de roteamento fica atrás de
+`checkbox_physical_trackpad_native`, ligada por padrão: se o comportamento novo falhar em
+algum aparelho, desligar devolve exatamente o de hoje sem precisar de outro APK.
+
+---

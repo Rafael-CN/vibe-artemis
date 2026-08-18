@@ -8,11 +8,11 @@
 
 | Pacote | PageRank | Arquivos | Linhas |
 |---|--:|--:|--:|
-| `com.limelight` | 231.6 | 21 | 9357 |
+| `com.limelight` | 231.6 | 21 | 9460 |
 | `com.limelight.utils` | 104.8 | 22 | 5729 |
 | `com.limelight.nvstream.http` | 104.4 | 6 | 1678 |
 | `com.limelight.nvstream.jni` | 71.6 | 1 | 445 |
-| `com.limelight.preferences` | 53.6 | 10 | 3052 |
+| `com.limelight.preferences` | 53.6 | 10 | 3056 |
 | `com.limelight.nvstream` | 51.6 | 4 | 950 |
 | `com.limelight.nvstream.av.audio` | 36.7 | 1 | 16 |
 | `com.limelight.nvstream.av.video` | 31.7 | 1 | 22 |
@@ -27,13 +27,13 @@
 | `com.limelight.binding` | 14.1 | 1 | 15 |
 | `com.limelight.binding.input.virtual_controller.keyboard` | 13.7 | 12 | 4198 |
 | `com.limelight.binding.input.evdev` | 13.7 | 6 | 627 |
-| `com.limelight.binding.input.touch` | 13.4 | 4 | 1092 |
+| `com.limelight.binding.input.touch` | 13.4 | 4 | 1104 |
 | `com.limelight.grid.assets` | 12.5 | 5 | 718 |
 | `com.limelight.binding.audio` | 11.6 | 1 | 234 |
 | `com.limelight.binding.crypto` | 11.6 | 1 | 260 |
 | `com.limelight.binding.input.driver` | 11.4 | 8 | 1695 |
 | `com.limelight.binding.input.virtual_controller` | 10.3 | 13 | 2815 |
-| `com.limelight.grid` | 10.2 | 3 | 366 |
+| `com.limelight.grid` | 10.2 | 3 | 384 |
 | `com.limelight.nvstream.wol` | 10.2 | 1 | 150 |
 | `com.limelight.discovery` | 7.8 | 1 | 91 |
 | `com.limelight.nvstream.av` | 7.0 | 1 | 58 |

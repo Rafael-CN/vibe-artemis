@@ -10,4 +10,8 @@
     android:focusableInTouchMode="true"
     android:nextFocusLeft="@id/settingsButton"
     android:clipToPadding="false"
+    android:paddingLeft="@dimen/vidro_space_3"
+    android:paddingRight="@dimen/vidro_space_3"
+    android:paddingBottom="@dimen/vidro_thumb_reach"
+    android:scrollbars="none"
     android:gravity="center"/>
