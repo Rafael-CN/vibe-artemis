@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Tecla do teclado virtual, em repouso. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:bottom="2dp"
@@ -6,8 +7,9 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="#383838" />
-            <corners android:radius="5dp" />
+            <solid android:color="@color/vidro_surface_alt" />
+            <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_stroke_hairline" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
 </layer-list>

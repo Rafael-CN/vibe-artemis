@@ -9,6 +9,8 @@ import android.widget.FrameLayout;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.limelight.DebugInfoActivity;
+
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +42,11 @@ import java.io.IOException;
  *
  * <pre>node tools/screens.mjs</pre>
  */
-@Config(sdk = {33})
+// ShadowMoonBridge anula o inicializador estático que chama System.loadLibrary — sem
+// ele qualquer Activity que toque a ponte nativa derruba a captura com
+// UnsatisfiedLinkError, e não há .so nenhum numa JVM de teste.
+@Config(sdk = {33}, shadows = {com.limelight.shadows.ShadowMoonBridge.class,
+        com.limelight.shadows.ShadowGameManager.class})
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @RunWith(RobolectricTestRunner.class)
 public class VidroScreenshotTest {
@@ -64,6 +70,9 @@ public class VidroScreenshotTest {
         // adapter. Inflar o layout sozinho mostra a casca; isto mostra a tela.
         shootActivity("00-home-viva", PcView.class, 393, 852);
         shootActivity("00-cenas-viva", ProfilesActivity.class, 393, 852);
+        shootActivity("00-debug-viva", DebugInfoActivity.class, 393, 852);
+        shootActivity("00-endereco-viva",
+                com.limelight.preferences.AddComputerManually.class, 393, 852);
 
         shoot("01-home", R.layout.activity_pc_view, 393, 852);
         // A mesma home com o card de antecipação e o pareamento à mostra, que é como
@@ -78,6 +87,11 @@ public class VidroScreenshotTest {
         shoot("peca-card-de-app", R.layout.app_grid_item, 180, 230);
         shoot("peca-linha-de-host", R.layout.pc_grid_item, 393, 0);
         shoot("peca-card-de-cena", R.layout.row_profile, 357, 0);
+        shoot("peca-linha-de-menu", R.layout.vidro_menu_row, 320, 0);
+        shoot("08-debug-info", R.layout.activity_axitest, 393, 852);
+        shoot("09-endereco", R.layout.activity_add_computer_manually, 393, 852);
+        shoot("10-ajustes", R.layout.activity_stream_settings, 393, 852);
+        shoot("peca-card-de-app-pequeno", R.layout.app_grid_item_small, 120, 0);
     }
 
     // ==================== paisagem · 852×393 ====================
@@ -91,6 +105,38 @@ public class VidroScreenshotTest {
         shoot("04-sessao-ilha", R.layout.vidro_session_island, 852, 393, true);
         shoot("05-folha-de-ajustes", R.layout.vidro_session_sheet, 852, 393, true);
         shoot("09-perdemos-o-host", R.layout.vidro_lost, 852, 393, true);
+    }
+
+    // ==================== tablet · S8 Ultra em paisagem ====================
+
+    /**
+     * 1722x1075 dp é o Tab S8 Ultra real (2960x1848 a ~1,72 de escala). É a tela onde as
+     * medidas fixas do desenho de celular aparecem — painel de 352dp, capa de 132dp,
+     * grade de colunas.
+     */
+    @Test
+    @Config(qualifiers = "w1722dp-h1075dp-land-night-xhdpi")
+    public void telasNoTablet() throws IOException {
+        onlyWhenAsked();
+
+        shoot("tab-01-home", R.layout.activity_pc_view, 1722, 1075);
+        shoot("tab-02-catalogo", R.layout.activity_app_view, 1722, 1075);
+        shoot("tab-04-sessao-ilha", R.layout.vidro_session_island, 1722, 1075, true);
+        shoot("tab-05-folha-de-ajustes", R.layout.vidro_session_sheet, 1722, 1075, true);
+        shoot("tab-06-cenas", R.layout.activity_profiles, 1722, 1075);
+    }
+
+    // ==================== celular alto · S22 Ultra ====================
+
+    /** 460x988 dp — mais estreito e mais alto que o alvo de 393x852 do protótipo. */
+    @Test
+    @Config(qualifiers = "w460dp-h988dp-port-night-xhdpi")
+    public void telasNoS22Ultra() throws IOException {
+        onlyWhenAsked();
+
+        shoot("s22-01-home", R.layout.activity_pc_view, 460, 988);
+        shoot("s22-02-catalogo", R.layout.activity_app_view, 460, 988);
+        shoot("s22-07-pareamento", R.layout.vidro_pairing, 460, 988, true);
     }
 
     // ==================== máquina ====================
@@ -209,7 +255,9 @@ public class VidroScreenshotTest {
 
             write(name, bitmap, widthPx, heightPx);
             bitmap.recycle();
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
+            // Throwable, e não RuntimeException: UnsatisfiedLinkError é Error, escapava
+            // daqui e levava junto todas as telas seguintes da mesma tanda.
             // Uma Activity que não sobe não invalida a captura das outras, mas engolir a
             // causa é pior que não capturar: numa passada anterior um ClassCastException
             // de verdade virou uma imagem preta que eu li como "tela vazia". Agora ela

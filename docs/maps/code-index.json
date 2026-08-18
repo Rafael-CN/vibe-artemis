@@ -4,9 +4,9 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 65982,
+  "lines": 66030,
   "types": 274,
-  "methods": 2612,
+  "methods": 2614,
   "packages": 30,
   "todos": 35
  },
@@ -26802,7 +26802,7 @@
   {
    "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
    "lang": "java",
-   "lines": 262,
+   "lines": 310,
    "package": "com.limelight",
    "imports": [
     "android.content.Context",
@@ -26812,6 +26812,7 @@
     "android.view.View",
     "android.widget.FrameLayout",
     "androidx.test.core.app.ApplicationProvider",
+    "com.limelight.DebugInfoActivity",
     "org.junit.Assume",
     "org.junit.BeforeClass",
     "org.junit.Test",
@@ -26829,7 +26830,7 @@
     {
      "kind": "class",
      "name": "VidroScreenshotTest",
-     "line": 43
+     "line": 48
     }
    ],
    "methods": [
@@ -26838,56 +26839,70 @@
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 52
+     "line": 58
     },
     {
      "name": "telasEmRetrato",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 60
+     "line": 66
     },
     {
      "name": "telasEmPaisagem",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 87
+     "line": 101
+    },
+    {
+     "name": "telasNoTablet",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 119
+    },
+    {
+     "name": "telasNoS22Ultra",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 134
     },
     {
      "name": "onlyWhenAsked",
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 102
+     "line": 148
     },
     {
      "name": "shoot",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, int layoutId, int widthDp, int heightDp",
-     "line": 110
+     "line": 156
     },
     {
      "name": "shootActivity",
      "modifiers": "private",
      "returns": "<T extends android.app.Activity> void",
      "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
-     "line": 187
+     "line": 233
     },
     {
      "name": "write",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, Bitmap bitmap, int w, int h",
-     "line": 234
+     "line": 282
     },
     {
      "name": "revealAll",
      "modifiers": "static",
      "returns": "void",
      "params": "View view",
-     "line": 249
+     "line": 297
     }
    ],
    "nativeMethods": [],
@@ -31006,6 +31021,10 @@
    [
     "app/src/test/java/com/limelight/StartupTest.java",
     "app/src/test/java/com/limelight/TestLogSuppressor.java"
+   ],
+   [
+    "app/src/test/java/com/limelight/VidroScreenshotTest.java",
+    "app/src/main/java/com/limelight/DebugInfoActivity.java"
    ],
    [
     "app/src/test/java/com/limelight/profiles/OverlayPreferencesTest.java",

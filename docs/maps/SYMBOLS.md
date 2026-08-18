@@ -4,7 +4,7 @@
 
 > Busca `símbolo -> arquivo:linha`. Use `Grep` neste arquivo para localizar uma classe ou método sem varrer o codebase inteiro.
 
-2146 símbolos indexados.
+2148 símbolos indexados.
 
 | Símbolo | Tipo | Local |
 |---|---|---|
@@ -2018,8 +2018,10 @@
 | `switchShowHide()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:142` |
 | `switchTouchSensitivity()` | method | `app/src/main/java/com/limelight/Game.java:4593` |
 | `tearDown()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:45` |
-| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:87` |
-| `telasEmRetrato()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:60` |
+| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:101` |
+| `telasEmRetrato()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:66` |
+| `telasNoS22Ultra()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:134` |
+| `telasNoTablet()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:119` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:56` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:64` |
 | `testActivityLifecycleTransitions()` | method | `app/src/test/java/com/limelight/StartupCrashTest.java:227` |
@@ -2139,7 +2141,7 @@
 | `VideoStatsFps` | class | `app/src/main/java/com/limelight/binding/video/VideoStats.java:88` |
 | `VidroIsland` | class | `app/src/main/java/com/limelight/ui/VidroIsland.java:24` |
 | `VidroLightView` | class | `app/src/main/java/com/limelight/ui/VidroLightView.java:35` |
-| `VidroScreenshotTest` | class | `app/src/test/java/com/limelight/VidroScreenshotTest.java:43` |
+| `VidroScreenshotTest` | class | `app/src/test/java/com/limelight/VidroScreenshotTest.java:48` |
 | `VidroSession` | class | `app/src/main/java/com/limelight/ui/VidroSession.java:18` |
 | `ViewCallbacks` | interface | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardLayoutController.java:376` |
 | `VirtualController` | class | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:28` |

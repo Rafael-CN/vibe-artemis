@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Medidas do tablet. Só o que precisa crescer cresce: alvo de toque e respiro entre
+    grupos. Raio e espessura de borda ficam iguais — são assinatura, não escala.
+-->
+<resources>
+    <dimen name="vidro_space_5">28dp</dimen>
+    <dimen name="vidro_space_6">44dp</dimen>
+    <dimen name="vidro_touch_target">52dp</dimen>
+    <!-- A faixa de ação em paisagem, que no tablet tem folga de sobra. -->
+    <dimen name="vidro_thumb_reach">120dp</dimen>
+    <dimen name="vidro_sheet_width">420dp</dimen>
+</resources>

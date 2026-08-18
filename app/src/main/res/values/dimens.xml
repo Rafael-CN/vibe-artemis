@@ -37,6 +37,9 @@
     <dimen name="vidro_thumb_reach">96dp</dimen>
     <dimen name="vidro_touch_target">48dp</dimen>
 
+    <!-- Largura da folha de ajustes em sessão. -->
+    <dimen name="vidro_sheet_width">352dp</dimen>
+
     <!-- O halo do host. Grande de propósito: é a luz da sala, não um badge. -->
     <dimen name="vidro_halo_size">220dp</dimen>
 

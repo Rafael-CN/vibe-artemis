@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Tecla pressionada. Acende no acento de preenchimento, o mesmo dos botões cheios. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:bottom="2dp"
@@ -6,8 +7,8 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="#565656" />
-            <corners android:radius="5dp" />
+            <solid android:color="@color/vidro_accent_fill" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
 </layer-list>

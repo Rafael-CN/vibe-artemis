@@ -25,7 +25,7 @@
 
         <ScrollView
             android:id="@+id/vidroSheet"
-            android:layout_width="352dp"
+            android:layout_width="@dimen/vidro_sheet_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@drawable/vidro_sheet_bg"
