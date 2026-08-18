@@ -4,15 +4,15 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **220 arquivos**, **65.654 linhas**, **273 tipos**, **2602 métodos**.
+Total: **220 arquivos**, **65.779 linhas**, **273 tipos**, **2607 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4644 | 14.6 | Game, GameMenuCallbacks | `onServiceConnected()`:254 `onServiceDisconnected()`:263 `sendText()`:333 `sendBackspaces()`:340 `onCreate()`:362 `onCapturedPointer()`:552 `notifyCrash()`:678 `onDisplayAdded()`:1046 |
-| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1096 | 4.7 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:167 `onClick()`:173 `onClick()`:180 `onClick()`:188 |
-| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 789 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
+| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1106 | 4.7 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:173 `onClick()`:180 `onClick()`:189 `onClick()`:198 |
+| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 839 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.4 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
 | [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 403 | 12.4 | GameMenu, MenuOption | `onGlobalLayout()`:191 `showMenu()`:339 `hideMenu()`:391 `isMenuOpen()`:399 |
@@ -269,9 +269,9 @@ Total: **220 arquivos**, **65.654 linhas**, **273 tipos**, **2602 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
+| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 321 | 3.1 | VidroSession | `showConnecting()`:64 `onStageStarting()`:95 `onConnected()`:112 `getConnectingCancel()`:127 `isSheetOpen()`:133 `openSheet()`:137 `closeSheet()`:153 `run()`:169 |
+| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 277 | 3.0 | VidroLightView, FloatSink | `setIntensity()`:117 `set()`:135 `setQuality()`:142 `set()`:165 `set()`:171 `onAnimationUpdate()`:187 `onDetachedFromWindow()`:197 `onDraw()`:228 |
 | [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 274 | 3.1 | StreamContainer, InputCallbacks, StreamMode | `init()`:65 `setDesiredAspectRatio()`:103 `setFillDisplay()`:108 `onMeasure()`:114 `setInputCallbacks()`:152 `setCommitTextEnabled()`:156 `onKeyPreIme()`:161 `onWindowFocusChanged()`:173 |
-| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 272 | 3.1 | VidroSession | `showConnecting()`:64 `onStageStarting()`:95 `onConnected()`:112 `getConnectingCancel()`:127 `isSheetOpen()`:133 `openSheet()`:137 `closeSheet()`:153 `run()`:169 |
-| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 268 | 3.0 | VidroLightView, FloatSink | `setIntensity()`:114 `set()`:132 `setQuality()`:139 `set()`:162 `set()`:168 `onAnimationUpdate()`:184 `onDetachedFromWindow()`:194 `onDraw()`:225 |
 | [`VidroIsland.java`](../../app/src/main/java/com/limelight/ui/VidroIsland.java) | 224 | 3.1 | VidroIsland | `run()`:52 `isAvailable()`:75 `getIsland()`:79 `getPill()`:83 `setAppName()`:88 `setQuality()`:98 `reopen()`:114 `isOpen()`:118 |
 | [`StreamView.java`](../../app/src/main/java/com/limelight/ui/StreamView.java) | 168 | 2.9 | StreamView, InputCallbacks | `setDesiredAspectRatio()`:24 `setInputCallbacks()`:28 `setFillDisplay()`:32 `setCommitTextEnabled()`:36 `onMeasure()`:62 `onKeyPreIme()`:97 `onWindowFocusChanged()`:117 `onCheckIsTextEditor()`:126 |
 | [`ApertureViewGroup.java`](../../app/src/main/java/com/limelight/ui/ApertureViewGroup.java) | 151 | 2.9 | ApertureViewGroup | `getOutline()`:54 `getCurrentSpeed()`:80 `setCurrentSpeed()`:84 `onSizeChanged()`:90 `dispatchDraw()`:124 |
@@ -378,7 +378,7 @@ Total: **220 arquivos**, **65.654 linhas**, **273 tipos**, **2602 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`StartupCrashTest.java`](../../app/src/test/java/com/limelight/StartupCrashTest.java) | 288 | 2.9 | StartupCrashTest | `setUp()`:37 `testNativeLibraryLoadingFailure()`:54 `testGLSurfaceViewInitialization()`:68 `testPreferenceConfigurationCrash()`:82 `testUiHelperCrash()`:93 `testComputerManagerServiceBinding()`:106 `testSharedPreferencesCorruption()`:119 `testMissingRequiredIntentExtras()`:139 |
-| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 255 | 2.9 | VidroScreenshotTest | `telasEmRetrato()`:60 `telasEmPaisagem()`:87 |
+| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 262 | 2.9 | VidroScreenshotTest | `telasEmRetrato()`:60 `telasEmPaisagem()`:87 |
 | [`StartupTest.java`](../../app/src/test/java/com/limelight/StartupTest.java) | 232 | 2.9 | StartupTest | `setUp()`:35 `testApplicationStartup()`:52 `testPcViewActivityCreation()`:64 `testPcViewActivityWithIntent()`:72 `testAppViewActivityCreation()`:86 `testProfilesManagerFileSystemAccess()`:98 `testMissingPermissions()`:112 `testCorruptedProfilesFile()`:130 |
 | [`PosterContentProviderTest.java`](../../app/src/test/java/com/limelight/PosterContentProviderTest.java) | 173 | 2.9 | PosterContentProviderTest | `setUp()`:39 `legitimateBoxArtIsServed()`:77 `traversalCannotReachAFileOutsideTheBoxArtDirectory()`:91 `traversalShapedUuidsAreRejected()`:113 `nonUuidSegmentsAreRejected()`:120 `nonNumericAppIdIsRejectedWithoutCrashing()`:127 `unexpectedPathsAreRejected()`:135 `writeModesAreRefused()`:154 |
 | [`SimpleStartupTest.java`](../../app/src/test/java/com/limelight/SimpleStartupTest.java) | 157 | 2.9 | SimpleStartupTest | `setUp()`:31 `testApplicationCreation()`:48 `testApplicationOnCreate()`:55 `testProfilesManagerSingleton()`:74 `testProfilesManagerLoad()`:85 `testProfilesManagerSave()`:99 `testContextFileAccess()`:114 `testNullContextHandling()`:132 |

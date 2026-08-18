@@ -210,9 +210,16 @@ public class VidroScreenshotTest {
             write(name, bitmap, widthPx, heightPx);
             bitmap.recycle();
         } catch (RuntimeException e) {
-            // Uma Activity que não sobe sem rede ou sem serviço não invalida a captura das
-            // outras — dizemos qual falhou e seguimos.
-            System.out.println("[vidro-screens] PULOU " + name + ": " + e);
+            // Uma Activity que não sobe não invalida a captura das outras, mas engolir a
+            // causa é pior que não capturar: numa passada anterior um ClassCastException
+            // de verdade virou uma imagem preta que eu li como "tela vazia". Agora ela
+            // grita, com a pilha, e o runner destaca a linha.
+            System.out.println("[vidro-screens] !! FALHOU " + name + ": " + e);
+            for (StackTraceElement frame : e.getStackTrace()) {
+                if (frame.getClassName().startsWith("com.limelight")) {
+                    System.out.println("[vidro-screens] !!   em " + frame);
+                }
+            }
         } finally {
             if (controller != null) {
                 try {

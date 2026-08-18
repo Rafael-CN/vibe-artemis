@@ -49,6 +49,9 @@ public class VidroLightView extends View {
     private static final float[] REACH = { 1.00f, 0.78f, 0.58f };
     private static final float[] CHROMA = { 1.00f, 0.70f, 0.45f };
 
+    /** Alpha do núcleo no protótipo. A intensidade escala este valor, não o substitui. */
+    private static final float CORE_ALPHA = 0.46f;
+
     /** Do handoff: 900 ms, ease-out. Vale para intensidade e para alcance. */
     private static final long TRANSITION_MS = 900;
 
@@ -241,8 +244,12 @@ public class VidroLightView extends View {
             float radius = Math.max(width, height) * 0.5f * reach;
             int tinted = coolTowardNeutral(coreColor, chroma);
 
-            int core = (tinted & 0x00FFFFFF) | (Math.round(255 * intensity) << 24);
-            int mid = (tinted & 0x00FFFFFF) | (Math.round(255 * intensity * 0.32f) << 24);
+            // O protótipo desenha a luz como `radial-gradient(circle, acento/.46 0%,
+            // transparent 66%)`. Usar a intensidade crua como alpha do núcleo fazia dela
+            // um holofote: no emulador ela dominava a tela em vez de acompanhá-la. A
+            // intensidade escala esse 0,46 — ela diz o estado, não o brilho absoluto.
+            int core = (tinted & 0x00FFFFFF) | (Math.round(255 * intensity * CORE_ALPHA) << 24);
+            int mid = (tinted & 0x00FFFFFF) | (Math.round(255 * intensity * CORE_ALPHA * 0.30f) << 24);
             int edge = tinted & 0x00FFFFFF;
 
             shader = new RadialGradient(
@@ -250,7 +257,9 @@ public class VidroLightView extends View {
                     new int[] { core, mid, edge },
                     // A queda precisa ser rápida no meio e longa na borda, senão a luz
                     // vira um disco com contorno visível em vez de derramar.
-                    new float[] { 0f, 0.42f, 1f },
+                    // Corta em 66% do raio, como no protótipo: além disso a mancha
+                    // ganha borda visível e deixa de parecer luz.
+                    new float[] { 0f, 0.33f, 0.66f },
                     Shader.TileMode.CLAMP);
 
             paint.setShader(shader);

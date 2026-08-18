@@ -353,4 +353,8 @@
     <string name="vidro_search_by_address">Adicionar um PC pelo endereço</string>
     <string name="vidro_search_again">Procurar de novo</string>
     <string name="vidro_next_session">vale na próxima sessão</string>
+    <string name="vidro_pc_address">Endereço do PC</string>
+    <string name="vidro_address_help">IP ou nome na rede. A porta padrão é 47989 — só mude se você trocou no host.</string>
+    <string name="vidro_connect">Conectar</string>
+    <string name="vidro_back_search">Voltar à busca</string>
 </resources>

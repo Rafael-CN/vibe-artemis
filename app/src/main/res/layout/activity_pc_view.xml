@@ -24,7 +24,7 @@
     <com.limelight.ui.VidroLightView
         android:id="@+id/vidroLight"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="220dp"
         android:layout_alignParentTop="true"
         app:vidro_intensity="0.07"
         app:vidro_quality="good" />
@@ -45,11 +45,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--
+                Sem ícones neste canto. O protótipo não tem nenhum: "Adicionar" mora na
+                linha de "Seus lugares" e ajuda mora em Ajustes. Os dois que estavam aqui
+                eram herança do Moonlight, e ainda por cima desenhavam um disco branco.
+            -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/vidroHeaderActions"
-                android:layout_toLeftOf="@+id/vidroHeaderActions"
                 android:orientation="vertical">
 
                 <TextView
@@ -70,30 +73,6 @@
                     tools:text="O PC está acordado" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/vidroHeaderActions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/helpButton"
-                    style="@style/VidroIconButton"
-                    android:layout_width="@dimen/vidro_touch_target"
-                    android:layout_height="@dimen/vidro_touch_target"
-                    android:contentDescription="@string/help"
-                    android:src="@drawable/ic_help" />
-
-                <ImageButton
-                    android:id="@+id/manuallyAddPc"
-                    style="@style/VidroIconButton"
-                    android:layout_width="@dimen/vidro_touch_target"
-                    android:layout_height="@dimen/vidro_touch_target"
-                    android:contentDescription="@string/vidro_add"
-                    android:src="@drawable/ic_add" />
-            </LinearLayout>
         </RelativeLayout>
 
         <!--

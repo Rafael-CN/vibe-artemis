@@ -846,4 +846,8 @@
     <string name="vidro_search_by_address">Add a PC by address</string>
     <string name="vidro_search_again">Look again</string>
     <string name="vidro_next_session">applies to the next session</string>
+    <string name="vidro_pc_address">PC address</string>
+    <string name="vidro_address_help">IP or name on the network. The default port is 47989 — only change it if you changed it on the host.</string>
+    <string name="vidro_connect">Connect</string>
+    <string name="vidro_back_search">Back to the search</string>
 </resources>

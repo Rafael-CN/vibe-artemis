@@ -56,3 +56,4 @@ app/.externalNativeBuild/
 
 # telas capturadas pelo harness — geradas, não versionadas
 app/build/vidro-screens/
+build/emu/

@@ -337,6 +337,8 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
             }
         });
 
+        findViewById(R.id.vidroBack).setOnClickListener(v -> finish());
+
         this.prefConfig = PreferenceConfiguration.readPreferences(this);
 
         // Bind to the computer manager service
@@ -615,6 +617,52 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         }
     }
 
+    /**
+     * A linha de contagem e a faixa de sessão aberta.
+     *
+     * As duas existiam no layout e ninguém escrevia nelas — a tela abria com um espaço em
+     * branco onde deveria estar "6 aplicativos publicados pelo host" e a faixa nunca
+     * aparecia, nem quando havia sessão de verdade no host.
+     */
+    private void updateVidroCatalogHeader() {
+        TextView count = findViewById(R.id.vidroAppCount);
+        if (count != null) {
+            int n = appGridAdapter != null ? appGridAdapter.getCount() : 0;
+            count.setText(n == 1
+                    ? getString(R.string.vidro_published_app_one)
+                    : getString(R.string.vidro_published_apps, n));
+            count.setVisibility(n > 0 ? View.VISIBLE : View.INVISIBLE);
+        }
+
+        View strip = findViewById(R.id.vidroResumeStrip);
+        TextView title = findViewById(R.id.vidroResumeTitle);
+        if (strip == null || title == null) {
+            return;
+        }
+
+        // Só existe faixa quando há app rodando de verdade no host.
+        AppView.AppObject running = null;
+        if (appGridAdapter != null) {
+            for (int i = 0; i < appGridAdapter.getCount(); i++) {
+                AppObject candidate = (AppObject) appGridAdapter.getItem(i);
+                if (candidate.isRunning) {
+                    running = candidate;
+                    break;
+                }
+            }
+        }
+
+        if (running == null) {
+            strip.setVisibility(View.GONE);
+            return;
+        }
+
+        final AppObject target = running;
+        title.setText(getString(R.string.vidro_session_open, target.app.getAppName()));
+        strip.setVisibility(View.VISIBLE);
+        strip.setOnClickListener(v -> ServerHelper.doStart(AppView.this, target.app, computer, managerBinder, true));
+    }
+
     private void updateUiWithServerinfo(final ComputerDetails details) {
         AppView.this.runOnUiThread(new Runnable() {
             @Override
@@ -648,6 +696,7 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
 
                 if (updated) {
                     appGridAdapter.notifyDataSetChanged();
+                    updateVidroCatalogHeader();
                 }
             }
         });
@@ -722,6 +771,7 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
 
                 if (updated) {
                     appGridAdapter.notifyDataSetChanged();
+                    updateVidroCatalogHeader();
                 }
             }
         });

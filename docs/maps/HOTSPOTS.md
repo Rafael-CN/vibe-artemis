@@ -17,7 +17,7 @@
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java) | 1206 | 40 | 2 | 2 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c) | 1189 | 32 | — | — |
 | [`app/src/main/java/com/limelight/utils/Stereo3DRenderer.java`](../../app/src/main/java/com/limelight/utils/Stereo3DRenderer.java) | 1149 | 36 | 2 | 2 |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1096 | 54 | 4 | 24 |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1106 | 54 | 4 | 24 |
 | [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1094 | 22 | 34 | 2 |
 | [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 2 | 10 |
 | [`app/src/main/java/com/limelight/utils/KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 2 | 4 | 0 |
@@ -25,6 +25,7 @@
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h) | 978 | 52 | — | — |
 | [`app/src/main/java/com/limelight/computers/ComputerManagerService.java`](../../app/src/main/java/com/limelight/computers/ComputerManagerService.java) | 969 | 42 | 5 | 13 |
 | [`app/src/main/java/com/limelight/nvstream/http/NvHTTP.java`](../../app/src/main/java/com/limelight/nvstream/http/NvHTTP.java) | 939 | 59 | 13 | 4 |
+| [`app/src/main/java/com/limelight/AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 839 | 34 | 5 | 17 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c) | 802 | 12 | — | — |
 
 ## Mais dependidos (fan-in alto — mudanças aqui propagam)
@@ -48,7 +49,7 @@
 | `app/src/main/java/com/limelight/nvstream/http/PairingManager.java` | 6 | 357 |
 | `app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java` | 6 | 13 |
 | `app/src/main/java/com/limelight/utils/Dialog.java` | 6 | 114 |
-| `app/src/main/java/com/limelight/AppView.java` | 5 | 789 |
+| `app/src/main/java/com/limelight/AppView.java` | 5 | 839 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 5 | 15 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 5 | 969 |
 
@@ -57,8 +58,8 @@
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/Game.java` | 47 | 4644 |
-| `app/src/main/java/com/limelight/PcView.java` | 24 | 1096 |
-| `app/src/main/java/com/limelight/AppView.java` | 17 | 789 |
+| `app/src/main/java/com/limelight/PcView.java` | 24 | 1106 |
+| `app/src/main/java/com/limelight/AppView.java` | 17 | 839 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
 | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java` | 12 | 3473 |

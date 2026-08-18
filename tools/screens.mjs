@@ -69,10 +69,21 @@ for (const f of files) {
   console.log(`  ${f.padEnd(26)} ${kb.padStart(5)} KB`);
 }
 
-if (shot.length) {
-  console.log();
-  for (const l of shot) console.log('  ' + l.replace('[vidro-screens] ', ''));
+// Uma Activity que não sobe some da lista de PNG sem deixar rastro; sem isto o
+// resultado parece completo e não está.
+const broke = shot.filter((l) => l.includes('!!'));
+if (broke.length) {
+  console.log('\nActivity que NAO subiu:\n');
+  for (const l of broke) console.log('  ' + l.replace('[vidro-screens] !! ', ''));
 }
+
+const ok = shot.filter((l) => !l.includes('!!'));
+if (ok.length) {
+  console.log();
+  for (const l of ok) console.log('  ' + l.replace('[vidro-screens] ', ''));
+}
+
+if (broke.length) process.exitCode = 1;
 
 if (open) {
   const opener = process.platform === 'win32' ? 'explorer'

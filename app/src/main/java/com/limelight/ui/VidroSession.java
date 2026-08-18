@@ -203,6 +203,15 @@ public class VidroSession {
         bindBitrate(R.id.vidroBitrate40, 40000);
         bindBitrate(R.id.vidroBitrate60, 60000);
 
+        // Ritmo de quadros e modo do mouse valem AGORA, ao contrário da taxa de bits:
+        // os dois são lidos a cada quadro e a cada evento, não na hora de conectar.
+        bindPacing(R.id.vidroPacingSmooth, PreferenceConfiguration.FRAME_PACING_MAX_SMOOTHNESS);
+        bindPacing(R.id.vidroPacingBalanced, PreferenceConfiguration.FRAME_PACING_BALANCED);
+        bindPacing(R.id.vidroPacingLatency, PreferenceConfiguration.FRAME_PACING_MIN_LATENCY);
+
+        bindMouseMode(R.id.vidroMouseMultitouch, false);
+        bindMouseMode(R.id.vidroMouseTrackpad, true);
+
         View numbers = activity.findViewById(R.id.vidroNumbersRow);
         final Switch numbersSwitch = activity.findViewById(R.id.vidroNumbersSwitch);
         if (numbers != null && numbersSwitch != null) {
@@ -214,6 +223,36 @@ public class VidroSession {
                 }
             });
         }
+    }
+
+    private void bindPacing(final int viewId, final int pacing) {
+        View chip = activity.findViewById(viewId);
+        if (chip == null) {
+            return;
+        }
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefConfig.framePacing = pacing;
+                refreshSheet();
+            }
+        });
+    }
+
+    private void bindMouseMode(final int viewId, final boolean trackpad) {
+        View chip = activity.findViewById(viewId);
+        if (chip == null) {
+            return;
+        }
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefConfig.touchscreenTrackpad = trackpad;
+                refreshSheet();
+            }
+        });
     }
 
     private void bindBitrate(final int viewId, final int kbps) {
@@ -240,6 +279,16 @@ public class VidroSession {
         select(R.id.vidroBitrate20, prefConfig.bitrate <= 25000);
         select(R.id.vidroBitrate40, prefConfig.bitrate > 25000 && prefConfig.bitrate <= 50000);
         select(R.id.vidroBitrate60, prefConfig.bitrate > 50000);
+
+        select(R.id.vidroPacingSmooth,
+                prefConfig.framePacing == PreferenceConfiguration.FRAME_PACING_MAX_SMOOTHNESS);
+        select(R.id.vidroPacingBalanced,
+                prefConfig.framePacing == PreferenceConfiguration.FRAME_PACING_BALANCED);
+        select(R.id.vidroPacingLatency,
+                prefConfig.framePacing == PreferenceConfiguration.FRAME_PACING_MIN_LATENCY);
+
+        select(R.id.vidroMouseMultitouch, !prefConfig.touchscreenTrackpad);
+        select(R.id.vidroMouseTrackpad, prefConfig.touchscreenTrackpad);
 
         Switch numbersSwitch = activity.findViewById(R.id.vidroNumbersSwitch);
         if (numbersSwitch != null) {
