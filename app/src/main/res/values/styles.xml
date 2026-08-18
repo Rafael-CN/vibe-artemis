@@ -40,6 +40,8 @@
         -->
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
+        <item name="alertDialogTheme">@style/VidroDialog</item>
+        <item name="android:alertDialogTheme">@style/VidroDialogPlatform</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">
@@ -64,13 +66,37 @@
         <item name="colorAccent">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
         <item name="colorButtonNormal">@android:color/white</item>
+        <!-- O menu da sessão sai daqui; sem isto ele abre com a cara do sistema. -->
+        <item name="alertDialogTheme">@style/VidroDialog</item>
+        <item name="android:alertDialogTheme">@style/VidroDialogPlatform</item>
     </style>
 
+    <!--
+        A tela de Ajustes é um PreferenceScreen, então quem desenha cada linha é o
+        androidx.preference. O que dá para fazer é dar a ela a cor, a face e o acento
+        certos — sem isso ela abria em cinza de sistema com o azul do Android.
+    -->
     <style name="SettingsTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/vidro_void</item>
+        <item name="android:navigationBarColor">@color/vidro_void</item>
+        <item name="android:colorBackground">@color/vidro_void</item>
+        <item name="android:windowBackground">@color/vidro_void</item>
+        <item name="android:textColorPrimary">@color/vidro_text</item>
+        <item name="android:textColorSecondary">@color/vidro_text_3</item>
+        <item name="colorAccent">@color/vidro_accent_text</item>
+        <item name="android:colorAccent">@color/vidro_accent_text</item>
+        <item name="colorControlActivated">@color/vidro_accent_text</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="alertDialogTheme">@style/VidroDialog</item>
+        <item name="android:alertDialogTheme">@style/VidroDialog</item>
+        <item name="preferenceTheme">@style/VidroPreferenceTheme</item>
+    </style>
+
+    <style name="VidroPreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="preferenceCategoryTitleTextColor">@color/vidro_accent_text</item>
+        <item name="android:textColorPrimary">@color/vidro_text</item>
+        <item name="android:textColorSecondary">@color/vidro_text_3</item>
     </style>
 
     <style name="ExternalDisplayControllerTheme" parent="AppTheme">
@@ -221,6 +247,59 @@
         <item name="android:scaleType">centerInside</item>
         <item name="android:padding">12dp</item>
         <item name="android:tint">@color/vidro_text_2</item>
+    </style>
+
+    <!--
+        ================================================================
+        Diálogos
+
+        Todo aviso do app passa por utils/Dialog.java, que usa AlertDialog. Sem isto ele
+        aparecia com a cara do sistema — fundo cinza, Roboto e o azul do Android — no meio
+        de um app que não tem nada disso. É a superfície mais vista que restava do
+        Moonlight, porque qualquer falha de rede a invoca.
+        ================================================================
+    -->
+    <style name="VidroDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
+        <item name="android:colorBackground">@color/vidro_surface_alt</item>
+        <item name="android:textColorPrimary">@color/vidro_text</item>
+        <item name="android:textColorSecondary">@color/vidro_text_2</item>
+        <item name="colorAccent">@color/vidro_accent_text</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="fontFamily">@font/manrope</item>
+        <item name="buttonBarPositiveButtonStyle">@style/VidroDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/VidroDialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/VidroDialogButton</item>
+        <item name="android:windowTitleStyle">@style/VidroDialogTitle</item>
+    </style>
+
+    <!--
+        O GameMenu usa android.app.AlertDialog, não o do AppCompat — e um tema AppCompat
+        num diálogo de plataforma não pega. Este é o par do VidroDialog para esse lado.
+    -->
+    <style name="VidroDialogPlatform" parent="android:Theme.Material.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
+        <item name="android:colorBackground">@color/vidro_surface_alt</item>
+        <item name="android:textColorPrimary">@color/vidro_text</item>
+        <item name="android:textColorSecondary">@color/vidro_text_2</item>
+        <item name="android:colorAccent">@color/vidro_accent_text</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="VidroDialogTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:textColor">@color/vidro_text</item>
+    </style>
+
+    <style name="VidroDialogButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textColor">@color/vidro_accent_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">-0.01</item>
     </style>
 
     <declare-styleable name="VidroLightView">

@@ -45,10 +45,10 @@
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 8 | 629 |
 | `app/src/test/java/com/limelight/TestLogSuppressor.java` | 8 | 37 |
 | `app/src/main/java/com/limelight/utils/ServerHelper.java` | 7 | 278 |
-| `app/src/main/java/com/limelight/GameMenu.java` | 6 | 403 |
+| `app/src/main/java/com/limelight/GameMenu.java` | 6 | 405 |
 | `app/src/main/java/com/limelight/nvstream/http/PairingManager.java` | 6 | 357 |
 | `app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java` | 6 | 13 |
-| `app/src/main/java/com/limelight/utils/Dialog.java` | 6 | 114 |
+| `app/src/main/java/com/limelight/utils/Dialog.java` | 6 | 116 |
 | `app/src/main/java/com/limelight/AppView.java` | 5 | 839 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 5 | 15 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 5 | 969 |
@@ -73,7 +73,7 @@
 | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java` | 7 | 567 |
 | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java` | 6 | 2447 |
 | `app/src/main/java/com/limelight/EditProfileActivity.java` | 5 | 476 |
-| `app/src/main/java/com/limelight/GameMenu.java` | 5 | 403 |
+| `app/src/main/java/com/limelight/GameMenu.java` | 5 | 405 |
 | `app/src/main/java/com/limelight/discovery/DiscoveryService.java` | 5 | 91 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 5 | 296 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 4 | 15 |

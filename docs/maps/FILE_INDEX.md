@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **220 arquivos**, **65.779 linhas**, **273 tipos**, **2607 métodos**.
+Total: **220 arquivos**, **65.783 linhas**, **273 tipos**, **2607 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -15,7 +15,7 @@ Total: **220 arquivos**, **65.779 linhas**, **273 tipos**, **2607 métodos**.
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 839 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.4 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
-| [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 403 | 12.4 | GameMenu, MenuOption | `onGlobalLayout()`:191 `showMenu()`:339 `hideMenu()`:391 `isMenuOpen()`:399 |
+| [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 405 | 12.4 | GameMenu, MenuOption | `onGlobalLayout()`:193 `showMenu()`:341 `hideMenu()`:393 `isMenuOpen()`:401 |
 | [`DebugInfoActivity.java`](../../app/src/main/java/com/limelight/DebugInfoActivity.java) | 266 | 3.2 | DebugInfoActivity | `onCreate()`:41 `onClick()`:82 `onClick()`:92 `onClick()`:119 `onClick()`:125 `onProgressChanged()`:168 `onStartTrackingTouch()`:174 `onStopTrackingTouch()`:177 |
 | [`PosterContentProvider.java`](../../app/src/main/java/com/limelight/PosterContentProvider.java) | 153 | 3.5 | PosterContentProvider | `openFile()`:45 `openBoxArtFile()`:55 `delete()`:109 `getType()`:114 `insert()`:119 `onCreate()`:124 `query()`:130 `update()`:136 |
 | [`HelpActivity.java`](../../app/src/main/java/com/limelight/HelpActivity.java) | 119 | 7.5 | HelpActivity | `onCreate()`:25 `onBackInvoked()`:31 `onPageStarted()`:57 `onPageFinished()`:68 `onDestroy()`:96 `onBackPressed()`:108 |
@@ -296,7 +296,7 @@ Total: **220 arquivos**, **65.779 linhas**, **273 tipos**, **2607 métodos**.
 | [`PanZoomHandler.java`](../../app/src/main/java/com/limelight/utils/PanZoomHandler.java) | 174 | 3.1 | PanZoomHandler, ScaleListener, GestureListener | `handleTouchEvent()`:42 `handleSurfaceChange()`:79 `onScale()`:113 `onScaleEnd()`:140 `onScroll()`:147 `setInitialZoomAndPan()`:159 `getScaleFactor()`:170 `getChildX()`:171 |
 | [`PerformanceDataTracker.java`](../../app/src/main/java/com/limelight/utils/PerformanceDataTracker.java) | 148 | 3.5 | PerformanceDataTracker | `savePerformanceStatistics()`:34 `getLog()`:137 `clearLogs()`:142 |
 | [`SpinnerDialog.java`](../../app/src/main/java/com/limelight/utils/SpinnerDialog.java) | 121 | 10.3 | SpinnerDialog | `run()`:62 `run()`:69 `onCancel()`:112 |
-| [`Dialog.java`](../../app/src/main/java/com/limelight/utils/Dialog.java) | 114 | 4.4 | Dialog | `run()`:47 `run()`:61 `onClick()`:74 `onClick()`:84 `onShow()`:98 |
+| [`Dialog.java`](../../app/src/main/java/com/limelight/utils/Dialog.java) | 116 | 4.4 | Dialog | `run()`:47 `run()`:61 `onClick()`:76 `onClick()`:86 `onShow()`:100 |
 | [`FileUriUtils.java`](../../app/src/main/java/com/limelight/utils/FileUriUtils.java) | 103 | 3.2 | FileUriUtils | — |
 | [`CacheHelper.java`](../../app/src/main/java/com/limelight/utils/CacheHelper.java) | 87 | 6.3 | CacheHelper | — |
 | [`ReflectivePaddingInt8Minimal.java`](../../app/src/main/java/com/limelight/utils/ReflectivePaddingInt8Minimal.java) | 80 | 2.9 | ReflectivePaddingInt8Minimal | — |

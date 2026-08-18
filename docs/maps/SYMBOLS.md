@@ -643,7 +643,7 @@
 | `hideCursor()` | method | `app/src/main/java/com/limelight/binding/input/capture/ShieldCaptureProvider.java:65` |
 | `hideCursor()` | method | `app/src/root/java/com.limelight/binding/input/evdev/EvdevCaptureProvider.java:255` |
 | `hideGameMenu()` | method | `app/src/main/java/com/limelight/Game.java:4578` |
-| `hideMenu()` | method | `app/src/main/java/com/limelight/GameMenu.java:391` |
+| `hideMenu()` | method | `app/src/main/java/com/limelight/GameMenu.java:393` |
 | `HostHttpResponseException` | class | `app/src/main/java/com/limelight/nvstream/http/HostHttpResponseException.java:5` |
 | `IdentityManager` | class | `app/src/main/java/com/limelight/computers/IdentityManager.java:14` |
 | `ignoreDisconnectIntercept()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c:887` |
@@ -713,7 +713,7 @@
 | `isInSubnetV6()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c:715` |
 | `isKeyboardLayoutVisible()` | method | `app/src/main/java/com/limelight/Game.java:1128` |
 | `isKeyboardVisible()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardLayoutController.java:279` |
-| `isMenuOpen()` | method | `app/src/main/java/com/limelight/GameMenu.java:399` |
+| `isMenuOpen()` | method | `app/src/main/java/com/limelight/GameMenu.java:401` |
 | `isModifierKeyPressed()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardLayoutController.java:86` |
 | `isNat64SynthesizedAddress()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c:758` |
 | `isNat64SynthesizedAddress()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.h:119` |
@@ -1080,8 +1080,8 @@
 | `onClick()` | method | `app/src/main/java/com/limelight/ui/VidroSession.java:236` |
 | `onClick()` | method | `app/src/main/java/com/limelight/ui/VidroSession.java:251` |
 | `onClick()` | method | `app/src/main/java/com/limelight/ui/VidroSession.java:266` |
-| `onClick()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:74` |
-| `onClick()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:84` |
+| `onClick()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:76` |
+| `onClick()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:86` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/AppView.java:172` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/Game.java:1295` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/PcView.java:114` |
@@ -1183,7 +1183,7 @@
 | `onGenericMotionEvent()` | method | `app/src/main/java/com/limelight/Game.java:3653` |
 | `onGenericMotionEvent()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:324` |
 | `onGetDefaultValue()` | method | `app/src/main/java/com/limelight/preferences/SmallIconCheckboxPreference.java:29` |
-| `onGlobalLayout()` | method | `app/src/main/java/com/limelight/GameMenu.java:191` |
+| `onGlobalLayout()` | method | `app/src/main/java/com/limelight/GameMenu.java:193` |
 | `onHeaderDecoded()` | method | `app/src/main/java/com/limelight/grid/assets/DiskAssetLoader.java:116` |
 | `onInputDeviceAdded()` | method | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java:233` |
 | `onInputDeviceAdded()` | method | `app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java:429` |
@@ -1298,7 +1298,7 @@
 | `onServiceLost()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:118` |
 | `onServiceLost()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:132` |
 | `onServiceUpdated()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:110` |
-| `onShow()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:98` |
+| `onShow()` | method | `app/src/main/java/com/limelight/utils/Dialog.java:100` |
 | `onSizeChanged()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:211` |
 | `onSizeChanged()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStickFree.java:226` |
 | `onSizeChanged()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyAnalogStick.java:213` |
@@ -1922,7 +1922,7 @@
 | `showEnabledElements()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java:262` |
 | `showGameMenu()` | method | `app/src/main/java/com/limelight/Game.java:4568` |
 | `showGameMenu()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:488` |
-| `showMenu()` | method | `app/src/main/java/com/limelight/GameMenu.java:339` |
+| `showMenu()` | method | `app/src/main/java/com/limelight/GameMenu.java:341` |
 | `shutdownTcpSocket()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c:66` |
 | `shutdownTcpSocket()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.h:115` |
 | `SimpleStartupTest` | class | `app/src/test/java/com/limelight/SimpleStartupTest.java:20` |

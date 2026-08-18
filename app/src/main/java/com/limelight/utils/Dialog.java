@@ -63,7 +63,9 @@ public class Dialog implements Runnable {
         if (activity.isFinishing())
             return;
 
-        alert = new AlertDialog.Builder(activity).create();
+        // O tema Vidro em vez do do sistema. Este diálogo aparece em toda falha de
+        // rede, então era a peça do Moonlight que mais gente via.
+        alert = new AlertDialog.Builder(activity, R.style.VidroDialog).create();
 
         alert.setTitle(title);
         alert.setMessage(message);

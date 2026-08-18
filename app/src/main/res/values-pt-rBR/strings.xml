@@ -357,4 +357,6 @@
     <string name="vidro_address_help">IP ou nome na rede. A porta padrão é 47989 — só mude se você trocou no host.</string>
     <string name="vidro_connect">Conectar</string>
     <string name="vidro_back_search">Voltar à busca</string>
+    <string name="vidro_no_scenes">Nenhuma cena ainda</string>
+    <string name="vidro_no_scenes_sub">Salve a sessão atual abaixo e ela vira uma.</string>
 </resources>

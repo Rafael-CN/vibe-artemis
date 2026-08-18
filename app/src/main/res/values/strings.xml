@@ -850,4 +850,6 @@
     <string name="vidro_address_help">IP or name on the network. The default port is 47989 — only change it if you changed it on the host.</string>
     <string name="vidro_connect">Connect</string>
     <string name="vidro_back_search">Back to the search</string>
+    <string name="vidro_no_scenes">No scenes yet</string>
+    <string name="vidro_no_scenes_sub">Save the current session below and it becomes one.</string>
 </resources>

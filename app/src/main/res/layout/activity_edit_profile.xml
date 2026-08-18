@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Editor de cena. O corpo continua sendo um PreferenceScreen; o que muda é o fundo e a
+    barra, que vinham com a cor e a face do sistema.
+
+    A Toolbar fica: EditProfileActivity a usa como ActionBar e é dela que sai o botão de
+    voltar. O que ela não precisa é parecer de outro app.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/vidro_void"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/vidro_void"
+        app:titleTextColor="@color/vidro_text" />
 
     <FrameLayout
         android:id="@+id/preferences_container"

@@ -4,7 +4,7 @@
   "files": 220,
   "javaFiles": 177,
   "nativeFiles": 42,
-  "lines": 65779,
+  "lines": 65783,
   "types": 273,
   "methods": 2607,
   "packages": 30,
@@ -2128,7 +2128,7 @@
   {
    "path": "app/src/main/java/com/limelight/GameMenu.java",
    "lang": "java",
-   "lines": 403,
+   "lines": 405,
    "package": "com.limelight",
    "imports": [
     "android.app.Activity",
@@ -2218,49 +2218,49 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 191
+     "line": 193
     },
     {
      "name": "showSpecialKeysMenu",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 206
+     "line": 208
     },
     {
      "name": "showAdvancedMenu",
      "modifiers": "private",
      "returns": "void",
      "params": "GameInputDevice device",
-     "line": 296
+     "line": 298
     },
     {
      "name": "showServerCmd",
      "modifiers": "private",
      "returns": "void",
      "params": "ArrayList<String> serverCmds",
-     "line": 325
+     "line": 327
     },
     {
      "name": "showMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "GameInputDevice device",
-     "line": 339
+     "line": 341
     },
     {
      "name": "hideMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 391
+     "line": 393
     },
     {
      "name": "isMenuOpen",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 399
+     "line": 401
     }
    ],
    "nativeMethods": [],
@@ -16941,7 +16941,7 @@
   {
    "path": "app/src/main/java/com/limelight/utils/Dialog.java",
    "lang": "java",
-   "lines": 114,
+   "lines": 116,
    "package": "com.limelight.utils",
    "imports": [
     "java.util.ArrayList",
@@ -16978,21 +16978,21 @@
      "modifiers": "public",
      "returns": "void",
      "params": "DialogInterface dialog, int which",
-     "line": 74
+     "line": 76
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "DialogInterface dialog, int which",
-     "line": 84
+     "line": 86
     },
     {
      "name": "onShow",
      "modifiers": "public",
      "returns": "void",
      "params": "DialogInterface dialog",
-     "line": 98
+     "line": 100
     }
    ],
    "nativeMethods": [],

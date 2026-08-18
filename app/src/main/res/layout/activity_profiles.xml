@@ -69,7 +69,7 @@
             style="@style/VidroText.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_manager_no_profiles_yet" />
+            android:text="@string/vidro_no_scenes" />
 
         <TextView
             style="@style/VidroText.Support"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="@string/profile_manager_tap_create_profile" />
+            android:text="@string/vidro_no_scenes_sub" />
     </LinearLayout>
 
     <!--
