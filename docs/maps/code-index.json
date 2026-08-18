@@ -4,7 +4,7 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 65960,
+  "lines": 65982,
   "types": 274,
   "methods": 2612,
   "packages": 30,
@@ -15896,7 +15896,7 @@
   {
    "path": "app/src/main/java/com/limelight/ui/StreamContainer.java",
    "lang": "java",
-   "lines": 298,
+   "lines": 316,
    "package": "com.limelight.ui",
    "imports": [
     "android.content.Context",
@@ -15905,6 +15905,7 @@
     "android.util.AttributeSet",
     "android.view.KeyEvent",
     "android.view.Surface",
+    "android.view.View",
     "android.view.SurfaceHolder",
     "android.view.SurfaceView",
     "android.view.inputmethod.BaseInputConnection",
@@ -15920,17 +15921,17 @@
     {
      "kind": "class",
      "name": "StreamContainer",
-     "line": 26
+     "line": 27
     },
     {
      "kind": "interface",
      "name": "InputCallbacks",
-     "line": 28
+     "line": 29
     },
     {
      "kind": "enum",
      "name": "StreamMode",
-     "line": 36
+     "line": 37
     }
    ],
    "methods": [
@@ -15939,154 +15940,154 @@
      "modifiers": "public",
      "returns": "void",
      "params": "Game game, PreferenceConfiguration prefConfig",
-     "line": 65
+     "line": 66
     },
     {
      "name": "setDesiredAspectRatio",
      "modifiers": "public",
      "returns": "void",
      "params": "double aspectRatio",
-     "line": 103
+     "line": 104
     },
     {
      "name": "setFillDisplay",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean fillDisplay",
-     "line": 108
+     "line": 109
     },
     {
      "name": "onMeasure",
      "modifiers": "protected",
      "returns": "void",
      "params": "int widthMeasureSpec, int heightMeasureSpec",
-     "line": 114
+     "line": 115
     },
     {
      "name": "setInputCallbacks",
      "modifiers": "public",
      "returns": "void",
      "params": "InputCallbacks callbacks",
-     "line": 176
+     "line": 194
     },
     {
      "name": "setCommitTextEnabled",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean enabled",
-     "line": 180
+     "line": 198
     },
     {
      "name": "onKeyPreIme",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int keyCode, KeyEvent event",
-     "line": 185
+     "line": 203
     },
     {
      "name": "onWindowFocusChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean hasWindowFocus",
-     "line": 197
+     "line": 215
     },
     {
      "name": "onCheckIsTextEditor",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 205
+     "line": 223
     },
     {
      "name": "onCreateInputConnection",
      "modifiers": "public",
      "returns": "InputConnection",
      "params": "EditorInfo outAttrs",
-     "line": 210
+     "line": 228
     },
     {
      "name": "commitText",
      "modifiers": "public",
      "returns": "boolean",
      "params": "CharSequence text, int newCursorPosition",
-     "line": 218
+     "line": 236
     },
     {
      "name": "deleteSurroundingText",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int beforeLength, int afterLength",
-     "line": 222
+     "line": 240
     },
     {
      "name": "setOnSurfaceAvailable",
      "modifiers": "public",
      "returns": "void",
      "params": "Runnable callback",
-     "line": 228
+     "line": 246
     },
     {
      "name": "getSurface",
      "modifiers": "public",
      "returns": "Surface",
      "params": "",
-     "line": 235
+     "line": 253
     },
     {
      "name": "getSurfaceView",
      "modifiers": "public",
      "returns": "SurfaceView",
      "params": "",
-     "line": 239
+     "line": 257
     },
     {
      "name": "mapIntToStreamMode",
      "modifiers": "public",
      "returns": "StreamMode",
      "params": "int modeIndex",
-     "line": 243
+     "line": 261
     },
     {
      "name": "notifySurfaceReady",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 252
+     "line": 270
     },
     {
      "name": "surfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder",
-     "line": 260
+     "line": 278
     },
     {
      "name": "surfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder, int format, int width, int height",
-     "line": 264
+     "line": 282
     },
     {
      "name": "surfaceDestroyed",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder",
-     "line": 273
+     "line": 291
     },
     {
      "name": "onStereo3DSurfaceReady",
      "modifiers": "public",
      "returns": "void",
      "params": "Surface surface",
-     "line": 285
+     "line": 303
     },
     {
      "name": "onDestroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 292
+     "line": 310
     }
    ],
    "nativeMethods": [],
@@ -27571,13 +27572,14 @@
   {
    "path": "app/src/test/java/com/limelight/ui/StreamContainerAspectRatioTest.java",
    "lang": "java",
-   "lines": 113,
+   "lines": 117,
    "package": "com.limelight.ui",
    "imports": [
     "org.junit.Assert.assertEquals",
+    "org.junit.Assert.assertTrue",
     "android.content.Context",
-    "android.util.AttributeSet",
     "android.view.View",
+    "android.widget.FrameLayout",
     "androidx.test.core.app.ApplicationProvider",
     "org.junit.Test",
     "org.junit.runner.RunWith",
@@ -27588,22 +27590,15 @@
     {
      "kind": "class",
      "name": "StreamContainerAspectRatioTest",
-     "line": 27
+     "line": 31
     }
    ],
    "methods": [
     {
-     "name": "container",
-     "modifiers": "private",
-     "returns": "StreamContainer",
-     "params": "",
-     "line": 35
-    },
-    {
-     "name": "measure",
+     "name": "measureWithChild",
      "modifiers": "static",
-     "returns": "void",
-     "params": "StreamContainer container, int width, int height",
+     "returns": "View",
+     "params": "int aspectSource, int imeHeight",
      "line": 42
     },
     {
@@ -27611,28 +27606,35 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 49
+     "line": 63
     },
     {
      "name": "comTeclado_oVideoEncolheEMantemAProporcao",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 59
+     "line": 72
+    },
+    {
+     "name": "comTeclado_oVideoNaoDesaparece",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 82
     },
     {
      "name": "aProporcaoNaoMudaConformeOTecladoCresce",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 81
+     "line": 92
     },
     {
      "name": "semProporcaoDefinida_oContainerNaoSeMete",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 102
+     "line": 108
     }
    ],
    "nativeMethods": [],

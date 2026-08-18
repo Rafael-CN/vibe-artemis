@@ -1,10 +1,11 @@
 package com.limelight.ui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -16,13 +17,16 @@ import org.robolectric.annotation.Config;
 /**
  * A proporção do vídeo tem que sobreviver ao teclado.
  *
- * O bug: no modo RESIZE, Game.java põe padding embaixo do tamanho do IME para o vídeo
- * ceder espaço. O onMeasure do container ignorava esse padding, media a superfície com a
- * altura CHEIA e ainda reportava a altura cheia — o FrameLayout então encaixava uma
- * superfície grande demais numa área menor e a imagem esticava.
+ * O bug original: no modo RESIZE, Game.java põe padding embaixo do tamanho do IME para o
+ * vídeo ceder espaço. A conta de letterbox usava o tamanho cheio, e o
+ * {@code ViewGroup.measureChild} ainda descontava o padding do filho — largura inteira,
+ * altura cortada, imagem comprimida na vertical. Com {@code setFixedSize} travando o
+ * buffer na resolução do vídeo, o compositor estica para preencher o retângulo errado.
  *
- * O que estes testes fixam é a regra, não a implementação: com ou sem padding, a razão
- * entre largura e altura do vídeo é a mesma, e o padding sai da conta antes do letterbox.
+ * <p><b>Estes testes medem o FILHO, não o container.</b> A primeira versão deles afirmava
+ * sobre {@code getMeasuredWidth/Height} do próprio container e nunca criava filho — passava
+ * verde enquanto a superfície era medida em 600x0 e o vídeo sumia da tela. Um teste que
+ * não olha para onde o pixel vai não prova nada sobre o pixel.
  */
 @Config(sdk = {33})
 @RunWith(RobolectricTestRunner.class)
@@ -32,81 +36,81 @@ public class StreamContainerAspectRatioTest {
     private static final double ASPECT = 2.0;
     private static final double TOLERANCE = 0.02;
 
-    private StreamContainer container() {
-        Context context = ApplicationProvider.getApplicationContext();
-        StreamContainer container = new StreamContainer(context, null);
-        container.setDesiredAspectRatio(ASPECT);
-        return container;
-    }
+    private static final int SIZE = 800;
 
-    private static void measure(StreamContainer container, int width, int height) {
+    /** O container com uma superfície dentro, como ele existe em sessão. */
+    private static View measureWithChild(int aspectSource, int imeHeight) {
+        Context context = ApplicationProvider.getApplicationContext();
+
+        StreamContainer container = new StreamContainer(context, null);
+        if (aspectSource != 0) {
+            container.setDesiredAspectRatio(ASPECT);
+        }
+
+        View surface = new View(context);
+        container.addView(surface, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
+        container.setPadding(0, 0, 0, imeHeight);
         container.measure(
-                View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+                View.MeasureSpec.makeMeasureSpec(SIZE, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(SIZE, View.MeasureSpec.EXACTLY));
+
+        return surface;
     }
 
     @Test
     public void semTeclado_oVideoUsaAAlturaQueCabe() {
-        StreamContainer container = container();
-        measure(container, 800, 800);
+        View surface = measureWithChild(1, 0);
 
         // 800 de largura numa proporção 2:1 pede 400 de altura, e 400 cabe em 800.
-        assertEquals(800, container.getMeasuredWidth());
-        assertEquals(400, container.getMeasuredHeight());
+        assertEquals(800, surface.getMeasuredWidth());
+        assertEquals(400, surface.getMeasuredHeight());
     }
 
     @Test
     public void comTeclado_oVideoEncolheEMantemAProporcao() {
-        StreamContainer container = container();
-
         // O IME come 500 de 800: sobram 300 de altura útil.
-        container.setPadding(0, 0, 0, 500);
-        measure(container, 800, 800);
+        View surface = measureWithChild(1, 500);
 
-        // A medida reportada inclui o padding — é o espaço que o container ocupa.
-        assertEquals(800, container.getMeasuredHeight());
+        // Numa proporção 2:1, caber em 300 de altura significa 600 de largura.
+        assertEquals(300, surface.getMeasuredHeight());
+        assertEquals(600, surface.getMeasuredWidth());
+    }
 
-        // O vídeo em si tem que caber nos 300 que sobraram, o que numa proporção 2:1
-        // significa 600 de largura. Antes da correção ele saía 800x400: mais alto que o
-        // espaço disponível, e por isso esticado.
-        int videoHeight = container.getMeasuredHeight() - container.getPaddingBottom();
-        int videoWidth = container.getMeasuredWidth();
+    @Test
+    public void comTeclado_oVideoNaoDesaparece() {
+        // A regressão que o teste anterior não pegava: a superfície era medida com o
+        // padding descontado duas vezes e zerava a altura.
+        View surface = measureWithChild(1, 500);
 
-        assertEquals(300, videoHeight);
-        assertEquals(600, videoWidth);
-        assertEquals(ASPECT, (double) videoWidth / videoHeight, TOLERANCE);
+        assertTrue("a superfície zerou — o vídeo sumiria da tela",
+                surface.getMeasuredHeight() > 0 && surface.getMeasuredWidth() > 0);
     }
 
     @Test
     public void aProporcaoNaoMudaConformeOTecladoCresce() {
-        // O ponto do teste anterior, varrido: em qualquer altura de teclado a razão fica
-        // a mesma. Uma regressão que estique o vídeo quebra aqui em algum dos passos.
         for (int imeHeight = 0; imeHeight <= 600; imeHeight += 100) {
-            StreamContainer container = container();
-            container.setPadding(0, 0, 0, imeHeight);
-            measure(container, 800, 800);
+            View surface = measureWithChild(1, imeHeight);
 
-            int videoHeight = container.getMeasuredHeight() - imeHeight;
-            int videoWidth = container.getMeasuredWidth();
+            int w = surface.getMeasuredWidth();
+            int h = surface.getMeasuredHeight();
 
-            if (videoHeight <= 0) {
-                continue;
-            }
-
+            assertTrue("teclado de " + imeHeight + "px zerou a superfície", w > 0 && h > 0);
+            assertTrue("teclado de " + imeHeight + "px estourou o espaço disponível",
+                    h <= SIZE - imeHeight);
             assertEquals("teclado de " + imeHeight + "px distorceu o vídeo",
-                    ASPECT, (double) videoWidth / videoHeight, TOLERANCE);
+                    ASPECT, (double) w / h, TOLERANCE);
         }
     }
 
     @Test
     public void semProporcaoDefinida_oContainerNaoSeMete() {
-        Context context = ApplicationProvider.getApplicationContext();
-        StreamContainer container = new StreamContainer(context, null);
+        // Sem proporção negociada ainda, o comportamento é o do FrameLayout: o filho
+        // recebe a caixa de conteúdo inteira.
+        View surface = measureWithChild(0, 0);
 
-        // Sem proporção negociada ainda, o comportamento é o do FrameLayout.
-        measure(container, 800, 800);
-
-        assertEquals(800, container.getMeasuredWidth());
-        assertEquals(800, container.getMeasuredHeight());
+        assertEquals(800, surface.getMeasuredWidth());
+        assertEquals(800, surface.getMeasuredHeight());
     }
 }

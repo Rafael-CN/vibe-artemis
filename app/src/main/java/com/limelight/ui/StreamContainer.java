@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.Surface;
+import android.view.View;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.inputmethod.BaseInputConnection;
@@ -168,9 +169,26 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
         }
 
         setMeasuredDimension(measuredWidth + horizontalPadding, measuredHeight + verticalPadding);
+
+        // child.measure() DIRETO, e não measureChildren().
+        //
+        // measureChildren() delega a ViewGroup.measureChild(), que passa o spec por
+        // getChildMeasureSpec() com mPaddingTop + mPaddingBottom — ou seja, desconta o
+        // padding OUTRA VEZ. Como a conta acima já descontou, o filho recebia a altura
+        // menos o teclado duas vezes: com um teclado de 500 sobre 800, a superfície era
+        // medida em 600x0 e o vídeo sumia da tela.
+        //
+        // Aqui o filho recebe exatamente o retângulo do letterbox, que é do tamanho da
+        // caixa de conteúdo — o FrameLayout então o posiciona dentro dela pela gravidade,
+        // sem sobra e sem corte.
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY);
         int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY);
-        measureChildren(childWidthMeasureSpec, childHeightMeasureSpec);
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child.getVisibility() != GONE) {
+                child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+            }
+        }
     }
 
     public void setInputCallbacks(InputCallbacks callbacks) {

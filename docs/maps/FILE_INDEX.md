@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **221 arquivos**, **65.960 linhas**, **274 tipos**, **2612 métodos**.
+Total: **221 arquivos**, **65.982 linhas**, **274 tipos**, **2612 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -270,7 +270,7 @@ Total: **221 arquivos**, **65.960 linhas**, **274 tipos**, **2612 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 321 | 3.1 | VidroSession | `showConnecting()`:64 `onStageStarting()`:95 `onConnected()`:112 `getConnectingCancel()`:127 `isSheetOpen()`:133 `openSheet()`:137 `closeSheet()`:153 `run()`:169 |
-| [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 298 | 3.1 | StreamContainer, InputCallbacks, StreamMode | `init()`:65 `setDesiredAspectRatio()`:103 `setFillDisplay()`:108 `onMeasure()`:114 `setInputCallbacks()`:176 `setCommitTextEnabled()`:180 `onKeyPreIme()`:185 `onWindowFocusChanged()`:197 |
+| [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 316 | 3.1 | StreamContainer, InputCallbacks, StreamMode | `init()`:66 `setDesiredAspectRatio()`:104 `setFillDisplay()`:109 `onMeasure()`:115 `setInputCallbacks()`:194 `setCommitTextEnabled()`:198 `onKeyPreIme()`:203 `onWindowFocusChanged()`:215 |
 | [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 277 | 3.0 | VidroLightView, FloatSink | `setIntensity()`:117 `set()`:135 `setQuality()`:142 `set()`:165 `set()`:171 `onAnimationUpdate()`:187 `onDetachedFromWindow()`:197 `onDraw()`:228 |
 | [`VidroIsland.java`](../../app/src/main/java/com/limelight/ui/VidroIsland.java) | 224 | 3.1 | VidroIsland | `run()`:52 `isAvailable()`:75 `getIsland()`:79 `getPill()`:83 `setAppName()`:88 `setQuality()`:98 `reopen()`:114 `isOpen()`:118 |
 | [`StreamView.java`](../../app/src/main/java/com/limelight/ui/StreamView.java) | 168 | 2.9 | StreamView, InputCallbacks | `setDesiredAspectRatio()`:24 `setInputCallbacks()`:28 `setFillDisplay()`:32 `setCommitTextEnabled()`:36 `onMeasure()`:62 `onKeyPreIme()`:97 `onWindowFocusChanged()`:117 `onCheckIsTextEditor()`:126 |
@@ -414,5 +414,5 @@ Total: **221 arquivos**, **65.960 linhas**, **274 tipos**, **2612 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`StreamContainerAspectRatioTest.java`](../../app/src/test/java/com/limelight/ui/StreamContainerAspectRatioTest.java) | 113 | 2.9 | StreamContainerAspectRatioTest | `semTeclado_oVideoUsaAAlturaQueCabe()`:49 `comTeclado_oVideoEncolheEMantemAProporcao()`:59 `aProporcaoNaoMudaConformeOTecladoCresce()`:81 `semProporcaoDefinida_oContainerNaoSeMete()`:102 |
+| [`StreamContainerAspectRatioTest.java`](../../app/src/test/java/com/limelight/ui/StreamContainerAspectRatioTest.java) | 117 | 2.9 | StreamContainerAspectRatioTest | `semTeclado_oVideoUsaAAlturaQueCabe()`:63 `comTeclado_oVideoEncolheEMantemAProporcao()`:72 `comTeclado_oVideoNaoDesaparece()`:82 `aProporcaoNaoMudaConformeOTecladoCresce()`:92 `semProporcaoDefinida_oContainerNaoSeMete()`:108 |
 | [`StreamViewCommitTextTest.java`](../../app/src/test/java/com/limelight/ui/StreamViewCommitTextTest.java) | 61 | 2.9 | StreamViewCommitTextTest | `setUp()`:25 `commitText_isForwarded_whenEnabled()`:30 `commitText_notForwarded_whenDisabled()`:46 |
