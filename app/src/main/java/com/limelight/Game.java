@@ -1281,6 +1281,22 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
             }
         }
+        else if (prefConfig.allowPortraitSession && !prefConfig.onscreenController) {
+            // Sessão livre para girar.
+            //
+            // Dá para fazer isto sem derrubar o stream porque a .Game declara
+            // orientation|screenSize em configChanges: girar não recria a Activity, só
+            // remede. O vídeo continua na proporção que o host negociou e passa a caber
+            // em letterbox no retrato — que é o que torna útil digitar com o teclado
+            // aberto embaixo dele.
+            //
+            // FULL_USER, e não SENSOR: respeita a trava de rotação do sistema. Quem
+            // deixou o aparelho travado não é surpreendido.
+            //
+            // O controle virtual na tela fica de fora: os botões dele são posicionados
+            // em coordenadas de paisagem e saem do lugar em retrato.
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
         else {
             // Lock to current orientation
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -1863,13 +1879,19 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         switch (prefConfig.imeDisplayMode) {
             case RESIZE:
+                // O padding tira altura da conta e o StreamContainer refaz o letterbox
+                // dentro do que sobrou — o vídeo encolhe mantendo a proporção. A gravidade
+                // TOP encosta ele no alto em vez de centrar no espaço restante, que é o
+                // comportamento do AnyDesk: o teclado empurra a imagem para cima.
                 streamContainer.setTranslationY(0);
+                setStreamGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
                 streamContainer.setPadding(0, 0, 0, overlap);
                 break;
 
             case PAN:
                 // Keep the video at its original size and centre it in what is left visible,
                 // which means moving it up by half of what the keyboard took.
+                setStreamGravity(Gravity.CENTER);
                 streamContainer.setPadding(0, 0, 0, 0);
                 streamContainer.setTranslationY(-overlap / 2f);
                 break;
@@ -1877,6 +1899,44 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             case OVERLAY:
             default:
                 break;
+        }
+    }
+
+    /**
+     * Onde o vídeo encosta dentro do container.
+     *
+     * Com o teclado fechado ele fica centrado; com o teclado aberto sobe para o topo, para
+     * que o espaço que o IME não ocupou fique todo acima dele em vez de metade em cima e
+     * metade embaixo.
+     */
+    private void setStreamGravity(int gravity) {
+        if (streamContainer == null) {
+            return;
+        }
+
+        // A superfície é filha do container e não tem campo próprio aqui; pegamos pela
+        // árvore, que é como o resto de Game.java já a encontra.
+        View surface = null;
+        for (int i = 0; i < streamContainer.getChildCount(); i++) {
+            if (streamContainer.getChildAt(i) instanceof SurfaceView) {
+                surface = streamContainer.getChildAt(i);
+                break;
+            }
+        }
+
+        if (surface == null) {
+            return;
+        }
+
+        ViewGroup.LayoutParams params = surface.getLayoutParams();
+        if (!(params instanceof FrameLayout.LayoutParams)) {
+            return;
+        }
+
+        FrameLayout.LayoutParams frameParams = (FrameLayout.LayoutParams)params;
+        if (frameParams.gravity != gravity) {
+            frameParams.gravity = gravity;
+            surface.setLayoutParams(frameParams);
         }
     }
 

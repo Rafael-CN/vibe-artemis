@@ -112,7 +112,11 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (renderMode != StreamMode.MODE_2D) {
+        // Só o modo estéreo dispensa o letterbox — ele desenha os dois olhos e cuida da
+        // própria geometria. `renderMode` nulo significa "ainda não inicializado", e
+        // tratá-lo como não-2D fazia a proporção sumir em silêncio caso
+        // setDesiredAspectRatio chegasse antes do init.
+        if (renderMode != null && renderMode != StreamMode.MODE_2D) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
@@ -121,8 +125,28 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
             return;
         }
 
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        // O PADDING PRECISA SAIR DA CONTA ANTES DA PROPORÇÃO.
+        //
+        // É daqui que vinha a distorção com o teclado aberto. No modo RESIZE, Game.java
+        // põe padding embaixo do tamanho do IME; este onMeasure ignorava o padding, media
+        // os filhos com a altura CHEIA e ainda reportava a altura cheia como medida. O
+        // FrameLayout então posicionava a superfície dentro da área com padding usando uma
+        // altura medida maior que ela — o vídeo esticava e saía de proporção em vez de
+        // encolher.
+        //
+        // Descontando o padding aqui, a mesma matemática de letterbox que já existia passa
+        // a valer para o espaço que sobrou: o vídeo encolhe, mantém a proporção e sobe.
+        int horizontalPadding = getPaddingLeft() + getPaddingRight();
+        int verticalPadding = getPaddingTop() + getPaddingBottom();
+
+        int widthSize = Math.max(0, MeasureSpec.getSize(widthMeasureSpec) - horizontalPadding);
+        int heightSize = Math.max(0, MeasureSpec.getSize(heightMeasureSpec) - verticalPadding);
+
+        if (widthSize == 0 || heightSize == 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+
         int measuredHeight, measuredWidth;
 
         if (fillDisplay) {
@@ -143,7 +167,7 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
             }
         }
 
-        setMeasuredDimension(measuredWidth, measuredHeight);
+        setMeasuredDimension(measuredWidth + horizontalPadding, measuredHeight + verticalPadding);
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY);
         int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY);
         measureChildren(childWidthMeasureSpec, childHeightMeasureSpec);

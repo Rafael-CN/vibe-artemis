@@ -446,6 +446,12 @@
             app:iconSpaceReserved="false" />
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="checkbox_allow_portrait_session"
+            android:summary="@string/summary_allow_portrait_session"
+            android:title="@string/title_allow_portrait_session"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="checkbox_physical_trackpad_native"
             android:summary="@string/summary_physical_trackpad_native"
             android:title="@string/title_physical_trackpad_native"

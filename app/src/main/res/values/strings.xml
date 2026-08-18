@@ -852,4 +852,6 @@
     <string name="vidro_back_search">Back to the search</string>
     <string name="vidro_no_scenes">No scenes yet</string>
     <string name="vidro_no_scenes_sub">Save the current session below and it becomes one.</string>
+    <string name="title_allow_portrait_session">Allow portrait during the session</string>
+    <string name="summary_allow_portrait_session">The video letterboxes to fit and the keyboard opens below it. Turn off to keep the session locked to landscape.</string>
 </resources>

@@ -162,10 +162,6 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         // metade do par do rodapé, "Cenas · Ajustes", que no protótipo é texto e não
         // ícone. Os outros dois continuam sendo ícone no topo.
         View settingsButton = findViewById(R.id.settingsButton);
-        // Podem não existir: a home não tem mais ícone nesse canto, e as duas ações
-        // moraram para onde o protótipo as coloca.
-        View addComputerButton = findViewById(R.id.manuallyAddPc);
-        View helpButton = findViewById(R.id.helpButton);
         TextView profilesButton = findViewById(R.id.profilesButton);
 
         settingsButton.setOnClickListener(new OnClickListener() {
@@ -174,23 +170,6 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                 startActivity(new Intent(PcView.this, StreamSettings.class));
             }
         });
-        if (addComputerButton != null) {
-            addComputerButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PcView.this, AddComputerManually.class);
-                startActivity(i);
-            }
-            });
-        }
-        if (helpButton != null) {
-            helpButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HelpLauncher.launchSetupGuide(PcView.this);
-                }
-            });
-        }
         View addPlace = findViewById(R.id.vidroAddPlace);
         if (addPlace != null) {
             addPlace.setOnClickListener(new OnClickListener() {
@@ -210,9 +189,6 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         // Amazon review didn't like the help button because the wiki was not entirely
         // navigable via the Fire TV remote (though the relevant parts were). Let's hide
         // it on Fire TV.
-        if (helpButton != null && getPackageManager().hasSystemFeature("amazon.hardware.fire_tv")) {
-            helpButton.setVisibility(View.GONE);
-        }
 
         getFragmentManager().beginTransaction()
             .replace(R.id.pcFragmentContainer, new AdapterFragment())
