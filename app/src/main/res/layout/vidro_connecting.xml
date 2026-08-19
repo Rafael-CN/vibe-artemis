@@ -48,7 +48,7 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="214dp"
                 android:layout_height="3dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="@dimen/vidro_space_5"
                 android:max="100"
                 android:progress="18"
                 android:progressDrawable="@drawable/vidro_progress_track" />
@@ -58,7 +58,7 @@
                 style="@style/VidroText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/vidro_space_4"
                 android:fontFamily="@font/manrope_semibold"
                 android:textColor="@color/vidro_text_2"
                 android:textSize="13sp"
@@ -69,7 +69,7 @@
                 style="@style/VidroButton.Ghost"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="@dimen/vidro_space_6"
                 android:gravity="center"
                 android:text="@string/vidro_cancel" />
         </LinearLayout>

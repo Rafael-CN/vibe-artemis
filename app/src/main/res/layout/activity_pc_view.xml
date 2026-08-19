@@ -88,9 +88,9 @@
             android:background="@drawable/vidro_card_accent"
             android:orientation="vertical"
             android:paddingLeft="19dp"
-            android:paddingTop="18dp"
+            android:paddingTop="@dimen/vidro_space_4"
             android:paddingRight="19dp"
-            android:paddingBottom="14dp"
+            android:paddingBottom="@dimen/vidro_space_4"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -106,7 +106,7 @@
                 style="@style/VidroText.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/vidro_space_2"
                 android:ellipsize="end"
                 android:maxLines="1"
                 tools:text="Retomar Desktop" />
@@ -116,7 +116,7 @@
                 style="@style/VidroText.Body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="@dimen/vidro_space_1"
                 tools:text="Você faz isso quase toda noite por volta desta hora, no PC-RAFAEL." />
 
             <!-- As saídas. Um palpite sem recusa fácil vira imposição. -->
@@ -226,8 +226,8 @@
             style="@style/VidroButton.Ghost"
             android:layout_width="0dp"
             android:layout_height="52dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginRight="9dp"
+            android:layout_marginEnd="@dimen/vidro_space_2"
+            android:layout_marginRight="@dimen/vidro_space_2"
             android:layout_weight="1"
             android:contentDescription="@string/profile_manager_choose_profile"
             android:gravity="center"

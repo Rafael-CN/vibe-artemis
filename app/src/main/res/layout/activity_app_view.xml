@@ -98,10 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vidro_space_3"
             android:background="@drawable/vidro_card_accent"
-            android:paddingLeft="16dp"
-            android:paddingTop="13dp"
-            android:paddingRight="13dp"
-            android:paddingBottom="13dp"
+            android:paddingLeft="@dimen/vidro_space_4"
+            android:paddingTop="@dimen/vidro_space_3"
+            android:paddingRight="@dimen/vidro_space_3"
+            android:paddingBottom="@dimen/vidro_space_3"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -124,10 +124,10 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/vidro_pill"
                 android:fontFamily="@font/manrope_bold"
-                android:paddingLeft="15dp"
-                android:paddingTop="9dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="9dp"
+                android:paddingLeft="@dimen/vidro_space_4"
+                android:paddingTop="@dimen/vidro_space_2"
+                android:paddingRight="@dimen/vidro_space_4"
+                android:paddingBottom="@dimen/vidro_space_2"
                 android:text="@string/vidro_return"
                 android:textSize="13sp" />
 
@@ -135,10 +135,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="13dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginEnd="13dp"
-                android:layout_marginRight="13dp"
+                android:layout_marginStart="@dimen/vidro_space_3"
+                android:layout_marginLeft="@dimen/vidro_space_3"
+                android:layout_marginEnd="@dimen/vidro_space_3"
+                android:layout_marginRight="@dimen/vidro_space_3"
                 android:layout_toStartOf="@id/vidroResumeAction"
                 android:layout_toLeftOf="@id/vidroResumeAction"
                 android:layout_toEndOf="@id/vidroResumeDot"
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="15.5sp"
+                    android:textSize="15sp"
                     tools:text="Desktop está aberto" />
 
                 <TextView
@@ -163,7 +163,7 @@
                     android:maxLines="1"
                     android:text="@string/vidro_session_return"
                     android:textColor="@color/vidro_text_2"
-                    android:textSize="12.5sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

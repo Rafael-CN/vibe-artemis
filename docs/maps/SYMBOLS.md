@@ -2022,10 +2022,10 @@
 | `switchShowHide()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:142` |
 | `switchTouchSensitivity()` | method | `app/src/main/java/com/limelight/Game.java:4769` |
 | `tearDown()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:45` |
-| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:101` |
+| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:100` |
 | `telasEmRetrato()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:66` |
-| `telasNoS22Ultra()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:134` |
-| `telasNoTablet()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:119` |
+| `telasNoS22Ultra()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:133` |
+| `telasNoTablet()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:118` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:56` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:64` |
 | `testActivityLifecycleTransitions()` | method | `app/src/test/java/com/limelight/StartupCrashTest.java:227` |

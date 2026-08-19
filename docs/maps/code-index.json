@@ -4,7 +4,7 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 66246,
+  "lines": 66245,
   "types": 274,
   "methods": 2625,
   "packages": 30,
@@ -26888,7 +26888,7 @@
   {
    "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
    "lang": "java",
-   "lines": 310,
+   "lines": 309,
    "package": "com.limelight",
    "imports": [
     "android.content.Context",
@@ -26939,56 +26939,56 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 101
+     "line": 100
     },
     {
      "name": "telasNoTablet",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 119
+     "line": 118
     },
     {
      "name": "telasNoS22Ultra",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 134
+     "line": 133
     },
     {
      "name": "onlyWhenAsked",
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 148
+     "line": 147
     },
     {
      "name": "shoot",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, int layoutId, int widthDp, int heightDp",
-     "line": 156
+     "line": 155
     },
     {
      "name": "shootActivity",
      "modifiers": "private",
      "returns": "<T extends android.app.Activity> void",
      "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
-     "line": 233
+     "line": 232
     },
     {
      "name": "write",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, Bitmap bitmap, int w, int h",
-     "line": 282
+     "line": 281
     },
     {
      "name": "revealAll",
      "modifiers": "static",
      "returns": "void",
      "params": "View view",
-     "line": 297
+     "line": 296
     }
    ],
    "nativeMethods": [],

@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.16"
                 android:text="@string/vidro_pair_type_on_pc"
-                android:textSize="10.5sp" />
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -71,8 +71,8 @@
                     style="@style/VidroText.Code"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="@dimen/vidro_space_3"
+                    android:layout_marginLeft="@dimen/vidro_space_3"
                     android:background="@drawable/vidro_code_box"
                     tools:text="7" />
 
@@ -81,8 +81,8 @@
                     style="@style/VidroText.Code"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="@dimen/vidro_space_3"
+                    android:layout_marginLeft="@dimen/vidro_space_3"
                     android:background="@drawable/vidro_code_box"
                     tools:text="1" />
 
@@ -91,8 +91,8 @@
                     style="@style/VidroText.Code"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="@dimen/vidro_space_3"
+                    android:layout_marginLeft="@dimen/vidro_space_3"
                     android:background="@drawable/vidro_code_box"
                     tools:text="2" />
             </LinearLayout>
@@ -116,8 +116,8 @@
                     android:id="@+id/vidroPairWaitDot"
                     android:layout_width="8dp"
                     android:layout_height="8dp"
-                    android:layout_marginEnd="9dp"
-                    android:layout_marginRight="9dp"
+                    android:layout_marginEnd="@dimen/vidro_space_2"
+                    android:layout_marginRight="@dimen/vidro_space_2"
                     android:background="@drawable/vidro_dot_on" />
 
                 <TextView

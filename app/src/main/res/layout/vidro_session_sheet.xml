@@ -29,10 +29,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@drawable/vidro_sheet_bg"
-            android:paddingLeft="18dp"
-            android:paddingTop="15dp"
-            android:paddingRight="18dp"
-            android:paddingBottom="15dp"
+            android:paddingLeft="@dimen/vidro_space_4"
+            android:paddingTop="@dimen/vidro_space_4"
+            android:paddingRight="@dimen/vidro_space_4"
+            android:paddingBottom="@dimen/vidro_space_4"
             android:scrollbars="none">
 
             <LinearLayout
@@ -76,7 +76,7 @@
                     style="@style/VidroText.Support"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/vidro_space_1"
                     android:text="@string/vidro_sheet_sub" />
 
                 <!-- ===== taxa de bits ===== -->
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="@string/vidro_next_session"
-                    android:textSize="11.5sp" />
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:id="@+id/vidroBitrateGroup"
@@ -120,8 +120,8 @@
                         android:id="@+id/vidroBitrate40"
                         style="@style/VidroChip"
                         android:layout_width="0dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/vidro_space_2"
+                        android:layout_marginLeft="@dimen/vidro_space_2"
                         android:layout_weight="1"
                         android:text="40 Mbps" />
 
@@ -129,8 +129,8 @@
                         android:id="@+id/vidroBitrate60"
                         style="@style/VidroChip"
                         android:layout_width="0dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/vidro_space_2"
+                        android:layout_marginLeft="@dimen/vidro_space_2"
                         android:layout_weight="1"
                         android:text="60 Mbps" />
                 </LinearLayout>
@@ -161,8 +161,8 @@
                         android:id="@+id/vidroPacingBalanced"
                         style="@style/VidroChip"
                         android:layout_width="0dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/vidro_space_2"
+                        android:layout_marginLeft="@dimen/vidro_space_2"
                         android:layout_weight="1"
                         android:text="@string/vidro_pacing_balanced" />
 
@@ -170,8 +170,8 @@
                         android:id="@+id/vidroPacingLatency"
                         style="@style/VidroChip"
                         android:layout_width="0dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/vidro_space_2"
+                        android:layout_marginLeft="@dimen/vidro_space_2"
                         android:layout_weight="1"
                         android:text="@string/vidro_pacing_latency" />
                 </LinearLayout>
@@ -202,8 +202,8 @@
                         android:id="@+id/vidroMouseTrackpad"
                         style="@style/VidroChip"
                         android:layout_width="0dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="@dimen/vidro_space_2"
+                        android:layout_marginLeft="@dimen/vidro_space_2"
                         android:layout_weight="1"
                         android:text="@string/vidro_mouse_trackpad" />
                 </LinearLayout>
@@ -247,7 +247,7 @@
                             android:fontFamily="@font/manrope_semibold"
                             android:letterSpacing="-0.015"
                             android:text="@string/vidro_numbers_on_screen"
-                            android:textSize="14.5sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             style="@style/VidroText.Support"

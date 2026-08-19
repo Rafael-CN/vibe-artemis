@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/vidro_row_bg"
         android:minHeight="52dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="14dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="14dp">
+        android:paddingLeft="@dimen/vidro_space_4"
+        android:paddingTop="@dimen/vidro_space_4"
+        android:paddingRight="@dimen/vidro_space_4"
+        android:paddingBottom="@dimen/vidro_space_4">
 
         <ImageView
             android:id="@+id/grid_image"

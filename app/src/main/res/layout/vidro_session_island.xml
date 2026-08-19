@@ -78,7 +78,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="@dimen/vidro_space_1"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -86,8 +86,8 @@
                         android:id="@+id/vidroIslandDot"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:layout_marginEnd="7dp"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginEnd="@dimen/vidro_space_2"
+                        android:layout_marginRight="@dimen/vidro_space_2"
                         android:background="@drawable/vidro_dot_on" />
 
                     <TextView
@@ -99,7 +99,7 @@
                         android:fontFamily="@font/manrope_medium"
                         android:maxLines="1"
                         android:textColor="@color/vidro_text_2"
-                        android:textSize="11.5sp"
+                        android:textSize="12sp"
                         tools:text="tudo fluindo bem" />
                 </LinearLayout>
             </LinearLayout>
@@ -141,8 +141,8 @@
                 android:fontFamily="@font/manrope_extrabold"
                 android:gravity="center"
                 android:letterSpacing="-0.02"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
+                android:paddingLeft="@dimen/vidro_space_5"
+                android:paddingRight="@dimen/vidro_space_5"
                 android:text="@string/vidro_leave_screen"
                 android:textColor="@color/vidro_on_accent"
                 android:textSize="15sp" />
@@ -174,8 +174,8 @@
             android:id="@+id/vidroPillDot"
             android:layout_width="7dp"
             android:layout_height="7dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginRight="9dp"
+            android:layout_marginEnd="@dimen/vidro_space_2"
+            android:layout_marginRight="@dimen/vidro_space_2"
             android:background="@drawable/vidro_dot_on" />
 
         <TextView
@@ -185,7 +185,7 @@
             android:fontFamily="@font/manrope_bold"
             android:letterSpacing="-0.01"
             android:text="@string/vidro_controls"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </merge>

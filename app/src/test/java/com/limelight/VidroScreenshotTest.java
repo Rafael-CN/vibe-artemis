@@ -91,7 +91,6 @@ public class VidroScreenshotTest {
         shoot("08-debug-info", R.layout.activity_axitest, 393, 852);
         shoot("09-endereco", R.layout.activity_add_computer_manually, 393, 852);
         shoot("10-ajustes", R.layout.activity_stream_settings, 393, 852);
-        shoot("peca-card-de-app-pequeno", R.layout.app_grid_item_small, 120, 0);
     }
 
     // ==================== paisagem · 852×393 ====================
