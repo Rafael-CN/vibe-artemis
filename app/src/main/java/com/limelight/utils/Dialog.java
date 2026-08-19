@@ -98,6 +98,22 @@ public class Dialog implements Runnable {
 
             @Override
             public void onShow(DialogInterface dialog) {
+                // Tinge os botões à mão.
+                //
+                // O tema do diálogo já aponta colorAccent para o acento Vidro, mas o
+                // AlertDialog resolve a cor do botão contra o tema da Activity, que sob
+                // Material3 devolve o roxo padrão do sistema — e roxo é justamente o que
+                // esta identidade não tem. Pintar aqui não depende dessa resolução.
+                int accent = activity.getResources().getColor(R.color.vidro_accent_text);
+                for (int which : new int[] { AlertDialog.BUTTON_POSITIVE,
+                        AlertDialog.BUTTON_NEGATIVE, AlertDialog.BUTTON_NEUTRAL }) {
+                    Button b = alert.getButton(which);
+                    if (b != null) {
+                        b.setTextColor(accent);
+                        b.setAllCaps(false);
+                    }
+                }
+
                 // Set focus to the OK button by default
                 Button button = alert.getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setFocusable(true);

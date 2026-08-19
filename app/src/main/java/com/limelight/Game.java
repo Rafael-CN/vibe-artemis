@@ -46,6 +46,7 @@ import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.VidroIsland;
+import com.limelight.ui.VidroLightView;
 import com.limelight.ui.VidroSession;
 import com.limelight.ui.ExternalControllerView;
 import com.limelight.ui.GameGestures;
@@ -399,9 +400,17 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-        // Start the spinner
-        spinner = SpinnerDialog.displayDialog(this, getResources().getString(R.string.conn_establishing_title),
-                getResources().getString(R.string.conn_establishing_msg), true);
+        // A tela de conectar do Vidro, não o SpinnerDialog do Moonlight.
+        //
+        // Isto estava furado desde o começo e só apareceu conectando num host de verdade:
+        // eu tinha ligado stageStarting e connectionStarted ao VidroSession, mas nunca
+        // chamava showConnecting(), então o que aparecia na tela era o diálogo antigo
+        // "Establishing Connection" com o spinner do sistema. O layout já está inflado
+        // aqui (setContentView acima), então dá para mostrar a tela direto.
+        //
+        // spinner fica nulo de propósito; todo uso dele abaixo é protegido.
+        spinner = null;
+        showVidroConnecting();
 
 
         Display currentDisplay = null;
@@ -1151,6 +1160,55 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      * ação equivalente no app vão direto; o resto abre o menu existente, porque um botão
      * que não faz nada é pior que um botão que não existe.
      */
+    /**
+     * Mostra a tela de conectar com o nome do app e do host.
+     *
+     * Os três passos avançam por evento real da conexão — ver onStageStarting em
+     * VidroSession. Não há temporizador aqui.
+     */
+    private void showVidroConnecting() {
+        View connecting = findViewById(R.id.vidroConnecting);
+        if (connecting == null) {
+            return;
+        }
+
+        // Lê do Intent, não do campo: appName só é preenchido bem depois, em
+        // completeOnCreate, e nesta altura ainda está nulo — a tela abria sem título.
+        TextView appLabel = findViewById(R.id.vidroConnectingApp);
+        if (appLabel != null) {
+            String app = getIntent().getStringExtra(EXTRA_APP_NAME);
+            appLabel.setText(app != null ? app : "");
+        }
+
+        TextView stepLabel = findViewById(R.id.vidroConnectingStep);
+        if (stepLabel != null) {
+            String host = getIntent().getStringExtra(EXTRA_PC_NAME);
+            stepLabel.setText(getString(R.string.vidro_step_talking, host != null ? host : ""));
+        }
+
+        android.widget.ProgressBar bar = findViewById(R.id.vidroConnectingBar);
+        if (bar != null) {
+            bar.setProgress(18);
+        }
+
+        VidroLightView light = findViewById(R.id.vidroConnectingLight);
+        if (light != null) {
+            light.setIntensity(VidroLightView.INTENSITY_ASLEEP, false);
+        }
+
+        View cancel = findViewById(R.id.vidroConnectingCancel);
+        if (cancel != null) {
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+
+        connecting.setVisibility(View.VISIBLE);
+    }
+
     private void setupVidroIsland() {
         vidroIsland = new VidroIsland(this);
         if (!vidroIsland.isAvailable()) {
@@ -1215,7 +1273,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             floatingMenuButton.setVisibility(View.GONE);
         }
 
-        vidroIsland.setOpen(true, false);
+        // Fechada até o vídeo chegar. Antes disso ela ficava por cima da tela de
+        // conectar — e chegava a recolher em pílula enquanto a conexão ainda estava
+        // sendo estabelecida, o que anunciava controles que não controlavam nada.
+        vidroIsland.hide();
     }
 
     public void toggleKeyboardController(){
@@ -3791,7 +3852,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             @Override
             public void run() {
                 if (spinner != null) {
-                    spinner.setMessage(getResources().getString(R.string.conn_starting) + " " + stage);
+                    if (spinner != null) {
+                        spinner.setMessage(getResources().getString(R.string.conn_starting) + " " + stage);
+                    }
                 }
 
                 // Os três passos do protótipo esperam evento real, não temporizador: os
@@ -3847,7 +3910,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         final int portTestResult = MoonBridge.testClientConnectivity(ServerHelper.CONNECTION_TEST_SERVER, 443, portFlags);
 
         if (errorCode == 0 && portFlags != 0 && (portTestResult == MoonBridge.ML_TEST_RESULT_INCONCLUSIVE || portTestResult == 0)) {
-            spinner.setMessage(getResources().getString(R.string.unlocking_or_starting));
+            if (spinner != null) {
+                spinner.setMessage(getResources().getString(R.string.unlocking_or_starting));
+            }
             return true;
         }
 
@@ -4053,6 +4118,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
                 if (vidroSession != null) {
                     vidroSession.onConnected();
+                }
+
+                // Agora sim: há vídeo, então há o que controlar.
+                if (vidroIsland != null) {
+                    vidroIsland.setOpen(true, false);
                 }
 
                 // Hide the mouse cursor now after a short delay.
