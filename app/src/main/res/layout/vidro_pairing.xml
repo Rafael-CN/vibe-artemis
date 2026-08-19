@@ -23,12 +23,17 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <!-- A luz vem de onde está a coisa viva: atrás do código. -->
+        <!--
+            Atrás do CÓDIGO, não do meio da tela. O handoff é explícito: a luz vem de onde
+            está a coisa viva, e aqui a coisa viva são os quatro dígitos. Centrada na
+            janela ela caía abaixo deles, iluminando o parágrafo de apoio.
+        -->
         <com.limelight.ui.VidroLightView
             android:id="@+id/vidroPairingLight"
             android:layout_width="match_parent"
-            android:layout_height="420dp"
-            android:layout_gravity="center" />
+            android:layout_height="340dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="300dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
