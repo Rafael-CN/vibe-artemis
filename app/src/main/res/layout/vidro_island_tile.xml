@@ -6,7 +6,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="52dp"
+    android:layout_height="54dp"
     android:layout_marginStart="@dimen/vidro_space_2"
     android:layout_marginLeft="@dimen/vidro_space_2"
     android:background="@drawable/vidro_island_tile_bg"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_semibold"
         android:letterSpacing="-0.02"
-        android:textSize="14sp"
+        android:textSize="13sp"
         tools:text="Teclado" />
 
     <TextView
@@ -33,6 +33,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_regular"
         android:textColor="@color/vidro_text_3"
-        android:textSize="12sp"
+        android:textSize="11sp"
         tools:text="na tela" />
 </LinearLayout>
