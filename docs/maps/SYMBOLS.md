@@ -1744,7 +1744,7 @@
 | `sendPenEvent()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:380` |
 | `sendText()` | method | `app/src/main/java/com/limelight/Game.java:337` |
 | `sendText()` | method | `app/src/test/java/com/limelight/binding/input/TextInputPumpTest.java:53` |
-| `sendTextBlock()` | method | `app/src/main/java/com/limelight/Game.java:2000` |
+| `sendTextBlock()` | method | `app/src/main/java/com/limelight/Game.java:2004` |
 | `sendTouchEvent()` | method | `app/src/main/java/com/limelight/nvstream/NvConnection.java:567` |
 | `sendTouchEvent()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:377` |
 | `sendUtf8Text()` | method | `app/src/main/java/com/limelight/nvstream/NvConnection.java:619` |

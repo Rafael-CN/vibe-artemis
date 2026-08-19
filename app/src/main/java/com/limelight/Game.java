@@ -1994,8 +1994,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      *
      * Note that "in one go" applies to the user experience, not to the wire: moonlight-common-c
      * deliberately splits UTF-8 payloads into one packet per code point so that none of them
-     * straddles a packet boundary. Long text therefore takes a moment to arrive, which is why
-     * we tell the user how much was queued.
+     * straddles a packet boundary. Long text therefore takes a moment to arrive.
+     *
+     * No toast. A system toast reading "Sending 4 characters" used to pop over the video on
+     * every send — English regardless of locale, in the system's own shape, telling the user
+     * something they had just done themselves. The compose bar emptying is the confirmation,
+     * and the thesis is explicit that the app stays quiet while it works.
      */
     public void sendTextBlock(String text) {
         if (text == null || text.isEmpty() || conn == null) {
@@ -2003,10 +2007,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         }
 
         textInputPump.offerText(text);
-
-        int chars = text.codePointCount(0, text.length());
-        Toast.makeText(this, getResources().getQuantityString(
-                R.plurals.send_text_queued, chars, chars), Toast.LENGTH_SHORT).show();
     }
 
     // ---------------------------------------------------------------- IME-aware layout

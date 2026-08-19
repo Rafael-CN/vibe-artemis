@@ -18,7 +18,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/vidro_void"
-    tools:context=".PcView">
+    tools:context=".PcView"
+    android:fitsSystemWindows="true">
 
     <!-- A luz vem de onde está a coisa viva: atrás do nome do host, no topo. -->
     <com.limelight.ui.VidroLightView

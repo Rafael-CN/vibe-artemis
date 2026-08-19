@@ -1358,7 +1358,7 @@
      "modifiers": "public",
      "returns": "void",
      "params": "String text",
-     "line": 2000
+     "line": 2004
     },
     {
      "name": "setupImeInsetsHandling",

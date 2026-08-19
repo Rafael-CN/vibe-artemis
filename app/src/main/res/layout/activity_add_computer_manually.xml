@@ -13,7 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/vidro_void"
-    tools:context=".preferences.AddComputerManually">
+    tools:context=".preferences.AddComputerManually"
+    android:fitsSystemWindows="true">
 
     <com.limelight.ui.VidroLightView
         android:layout_width="match_parent"

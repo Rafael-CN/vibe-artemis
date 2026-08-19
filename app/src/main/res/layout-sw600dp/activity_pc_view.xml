@@ -15,7 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/vidro_void"
-    tools:context=".PcView">
+    tools:context=".PcView"
+    android:fitsSystemWindows="true">
 
     <!-- A luz é ambiente: ela pega a largura toda mesmo com o conteúdo centrado. -->
     <com.limelight.ui.VidroLightView
