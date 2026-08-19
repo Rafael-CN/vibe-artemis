@@ -361,4 +361,7 @@
     <string name="vidro_no_scenes_sub">Salve a sessão atual abaixo e ela vira uma.</string>
     <string name="title_allow_portrait_session">Permitir retrato na sessão</string>
     <string name="summary_allow_portrait_session">O vídeo se ajusta em letterbox e o teclado abre embaixo dele. Desligue para manter a sessão travada em paisagem.</string>
+    <string name="vidro_compose_tile">digitar e enviar</string>
+    <string name="vidro_compose_hint">Digite aqui e mande de uma vez</string>
+    <string name="vidro_compose_send">Enviar</string>
 </resources>

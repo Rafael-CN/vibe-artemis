@@ -4,9 +4,9 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 66140,
+  "lines": 66246,
   "types": 274,
-  "methods": 2618,
+  "methods": 2625,
   "packages": 30,
   "todos": 36
  },
@@ -827,7 +827,7 @@
   {
    "path": "app/src/main/java/com/limelight/Game.java",
    "lang": "java",
-   "lines": 4774,
+   "lines": 4880,
    "package": "com.limelight",
    "imports": [
     "com.limelight.StartExternalDisplayControlReceiver.requestFocusToExternalDisplayControl",
@@ -937,6 +937,8 @@
     "android.view.WindowManager",
     "android.widget.FrameLayout",
     "android.view.inputmethod.InputMethodManager",
+    "android.widget.EditText",
+    "android.view.inputmethod.EditorInfo",
     "android.widget.TextView",
     "android.widget.Toast",
     "android.widget.ImageButton",
@@ -971,12 +973,12 @@
     {
      "kind": "class",
      "name": "Game",
-     "line": 147
+     "line": 149
     },
     {
      "kind": "interface",
      "name": "GameMenuCallbacks",
-     "line": 302
+     "line": 304
     }
    ],
    "methods": [
@@ -985,1148 +987,1197 @@
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName componentName, IBinder iBinder",
-     "line": 255
+     "line": 257
     },
     {
      "name": "onServiceDisconnected",
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName componentName",
-     "line": 264
+     "line": 266
     },
     {
      "name": "sendText",
      "modifiers": "public",
      "returns": "void",
      "params": "String utf8Chunk",
-     "line": 334
+     "line": 336
     },
     {
      "name": "sendBackspaces",
      "modifiers": "public",
      "returns": "void",
      "params": "int count",
-     "line": 341
+     "line": 343
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 363
+     "line": 365
     },
     {
      "name": "onCapturedPointer",
      "modifiers": "public",
      "returns": "boolean",
      "params": "View view, MotionEvent motionEvent",
-     "line": 561
+     "line": 563
     },
     {
      "name": "notifyCrash",
      "modifiers": "public",
      "returns": "void",
      "params": "Exception e",
-     "line": 687
+     "line": 689
     },
     {
      "name": "setupOverlayToggleButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 978
+     "line": 981
     },
     {
      "name": "updateZoomButtonAppearance",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1041
+     "line": 1044
     },
     {
      "name": "listenForExternalDisplayRemoval",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1051
+     "line": 1054
     },
     {
      "name": "onDisplayAdded",
      "modifiers": "public",
      "returns": "void",
      "params": "int displayId",
-     "line": 1055
+     "line": 1058
     },
     {
      "name": "onDisplayRemoved",
      "modifiers": "public",
      "returns": "void",
      "params": "int displayId",
-     "line": 1059
+     "line": 1062
     },
     {
      "name": "onDisplayChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "int displayId",
-     "line": 1067
+     "line": 1070
     },
     {
      "name": "handleDisplayRemoved",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1072
+     "line": 1075
     },
     {
      "name": "initFloatingButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1078
+     "line": 1081
     },
     {
      "name": "initKeyboardController",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1131
+     "line": 1134
     },
     {
      "name": "isKeyboardLayoutVisible",
      "modifiers": "public",
      "returns": "Boolean",
      "params": "",
-     "line": 1137
+     "line": 1140
     },
     {
      "name": "initVirtualController",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1141
+     "line": 1144
     },
     {
      "name": "initkeyBoardLayoutController",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1147
+     "line": 1150
     },
     {
      "name": "showVidroConnecting",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1169
+     "line": 1172
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1203
+     "line": 1206
+    },
+    {
+     "name": "openComposeBar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1222
+    },
+    {
+     "name": "closeComposeBar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1244
+    },
+    {
+     "name": "updateComposeBar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "int imeOverlap",
+     "line": 1263
+    },
+    {
+     "name": "setupComposeBar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1277
+    },
+    {
+     "name": "run",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "",
+     "line": 1286
+    },
+    {
+     "name": "onClick",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "View v",
+     "line": 1297
+    },
+    {
+     "name": "onEditorAction",
+     "modifiers": "public",
+     "returns": "boolean",
+     "params": "TextView v, int actionId, KeyEvent event",
+     "line": 1306
     },
     {
      "name": "setupVidroIsland",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1212
+     "line": 1318
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1225
+     "line": 1331
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1235
+     "line": 1340
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1245
+     "line": 1350
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1254
+     "line": 1359
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 1265
+     "line": 1370
     },
     {
      "name": "toggleKeyboardController",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1282
+     "line": 1387
     },
     {
      "name": "toggleFullKeyboard",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1290
+     "line": 1395
     },
     {
      "name": "toggleVirtualController",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1303
+     "line": 1408
     },
     {
      "name": "setPreferredOrientationForActivity",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1312
+     "line": 1417
     },
     {
      "name": "onConfigurationChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "Configuration newConfig",
-     "line": 1372
+     "line": 1477
     },
     {
      "name": "getPictureInPictureParams",
      "modifiers": "private",
      "returns": "PictureInPictureParams",
      "params": "boolean autoEnter",
-     "line": 1472
+     "line": 1577
     },
     {
      "name": "updatePipAutoEnter",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1517
+     "line": 1622
     },
     {
      "name": "setMetaKeyCaptureState",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean enabled",
-     "line": 1532
+     "line": 1637
     },
     {
      "name": "onUserLeaveHint",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1557
+     "line": 1662
     },
     {
      "name": "onPictureInPictureRequested",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 1578
+     "line": 1683
     },
     {
      "name": "onWindowFocusChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean hasFocus",
-     "line": 1587
+     "line": 1692
     },
     {
      "name": "isRefreshRateEqualMatch",
      "modifiers": "private",
      "returns": "boolean",
      "params": "float refreshRate",
-     "line": 1599
+     "line": 1704
     },
     {
      "name": "isRefreshRateGoodMatch",
      "modifiers": "private",
      "returns": "boolean",
      "params": "float refreshRate",
-     "line": 1604
+     "line": 1709
     },
     {
      "name": "shouldIgnoreInsetsForResolution",
      "modifiers": "private",
      "returns": "boolean",
      "params": "int width, int height",
-     "line": 1609
+     "line": 1714
     },
     {
      "name": "mayReduceRefreshRate",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 1629
+     "line": 1734
     },
     {
      "name": "isOnExternalDisplay",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 1635
+     "line": 1740
     },
     {
      "name": "prepareDisplayForRendering",
      "modifiers": "private",
      "returns": "float",
      "params": "Display currentDisplay",
-     "line": 1639
+     "line": 1744
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 1832
+     "line": 1937
     },
     {
      "name": "hideSystemUi",
      "modifiers": "private",
      "returns": "void",
      "params": "int delay",
-     "line": 1855
+     "line": 1960
     },
     {
      "name": "sendTextBlock",
      "modifiers": "public",
      "returns": "void",
      "params": "String text",
-     "line": 1879
+     "line": 1984
     },
     {
      "name": "setupImeInsetsHandling",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1907
+     "line": 2012
     },
     {
      "name": "applyImeOffset",
      "modifiers": "private",
      "returns": "void",
      "params": "int overlap",
-     "line": 1936
+     "line": 2042
     },
     {
      "name": "setStreamGravity",
      "modifiers": "private",
      "returns": "void",
      "params": "int gravity",
-     "line": 1973
+     "line": 2079
     },
     {
      "name": "onMultiWindowModeChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean isInMultiWindowMode",
-     "line": 2006
+     "line": 2112
     },
     {
      "name": "onDestroy",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 2027
+     "line": 2133
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 2075
+     "line": 2181
     },
     {
      "name": "onStop",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 2090
+     "line": 2196
     },
     {
      "name": "formatCurrentTime",
      "modifiers": "static",
      "returns": "String",
      "params": "long currentTimeMillis",
-     "line": 2187
+     "line": 2293
     },
     {
      "name": "setInputGrabState",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean grab",
-     "line": 2193
+     "line": 2299
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 2216
+     "line": 2322
     },
     {
      "name": "handleSpecialKeys",
      "modifiers": "private",
      "returns": "boolean",
      "params": "int androidKeyCode, boolean down",
-     "line": 2222
+     "line": 2328
     },
     {
      "name": "getModifierState",
      "modifiers": "private",
      "returns": "byte",
      "params": "KeyEvent event",
-     "line": 2330
+     "line": 2436
     },
     {
      "name": "getModifierState",
      "modifiers": "private",
      "returns": "byte",
      "params": "",
-     "line": 2349
+     "line": 2455
     },
     {
      "name": "onKeyDown",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int keyCode, KeyEvent event",
-     "line": 2354
+     "line": 2460
     },
     {
      "name": "handleKeyDown",
      "modifiers": "public",
      "returns": "boolean",
      "params": "KeyEvent event",
-     "line": 2359
+     "line": 2465
     },
     {
      "name": "onKeyUp",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int keyCode, KeyEvent event",
-     "line": 2445
+     "line": 2551
     },
     {
      "name": "handleKeyUp",
      "modifiers": "public",
      "returns": "boolean",
      "params": "KeyEvent event",
-     "line": 2450
+     "line": 2556
     },
     {
      "name": "onKeyMultiple",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int keyCode, int repeatCount, KeyEvent event",
-     "line": 2518
+     "line": 2624
     },
     {
      "name": "handleKeyMultiple",
      "modifiers": "public",
      "returns": "boolean",
      "params": "KeyEvent event",
-     "line": 2522
+     "line": 2628
     },
     {
      "name": "sendKeys",
      "modifiers": "public",
      "returns": "void",
      "params": "short[] keys",
-     "line": 2539
+     "line": 2645
     },
     {
      "name": "handleFocusChange",
      "modifiers": "public",
      "returns": "boolean",
      "params": "boolean hasFocus",
-     "line": 2562
+     "line": 2668
     },
     {
      "name": "getClipboardContent",
      "modifiers": "private",
      "returns": "String",
      "params": "boolean force",
-     "line": 2575
+     "line": 2681
     },
     {
      "name": "sendClipboard",
      "modifiers": "public",
      "returns": "boolean",
      "params": "boolean force",
-     "line": 2633
+     "line": 2739
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 2642
+     "line": 2748
     },
     {
      "name": "getClipboard",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int delay",
-     "line": 2668
+     "line": 2774
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 2679
+     "line": 2785
     },
     {
      "name": "toggleKeyboard",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 2731
+     "line": 2837
     },
     {
      "name": "getLiTouchTypeFromEvent",
      "modifiers": "private",
      "returns": "byte",
      "params": "MotionEvent event",
-     "line": 2741
+     "line": 2847
     },
     {
      "name": "getStreamViewRelativeSensitivityXY",
      "modifiers": "private",
      "returns": "float[]",
      "params": "MotionEvent event,float normalizedX,float normalizedY,int pointerIndex",
-     "line": 2786
+     "line": 2892
     },
     {
      "name": "getStreamViewRelativeNormalizedXY",
      "modifiers": "private",
      "returns": "float[]",
      "params": "View view, MotionEvent event, int pointerIndex",
-     "line": 2832
+     "line": 2938
     },
     {
      "name": "getNormalizedCoordinates",
      "modifiers": "private",
      "returns": "float[]",
      "params": "View streamView, float rawX, float rawY",
-     "line": 2861
+     "line": 2967
     },
     {
      "name": "normalizeValueInRange",
      "modifiers": "static",
      "returns": "float",
      "params": "float value, InputDevice.MotionRange range",
-     "line": 2871
+     "line": 2977
     },
     {
      "name": "getPressureOrDistance",
      "modifiers": "static",
      "returns": "float",
      "params": "MotionEvent event, int pointerIndex",
-     "line": 2875
+     "line": 2981
     },
     {
      "name": "getRotationDegrees",
      "modifiers": "static",
      "returns": "short",
      "params": "MotionEvent event, int pointerIndex",
-     "line": 2896
+     "line": 3002
     },
     {
      "name": "polarToCartesian",
      "modifiers": "static",
      "returns": "float[]",
      "params": "float r, float theta",
-     "line": 2910
+     "line": 3016
     },
     {
      "name": "cartesianToR",
      "modifiers": "static",
      "returns": "float",
      "params": "float[] point",
-     "line": 2914
+     "line": 3020
     },
     {
      "name": "getStreamViewNormalizedContactArea",
      "modifiers": "private",
      "returns": "float[]",
      "params": "MotionEvent event, int pointerIndex",
-     "line": 2918
+     "line": 3024
     },
     {
      "name": "sendPenEventForPointer",
      "modifiers": "private",
      "returns": "boolean",
      "params": "View view, MotionEvent event, byte eventType, byte toolType, int pointerIndex",
-     "line": 2965
+     "line": 3071
     },
     {
      "name": "convertToolTypeToStylusToolType",
      "modifiers": "static",
      "returns": "byte",
      "params": "MotionEvent event, int pointerIndex",
-     "line": 2991
+     "line": 3097
     },
     {
      "name": "trySendPenEvent",
      "modifiers": "private",
      "returns": "boolean",
      "params": "View view, MotionEvent event",
-     "line": 3002
+     "line": 3108
     },
     {
      "name": "sendTouchEventForPointer",
      "modifiers": "private",
      "returns": "boolean",
      "params": "View view, MotionEvent event, byte eventType, int pointerIndex",
-     "line": 3046
+     "line": 3152
     },
     {
      "name": "trySendTouchEvent",
      "modifiers": "private",
      "returns": "boolean",
      "params": "View view, MotionEvent event",
-     "line": 3056
+     "line": 3162
     },
     {
      "name": "handleMotionEvent",
      "modifiers": "public",
      "returns": "boolean",
      "params": "View view, MotionEvent event",
-     "line": 3085
+     "line": 3191
     },
     {
      "name": "isPhysicalTouchpad",
      "modifiers": "private",
      "returns": "boolean",
      "params": "MotionEvent event",
-     "line": 3461
+     "line": 3567
     },
     {
      "name": "getPhysicalTouchpadScale",
      "modifiers": "private",
      "returns": "float",
      "params": "MotionEvent event",
-     "line": 3479
+     "line": 3585
     },
     {
      "name": "handlePhysicalTouchpadMotion",
      "modifiers": "private",
      "returns": "void",
      "params": "MotionEvent event",
-     "line": 3500
+     "line": 3606
     },
     {
      "name": "clampToShort",
      "modifiers": "static",
      "returns": "short",
      "params": "int value",
-     "line": 3543
+     "line": 3649
     },
     {
      "name": "handleTouchInput",
      "modifiers": "private",
      "returns": "boolean",
      "params": "MotionEvent event, TouchContext[] inputContextMap, boolean isTouchScreen",
-     "line": 3547
+     "line": 3653
     },
     {
      "name": "handleTouchInput",
      "modifiers": "private",
      "returns": "boolean",
      "params": "MotionEvent event, TouchContext[] inputContextMap, boolean isTouchScreen, boolean invertAxis, int eventAction, int actionIndex, int pointerCount",
-     "line": 3552
+     "line": 3658
     },
     {
      "name": "handleMultiTouchGesture",
      "modifiers": "private",
      "returns": "boolean",
      "params": "MotionEvent event, int eventAction, int pointerCount, View view",
-     "line": 3714
+     "line": 3820
     },
     {
      "name": "cancelStaleTouchState",
      "modifiers": "private",
      "returns": "void",
      "params": "MotionEvent event, View view",
-     "line": 3762
+     "line": 3868
     },
     {
      "name": "onGenericMotionEvent",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MotionEvent event",
-     "line": 3774
+     "line": 3880
     },
     {
      "name": "updateMousePosition",
      "modifiers": "private",
      "returns": "void",
      "params": "View touchedView, MotionEvent event",
-     "line": 3779
+     "line": 3885
     },
     {
      "name": "onGenericMotion",
      "modifiers": "public",
      "returns": "boolean",
      "params": "View view, MotionEvent event",
-     "line": 3832
+     "line": 3938
     },
     {
      "name": "onTouch",
      "modifiers": "public",
      "returns": "boolean",
      "params": "View view, MotionEvent event",
-     "line": 3838
+     "line": 3944
     },
     {
      "name": "stageStarting",
      "modifiers": "public",
      "returns": "void",
      "params": "final String stage",
-     "line": 3850
+     "line": 3956
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 3853
+     "line": 3959
     },
     {
      "name": "stageComplete",
      "modifiers": "public",
      "returns": "void",
      "params": "String stage",
-     "line": 3871
+     "line": 3977
     },
     {
      "name": "stopConnection",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 3874
+     "line": 3980
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 3890
+     "line": 3996
     },
     {
      "name": "stageFailed",
      "modifiers": "public",
      "returns": "boolean",
      "params": "final String stage, final int portFlags, final int errorCode",
-     "line": 3907
+     "line": 4013
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 3921
+     "line": 4027
     },
     {
      "name": "finishSecondScreen",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 3971
+     "line": 4077
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 3977
+     "line": 4083
     },
     {
      "name": "connectionTerminated",
      "modifiers": "public",
      "returns": "void",
      "params": "final int errorCode",
-     "line": 3985
+     "line": 4091
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 3993
+     "line": 4099
     },
     {
      "name": "connectionStatusUpdate",
      "modifiers": "public",
      "returns": "void",
      "params": "final int connectionStatus",
-     "line": 4069
+     "line": 4175
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4072
+     "line": 4178
     },
     {
      "name": "connectionStarted",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4106
+     "line": 4212
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4109
+     "line": 4215
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4135
+     "line": 4241
     },
     {
      "name": "displayMessage",
      "modifiers": "public",
      "returns": "void",
      "params": "final String message",
-     "line": 4179
+     "line": 4285
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4182
+     "line": 4288
     },
     {
      "name": "displayTransientMessage",
      "modifiers": "public",
      "returns": "void",
      "params": "final String message",
-     "line": 4189
+     "line": 4295
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4193
+     "line": 4299
     },
     {
      "name": "rumble",
      "modifiers": "public",
      "returns": "void",
      "params": "short controllerNumber, short lowFreqMotor, short highFreqMotor",
-     "line": 4201
+     "line": 4307
     },
     {
      "name": "rumbleTriggers",
      "modifiers": "public",
      "returns": "void",
      "params": "short controllerNumber, short leftTrigger, short rightTrigger",
-     "line": 4209
+     "line": 4315
     },
     {
      "name": "setHdrMode",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean enabled, byte[] hdrMetadata",
-     "line": 4216
+     "line": 4322
     },
     {
      "name": "setMotionEventState",
      "modifiers": "public",
      "returns": "void",
      "params": "short controllerNumber, byte motionType, short reportRateHz",
-     "line": 4222
+     "line": 4328
     },
     {
      "name": "setControllerLED",
      "modifiers": "public",
      "returns": "void",
      "params": "short controllerNumber, byte r, byte g, byte b",
-     "line": 4227
+     "line": 4333
     },
     {
      "name": "surfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder, int format, int width, int height",
-     "line": 4232
+     "line": 4338
     },
     {
      "name": "surfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder",
-     "line": 4249
+     "line": 4355
     },
     {
      "name": "surfaceDestroyed",
      "modifiers": "public",
      "returns": "void",
      "params": "SurfaceHolder holder",
-     "line": 4285
+     "line": 4391
     },
     {
      "name": "mouseMove",
      "modifiers": "public",
      "returns": "void",
      "params": "int deltaX, int deltaY",
-     "line": 4301
+     "line": 4407
     },
     {
      "name": "mouseButtonEvent",
      "modifiers": "public",
      "returns": "void",
      "params": "int buttonId, boolean down",
-     "line": 4306
+     "line": 4412
     },
     {
      "name": "mouseVScroll",
      "modifiers": "public",
      "returns": "void",
      "params": "byte amount",
-     "line": 4340
+     "line": 4446
     },
     {
      "name": "mouseHScroll",
      "modifiers": "public",
      "returns": "void",
      "params": "byte amount",
-     "line": 4345
+     "line": 4451
     },
     {
      "name": "keyboardEvent",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean buttonDown, short keyCode",
-     "line": 4350
+     "line": 4456
     },
     {
      "name": "onSystemUiVisibilityChange",
      "modifiers": "public",
      "returns": "void",
      "params": "int visibility",
-     "line": 4368
+     "line": 4474
     },
     {
      "name": "onPerfUpdate",
      "modifiers": "public",
      "returns": "void",
      "params": "final String text",
-     "line": 4384
+     "line": 4490
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4387
+     "line": 4493
     },
     {
      "name": "onUsbPermissionPromptStarting",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4398
+     "line": 4504
     },
     {
      "name": "onUsbPermissionPromptCompleted",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4406
+     "line": 4512
     },
     {
      "name": "onKey",
      "modifiers": "public",
      "returns": "boolean",
      "params": "View view, int keyCode, KeyEvent keyEvent",
-     "line": 4412
+     "line": 4518
     },
     {
      "name": "onBackPressed",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4426
+     "line": 4532
     },
     {
      "name": "sendExecServerCmd",
      "modifiers": "public",
      "returns": "void",
      "params": "int cmdId",
-     "line": 4434
+     "line": 4540
     },
     {
      "name": "getServerCmds",
      "modifiers": "public",
      "returns": "ArrayList<String>",
      "params": "",
-     "line": 4438
+     "line": 4544
     },
     {
      "name": "isZoomModeEnabled",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 4442
+     "line": 4548
     },
     {
      "name": "toggleZoomMode",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4445
+     "line": 4551
     },
     {
      "name": "rotateScreen",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4459
+     "line": 4565
     },
     {
      "name": "initMouseMode",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 4485
+     "line": 4591
     },
     {
      "name": "selectMouseMode",
      "modifiers": "public",
      "returns": "void",
      "params": "Context context",
-     "line": 4544
+     "line": 4650
     },
     {
      "name": "toggleMouseLocalCursor",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 4593
+     "line": 4699
     },
     {
      "name": "applyMouseMode",
      "modifiers": "private",
      "returns": "void",
      "params": "int mode",
-     "line": 4606
+     "line": 4712
     },
     {
      "name": "toggleHUD",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4648
+     "line": 4754
     },
     {
      "name": "switchTouchSensitivity",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4663
+     "line": 4769
     },
     {
      "name": "disconnect",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4667
+     "line": 4773
     },
     {
      "name": "quit",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4674
+     "line": 4780
     },
     {
      "name": "showGameMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "GameInputDevice device",
-     "line": 4698
+     "line": 4804
     },
     {
      "name": "hideGameMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4708
+     "line": 4814
     },
     {
      "name": "updateFloatingButtonVisibility",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean show",
-     "line": 4714
+     "line": 4820
     },
     {
      "name": "toggleFloatingButtonVisibility",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 4718
+     "line": 4824
     },
     {
      "name": "setSurfaceviewCorner",
      "modifiers": "private",
      "returns": "void",
      "params": "final float radius",
-     "line": 4726
+     "line": 4832
     },
     {
      "name": "getOutline",
      "modifiers": "public",
      "returns": "void",
      "params": "View view, Outline outline",
-     "line": 4730
+     "line": 4836
     },
     {
      "name": "handleCommitText",
      "modifiers": "public",
      "returns": "boolean",
      "params": "CharSequence text",
-     "line": 4743
+     "line": 4849
     },
     {
      "name": "handleDeleteSurroundingText",
      "modifiers": "public",
      "returns": "boolean",
      "params": "int beforeLength, int afterLength",
-     "line": 4752
+     "line": 4858
     },
     {
      "name": "findFirstSurfaceViewFrom",
      "modifiers": "private",
      "returns": "SurfaceView",
      "params": "View v",
-     "line": 4762
+     "line": 4868
     }
    ],
    "nativeMethods": [],
@@ -2144,12 +2195,12 @@
     {
      "kind": "TODO",
      "text": "Improve this",
-     "line": 1819
+     "line": 1924
     },
     {
      "kind": "TODO",
      "text": "Do we want to use WindowInsetsController here on R+ instead of",
-     "line": 1833
+     "line": 1938
     }
    ]
   },

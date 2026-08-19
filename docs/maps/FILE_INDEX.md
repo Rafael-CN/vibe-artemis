@@ -4,13 +4,13 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **221 arquivos**, **66.140 linhas**, **274 tipos**, **2618 métodos**.
+Total: **221 arquivos**, **66.246 linhas**, **274 tipos**, **2625 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4774 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:255 `onServiceDisconnected()`:264 `sendText()`:334 `sendBackspaces()`:341 `onCreate()`:363 `onCapturedPointer()`:561 `notifyCrash()`:687 `onDisplayAdded()`:1055 |
+| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4880 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:257 `onServiceDisconnected()`:266 `sendText()`:336 `sendBackspaces()`:343 `onCreate()`:365 `onCapturedPointer()`:563 `notifyCrash()`:689 `onDisplayAdded()`:1058 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1082 | 4.7 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:169 `onClick()`:177 `onClick()`:184 `onCreate()`:213 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 846 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |

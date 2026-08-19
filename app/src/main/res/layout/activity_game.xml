@@ -122,6 +122,7 @@
         merge porque precisam cobri-la: enquanto a conexão não voltou, mexer nos
         controles não leva a lugar nenhum.
     -->
+    <include layout="@layout/vidro_compose_bar" />
     <include layout="@layout/vidro_session_sheet" />
     <include layout="@layout/vidro_lost" />
     <include layout="@layout/vidro_connecting" />

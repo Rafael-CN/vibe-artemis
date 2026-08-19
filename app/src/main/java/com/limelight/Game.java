@@ -111,6 +111,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
@@ -920,6 +922,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         floatingMenuButton = findViewById(R.id.floatingMenuButton);
 
         setupVidroIsland();
+        setupComposeBar();
         vidroSession = new VidroSession(this, prefConfig);
         updateFloatingButtonVisibility(prefConfig.enableBackMenu && prefConfig.enableFloatingButton);
         initFloatingButton();
@@ -1209,6 +1212,109 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         connecting.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Abre a barra de composição e o teclado junto.
+     *
+     * Digitar direto no stream é digitar às cegas: cada tecla viaja e o que volta é
+     * vídeo. Aqui o texto se monta localmente — com cursor, seleção e correção do próprio
+     * Android — e só atravessa quando a pessoa manda.
+     */
+    private void openComposeBar() {
+        final View bar = findViewById(R.id.vidroComposeBar);
+        final EditText input = findViewById(R.id.vidroComposeInput);
+        if (bar == null || input == null) {
+            return;
+        }
+
+        bar.setVisibility(View.VISIBLE);
+        input.requestFocus();
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+        }
+
+        if (vidroIsland != null) {
+            // A ilha sai da frente: com a barra aberta ela só disputaria espaço com o
+            // teclado, e o assunto agora é o texto.
+            vidroIsland.setOpen(false, true);
+        }
+    }
+
+    private void closeComposeBar() {
+        View bar = findViewById(R.id.vidroComposeBar);
+        EditText input = findViewById(R.id.vidroComposeInput);
+        if (bar == null) {
+            return;
+        }
+
+        bar.setVisibility(View.GONE);
+
+        if (input != null) {
+            input.setText("");
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+            }
+        }
+    }
+
+    /** A barra acompanha o topo do teclado; sem IME na tela ela não tem onde morar. */
+    private void updateComposeBar(int imeOverlap) {
+        View bar = findViewById(R.id.vidroComposeBar);
+        if (bar == null || bar.getVisibility() != View.VISIBLE) {
+            return;
+        }
+
+        if (imeOverlap <= 0) {
+            closeComposeBar();
+            return;
+        }
+
+        bar.setTranslationY(-imeOverlap);
+    }
+
+    private void setupComposeBar() {
+        final EditText input = findViewById(R.id.vidroComposeInput);
+        View send = findViewById(R.id.vidroComposeSend);
+        if (input == null || send == null) {
+            return;
+        }
+
+        final Runnable dispatch = new Runnable() {
+            @Override
+            public void run() {
+                String text = input.getText().toString();
+                if (!text.isEmpty()) {
+                    sendTextBlock(text);
+                    input.setText("");
+                }
+            }
+        };
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatch.run();
+            }
+        });
+
+        // A ação de envio do próprio teclado faz a mesma coisa: quem digita com o teclado
+        // físico da capa não deveria ter de largar as teclas para tocar num botão.
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND
+                        || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                            && event.getAction() == KeyEvent.ACTION_DOWN && !event.isShiftPressed())) {
+                    dispatch.run();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     private void setupVidroIsland() {
         vidroIsland = new VidroIsland(this);
         if (!vidroIsland.isAvailable()) {
@@ -1219,12 +1325,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         vidroIsland.setQuality(VidroIsland.QUALITY_GOOD);
 
         vidroIsland.setTile(R.id.vidroTileKeyboard, R.string.vidro_keyboard,
-                getString(R.string.vidro_without_leaving));
+                getString(R.string.vidro_compose_tile));
         vidroIsland.setTileClickListener(R.id.vidroTileKeyboard, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleKeyboard();
-                vidroIsland.reopen();
+                openComposeBar();
             }
         });
 
@@ -1929,6 +2034,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
 
             applyImeOffset(overlap);
+            updateComposeBar(overlap);
             return insets;
         });
     }
