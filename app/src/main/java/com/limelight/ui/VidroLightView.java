@@ -38,8 +38,9 @@ public class VidroLightView extends View {
     public static final float INTENSITY_AWAKE = 0.72f;
     public static final float INTENSITY_ASLEEP = 0.20f;
     public static final float INTENSITY_NONE = 0.07f;
-    /** Em sessão a luz vive nas bordas do vídeo e quase não se anuncia. */
-    public static final float INTENSITY_IN_SESSION = 0.10f;
+    // Não existe INTENSITY_IN_SESSION. O ambilight de 0,10 que o handoff previa foi
+    // retirado: em painel OLED ele acende a tela inteira e mata o preto, e por cima do
+    // stream é overdraw permanente. Se alguém for reintroduzir, meça num OLED antes.
 
     /** Qualidade da rede, no alcance e no croma. */
     public static final int QUALITY_GOOD = 0;

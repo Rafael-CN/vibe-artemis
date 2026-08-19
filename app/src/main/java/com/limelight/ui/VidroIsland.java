@@ -41,9 +41,9 @@ public class VidroIsland {
     private final View island;
     private final View pill;
     private final View pillDot;
+    private final View islandDot;
     private final TextView appName;
     private final TextView quality;
-    private final VidroLightView light;
     private final Interpolator collapseCurve;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -60,16 +60,10 @@ public class VidroIsland {
         island = activity.findViewById(R.id.vidroIsland);
         pill = activity.findViewById(R.id.vidroPill);
         pillDot = activity.findViewById(R.id.vidroPillDot);
+        islandDot = activity.findViewById(R.id.vidroIslandDot);
         appName = activity.findViewById(R.id.vidroIslandApp);
         quality = activity.findViewById(R.id.vidroIslandQuality);
-        light = activity.findViewById(R.id.vidroSessionLight);
         collapseCurve = AnimationUtils.loadInterpolator(activity, R.interpolator.vidro_standard);
-
-        if (light != null) {
-            // Ambilight: presença, não brilho. Fica no piso e não se anuncia.
-            light.setIntensity(VidroLightView.INTENSITY_IN_SESSION, false);
-            light.setVisibility(View.VISIBLE);
-        }
     }
 
     public boolean isAvailable() {
@@ -92,8 +86,8 @@ public class VidroIsland {
     }
 
     /**
-     * Qualidade da rede: uma palavra na ilha, o ponto da pílula e o alcance da luz.
-     * As três precisam concordar sempre — são a mesma informação em três lugares.
+     * Qualidade da rede: a palavra na ilha e o ponto — o mesmo ponto na ilha e na pílula.
+     * Os dois precisam concordar sempre; são a mesma informação em dois tamanhos.
      */
     public void setQuality(int level) {
         int q = level < 0 ? 0 : (level >= QUALITY_PHRASE.length ? QUALITY_PHRASE.length - 1 : level);
@@ -101,12 +95,12 @@ public class VidroIsland {
         if (quality != null) {
             quality.setText(QUALITY_PHRASE[q]);
         }
+        int dot = q == QUALITY_POOR ? R.drawable.vidro_dot_far : R.drawable.vidro_dot_on;
         if (pillDot != null) {
-            pillDot.setBackgroundResource(q == QUALITY_POOR
-                    ? R.drawable.vidro_dot_far : R.drawable.vidro_dot_on);
+            pillDot.setBackgroundResource(dot);
         }
-        if (light != null) {
-            light.setQuality(q, true);
+        if (islandDot != null) {
+            islandDot.setBackgroundResource(dot);
         }
     }
 

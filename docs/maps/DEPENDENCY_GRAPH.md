@@ -17,7 +17,7 @@
 | `com.limelight.nvstream.av.audio` | 36.5 | 1 | 16 |
 | `com.limelight.nvstream.av.video` | 31.5 | 1 | 22 |
 | `com.limelight.profiles` | 25.8 | 8 | 1019 |
-| `com.limelight.ui` | 25.7 | 12 | 1784 |
+| `com.limelight.ui` | 25.7 | 12 | 1779 |
 | `com.limelight.nvstream.input` | 25.6 | 3 | 51 |
 | `com.limelight.computers` | 21.5 | 7 | 1598 |
 | `com.limelight.binding.input` | 19.1 | 5 | 4304 |

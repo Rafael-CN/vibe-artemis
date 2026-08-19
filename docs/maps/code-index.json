@@ -4,7 +4,7 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 66030,
+  "lines": 66025,
   "types": 274,
   "methods": 2614,
   "packages": 30,
@@ -16215,7 +16215,7 @@
   {
    "path": "app/src/main/java/com/limelight/ui/VidroIsland.java",
    "lang": "java",
-   "lines": 224,
+   "lines": 218,
    "package": "com.limelight.ui",
    "imports": [
     "android.app.Activity",
@@ -16247,98 +16247,98 @@
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 75
+     "line": 69
     },
     {
      "name": "getIsland",
      "modifiers": "public",
      "returns": "View",
      "params": "",
-     "line": 79
+     "line": 73
     },
     {
      "name": "getPill",
      "modifiers": "public",
      "returns": "View",
      "params": "",
-     "line": 83
+     "line": 77
     },
     {
      "name": "setAppName",
      "modifiers": "public",
      "returns": "void",
      "params": "String name",
-     "line": 88
+     "line": 82
     },
     {
      "name": "setQuality",
      "modifiers": "public",
      "returns": "void",
      "params": "int level",
-     "line": 98
+     "line": 92
     },
     {
      "name": "reopen",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 114
+     "line": 108
     },
     {
      "name": "isOpen",
      "modifiers": "public",
      "returns": "boolean",
      "params": "",
-     "line": 118
+     "line": 112
     },
     {
      "name": "setOpen",
      "modifiers": "public",
      "returns": "void",
      "params": "boolean shouldOpen, boolean animate",
-     "line": 122
+     "line": 116
     },
     {
      "name": "crossFade",
      "modifiers": "private",
      "returns": "void",
      "params": "final View entering, final View leaving",
-     "line": 147
+     "line": 141
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 170
+     "line": 164
     },
     {
      "name": "setTile",
      "modifiers": "public",
      "returns": "void",
      "params": "int tileId, int labelRes, String value",
-     "line": 178
+     "line": 172
     },
     {
      "name": "setTileClickListener",
      "modifiers": "public",
      "returns": "void",
      "params": "int tileId, View.OnClickListener listener",
-     "line": 198
+     "line": 192
     },
     {
      "name": "hide",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 210
+     "line": 204
     },
     {
      "name": "destroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 220
+     "line": 214
     }
    ],
    "nativeMethods": [],
@@ -16348,7 +16348,7 @@
   {
    "path": "app/src/main/java/com/limelight/ui/VidroLightView.java",
    "lang": "java",
-   "lines": 277,
+   "lines": 278,
    "package": "com.limelight.ui",
    "imports": [
     "android.animation.ValueAnimator",
@@ -16373,7 +16373,7 @@
     {
      "kind": "interface",
      "name": "FloatSink",
-     "line": 177
+     "line": 178
     }
    ],
    "methods": [
@@ -16382,77 +16382,77 @@
      "modifiers": "static",
      "returns": "int",
      "params": "int quality",
-     "line": 109
+     "line": 110
     },
     {
      "name": "setIntensity",
      "modifiers": "public",
      "returns": "void",
      "params": "float target, boolean animate",
-     "line": 117
+     "line": 118
     },
     {
      "name": "set",
      "modifiers": "public",
      "returns": "void",
      "params": "float value",
-     "line": 135
+     "line": 136
     },
     {
      "name": "setQuality",
      "modifiers": "public",
      "returns": "void",
      "params": "int quality, boolean animate",
-     "line": 142
+     "line": 143
     },
     {
      "name": "set",
      "modifiers": "public",
      "returns": "void",
      "params": "float value",
-     "line": 165
+     "line": 166
     },
     {
      "name": "set",
      "modifiers": "public",
      "returns": "void",
      "params": "float value",
-     "line": 171
+     "line": 172
     },
     {
      "name": "animateTo",
      "modifiers": "private",
      "returns": "ValueAnimator",
      "params": "float from, float to, final FloatSink sink",
-     "line": 181
+     "line": 182
     },
     {
      "name": "onAnimationUpdate",
      "modifiers": "public",
      "returns": "void",
      "params": "ValueAnimator animation",
-     "line": 187
+     "line": 188
     },
     {
      "name": "onDetachedFromWindow",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 197
+     "line": 198
     },
     {
      "name": "coolTowardNeutral",
      "modifiers": "private",
      "returns": "int",
      "params": "int color, float amount",
-     "line": 217
+     "line": 218
     },
     {
      "name": "onDraw",
      "modifiers": "protected",
      "returns": "void",
      "params": "Canvas canvas",
-     "line": 228
+     "line": 229
     }
    ],
    "nativeMethods": [],

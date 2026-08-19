@@ -52,5 +52,4 @@
     <color name="vidro_halo_night">#571E8FEE</color>  <!-- 0,34 -->
     <color name="vidro_halo_asleep">#331E8FEE</color> <!-- 0,20 -->
     <color name="vidro_halo_none">#121E8FEE</color>   <!-- 0,07 · nenhum host -->
-    <color name="vidro_halo_session">#1A1E8FEE</color><!-- 0,10 · bordas do vídeo -->
 </resources>

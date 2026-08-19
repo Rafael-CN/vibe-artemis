@@ -10,18 +10,16 @@
     nada. O protótipo roda no navegador, onde backdrop-filter funciona; no Android não
     funciona, e essa é a diferença que o handoff resolve a favor do fosco.
 
-    Qualidade em PALAVRA. Número só se a pessoa ligar "Números na tela".
+    NÃO EXISTE LUZ AQUI. O handoff previa um ambilight de 0,10 nas bordas do vídeo, mas
+    num painel OLED isso acende a tela inteira: preto OLED é pixel desligado, e um véu por
+    cima mata justamente o contraste que o painel tem de melhor. Somado a isso, a tese diz
+    que em sessão nada custa quadro — e gradiente sobre o stream é overdraw permanente.
+
+    Três grupos, separados por fio: QUEM (app e qualidade) · O QUE MEXER (blocos) · SAIR.
+    Sem a divisória os blocos encostavam no nome do app e a ilha lia como uma fileira só.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Ambilight: presença, não brilho. Fica atrás de tudo, nas bordas do vídeo. -->
-    <com.limelight.ui.VidroLightView
-        android:id="@+id/vidroSessionLight"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone" />
 
     <!-- ================= ilha aberta ================= -->
 
@@ -30,17 +28,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginStart="@dimen/vidro_space_4"
+        android:layout_marginLeft="@dimen/vidro_space_4"
+        android:layout_marginEnd="@dimen/vidro_space_4"
+        android:layout_marginRight="@dimen/vidro_space_4"
+        android:layout_marginBottom="@dimen/vidro_space_4"
         android:background="@drawable/vidro_island"
         android:fillViewport="true"
-        android:paddingLeft="16dp"
-        android:paddingTop="14dp"
-        android:paddingRight="14dp"
-        android:paddingBottom="14dp"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingTop="@dimen/vidro_space_3"
+        android:paddingRight="@dimen/vidro_space_3"
+        android:paddingBottom="@dimen/vidro_space_3"
         android:scrollbars="none"
         android:visibility="gone"
         tools:visibility="visible">
@@ -51,12 +49,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <!-- QUEM: o app e como ele está indo. Nunca um número. -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
-                android:layout_marginRight="18dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/vidro_space_5"
+                android:paddingRight="@dimen/vidro_space_5">
 
                 <TextView
                     android:id="@+id/vidroIslandApp"
@@ -67,22 +66,50 @@
                     android:fontFamily="@font/manrope_bold"
                     android:letterSpacing="-0.025"
                     android:maxLines="1"
+                    android:maxWidth="220dp"
                     android:textSize="16sp"
                     tools:text="Remote Display" />
 
-                <TextView
-                    android:id="@+id/vidroIslandQuality"
-                    style="@style/VidroText"
+                <!--
+                    O mesmo ponto da pílula, ao lado da palavra. Quando a ilha recolhe, o
+                    ponto é a única coisa que sobra — vê-lo aqui antes ensina o que ele
+                    significa lá.
+                -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/manrope_medium"
-                    android:maxLines="1"
-                    android:textColor="@color/vidro_text_2"
-                    android:textSize="11.5sp"
-                    tools:text="tudo fluindo bem" />
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/vidroIslandDot"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginRight="7dp"
+                        android:background="@drawable/vidro_dot_on" />
+
+                    <TextView
+                        android:id="@+id/vidroIslandQuality"
+                        style="@style/VidroText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/manrope_medium"
+                        android:maxLines="1"
+                        android:textColor="@color/vidro_text_2"
+                        android:textSize="11.5sp"
+                        tools:text="tudo fluindo bem" />
+                </LinearLayout>
             </LinearLayout>
 
+            <View
+                android:layout_width="@dimen/vidro_stroke_width"
+                android:layout_height="36dp"
+                android:background="@color/vidro_stroke_glass" />
+
+            <!-- O QUE MEXER -->
             <include
                 android:id="@+id/vidroTileKeyboard"
                 layout="@layout/vidro_island_tile" />
@@ -95,13 +122,21 @@
                 android:id="@+id/vidroTileDetails"
                 layout="@layout/vidro_island_tile" />
 
+            <View
+                android:layout_width="@dimen/vidro_stroke_width"
+                android:layout_height="36dp"
+                android:layout_marginStart="@dimen/vidro_space_4"
+                android:layout_marginLeft="@dimen/vidro_space_4"
+                android:background="@color/vidro_stroke_glass" />
+
+            <!-- SAIR: o único preenchido, porque é o único irreversível. -->
             <TextView
                 android:id="@+id/vidroIslandLeave"
                 style="@style/VidroText"
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginLeft="9dp"
+                android:layout_marginStart="@dimen/vidro_space_4"
+                android:layout_marginLeft="@dimen/vidro_space_4"
                 android:background="@drawable/vidro_button_accent"
                 android:fontFamily="@font/manrope_extrabold"
                 android:gravity="center"
@@ -115,20 +150,24 @@
     </HorizontalScrollView>
 
     <!-- ================= pílula recolhida ================= -->
-
+    <!--
+        Mesma âncora da ilha — canto de baixo à esquerda, mesma margem. As duas são o
+        mesmo objeto em dois tamanhos, e uma âncora diferente faria a troca parecer que
+        uma coisa sumiu e outra apareceu.
+    -->
     <LinearLayout
         android:id="@+id/vidroPill"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_gravity="bottom|start"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginStart="@dimen/vidro_space_4"
+        android:layout_marginLeft="@dimen/vidro_space_4"
+        android:layout_marginBottom="@dimen/vidro_space_4"
         android:background="@drawable/vidro_glass_pill"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
+        android:paddingLeft="@dimen/vidro_space_4"
+        android:paddingRight="@dimen/vidro_space_4"
         android:visibility="gone">
 
         <View
