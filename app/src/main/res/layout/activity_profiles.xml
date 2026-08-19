@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentTop="true"
-        app:vidro_intensity="0.07" />
+        app:vidro_intensity="0.07"
+        app:vidro_center_y="0" />
 
     <LinearLayout
         android:id="@+id/vidroScenesHeader"

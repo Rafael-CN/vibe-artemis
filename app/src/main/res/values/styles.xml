@@ -336,6 +336,12 @@
             <enum name="poor" value="2" />
         </attr>
         <attr name="vidro_core_color" format="color" />
+        <!--
+            Onde o centro do gradiente cai, em fração da altura da view. O protótipo põe
+            a luz da home em top:-2% com translate(-50%), ou seja, o centro fica ACIMA da
+            borda de cima e só a metade de baixo vaza para dentro. 0 = topo.
+        -->
+        <attr name="vidro_center_y" format="float" />
     </declare-styleable>
 
     <declare-styleable name="ApertureViewGroup">

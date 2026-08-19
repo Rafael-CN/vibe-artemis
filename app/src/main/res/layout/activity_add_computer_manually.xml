@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
-        app:vidro_intensity="0.20" />
+        app:vidro_intensity="0.20"
+        app:vidro_center_y="0" />
 
     <LinearLayout
         android:layout_width="match_parent"

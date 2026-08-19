@@ -53,6 +53,15 @@ public class VidroLightView extends View {
     /** Alpha do núcleo no protótipo. A intensidade escala este valor, não o substitui. */
     private static final float CORE_ALPHA = 0.46f;
 
+    /**
+     * Diâmetro da luz em múltiplos da LARGURA da tela.
+     *
+     * O protótipo desenha um círculo de 560 num quadro de 393 — 1,42 vez a largura. Eu
+     * derivava o raio de max(largura, altura), o que numa tela alta inflava a luz e a
+     * fazia depender da altura da view em vez do desenho.
+     */
+    private static final float DIAMETER_OF_WIDTH = 1.42f;
+
     /** Do handoff: 900 ms, ease-out. Vale para intensidade e para alcance. */
     private static final long TRANSITION_MS = 900;
 
@@ -60,6 +69,7 @@ public class VidroLightView extends View {
     private final float[] hsv = new float[3];
 
     private int coreColor;
+    private float centerY = 0.5f;
     private float intensity = INTENSITY_NONE;
     private float reach = REACH[QUALITY_GOOD];
     private float chroma = CHROMA[QUALITY_GOOD];
@@ -73,6 +83,7 @@ public class VidroLightView extends View {
     private float shaderIntensity = -1;
     private float shaderReach = -1;
     private float shaderChroma = -1;
+    private float shaderCenterY = -1;
     private int shaderWidth = -1;
     private int shaderHeight = -1;
 
@@ -97,6 +108,7 @@ public class VidroLightView extends View {
                 reach = REACH[clampQuality(quality)];
                 chroma = CHROMA[clampQuality(quality)];
                 coreColor = a.getColor(R.styleable.VidroLightView_vidro_core_color, coreColor);
+                centerY = a.getFloat(R.styleable.VidroLightView_vidro_center_y, 0.5f);
             }
             finally {
                 a.recycle();
@@ -239,10 +251,11 @@ public class VidroLightView extends View {
                 || shaderHeight != height
                 || Math.abs(shaderIntensity - intensity) > 0.001f
                 || Math.abs(shaderReach - reach) > 0.001f
-                || Math.abs(shaderChroma - chroma) > 0.001f;
+                || Math.abs(shaderChroma - chroma) > 0.001f
+                || Math.abs(shaderCenterY - centerY) > 0.001f;
 
         if (stale) {
-            float radius = Math.max(width, height) * 0.5f * reach;
+            float radius = width * DIAMETER_OF_WIDTH * 0.5f * reach;
             int tinted = coolTowardNeutral(coreColor, chroma);
 
             // O protótipo desenha a luz como `radial-gradient(circle, acento/.46 0%,
@@ -254,7 +267,7 @@ public class VidroLightView extends View {
             int edge = tinted & 0x00FFFFFF;
 
             shader = new RadialGradient(
-                    width * 0.5f, height * 0.5f, radius,
+                    width * 0.5f, height * centerY, radius,
                     new int[] { core, mid, edge },
                     // A queda precisa ser rápida no meio e longa na borda, senão a luz
                     // vira um disco com contorno visível em vez de derramar.
@@ -270,6 +283,7 @@ public class VidroLightView extends View {
             shaderIntensity = intensity;
             shaderReach = reach;
             shaderChroma = chroma;
+            shaderCenterY = centerY;
         }
 
         canvas.drawRect(0, 0, width, height, paint);

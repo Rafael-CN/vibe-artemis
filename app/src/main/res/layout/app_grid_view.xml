@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Grade do catálogo.
+
+    numColumns FIXO em 2, não auto_fit. Num aparelho real o auto_fit calculou UMA coluna e
+    ainda a encostou na direita — quatro capas empilhadas contra a borda, com metade da
+    tela vazia. O protótipo especifica duas colunas; deixar a contagem por conta do
+    cálculo de largura entregou algo que não é nem duas nem uma centrada.
+
+    stretchMode columnWidth: as duas colunas dividem a largura disponível por igual, então
+    a capa acompanha a tela em vez de ficar presa a uma medida absoluta.
+-->
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:numColumns="auto_fit"
-    android:columnWidth="176dp"
-    
-    android:stretchMode="spacingWidthUniform"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:clipToPadding="false"
-    android:paddingLeft="17dp"
-    android:paddingRight="17dp"
+    android:horizontalSpacing="0dp"
+    android:numColumns="2"
+    android:paddingLeft="@dimen/vidro_inset_card"
+    android:paddingRight="@dimen/vidro_inset_card"
     android:paddingBottom="@dimen/vidro_thumb_reach"
     android:scrollbars="none"
-    android:gravity="center"/>
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="0dp" />

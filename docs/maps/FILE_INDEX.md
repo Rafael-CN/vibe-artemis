@@ -4,13 +4,13 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **221 arquivos**, **66.245 linhas**, **274 tipos**, **2625 métodos**.
+Total: **221 arquivos**, **66.275 linhas**, **274 tipos**, **2625 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4880 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:257 `onServiceDisconnected()`:266 `sendText()`:336 `sendBackspaces()`:343 `onCreate()`:365 `onCapturedPointer()`:563 `notifyCrash()`:689 `onDisplayAdded()`:1058 |
+| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4896 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:257 `onServiceDisconnected()`:266 `sendText()`:337 `sendBackspaces()`:344 `onCreate()`:366 `onCapturedPointer()`:564 `notifyCrash()`:690 `onDisplayAdded()`:1059 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1082 | 4.7 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:169 `onClick()`:177 `onClick()`:184 `onCreate()`:213 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 846 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
@@ -271,7 +271,7 @@ Total: **221 arquivos**, **66.245 linhas**, **274 tipos**, **2625 métodos**.
 |---|--:|--:|---|---|
 | [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 321 | 3.1 | VidroSession | `showConnecting()`:64 `onStageStarting()`:95 `onConnected()`:112 `getConnectingCancel()`:127 `isSheetOpen()`:133 `openSheet()`:137 `closeSheet()`:153 `run()`:169 |
 | [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 316 | 3.1 | StreamContainer, InputCallbacks, StreamMode | `init()`:66 `setDesiredAspectRatio()`:104 `setFillDisplay()`:109 `onMeasure()`:115 `setInputCallbacks()`:194 `setCommitTextEnabled()`:198 `onKeyPreIme()`:203 `onWindowFocusChanged()`:215 |
-| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 278 | 3.3 | VidroLightView, FloatSink | `setIntensity()`:118 `set()`:136 `setQuality()`:143 `set()`:166 `set()`:172 `onAnimationUpdate()`:188 `onDetachedFromWindow()`:198 `onDraw()`:229 |
+| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 292 | 3.3 | VidroLightView, FloatSink | `setIntensity()`:130 `set()`:148 `setQuality()`:155 `set()`:178 `set()`:184 `onAnimationUpdate()`:200 `onDetachedFromWindow()`:210 `onDraw()`:241 |
 | [`VidroIsland.java`](../../app/src/main/java/com/limelight/ui/VidroIsland.java) | 218 | 3.1 | VidroIsland | `run()`:52 `isAvailable()`:69 `getIsland()`:73 `getPill()`:77 `setAppName()`:82 `setQuality()`:92 `reopen()`:108 `isOpen()`:112 |
 | [`StreamView.java`](../../app/src/main/java/com/limelight/ui/StreamView.java) | 168 | 2.8 | StreamView, InputCallbacks | `setDesiredAspectRatio()`:24 `setInputCallbacks()`:28 `setFillDisplay()`:32 `setCommitTextEnabled()`:36 `onMeasure()`:62 `onKeyPreIme()`:97 `onWindowFocusChanged()`:117 `onCheckIsTextEditor()`:126 |
 | [`ApertureViewGroup.java`](../../app/src/main/java/com/limelight/ui/ApertureViewGroup.java) | 151 | 2.8 | ApertureViewGroup | `getOutline()`:54 `getCurrentSpeed()`:80 `setCurrentSpeed()`:84 `onSizeChanged()`:90 `dispatchDraw()`:124 |

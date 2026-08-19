@@ -8,7 +8,7 @@
 
 | Arquivo | Linhas | Métodos | Fan-in | Fan-out |
 |---|--:|--:|--:|--:|
-| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4880 | 171 | 10 | 48 |
+| [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4896 | 171 | 10 | 48 |
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
@@ -39,7 +39,7 @@
 | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java` | 13 | 939 |
 | `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 12 | 101 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 11 | 296 |
-| `app/src/main/java/com/limelight/Game.java` | 10 | 4880 |
+| `app/src/main/java/com/limelight/Game.java` | 10 | 4896 |
 | `app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java` | 10 | 27 |
 | `app/src/main/java/com/limelight/profiles/ProfilesManager.java` | 10 | 266 |
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 8 | 629 |
@@ -57,7 +57,7 @@
 
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
-| `app/src/main/java/com/limelight/Game.java` | 48 | 4880 |
+| `app/src/main/java/com/limelight/Game.java` | 48 | 4896 |
 | `app/src/main/java/com/limelight/PcView.java` | 24 | 1082 |
 | `app/src/main/java/com/limelight/AppView.java` | 17 | 846 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
@@ -104,8 +104,8 @@
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1047` | We previously used a short for the buttonFlags argument, but we switched to an |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c:945` | In order to get GFE to respect our request for a lower audio bitrate, we must |
 | TODO | `app/src/main/java/com/limelight/AppView.java:785` | celular — até o S22 Ultra, com 460dp. Na prática o |
-| TODO | `app/src/main/java/com/limelight/Game.java:1924` | Improve this |
-| TODO | `app/src/main/java/com/limelight/Game.java:1938` | Do we want to use WindowInsetsController here on R+ instead of |
+| TODO | `app/src/main/java/com/limelight/Game.java:1940` | Improve this |
+| TODO | `app/src/main/java/com/limelight/Game.java:1954` | Do we want to use WindowInsetsController here on R+ instead of |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:93` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStickFree.java:95` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyAnalogStick.java:95` | implement square sick for simulations |

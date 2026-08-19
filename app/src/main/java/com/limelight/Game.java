@@ -315,6 +315,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private ImageButton floatingMenuButton;
     private VidroIsland vidroIsland;
     private VidroSession vidroSession;
+    private boolean composeSawKeyboard;
     private ImageButton overlayToggleButton;
     private float floatingButtonDX, floatingButtonDY;
     private boolean isButtonMoving = false;
@@ -1226,6 +1227,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             return;
         }
 
+        composeSawKeyboard = false;
         bar.setVisibility(View.VISIBLE);
         input.requestFocus();
 
@@ -1249,6 +1251,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         }
 
         bar.setVisibility(View.GONE);
+        composeSawKeyboard = false;
 
         if (input != null) {
             input.setText("");
@@ -1259,19 +1262,32 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         }
     }
 
-    /** A barra acompanha o topo do teclado; sem IME na tela ela não tem onde morar. */
+    /**
+     * A barra acompanha o topo do teclado.
+     *
+     * Ela só fecha quando o IME REALMENTE se foi — antes disso ela morria sozinha. Ao
+     * abrir, o Android entrega um ou dois callbacks de inset com overlap 0 enquanto o
+     * teclado ainda está animando para dentro, e eu tratava esse zero como "o teclado
+     * sumiu". Daí o relato de que às vezes abria e às vezes fechava na hora: era uma
+     * corrida com a animação do IME.
+     *
+     * Agora só fecha depois de ter visto o teclado de pé pelo menos uma vez.
+     */
     private void updateComposeBar(int imeOverlap) {
         View bar = findViewById(R.id.vidroComposeBar);
         if (bar == null || bar.getVisibility() != View.VISIBLE) {
             return;
         }
 
-        if (imeOverlap <= 0) {
-            closeComposeBar();
+        if (imeOverlap > 0) {
+            composeSawKeyboard = true;
+            bar.setTranslationY(-imeOverlap);
             return;
         }
 
-        bar.setTranslationY(-imeOverlap);
+        if (composeSawKeyboard) {
+            closeComposeBar();
+        }
     }
 
     private void setupComposeBar() {
