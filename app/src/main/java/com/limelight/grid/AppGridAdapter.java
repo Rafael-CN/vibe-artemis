@@ -29,7 +29,9 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
     private static final int ART_WIDTH_PX = 300;
-    private static final int SMALL_WIDTH_DP = 110;
+    // A capa é sempre mostrada a 132dp (app_grid_item). Decodificar a 110 deixava a
+    // arte macia no modo pequeno, que é justamente o modo que todo celular usa.
+    private static final int SMALL_WIDTH_DP = 132;
     private static final int LARGE_WIDTH_DP = 170;
 
     private final ComputerDetails computer;
@@ -77,7 +79,7 @@ public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
 
     private static int getLayoutIdForPreferences(PreferenceConfiguration prefs) {
         if (prefs.smallIconMode) {
-            return R.layout.app_grid_item_small;
+            return R.layout.app_grid_item;
         }
         else {
             return R.layout.app_grid_item;
@@ -192,11 +194,11 @@ public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
                 pill.setText(R.string.vidro_pill_open);
                 pill.setVisibility(View.VISIBLE);
             }
-            else if (NvApp.REMOTE_INPUT_UUID.equals(obj.app.getAppUUID())) {
+            else if (isRemoteInput(obj.app)) {
                 pill.setText(R.string.vidro_pill_input);
                 pill.setVisibility(View.VISIBLE);
             }
-            else if (isRemoteDisplay(obj.app.getAppName())) {
+            else if (isRemoteDisplay(obj.app)) {
                 pill.setText(R.string.vidro_pill_screen);
                 pill.setVisibility(View.VISIBLE);
             }
@@ -214,14 +216,34 @@ public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
     }
 
     /**
-     * Entrada tem UUID conhecido; tela não tem nada.
+     * Sessão remota: reconhecida pelo ID sintético, não pelo nome nem por UUID fixo.
      *
-     * O protocolo entrega nome, UUID e box art — não há campo de tipo. O Vibeshine
-     * publica o display virtual com este nome exato, então é por ele que dá para
-     * reconhecer. Heurística assumida: se o host renomear, a pílula some, e sumir uma
-     * pílula é bem menos grave que rotular o app errado.
+     * Os valores vieram do applist de um Vibeshine de verdade — Remote Monitor 2147483505
+     * e Remote Input 2147483506, na faixa 2147483501–506 que o host reserva para as
+     * sessões que ele próprio sintetiza. Antes disto o código comparava com "Remote
+     * Display", nome que o Vibeshine não usa, e com NvApp.REMOTE_INPUT_UUID, que é o UUID
+     * do Apollo e não bate com o que o Vibeshine publica: nenhuma das duas pílulas
+     * aparecia.
+     *
+     * O ID é o discriminador estável: sobrevive a renomeação e ao idioma do host.
      */
-    private static boolean isRemoteDisplay(String appName) {
-        return appName != null && appName.equalsIgnoreCase("Remote Display");
+    private static final int REMOTE_SESSION_ID_FIRST = 2147483501;
+    private static final int REMOTE_SESSION_ID_LAST = 2147483506;
+    private static final int REMOTE_MONITOR_ID = 2147483505;
+    private static final int REMOTE_INPUT_ID = 2147483506;
+
+    private static boolean isRemoteSession(NvApp app) {
+        int id = app.getAppId();
+        return id >= REMOTE_SESSION_ID_FIRST && id <= REMOTE_SESSION_ID_LAST;
+    }
+
+    private static boolean isRemoteDisplay(NvApp app) {
+        return isRemoteSession(app) && app.getAppId() == REMOTE_MONITOR_ID;
+    }
+
+    private static boolean isRemoteInput(NvApp app) {
+        // O UUID do Apollo continua valendo para quem usa Apollo em vez de Vibeshine.
+        return (isRemoteSession(app) && app.getAppId() == REMOTE_INPUT_ID)
+                || NvApp.REMOTE_INPUT_UUID.equals(app.getAppUUID());
     }
 }

@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **221 arquivos**, **66.025 linhas**, **274 tipos**, **2614 métodos**.
+Total: **221 arquivos**, **66.054 linhas**, **274 tipos**, **2616 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -12,7 +12,7 @@ Total: **221 arquivos**, **66.025 linhas**, **274 tipos**, **2614 métodos**.
 |---|--:|--:|---|---|
 | [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4704 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:254 `onServiceDisconnected()`:263 `sendText()`:333 `sendBackspaces()`:340 `onCreate()`:362 `onCapturedPointer()`:552 `notifyCrash()`:678 `onDisplayAdded()`:1046 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1082 | 4.7 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:169 `onClick()`:177 `onClick()`:184 `onCreate()`:213 |
-| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 839 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
+| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 846 | 6.4 | AppView, AppObject | `onServiceConnected()`:94 `run()`:101 `run()`:145 `onServiceDisconnected()`:166 `onConfigurationChanged()`:172 `notifyComputerUpdated()`:202 `run()`:217 `run()`:231 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.4 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
 | [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 405 | 12.3 | GameMenu, MenuOption | `onGlobalLayout()`:193 `showMenu()`:341 `hideMenu()`:393 `isMenuOpen()`:401 |
@@ -160,7 +160,7 @@ Total: **221 arquivos**, **66.025 linhas**, **274 tipos**, **2614 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`AppGridAdapter.java`](../../app/src/main/java/com/limelight/grid/AppGridAdapter.java) | 228 | 3.2 | AppGridAdapter | `updateHiddenApps()`:53 `updateLayoutWithPreferences()`:87 `cancelQueuedOperations()`:120 `compare()`:129 `addApp()`:141 `removeApp()`:160 `clear()`:166 `populateView()`:172 |
+| [`AppGridAdapter.java`](../../app/src/main/java/com/limelight/grid/AppGridAdapter.java) | 250 | 3.2 | AppGridAdapter | `updateHiddenApps()`:55 `updateLayoutWithPreferences()`:89 `cancelQueuedOperations()`:122 `compare()`:131 `addApp()`:143 `removeApp()`:162 `clear()`:168 `populateView()`:174 |
 | [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 104 | 3.0 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
 | [`GenericGridAdapter.java`](../../app/src/main/java/com/limelight/grid/GenericGridAdapter.java) | 77 | 2.8 | GenericGridAdapter | `clear()`:39 `getCount()`:44 `getItem()`:49 `getItemId()`:54 `getView()`:61 |
 

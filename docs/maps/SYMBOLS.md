@@ -28,7 +28,7 @@
 | `addAnalogStickListener()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyAnalogStick.java:176` |
 | `addAnalogStickListener()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyAnalogStickFree.java:187` |
 | `addAndRetrieveProfile()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:50` |
-| `addApp()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:141` |
+| `addApp()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:143` |
 | `addAttributeBinary()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/SdpGenerator.c:86` |
 | `addAttributeString()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/SdpGenerator.c:119` |
 | `addComputer()` | method | `app/src/main/java/com/limelight/grid/PcGridAdapter.java:34` |
@@ -71,7 +71,7 @@
 | `AppGridAdapter` | class | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:29` |
 | `ApplistPoller` | class | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:799` |
 | `apply()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:464` |
-| `AppObject` | class | `app/src/main/java/com/limelight/AppView.java:821` |
+| `AppObject` | class | `app/src/main/java/com/limelight/AppView.java:828` |
 | `AppView` | class | `app/src/main/java/com/limelight/AppView.java:58` |
 | `aProporcaoNaoMudaConformeOTecladoCresce()` | method | `app/src/test/java/com/limelight/ui/StreamContainerAspectRatioTest.java:92` |
 | `ArtemisApplication` | class | `app/src/main/java/com/limelight/ArtemisApplication.java:8` |
@@ -148,7 +148,7 @@
 | `CacheHelper` | class | `app/src/main/java/com/limelight/utils/CacheHelper.java:15` |
 | `cancelBackgroundLoads()` | method | `app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java:72` |
 | `cancelForegroundLoads()` | method | `app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java:79` |
-| `cancelQueuedOperations()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:120` |
+| `cancelQueuedOperations()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:122` |
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/AbsoluteTouchContext.java:234` |
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/RelativeTouchContext.java:306` |
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/TrackpadContext.java:415` |
@@ -172,7 +172,7 @@
 | `cleanupPlatformSockets()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.h:131` |
 | `clear()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:452` |
 | `clear()` | method | `app/src/main/java/com/limelight/binding/input/TextInputPump.java:134` |
-| `clear()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:166` |
+| `clear()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:168` |
 | `clear()` | method | `app/src/main/java/com/limelight/grid/GenericGridAdapter.java:39` |
 | `clearCache()` | method | `app/src/main/java/com/limelight/grid/assets/MemoryAssetLoader.java:69` |
 | `clearDropsPendingWork()` | method | `app/src/test/java/com/limelight/binding/input/TextInputPumpTest.java:183` |
@@ -193,7 +193,7 @@
 | `commitText()` | method | `app/src/main/java/com/limelight/ui/StreamView.java:142` |
 | `commitText_isForwarded_whenEnabled()` | method | `app/src/test/java/com/limelight/ui/StreamViewCommitTextTest.java:30` |
 | `commitText_notForwarded_whenDisabled()` | method | `app/src/test/java/com/limelight/ui/StreamViewCommitTextTest.java:46` |
-| `compare()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:129` |
+| `compare()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:131` |
 | `compare()` | method | `app/src/main/java/com/limelight/grid/PcGridAdapter.java:42` |
 | `completeFecBlock()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpAudioQueue.c:390` |
 | `ComputerDatabaseManager` | class | `app/src/main/java/com/limelight/computers/ComputerDatabaseManager.java:25` |
@@ -1196,7 +1196,7 @@
 | `onInputDeviceRemoved()` | method | `app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java:439` |
 | `onInputDeviceRemoved()` | method | `app/src/main/java/com/limelight/binding/input/capture/AndroidNativePointerCaptureProvider.java:153` |
 | `onInterrupt()` | method | `app/src/main/java/com/limelight/KeyboardAccessibilityService.java:68` |
-| `onItemClick()` | method | `app/src/main/java/com/limelight/AppView.java:791` |
+| `onItemClick()` | method | `app/src/main/java/com/limelight/AppView.java:798` |
 | `onItemClick()` | method | `app/src/main/java/com/limelight/PcView.java:1043` |
 | `onKey()` | method | `app/src/main/java/com/limelight/Game.java:4342` |
 | `onKey()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:333` |
@@ -1440,7 +1440,7 @@
 | `populateCache()` | method | `app/src/main/java/com/limelight/grid/assets/MemoryAssetLoader.java:65` |
 | `populateCacheWithStream()` | method | `app/src/main/java/com/limelight/grid/assets/DiskAssetLoader.java:169` |
 | `populateImageView()` | method | `app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java:334` |
-| `populateView()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:172` |
+| `populateView()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:174` |
 | `populateView()` | method | `app/src/main/java/com/limelight/grid/PcGridAdapter.java:53` |
 | `postDelayed()` | method | `app/src/test/java/com/limelight/binding/input/TextInputPumpTest.java:30` |
 | `PosterContentProvider` | class | `app/src/main/java/com/limelight/PosterContentProvider.java:19` |
@@ -1492,7 +1492,7 @@
 | `readFirstFrame()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoStream.c:269` |
 | `readNvctlPacketTcp()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c:516` |
 | `reassembleFrame()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c:467` |
-| `receiveAbsListView()` | method | `app/src/main/java/com/limelight/AppView.java:787` |
+| `receiveAbsListView()` | method | `app/src/main/java/com/limelight/AppView.java:794` |
 | `receiveAbsListView()` | method | `app/src/main/java/com/limelight/PcView.java:1039` |
 | `reconstructFrame()` | method | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c:192` |
 | `RecordingSink` | class | `app/src/test/java/com/limelight/binding/input/TextInputPumpTest.java:47` |
@@ -1507,7 +1507,7 @@
 | `reloadSettings()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:310` |
 | `reloadSettings()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:979` |
 | `remove()` | method | `app/src/main/java/com/limelight/EditProfileActivity.java:446` |
-| `removeApp()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:160` |
+| `removeApp()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:162` |
 | `removeComputer()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:264` |
 | `removeComputer()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:503` |
 | `removeComputer()` | method | `app/src/main/java/com/limelight/grid/PcGridAdapter.java:48` |
@@ -2078,7 +2078,7 @@
 | `toggleZoomMode()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:472` |
 | `toInt()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:188` |
 | `toInt()` | method | `app/src/test/java/com/limelight/shadows/ShadowMoonBridge.java:22` |
-| `toString()` | method | `app/src/main/java/com/limelight/AppView.java:834` |
+| `toString()` | method | `app/src/main/java/com/limelight/AppView.java:841` |
 | `toString()` | method | `app/src/main/java/com/limelight/PcView.java:1073` |
 | `toString()` | method | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java:2278` |
 | `toString()` | method | `app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java:2298` |
@@ -2114,8 +2114,8 @@
 | `update()` | method | `app/src/main/java/com/limelight/profiles/ProfilesManager.java:143` |
 | `updateAndSaveProfile()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:70` |
 | `updateComputer()` | method | `app/src/main/java/com/limelight/computers/ComputerDatabaseManager.java:110` |
-| `updateHiddenApps()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:53` |
-| `updateLayoutWithPreferences()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:87` |
+| `updateHiddenApps()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:55` |
+| `updateLayoutWithPreferences()` | method | `app/src/main/java/com/limelight/grid/AppGridAdapter.java:89` |
 | `updateLayoutWithPreferences()` | method | `app/src/main/java/com/limelight/grid/PcGridAdapter.java:29` |
 | `updatePipAutoEnter()` | method | `app/src/main/java/com/limelight/Game.java:1456` |
 | `updateSeekbar()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:164` |

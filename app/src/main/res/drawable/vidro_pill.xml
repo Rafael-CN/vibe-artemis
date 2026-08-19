@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Pilula de rotulo: "aberto", "tela", "entrada". -->
+<!--
+    Pílula de rótulo: "aberto", "tela", "entrada".
+
+    Fundo ESCURO E OPACO, não um véu branco. Ela vive por cima de box art que o host
+    manda e nós não controlamos — a arte do Vibeshine tem grandes áreas brancas, e sobre
+    elas um branco a 16% com texto branco simplesmente sumia: lia-se "nput" no lugar de
+    "input" porque o "i" caía em cima do gamepad branco.
+
+    É o mesmo raciocínio do vidro em sessão: quando o fundo não é nosso, a superfície
+    tem que trazer o próprio contraste em vez de contar com o que estiver atrás.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#29FFFFFF" />
+    <solid android:color="@color/vidro_glass_fill_session" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/vidro_stroke_glass" />
     <corners android:radius="@dimen/vidro_radius_pill" />
 </shape>

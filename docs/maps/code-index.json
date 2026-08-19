@@ -4,17 +4,17 @@
   "files": 221,
   "javaFiles": 178,
   "nativeFiles": 42,
-  "lines": 66025,
+  "lines": 66054,
   "types": 274,
-  "methods": 2614,
+  "methods": 2616,
   "packages": 30,
-  "todos": 35
+  "todos": 36
  },
  "files": [
   {
    "path": "app/src/main/java/com/limelight/AppView.java",
    "lang": "java",
-   "lines": 839,
+   "lines": 846,
    "package": "com.limelight",
    "imports": [
     "java.io.IOException",
@@ -77,7 +77,7 @@
     {
      "kind": "class",
      "name": "AppObject",
-     "line": 821
+     "line": 828
     }
    ],
    "methods": [
@@ -303,28 +303,34 @@
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 787
+     "line": 794
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 791
+     "line": 798
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 834
+     "line": 841
     }
    ],
    "nativeMethods": [],
    "androidApis": [
     "SharedPreferences"
    ],
-   "todos": []
+   "todos": [
+    {
+     "kind": "TODO",
+     "text": "celular — até o S22 Ultra, com 460dp. Na prática o",
+     "line": 785
+    }
+   ]
   },
   {
    "path": "app/src/main/java/com/limelight/ArtemisApplication.java",
@@ -10709,7 +10715,7 @@
   {
    "path": "app/src/main/java/com/limelight/grid/AppGridAdapter.java",
    "lang": "java",
-   "lines": 228,
+   "lines": 250,
    "package": "com.limelight.grid",
    "imports": [
     "android.content.Context",
@@ -10749,77 +10755,91 @@
      "modifiers": "public",
      "returns": "void",
      "params": "Set<Integer> newHiddenAppIds, boolean hideImmediately",
-     "line": 53
+     "line": 55
     },
     {
      "name": "getLayoutIdForPreferences",
      "modifiers": "static",
      "returns": "int",
      "params": "PreferenceConfiguration prefs",
-     "line": 78
+     "line": 80
     },
     {
      "name": "updateLayoutWithPreferences",
      "modifiers": "public",
      "returns": "void",
      "params": "Context context, PreferenceConfiguration prefs",
-     "line": 87
+     "line": 89
     },
     {
      "name": "cancelQueuedOperations",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 120
+     "line": 122
     },
     {
      "name": "sortList",
      "modifiers": "static",
      "returns": "void",
      "params": "List<AppView.AppObject> list",
-     "line": 126
+     "line": 128
     },
     {
      "name": "compare",
      "modifiers": "public",
      "returns": "int",
      "params": "AppView.AppObject lhs, AppView.AppObject rhs",
-     "line": 129
+     "line": 131
     },
     {
      "name": "addApp",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 141
+     "line": 143
     },
     {
      "name": "removeApp",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 160
+     "line": 162
     },
     {
      "name": "clear",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 166
+     "line": 168
     },
     {
      "name": "populateView",
      "modifiers": "public",
      "returns": "void",
      "params": "View parentView, ImageView imgView, RelativeLayout gridMask, ProgressBar prgView, TextView txtView, ImageView overlayView, AppView.AppObject obj",
-     "line": 172
+     "line": 174
+    },
+    {
+     "name": "isRemoteSession",
+     "modifiers": "static",
+     "returns": "boolean",
+     "params": "NvApp app",
+     "line": 235
     },
     {
      "name": "isRemoteDisplay",
      "modifiers": "static",
      "returns": "boolean",
-     "params": "String appName",
-     "line": 224
+     "params": "NvApp app",
+     "line": 240
+    },
+    {
+     "name": "isRemoteInput",
+     "modifiers": "static",
+     "returns": "boolean",
+     "params": "NvApp app",
+     "line": 244
     }
    ],
    "nativeMethods": [],

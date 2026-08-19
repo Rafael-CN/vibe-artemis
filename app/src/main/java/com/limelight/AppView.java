@@ -779,8 +779,15 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
 
     @Override
     public int getAdapterFragmentLayoutId() {
-        return PreferenceConfiguration.readPreferences(AppView.this).smallIconMode ?
-                    R.layout.app_grid_view_small : R.layout.app_grid_view;
+        // Uma grade só.
+        //
+        // O smallIconMode liga sozinho em qualquer tela abaixo de 500dp de menor
+        // largura, o que inclui TODO celular — até o S22 Ultra, com 460dp. Na prática o
+        // desenho de catálogo que eu fiz nunca aparecia num telefone: ele caía na grade
+        // pequena herdada do Moonlight. A identidade Vidro tem uma grade, então é essa
+        // que vale, e o smallIconMode passa a governar só a resolução em que a capa é
+        // decodificada — que é o trabalho útil que restou para ele.
+        return R.layout.app_grid_view;
     }
 
     @Override

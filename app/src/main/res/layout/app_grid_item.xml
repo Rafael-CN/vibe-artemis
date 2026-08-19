@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Card de app do catálogo. Capa de 132 dp com raio 20, e o nome POR FORA, embaixo —
-    não sobreposto. Sobrepor obrigaria um véu sobre toda capa para garantir contraste,
-    e o véu apaga justamente a arte que faz a grade valer a pena.
+    quando existe. O Vibeshine assa o nome dentro da própria box art, e nesse caso o
+    carregador esconde o rótulo em vez de repetir a palavra duas vezes.
 
-    Remote Display e Remote Control usam este mesmo card: o que os diferencia é a
-    pílula ("tela", "entrada"), nunca um botão especial. O host publica, o app lista.
+    Remote Monitor e Remote Input usam este mesmo card: o que os diferencia é a pílula,
+    nunca um botão especial. O host publica, o app lista.
+
+    O container é FrameLayout e não RelativeLayout de propósito. Em RelativeLayout a
+    pílula com wrap_content saía medida mais estreita que o próprio texto — lia-se "nput"
+    em vez de "input", com a palavra transbordando o fundo. FrameLayout mede filho por
+    gravidade sem essa ambiguidade.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingTop="5dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="5dp">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="132dp">
 
@@ -46,24 +49,22 @@
                     android:layout_centerInParent="true" />
             </RelativeLayout>
 
-
             <TextView
                 android:id="@+id/grid_pill"
                 style="@style/VidroText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="11dp"
-                android:layout_marginRight="11dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="10dp"
                 android:background="@drawable/vidro_pill"
                 android:fontFamily="@font/manrope_bold"
-                android:paddingLeft="9dp"
-                android:paddingTop="4dp"
-                android:paddingRight="9dp"
-                android:paddingBottom="4dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:singleLine="true"
                 android:textSize="10sp"
                 android:visibility="gone"
                 tools:text="aberto"
@@ -81,11 +82,11 @@
                 android:id="@+id/grid_spinner"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:indeterminate="true"
                 android:indeterminateTint="@color/vidro_accent_text"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/grid_text"
