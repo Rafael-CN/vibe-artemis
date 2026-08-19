@@ -74,18 +74,13 @@
 
             <TextView
                 android:id="@+id/vidroReload"
-                style="@style/VidroText.Support"
+                style="@style/VidroText.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:fontFamily="@font/manrope_semibold"
-                android:minHeight="@dimen/vidro_touch_target"
-                android:gravity="center_vertical"
-                android:text="@string/vidro_reload"
-                android:textColor="@color/vidro_accent_text" />
+                android:text="@string/vidro_reload" />
         </RelativeLayout>
 
         <!--

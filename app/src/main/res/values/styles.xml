@@ -129,7 +129,8 @@
     <style name="VidroText.Display" parent="VidroText">
         <item name="android:fontFamily">@font/manrope_extrabold</item>
         <item name="android:textSize">32sp</item>
-        <item name="android:letterSpacing">-0.035</item>
+        <!-- -0.04em, como o protótipo. -->
+        <item name="android:letterSpacing">-0.04</item>
         <item name="android:lineSpacingMultiplier">1.06</item>
     </style>
 
@@ -177,6 +178,29 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:textColor">@color/vidro_text_3</item>
+    </style>
+
+    <!--
+        Rótulo de seção — "Continuar", "Seus lugares".
+
+        13sp semibold, como no protótipo. Eu vinha usando VidroText.Item (16sp), que é o
+        tamanho do NOME DE UM ITEM: o rótulo competia com o conteúdo que ele nomeia, e a
+        lista inteira perdia hierarquia.
+    -->
+    <style name="VidroText.Section" parent="VidroText">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/vidro_text_2</item>
+    </style>
+
+    <!-- Ação inline ao lado de um rótulo de seção: "Adicionar", "Recarregar". -->
+    <style name="VidroText.Action" parent="VidroText">
+        <item name="android:fontFamily">@font/manrope_bold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/vidro_accent_text</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">44dp</item>
     </style>
 
     <!-- Número técnico · JetBrains Mono · tabular -->

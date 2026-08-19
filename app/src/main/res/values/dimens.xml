@@ -27,6 +27,17 @@
     <dimen name="vidro_space_5">22dp</dimen>
     <dimen name="vidro_space_6">32dp</dimen>
 
+    <!--
+        DOIS recuos, não um.
+
+        O protótipo insere bloco de TEXTO a 22 e CARD a 18. A diferença existe porque o
+        card já traz a própria borda: alinhar a borda dele com a margem do texto deixaria
+        a coluna de leitura torta. Eu tinha achatado os dois em 22 e os cards ficavam
+        estreitos demais em relação ao título.
+    -->
+    <dimen name="vidro_inset_text">22dp</dimen>
+    <dimen name="vidro_inset_card">18dp</dimen>
+
     <!-- Uma borda só, sempre 1px. O peso vem da cor, não da espessura. -->
     <dimen name="vidro_stroke_width">1dp</dimen>
 

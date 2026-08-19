@@ -11,9 +11,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/vidro_space_5"
+    android:paddingLeft="@dimen/vidro_inset_card"
     android:paddingTop="@dimen/vidro_space_1"
-    android:paddingRight="@dimen/vidro_space_5"
+    android:paddingRight="@dimen/vidro_inset_card"
     android:paddingBottom="@dimen/vidro_space_1">
 
     <RelativeLayout
@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/vidro_row_bg"
         android:minHeight="52dp"
-        android:paddingLeft="@dimen/vidro_space_4"
-        android:paddingTop="@dimen/vidro_space_4"
-        android:paddingRight="@dimen/vidro_space_4"
-        android:paddingBottom="@dimen/vidro_space_4">
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp">
 
         <ImageView
             android:id="@+id/grid_image"

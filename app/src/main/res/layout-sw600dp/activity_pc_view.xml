@@ -135,13 +135,12 @@
             android:visibility="gone">
 
             <TextView
-                style="@style/VidroText.Item"
+                style="@style/VidroText.Section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vidro_space_5"
                 android:layout_marginBottom="@dimen/vidro_space_2"
-                android:text="@string/vidro_continue"
-                android:textColor="@color/vidro_text_2" />
+                android:text="@string/vidro_continue" />
 
             <LinearLayout
                 android:id="@+id/vidroContinueList"
@@ -157,28 +156,23 @@
             android:layout_marginBottom="@dimen/vidro_space_2">
 
             <TextView
-                style="@style/VidroText.Item"
+                style="@style/VidroText.Section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="@string/vidro_your_places"
-                android:textColor="@color/vidro_text_2"
-                android:textSize="17sp" />
+                android:text="@string/vidro_your_places" />
 
             <TextView
                 android:id="@+id/vidroAddPlace"
-                style="@style/VidroText.Support"
+                style="@style/VidroText.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/vidro_add"
-                android:textColor="@color/vidro_accent_text"
-                android:textSize="15sp" />
+                android:text="@string/vidro_add" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -229,29 +223,55 @@
         android:layout_below="@id/vidroHeader"
         android:layout_centerHorizontal="true">
 
+        <!--
+            Estado de procura, tela 12 do protótipo.
+
+            O que estava aqui era a cópia herdada do Moonlight — "Ensure Apollo is running
+            on your host PC" — que além de estar fora da linguagem do produto nomeia o
+            host errado: o dono deste fork usa Vibeshine. As strings certas já existiam e
+            ninguém as tinha ligado.
+        -->
         <LinearLayout
             android:id="@+id/no_pc_found_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/vidro_space_6"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_inset_text"
+            android:paddingRight="@dimen/vidro_inset_text">
 
-            <ProgressBar
-                android:id="@+id/pcs_loading"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/vidro_accent_text" />
+            <FrameLayout
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:background="@drawable/vidro_searching_ring">
+
+                <ProgressBar
+                    android:id="@+id/pcs_loading"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/vidro_accent_glow" />
+            </FrameLayout>
 
             <TextView
-                style="@style/VidroText.Support"
+                style="@style/VidroText.Display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
+                android:layout_marginTop="@dimen/vidro_space_5"
                 android:gravity="center"
-                android:text="@string/searching_pc" />
+                android:text="@string/vidro_searching_title"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/VidroText.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vidro_space_2"
+                android:gravity="center"
+                android:maxWidth="300dp"
+                android:text="@string/vidro_searching_sub" />
         </LinearLayout>
 
     </RelativeLayout>
