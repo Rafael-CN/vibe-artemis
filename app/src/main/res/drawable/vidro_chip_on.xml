@@ -2,9 +2,14 @@
 <!--
     Chip selecionado. É o único padrão de seleção do app: borda no acento, fundo com um
     véu do acento, texto no acento de TEXTO (L 80%) — nunca no de brilho, que reprova.
+
+    Corrigido pelo verificador da F1: o véu do fundo ainda usava o azul antigo do Vidro
+    (#1E8FEE) cravado, enquanto a borda (linha abaixo) já resolve por alias para
+    console_acento — o chip saía com borda menta e fundo azul. Mesmo alpha (0x29), matiz
+    trocado para console_acento (#7FE0C7).
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#291E8FEE" />
+    <solid android:color="#297FE0C7" />
     <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_accent_text" />
     <corners android:radius="14dp" />
 </shape>
