@@ -45,6 +45,7 @@ import com.limelight.nvstream.jni.MoonBridge;
 import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
+import com.limelight.ui.MoqueDaStream;
 import com.limelight.ui.VidroIsland;
 import com.limelight.ui.VidroLightView;
 import com.limelight.ui.VidroSession;
@@ -202,6 +203,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private boolean surfaceCreated = false;
     private boolean attemptedConnection = false;
     private int suppressPipRefCount = 0;
+
+    /** O vídeo falso, quando a sessão foi aberta em modo de moque. Nulo no uso normal. */
+    private MoqueDaStream moque;
+
+    private boolean emModoDeMoque() {
+        return BuildConfig.DEBUG && getIntent().getBooleanExtra(EXTRA_MOQUE, false);
+    }
+
     private String pcName;
     private String appName;
     private NvApp app;
@@ -282,6 +291,22 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     public static final String EXTRA_VDISPLAY = "VirtualDisplay";
     public static final String EXTRA_SERVER_COMMANDS = "ServerCommands";
     public static final String EXTRA_DISPLAY_ID = "DisplayID";
+
+    /**
+     * Sobe a sessão com uma superfície falsa, sem falar com host nenhum.
+     *
+     * <p>A sessão é a única parte deste app que nenhuma ferramenta do repositório
+     * conseguia ver: {@code tools/screens.mjs} não desenha {@code SurfaceView} (é
+     * Robolectric, sem camada de hardware), e um emulador sem host não tem o que
+     * decodificar. Sem isto, a aba, o menu e a barra de texto só eram conferidos quando
+     * alguém gravava a tela de um aparelho de verdade.
+     *
+     * <pre>adb shell am start -n com.limelight.noirdebug/com.limelight.Game --ez MoqueDeStream true</pre>
+     *
+     * Lido só quando {@code BuildConfig.DEBUG} — ver {@link #emModoDeMoque()} — e a
+     * {@code Game} só é exportada nessa build (app/src/debug/AndroidManifest.xml).
+     */
+    public static final String EXTRA_MOQUE = "MoqueDeStream";
 
     public static final String CLIPBOARD_IDENTIFIER = "ArtemisStreaming";
 
@@ -608,6 +633,20 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         boolean appSupportsHdr = Game.this.getIntent().getBooleanExtra(EXTRA_APP_HDR, false);
         byte[] derCertData = Game.this.getIntent().getByteArrayExtra(EXTRA_SERVER_CERT);
 
+        if (emModoDeMoque()) {
+            // O comando de moque só liga o extra booleano — nada de host, appId ou
+            // uniqueId. Sem valores aqui, o `if (appId == INVALID_APP_ID) finish()`
+            // logo abaixo encerraria a Activity antes de chegar à superfície, e o
+            // `new ComputerDetails.AddressTuple(host, port)" de baixo rejeita host nulo.
+            if (host == null) host = "127.0.0.1";
+            if (uniqueId == null) uniqueId = "moque";
+            // INVALID_APP_ID é 0 — desviar pra qualquer outro valor, ou o
+            // `if (appId == INVALID_APP_ID) finish()` duas linhas abaixo continuaria
+            // batendo e a Activity fecharia antes de mostrar qualquer coisa.
+            if (appId == StreamConfiguration.INVALID_APP_ID) appId = 1;
+            if (appName == null) appName = "Moque";
+        }
+
         app = new NvApp(appName != null ? appName : "app", appUUID, appId, appSupportsHdr);
 
         try {
@@ -901,6 +940,22 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         //streamContainer.getHolder().addCallback(this);
 
         streamContainer.setOnSurfaceAvailable(() -> {
+            // O MOQUE ENTRA AQUI, e este é o único ponto de corte: `conn` continua
+            // existindo (56 usos sem guarda de nulo neste arquivo), só o `start()` não
+            // roda — sem ele nada é negociado nem decodificado, e a superfície fica
+            // livre para o nosso desenho.
+            if (emModoDeMoque()) {
+                if (moque == null) {
+                    moque = new MoqueDaStream();
+                    moque.comecar(streamContainer.getSurface());
+
+                    // O mesmo caminho que uma conexão de verdade percorre ao subir:
+                    // sem chamar isto a tela de conectar fica de pé para sempre.
+                    connectionStarted();
+                }
+                return;
+            }
+
             if (!attemptedConnection) {
                 LimeLog.info("Surface is available, starting connection...");
                 attemptedConnection = true;
@@ -2149,6 +2204,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     protected void onDestroy() {
         if (vidroIsland != null) {
             vidroIsland.destroy();
+        }
+
+        if (moque != null) {
+            moque.parar();
+            moque = null;
         }
 
         super.onDestroy();
