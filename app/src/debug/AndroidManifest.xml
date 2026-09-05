@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Manifesto que só entra em compilação de depuração — a fusão do Gradle aplica isto
+    por cima do AndroidManifest.xml principal só no buildType `debug`.
+
+    Ele existe porque a sessão, a lista de PCs, o catálogo de apps e a tela de Ajustes
+    são as partes deste app que nenhuma ferramenta do repositório conseguia ver de
+    verdade: `tools/screens.mjs` roda em Robolectric (sem `SurfaceView`, sem serviço),
+    e um emulador sem host não tem quem responder. `tools/fotos.mjs` (F0) abre cada uma
+    direto pelo adb, com `am start -n <pacote>/<Activity>`, e isso só funciona em
+    Activities exportadas — nenhuma das quatro abaixo é, no manifesto principal, e é
+    assim que deve continuar em release.
+
+        adb shell am start -n com.limelight.noirdebug/com.limelight.Game (com o extra booleano MoqueDeStream=true)
+        adb shell am start -n com.limelight.noirdebug/com.limelight.AppView (com o extra booleano MoqueDeApps=true)
+        adb shell am start -n com.limelight.noirdebug/com.limelight.preferences.StreamSettings
+        adb shell am start -n com.limelight.noirdebug/com.limelight.ProfilesActivity
+
+    (comentário XML não aceita hífen duplo, por isso o extra vem em prosa acima, e não
+    como a flag booleana de verdade do `am start`; ver o Javadoc de EXTRA_MOQUE em
+    Game.java pro comando exato.)
+
+    **Isto não vale em release.** O `AndroidManifest.xml` principal continua sem
+    `android:exported` nas quatro — que é o certo: elas recebem host, PC ou app por
+    extra, e abri-las de fora seria uma outra app iniciando sessão ou navegando o
+    catálogo em nome do usuário sem passar pela tela que pede a escolha.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <activity
+            android:name="com.limelight.Game"
+            android:exported="true"
+            tools:node="merge" />
+        <activity
+            android:name="com.limelight.AppView"
+            android:exported="true"
+            tools:node="merge" />
+        <activity
+            android:name="com.limelight.preferences.StreamSettings"
+            android:exported="true"
+            tools:node="merge" />
+        <activity
+            android:name="com.limelight.ProfilesActivity"
+            android:exported="true"
+            tools:node="merge" />
+    </application>
+</manifest>

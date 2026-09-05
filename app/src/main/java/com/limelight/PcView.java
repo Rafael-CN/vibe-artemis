@@ -140,6 +140,19 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
     private final static int OPEN_MANAGEMENT_PAGE_ID = 20;
     private final static int PAIR_ID_OTP = 21;
 
+    /**
+     * Dois PCs sem rede nenhuma, para {@code tools/fotos.mjs} fotografar esta tela sem
+     * um Vibeshine de verdade no ar. Só em compilação de depuração — ver
+     * {@link #emModoDeCasca()} — e sem o extra a PcView não muda em nada.
+     *
+     * <pre>adb shell am start -n com.limelight.noirdebug/com.limelight.PcView --ez MoqueDeCasca true</pre>
+     */
+    private static final String EXTRA_MOQUE_CASCA = "MoqueDeCasca";
+
+    private boolean emModoDeCasca() {
+        return BuildConfig.DEBUG && getIntent().getBooleanExtra(EXTRA_MOQUE_CASCA, false);
+    }
+
     private void initializeViews() {
         setContentView(R.layout.activity_pc_view);
 
@@ -283,10 +296,46 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
 
         pcGridAdapter = new PcGridAdapter(this, PreferenceConfiguration.readPreferences(this));
 
+        if (emModoDeCasca()) {
+            popularComputadoresDeMentira();
+        }
+
         initializeViews();
     }
 
+    /**
+     * ARTEMIS on-line e emparelhada, NOTEBOOK fora do ar — os dois PCs que o extra
+     * {@code MoqueDeCasca} promete. Preenche o adapter direto, sem passar pelo
+     * {@link ComputerManagerService}: não há host de verdade para sondar, e o serviço
+     * real continua ligado (o bind acima) pelo que mais nesta tela depende dele.
+     */
+    private void popularComputadoresDeMentira() {
+        ComputerDetails artemis = new ComputerDetails();
+        artemis.uuid = "moque-artemis";
+        artemis.name = "ARTEMIS";
+        artemis.state = ComputerDetails.State.ONLINE;
+        artemis.pairState = PairState.PAIRED;
+        artemis.activeAddress = new ComputerDetails.AddressTuple("192.168.0.10", NvHTTP.DEFAULT_HTTP_PORT);
+
+        ComputerDetails notebook = new ComputerDetails();
+        notebook.uuid = "moque-notebook";
+        notebook.name = "NOTEBOOK";
+        notebook.state = ComputerDetails.State.OFFLINE;
+        notebook.pairState = PairState.PAIRED;
+        // Um MAC presente é o que faz updateVidroHeader() dizer "dormindo" em vez de
+        // "nenhum PC por perto" — o mesmo sinal que um PC fora do ar de verdade dá.
+        notebook.macAddress = "02:00:00:00:00:01";
+
+        pcGridAdapter.addComputer(new ComputerObject(artemis));
+        pcGridAdapter.addComputer(new ComputerObject(notebook));
+    }
+
     private void startComputerUpdates() {
+        if (emModoDeCasca()) {
+            // Os dois PCs de mentira já estão no adapter; não há o que sondar.
+            return;
+        }
+
         // Only allow polling to start if we're bound to CMS, polling is not already running,
         // and our activity is in the foreground.
         if (managerBinder != null && !runningPolling && inForeground) {
