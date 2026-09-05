@@ -2,11 +2,17 @@
 <!--
     Card de antecipação. Único lugar da home que recebe tinta do acento no fundo — ele
     é um palpite do app, não um item da lista, e precisa se declarar como tal.
+
+    Corrigido pelo verificador da F1: o alpha era aplicado sobre o azul antigo do Vidro
+    (#1E8FEE), que não é um dos 24 `vidro_*` nomeados em colors.xml e por isso não foi
+    alcançado pelo alias desta fatia. A regra da Console é uma cor só — troquei o matiz
+    para console_acento (#7FE0C7), mantendo os mesmos dois alphas (0x14 e 0x3D) do
+    original.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#141E8FEE" />
+    <solid android:color="#147FE0C7" />
     <stroke
         android:width="@dimen/vidro_stroke_width"
-        android:color="#3D1E8FEE" />
+        android:color="#3D7FE0C7" />
     <corners android:radius="@dimen/vidro_radius_l" />
 </shape>

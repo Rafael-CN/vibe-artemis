@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Fundo do ConsoleBotao.Neutro: superfície + borda, mesmo raio do primário.
+    A espessura reaproveita vidro_stroke_width (1dp) — a F1 não pediu um dimen
+    de borda próprio da Console, e o app já trata "borda" como 1px em todo lugar.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/console_superficie" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/console_borda" />
+    <corners android:radius="@dimen/console_raio_controle" />
+</shape>

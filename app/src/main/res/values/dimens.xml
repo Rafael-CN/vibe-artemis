@@ -54,4 +54,44 @@
     <!-- O halo do host. Grande de propósito: é a luz da sala, não um badge. -->
     <dimen name="vidro_halo_size">220dp</dimen>
 
+    <!--
+        ================================================================
+        Dimensões Console (Plano B — F1). Fonte: docs/planos/B-CONSOLE.md §F1.
+
+        Este arquivo (values/, sem qualificador) é o bucket de CELULAR: o Tab
+        S8 Ultra (sw600dp) recebe override em values-sw600dp/dimens.xml só nos
+        dois tokens que a F1 diz que diferem por aparelho (linha de ajuste e
+        aba da sessão). Os demais valem para os dois.
+        ================================================================
+    -->
+
+    <!-- Espaçamento — múltiplos de 8, com o 4 de passo mínimo (NOTA.md §2). -->
+    <dimen name="console_espaco_1">4dp</dimen>
+    <dimen name="console_espaco_2">8dp</dimen>
+    <dimen name="console_espaco_3">12dp</dimen>
+    <dimen name="console_espaco_4">16dp</dimen>
+    <dimen name="console_espaco_5">24dp</dimen>
+    <dimen name="console_espaco_6">32dp</dimen>
+
+    <!-- Raios -->
+    <dimen name="console_raio_controle">8dp</dimen>
+    <dimen name="console_raio_card">12dp</dimen>
+
+    <!-- Linha de ajuste: 56dp no celular (aqui); values-sw600dp sobe para 64dp. -->
+    <dimen name="console_linha_ajuste">56dp</dimen>
+
+    <dimen name="console_botao">48dp</dimen>
+
+    <!-- Capa de app, 3:4 -->
+    <dimen name="console_capa_w">160dp</dimen>
+    <dimen name="console_capa_h">213dp</dimen>
+
+    <!-- Contorno de foco: borda sólida + anel suave por fora dela. -->
+    <dimen name="console_foco_borda">3dp</dimen>
+    <dimen name="console_foco_anel">4dp</dimen>
+
+    <!-- Aba do menu da sessão: 56x16 no celular (aqui); values-sw600dp sobe para 64x20. -->
+    <dimen name="console_aba_w">56dp</dimen>
+    <dimen name="console_aba_h">16dp</dimen>
+
 </resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Contorno de foco da capa de app. Igual a console_foco.xml na composição
+    (borda 3dp + anel 4dp a 15%), mas com o raio de card (console_raio_card),
+    não o de controle — as capas usam o raio maior (NOTA.md §2: "10–12 px
+    cards, capas").
+
+    A escala 1,2× de quando a capa ganha foco é animação (ViewPropertyAnimator,
+    120ms, sem mola) e fica para a F3, que constrói a grade de capas de verdade;
+    aqui é só o contorno parado, como o plano pede ("aqui só o contorno").
+    Por isso não há estado pressionado nem fundo — o fundo de "capa focada"
+    (console_superficie_selecionada) também é decisão de layout da F3, não de
+    token: pintar um fundo atrás da arte da capa sem a capa em si é prematuro
+    aqui.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_anel"
+                        android:color="#267FE0C7" />
+                    <corners android:radius="@dimen/console_raio_card" />
+                </shape>
+            </item>
+            <item
+                android:top="@dimen/console_foco_anel"
+                android:bottom="@dimen/console_foco_anel"
+                android:left="@dimen/console_foco_anel"
+                android:right="@dimen/console_foco_anel">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_borda"
+                        android:color="@color/console_acento" />
+                    <corners android:radius="@dimen/console_raio_card" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+</selector>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Override de tablet para a escala tipográfica Console (Plano B — F1). Só o
+    Rótulo muda por aparelho (NOTA.md §2: "16 (tablet) / 14 (celular)"); o
+    celular, o default, mora em values/styles.xml.
+-->
+<resources>
+
+    <style name="ConsoleText.Rotulo" parent="ConsoleText">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>
