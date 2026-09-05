@@ -287,6 +287,25 @@ function definirRotacao(serial, paisagem) {
   adb(serial, 'shell', 'settings', 'put', 'system', 'user_rotation', paisagem ? '1' : '0');
 }
 
+/**
+ * `settings put system user_rotation` só pede a rotação; quem decide se ela É USADA é
+ * a Activity em primeiro plano (`Game` roda em modo `FULL_USER` de propósito — "sessão
+ * livre pra girar", `Game.java:1535` — que RESPEITA essa trava, mas só depois que o
+ * WindowManager termina de aplicá-la). Sob `swiftshader_indirect` esse relayout às
+ * vezes passa de 1 s; um `am start` disparado antes disso faz a `Game` nascer lendo a
+ * orientação antiga (achado fotografando `sessao`/`sessao-texto` em retrato do nada).
+ * Espera o `dumpsys` confirmar a rotação de verdade em vez de um tempo fixo torcido.
+ */
+function esperarRotacaoAplicada(serial, paisagem) {
+  const prazo = Date.now() + 4000;
+  while (Date.now() < prazo) {
+    const saida = adbOut(serial, 'shell', 'dumpsys', 'window', 'displays');
+    const landscape = /mDisplayRotation=ROTATION_(90|270)/.test(saida);
+    if (landscape === paisagem) return;
+    esperarMs(150);
+  }
+}
+
 // ---------------------------------------------------------------------------------
 // Rotas
 // ---------------------------------------------------------------------------------
@@ -376,13 +395,15 @@ function padroesDeFalha(logcat) {
     /FATAL EXCEPTION|ClassCastException|InflateException|Fatal signal/.test(l));
 }
 
-function fotografarRota(serial, avd, nome, destino) {
-  const rota = ROTAS[nome];
-  if (!rota) {
-    console.error(`rota desconhecida: ${nome} (válidas: ${ORDEM_PADRAO.join(', ')})`);
-    process.exit(1);
-  }
+/** Só o IHDR (largura/altura), sem inflar o IDAT — rápido o bastante pra chamar a
+ * cada tentativa de captura. Mesma suposição do resto do arquivo (screencap do adb:
+ * assinatura + IHDR logo em seguida, sem chunk extra antes). */
+function dimensoesPng(caminho) {
+  const buf = readFileSync(caminho);
+  return { largura: buf.readUInt32BE(16), altura: buf.readUInt32BE(20) };
+}
 
+function tentarFotografarRota(serial, avd, nome, rota, destino) {
   // force-stop ANTES de mexer na rotação, não depois: a Game da rota anterior (se
   // for o caso) pede paisagem por conta própria (setRequestedOrientation), e isso
   // TEM PRIORIDADE sobre o user_rotation do sistema enquanto ela continuar viva —
@@ -394,10 +415,7 @@ function fotografarRota(serial, avd, nome, destino) {
   // paisagem (é a forma do aparelho) e não é tocado.
   if (avd === 's22u') {
     definirRotacao(serial, rota.paisagem);
-    // settings put dispara a rotação de forma assíncrona (o WindowManager reage ao
-    // ContentObserver, anima, relayouta); sem esperar aqui, a Activity nova podia
-    // nascer no meio da virada e herdar a configuração errada.
-    esperarMs(800);
+    esperarRotacaoAplicada(serial, rota.paisagem);
   }
 
   adb(serial, 'logcat', '-c');
@@ -430,7 +448,39 @@ function fotografarRota(serial, avd, nome, destino) {
     return false;
   }
 
-  console.log(`  ${destino}`);
+  return true;
+}
+
+function fotografarRota(serial, avd, nome, destino) {
+  const rota = ROTAS[nome];
+  if (!rota) {
+    console.error(`rota desconhecida: ${nome} (válidas: ${ORDEM_PADRAO.join(', ')})`);
+    process.exit(1);
+  }
+
+  // `Game` roda em modo FULL_USER de propósito (sessão livre pra girar) e por isso
+  // só reflete a rotação de sistema que o WindowManager já tiver de fato aplicado no
+  // instante do `am start` — e isso pode ficar assíncrono mesmo depois de
+  // esperarRotacaoAplicada() confirmar via dumpsys (a janela de corrida é entre esse
+  // dumpsys e o am start em si, não antes dele). Em vez de adivinhar mais um tempo de
+  // espera, confere o resultado de verdade — a foto pulada — e tenta de novo se saiu
+  // com a orientação errada. Só se aplica a s22u; tabs8u nunca gira.
+  const tentativas = avd === 's22u' ? 3 : 1;
+  for (let tentativa = 1; tentativa <= tentativas; tentativa++) {
+    if (!tentarFotografarRota(serial, avd, nome, rota, destino)) return false;
+
+    if (avd === 's22u') {
+      const { largura, altura } = dimensoesPng(destino);
+      const saiuPaisagem = largura > altura;
+      if (saiuPaisagem !== rota.paisagem && tentativa < tentativas) {
+        console.warn(`  aviso: ${nome} saiu em ${saiuPaisagem ? 'paisagem' : 'retrato'} (esperava ${rota.paisagem ? 'paisagem' : 'retrato'}) — repetindo (${tentativa}/${tentativas})`);
+        continue;
+      }
+    }
+
+    console.log(`  ${destino}`);
+    return true;
+  }
   return true;
 }
 
