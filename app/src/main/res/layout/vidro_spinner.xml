@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Carregando bloqueante — pareando, buscando a lista de apps, encerrando a sessão.
+
+    Era a última peça cinza do sistema que sobrava: SpinnerDialog usava ProgressDialog,
+    que ignora tema e desenha a roda do Android. Aparece no fluxo de adicionar PC, que é
+    a primeira coisa que alguém faz no app.
+
+    Mesmo idioma do "Conectando": barra fina em vez de roda. A roda gira sem dizer nada;
+    a barra ocupa a largura do texto e pertence ao mesmo desenho.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/vidro_space_5"
+    android:paddingTop="@dimen/vidro_space_5"
+    android:paddingRight="@dimen/vidro_space_5"
+    android:paddingBottom="@dimen/vidro_space_5">
+
+    <TextView
+        android:id="@+id/vidroSpinnerTitle"
+        style="@style/VidroText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/manrope_extrabold"
+        android:letterSpacing="-0.03"
+        android:maxLines="2"
+        android:textSize="20sp"
+        tools:text="Pareando" />
+
+    <TextView
+        android:id="@+id/vidroSpinnerMessage"
+        style="@style/VidroText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vidro_space_2"
+        android:lineSpacingMultiplier="1.35"
+        android:textColor="@color/vidro_text_2"
+        android:textSize="14sp"
+        tools:text="Digite 0000 no PC para confirmar." />
+
+    <ProgressBar
+        android:id="@+id/vidroSpinnerBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/vidro_space_5"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/vidro_accent_fill"
+        android:indeterminateTintMode="src_in" />
+
+</LinearLayout>

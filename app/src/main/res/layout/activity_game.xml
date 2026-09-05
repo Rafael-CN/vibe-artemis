@@ -11,17 +11,139 @@
         android:layout_height="match_parent"
         android:layout_gravity="center" />
     
-    <com.limelight.ui.StreamContainer
-        android:id="@+id/streamContainer"
+    <!--
+        A GAVETA, e a ordem dos dois filhos dela é o assunto inteiro.
+
+        A ordem mudou, e o motivo está escrito no include lá embaixo: o painel era o
+        PRIMEIRO filho, atrás da SurfaceView, e agora é o ÚLTIMO, por cima dela.
+
+        A ideia original era "o controle não fica sobre o vídeo, ele fica atrás dele, e o
+        vídeo anda para o lado para descobri-lo". Ela funcionava no emulador e não funcionava
+        no aparelho do dono: a SurfaceView abre um furo transparente na janela e apaga o que
+        estiver desenhado atrás dela; quando o vídeo desliza, o furo deveria deslizar junto, e
+        naquele compositor não desliza. Resultado gravado em 26/08: o vídeo anda e o painel
+        não aparece. Preto.
+
+        O movimento na tela continua o mesmo , o vídeo sai pela esquerda, o painel entra pela
+        direita. O que mudou é que agora o painel desliza por conta própria e não pode ser
+        apagado por ninguém.
+
+        O painel nasce INVISIBLE e só aparece quando há deslocamento — escondido atrás do
+        vídeo ele ainda desenharia, e desenhar um painel de 352 dp por quadro debaixo de um
+        vídeo que o cobre inteiro é o tipo de custo que ninguém vê e todo mundo paga.
+    -->
+    <com.limelight.ui.GavetaDaSessao
+        android:id="@+id/vidroGaveta"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:defaultFocusHighlightEnabled="false"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:focusedByDefault="true">
-    <requestFocus />
-    </com.limelight.ui.StreamContainer>
+        android:layout_height="match_parent">
+
+        <com.limelight.ui.StreamContainer
+            android:id="@+id/streamContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:defaultFocusHighlightEnabled="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:focusedByDefault="true">
+        <requestFocus />
+
+            <!--
+                A MOLDURA, e o lugar dela e o assunto.
+
+                Ela e filha do StreamContainer e nao irma: o container ja faz letterbox de
+                todos os filhos para a proporcao do video, entao a moldura recebe de graca o
+                retangulo da IMAGEM e nao o da janela. Numa sessao 16:9 num tablet 4:3 a
+                diferenca e uma faixa preta de cada lado: uma moldura na borda da janela
+                estaria emoldurando o vazio.
+            -->
+            <!--
+                O QUADRO CONGELADO.
+
+                Irma da SurfaceView e do mesmo pai, entao ela herda o letterbox e cobre
+                exatamente o retangulo da imagem. Desenha POR CIMA porque a SurfaceView roda
+                com setZOrderOnTop(false): ela abre um buraco na janela e o conteudo dela
+                desenha em cima.
+
+                Nasce GONE e so existe no instante em que a sessao vai parar. Ver
+                Game.congelarUltimoQuadro.
+            -->
+            <ImageView
+                android:id="@+id/vidroCongelado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <com.limelight.ui.MolduraDeEstado
+                android:id="@+id/vidroMoldura"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.limelight.ui.StreamContainer>
+
+        <!--
+            O PUXADOR, e ele existe porque a ausencia dele quebrou o app.
+
+            A gaveta nasceu sem afordancia nenhuma: abria por um arrasto na borda direita que
+            nada anunciava. Na gravacao de tres minutos do dono, o resultado foi que ele nunca
+            a encontrou ("o menu flutuante desapareceu completamente") e a sessao ficou sem
+            controle algum.
+
+            "Zero pixel de interface em repouso" continua sendo a regra certa, e este e o
+            preco minimo dela: 3 dp de largura por 52 dp de altura, a 22% de opacidade. E
+            menor que o ponto de qualidade que ele substituiu, e infinitamente mais que nada.
+
+            E ele e TOCAVEL, nao so arrastavel. Um gesto que so existe como gesto e um gesto
+            que precisa ser ensinado; um toque no que se ve nao precisa.
+        -->
+        <FrameLayout
+            android:id="@+id/vidroPuxadorDaGaveta"
+            android:layout_width="@dimen/vidro_puxador_largura"
+            android:layout_height="@dimen/vidro_puxador_altura"
+            android:layout_gravity="end|center_vertical"
+            android:clickable="true"
+            android:contentDescription="@string/vidro_sheet_title"
+            android:focusable="true">
+
+            <View
+                android:layout_width="@dimen/vidro_puxador_desenho"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/vidro_space_1"
+                android:background="@drawable/vidro_puxador" />
+        </FrameLayout>
+
+        
+
+    </com.limelight.ui.GavetaDaSessao>
+
+    <!--
+        A FOLHA DA SESSAO MORA NA RAIZ, e nao dentro da gaveta.
+
+        Terceira posicao tentada, e as duas primeiras estao registradas porque cada uma
+        eliminou uma hipotese:
+
+        1. Primeiro filho da gaveta, ATRAS da SurfaceView. Era a ideia original , o video anda
+           para o lado e descobre o painel. No aparelho do dono o painel nao aparecia durante
+           o arrasto: preto absoluto, RGB (0,0,0), uma cor so na regiao inteira.
+        2. Ultimo filho da gaveta, POR CIMA da SurfaceView, deslizando sozinho. Mesmo
+           resultado no aparelho dele. Isso derrubou a explicacao de z-order dentro do grupo.
+
+        O que sobrou como diferenca observavel: as camadas que a gravacao mostra funcionando
+        por cima do video , a tela de conectar ("Reservando a tela no PC") e a barra de
+        composicao , sao irmas da gaveta na RAIZ, e nao filhas dela. Sao a unica coisa nesta
+        tela que comprovadamente desenha sobre a SurfaceView naquele compositor.
+
+        Entao a folha passa a morar onde elas moram. A GavetaDaSessao continua sendo dona do
+        gesto e do movimento , ela recebe a folha por `ligar()` e continua transladando as
+        duas coisas , mas a folha deixou de estar na mesma subarvore da superficie.
+
+        Ganho de tabela: com a folha fora da gaveta, um arrasto DENTRO do painel deixa de
+        passar pelo `onInterceptTouchEvent` dela. Antes, com a gaveta aberta, rolar a lista
+        podia comecar a arrastar a propria gaveta.
+    -->
+    <include layout="@layout/vidro_session_sheet" />
 
 <!--    <com.limelight.ui.ApertureViewGroup-->
 <!--        android:layout_width="match_parent"-->
@@ -33,7 +155,7 @@
 <!--        app:aperture_border_width="10dp"-->
 <!--        app:aperture_border_angle="24dp"-->
 <!--        app:aperture_duration="6000"-->
-<!--        app:aperture_middle_color="#6CD2F8">-->
+<!--        app:aperture_middle_color="#EABA6E">-->
 <!--    </com.limelight.ui.ApertureViewGroup>-->
 
     <!--
@@ -115,44 +237,45 @@
         para desenhar por cima do vídeo, e nos 96 dp de baixo, onde o polegar chega
         sem soltar o aparelho.
     -->
-    <include layout="@layout/vidro_session_island" />
 
     <!--
         Folha de ajustes, aviso de queda e a tela de conectar. Vêm DEPOIS da ilha no
         merge porque precisam cobri-la: enquanto a conexão não voltou, mexer nos
         controles não leva a lugar nenhum.
     -->
+    <!--
+        A CASCA, por cima de tudo. É o que faz sair da sessão deixar de matá-la.
+
+        Ela nasce GONE e é inflada com o layout inteiro do arranque frio — o mesmo
+        `activity_pc_view.xml`, que virou <merge> justamente para caber aqui. Uma casca só,
+        dois hospedeiros: ver CascaDoApp.
+
+        O FrameLayout de embrulho existe para poder esconder e mostrar o conjunto de uma vez,
+        e para comer o toque enquanto está de pé — sem ele, tocar na lista atravessaria para o
+        jogo que continua rodando atrás. Ele custa um nível de árvore, e custa ZERO enquanto
+        está GONE, que é onde ele passa a esmagadora maioria do tempo.
+    -->
+    <FrameLayout
+        android:id="@+id/vidroCascaCamada"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vidro_void"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <include layout="@layout/activity_pc_view" />
+    </FrameLayout>
+
     <include layout="@layout/vidro_compose_bar" />
-    <include layout="@layout/vidro_session_sheet" />
     <include layout="@layout/vidro_lost" />
     <include layout="@layout/vidro_connecting" />
 
-    <!-- Floating Menu Button -->
-    <ImageButton
-        android:id="@+id/floatingMenuButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="top|start"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/floating_menu_button"
-        android:contentDescription="@string/menu_button"
-        android:src="@drawable/ic_menu"
-        android:padding="6dp"
-        android:visibility="gone"
-        android:elevation="9999dp" />
-
-    <ImageButton
-        android:id="@+id/overlayToggleZoomButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/floating_menu_button"
-        android:src="@drawable/ic_zoom_toggle"
-        android:padding="6dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/toggle_pan_zoom_mode"
-        android:visibility="gone"
-        android:elevation="9999dp" />
+    <!--
+        Aqui moravam os dois botões flutuantes — menu e zoom. Saíram, e o que sobra é a
+        ilha com o punho: mesmo menu, mesmo zoom, mesmo arrastar, só que com âncora e alvo
+        de toque de verdade. Os dois discos tinham 36 dp (abaixo do alvo mínimo) e
+        elevation 9999dp, que os punha por cima até da ilha.
+    -->
 
 </merge>

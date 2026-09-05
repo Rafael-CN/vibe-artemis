@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ajustes no tablet — em pé E deitado.
+
+    Mesma hierarquia da versão de celular; o que muda é a MEDIDA, como já acontece na home
+    e nas cenas. Esticada por 1075dp em pé, e por 1722dp deitado, a lista vira o que o dono
+    do fork marcou como "toda zoada": treze linhas de navegação com o rótulo numa borda e o
+    valor na outra, e cada subtítulo com largura de tela cheia. Largura de leitura não
+    cresce com a tela.
+
+    Por isso a seta, o título e a LISTA vivem na mesma coluna de 720dp de
+    layout-sw600dp/activity_pc_view.xml e .../activity_profiles.xml, e só a luz atravessa a
+    largura inteira.
+
+    Recuar a coluna aqui é mudança de layout, e não de Java, porque o container do fragment
+    já mora neste arquivo: StreamSettings injeta o SettingsFragment em @id/stream_settings e
+    o índice de categorias é o MESMO fragment trocando de PreferenceScreen dentro dele —
+    não há painel duplo nem medida de largura em código para quebrar. Estreitar o container
+    estreita o índice e as categorias juntos, e a preferência não fica sabendo.
+
+    fitsSystemWindows fica, como no celular: esta tela não chama
+    UiHelper.applyTopInsetToHeader, e sem ele a seta nasceria embaixo do relógio.
+
+    POR QUE NÃO HÁ VERSÃO layout-sw600dp-land, ao contrário da home e das cenas: deitado, a
+    coluna centrada deixa ~500dp de vazio de cada lado no Tab Ultra, e o remédio das outras
+    duas telas foi partir a faixa em duas colunas. Aqui ele não cabe. Uma coluna de estado
+    de 420dp mais a coluna de leitura de 720dp pedem 1140dp, e esta pasta atende também o
+    tablet de 8" deitado (962dp) e o dobrável aberto (841dp): em LinearLayout a caixa de
+    medida cravada não encolhe, ela vaza, e o que sairia da tela é justamente a borda
+    DIREITA da lista — onde ficam o valor e o interruptor de cada linha. Weight resolveria o
+    vazamento e traria de volta a linha de 1302dp, que é o defeito que esta tela veio
+    consertar; um teto de verdade (min(720, largura)) só existe em ConstraintLayout, que
+    hoje não é dependência do app e portanto é ADR, não conveniência.
+
+    O QUE FICA EM ABERTO, e vale para as cinco telas de tablet, não só para esta: 720dp
+    cravados nesta pasta valem também para 600–719dp — dobrável aberto, tablet de 8" — EM
+    PÉ, onde a coluna não cabe e vaza pelos dois lados. É o mesmo 720dp que
+    activity_pc_view, activity_profiles, activity_add_computer_manually e vidro_pairing já
+    declaram aqui, então o conserto é um só e é de recurso, não de layout: @dimen próprio
+    para a largura de leitura, 600dp em values-sw600dp e 720dp em values-sw720dp. Divergir
+    só neste arquivo deixaria a varredura mais difícil, não mais fácil.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vidro_void"
+    android:fitsSystemWindows="true"
+    tools:context=".preferences.StreamSettings">
+
+    <!--
+        A luz é ambiente: pega a largura toda mesmo com o conteúdo centrado, e sobe de 200
+        para 360dp pelo mesmo motivo das cenas — 200dp de 1075 são uma tira, não um
+        sangramento.
+    -->
+    <com.limelight.ui.VidroLightView
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.20" />
+
+    <LinearLayout
+        android:layout_width="720dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <!--
+            A seta acompanha a coluna, não a borda da tela: encostada à esquerda de 1075dp
+            ela ficaria a 180dp do título que ela desfaz.
+
+            Os 2dp de margem somados aos 14 que sobram dentro do alvo de 52dp (o ícone tem
+            24) dão os 16dp de @dimen/vidro_space_4 — a MESMA calha da linha de preferência,
+            que é a conta que a versão de celular já faz com 4 + 12.
+        -->
+        <ImageButton
+            android:id="@+id/vidroSettingsBack"
+            android:layout_width="@dimen/vidro_touch_target"
+            android:layout_height="@dimen/vidro_touch_target"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="@dimen/vidro_space_1"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/vidro_return"
+            android:scaleType="center"
+            android:src="@drawable/ic_vidro_back"
+            android:stateListAnimator="@animator/vidro_press" />
+
+        <!--
+            Sem maxLines: o cabeçalho passa a dizer em que categoria a pessoa está
+            (SettingsFragment.applyScreenTitle), e nome de categoria cortado seria a única
+            frase da tela ilegível.
+        -->
+        <TextView
+            android:id="@+id/vidroSettingsTitle"
+            style="@style/VidroText.Display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/vidro_space_4"
+            android:paddingTop="@dimen/vidro_space_1"
+            android:paddingRight="@dimen/vidro_space_4"
+            android:paddingBottom="@dimen/vidro_space_3"
+            android:text="@string/vidro_settings" />
+
+        <!--
+            Altura por sobra, e não match_parent: assim a lista termina onde a coluna
+            termina em vez de passar por baixo da barra de navegação.
+        -->
+        <FrameLayout
+            android:id="@+id/stream_settings"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>

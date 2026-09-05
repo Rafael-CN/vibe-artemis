@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Calibração do trackpad. Dois gestos, nada além disso na tela.
+
+    A área de captura ocupa tudo porque o gesto pode começar em qualquer lugar do pad, e o
+    que importa é a Activity receber o evento — não onde o dedo está. Sem alvo de toque
+    desenhado de propósito: o dedo está no pad, não na tela, e desenhar um alvo aqui
+    convidaria a pessoa a tocar no lugar errado.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/calibrationTarget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vidro_void">
+
+    <com.limelight.ui.VidroLightView
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.20" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vidro_space_5"
+        android:paddingRight="@dimen/vidro_space_5">
+
+        <TextView
+            style="@style/VidroText.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vidro_calibration_title" />
+
+        <TextView
+            android:id="@+id/calibrationInstruction"
+            style="@style/VidroText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_4"
+            android:fontFamily="@font/manrope_extrabold"
+            android:gravity="center"
+            android:letterSpacing="-0.03"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/calibrationHint"
+            style="@style/VidroText.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vidro_space_3"
+            android:gravity="center"
+            android:maxWidth="420dp"
+            android:textColor="@color/vidro_text_3" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/calibrationCancel"
+        style="@style/VidroButton.Ghost"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/vidro_space_6"
+        android:minWidth="160dp"
+        android:text="@string/vidro_cancel" />
+
+</RelativeLayout>

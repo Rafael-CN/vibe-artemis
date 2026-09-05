@@ -32,6 +32,7 @@ import javax.crypto.SecretKey;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.limelight.LimeLog;
+import com.limelight.R;
 import com.limelight.nvstream.av.audio.AudioRenderer;
 import com.limelight.nvstream.av.video.VideoDecoderRenderer;
 import com.limelight.nvstream.http.ComputerDetails;
@@ -51,6 +52,17 @@ public class NvConnection {
     private static Semaphore connectionAllowed = new Semaphore(1);
     private final boolean isMonkey;
     private final Context appContext;
+
+    // O lado nativo já entrou em cena nesta conexão?
+    //
+    // Quem pergunta é a folha de falha. Antes disto nada foi montado — o MoonBridge não
+    // recebeu setupBridge, o decodificador nunca foi iniciado e o semáforo não foi tomado
+    // —, então repetir a tentativa é só chamar start() de novo. Depois, não é: o MediaCodec
+    // é liberado no cleanup e o estado do bridge é estático.
+    //
+    // Só sobe, nunca desce. A pergunta é "já subiu alguma vez", e não "está de pé agora":
+    // o encerramento roda em outra thread e a folha não pode competir com ele.
+    private volatile boolean nativeConnectionStarted = false;
 
     public NvConnection(Context appContext, ComputerDetails.AddressTuple host, int httpsPort, String uniqueId, StreamConfiguration config, LimelightCryptoProvider cryptoProvider, X509Certificate serverCert)
     {
@@ -87,6 +99,16 @@ public class NvConnection {
     
     private static int generateRiKeyId() {
         return new SecureRandom().nextInt();
+    }
+
+    /**
+     * O lado nativo chegou a ser montado nesta conexão?
+     *
+     * Enquanto for false, uma falha aconteceu na conversa HTTP com o host — versão,
+     * pareamento, lançamento do app — e refazer a tentativa é repetir a mesma chamada.
+     */
+    public boolean hasStartedNativeConnection() {
+        return nativeConnectionStarted;
     }
 
     public void stop() {
@@ -230,7 +252,7 @@ public class NvConnection {
         
         context.serverAppVersion = h.getServerVersion(serverInfo);
         if (context.serverAppVersion == null) {
-            context.connListener.displayMessage("Server version malformed");
+            context.connListener.displayMessage(appContext.getString(R.string.conn_server_version_malformed));
             return false;
         }
 
@@ -241,7 +263,7 @@ public class NvConnection {
         context.serverGfeVersion = h.getGfeVersion(serverInfo);
                 
         if (h.getPairState(serverInfo) != PairingManager.PairState.PAIRED) {
-            context.connListener.displayMessage("Device not paired with computer");
+            context.connListener.displayMessage(appContext.getString(R.string.conn_not_paired));
             return false;
         }
 
@@ -249,7 +271,7 @@ public class NvConnection {
 
         context.negotiatedHdr = (context.streamConfig.getSupportedVideoFormats() & MoonBridge.VIDEO_FORMAT_MASK_10BIT) != 0;
         if ((context.serverCodecModeSupport & 0x20200) == 0 && context.negotiatedHdr) {
-            context.connListener.displayTransientMessage("Your PC GPU does not support streaming HDR. The stream will be SDR.");
+            context.connListener.displayTransientMessage(appContext.getString(R.string.conn_host_no_hdr));
             context.negotiatedHdr = false;
         }
         
@@ -260,17 +282,17 @@ public class NvConnection {
         // Check for a supported stream resolution
         if ((context.streamConfig.getWidth() > 4096 || context.streamConfig.getHeight() > 4096) &&
                 (h.getServerCodecModeSupport(serverInfo) & 0x200) == 0 && context.isNvidiaServerSoftware) {
-            context.connListener.displayMessage("Your host PC does not support streaming at resolutions above 4K.");
+            context.connListener.displayMessage(appContext.getString(R.string.conn_host_no_above_4k));
             return false;
         }
         else if ((context.streamConfig.getWidth() > 4096 || context.streamConfig.getHeight() > 4096) &&
                 (context.streamConfig.getSupportedVideoFormats() & ~MoonBridge.VIDEO_FORMAT_MASK_H264) == 0) {
-            context.connListener.displayMessage("Your streaming device must support HEVC or AV1 to stream at resolutions above 4K.");
+            context.connListener.displayMessage(appContext.getString(R.string.conn_client_no_above_4k));
             return false;
         }
         else if (context.streamConfig.getHeight() >= 2160 && !h.supports4K(serverInfo)) {
             // Client wants 4K but the server can't do it
-            context.connListener.displayTransientMessage("You must update GeForce Experience to stream in 4K. The stream will be 1080p.");
+            context.connListener.displayTransientMessage(appContext.getString(R.string.conn_gfe_update_for_4k));
             
             // Lower resolution to 1080p
             context.negotiatedWidth = 1920;
@@ -305,7 +327,8 @@ public class NvConnection {
             LimeLog.info("Using deprecated app lookup method - Please specify an app ID in your StreamConfiguration instead");
             app = h.getAppByName(context.streamConfig.getApp().getAppName());
             if (app == null) {
-                context.connListener.displayMessage("The app " + context.streamConfig.getApp().getAppName() + " is not in GFE app list");
+                context.connListener.displayMessage(appContext.getString(R.string.conn_app_not_in_list,
+                        context.streamConfig.getApp().getAppName()));
                 return false;
             }
         }
@@ -315,7 +338,7 @@ public class NvConnection {
             try {
                 if (h.getCurrentGame(serverInfo) == app.getAppId() || Objects.equals(h.getCurrentGameUUID(serverInfo), app.getAppUUID())) {
                     if (!h.launchApp(context, "resume", app.getAppUUID(), app.getAppId(), context.negotiatedHdr)) {
-                        context.connListener.displayMessage("Failed to resume existing session");
+                        context.connListener.displayMessage(appContext.getString(R.string.conn_resume_failed));
                         return false;
                     }
                 } else if (Objects.equals(NvApp.REMOTE_INPUT_UUID, app.getAppUUID())) {
@@ -328,14 +351,12 @@ public class NvConnection {
                 if (e.getErrorCode() == 470) {
                     // This is the error you get when you try to resume a session that's not yours.
                     // Because this is fairly common, we'll display a more detailed message.
-                    context.connListener.displayMessage("This session wasn't started by this device," +
-                            " so it cannot be resumed. End streaming on the original " +
-                            "device or the PC itself and try again. (Error code: "+e.getErrorCode()+")");
+                    context.connListener.displayMessage(appContext.getString(R.string.conn_resume_not_owner,
+                            e.getErrorCode()));
                     return false;
                 }
                 else if (e.getErrorCode() == 525) {
-                    context.connListener.displayMessage("The application is minimized. Resume it on the PC manually or " +
-                            "quit the session and start streaming again.");
+                    context.connListener.displayMessage(appContext.getString(R.string.conn_app_minimized));
                     return false;
                 } else {
                     throw e;
@@ -354,14 +375,13 @@ public class NvConnection {
             XmlPullParserException {
         try {
             if (!h.quitApp()) {
-                context.connListener.displayMessage("Failed to quit previous session! You must quit it manually");
+                context.connListener.displayMessage(appContext.getString(R.string.conn_quit_previous_failed));
                 return false;
             } 
         } catch (HostHttpResponseException e) {
             if (e.getErrorCode() == 599) {
-                context.connListener.displayMessage("This session wasn't started by this device," +
-                        " so it cannot be quit. End streaming on the original " +
-                        "device or the PC itself. (Error code: "+e.getErrorCode()+")");
+                context.connListener.displayMessage(appContext.getString(R.string.applist_quit_not_owner,
+                        e.getErrorCode()));
                 return false;
             }
             else {
@@ -376,13 +396,27 @@ public class NvConnection {
             throws IOException, XmlPullParserException {
         // Launch the app since it's not running
         if (!h.launchApp(context, "launch", context.streamConfig.getApp().getAppUUID(), context.streamConfig.getApp().getAppId(), context.negotiatedHdr)) {
-            context.connListener.displayMessage("Failed to launch application");
+            context.connListener.displayMessage(appContext.getString(R.string.conn_launch_failed));
             return false;
         }
         
         LimeLog.info("Launched new game session");
         
         return true;
+    }
+
+    /**
+     * O texto de uma exceção, ou uma frase quando ela não tem texto.
+     *
+     * IOException sem mensagem existe — e nesse caso a folha de falha mostrava a palavra
+     * "null" para a pessoa, no lugar exato onde deveria estar o motivo.
+     */
+    private String describe(Exception e) {
+        String detail = e.getMessage();
+        if (detail == null || detail.isEmpty()) {
+            return appContext.getString(R.string.conn_error_no_detail);
+        }
+        return detail;
     }
 
     public void start(final AudioRenderer audioRenderer, final VideoDecoderRenderer videoDecoderRenderer, final NvConnectionListener connectionListener)
@@ -410,14 +444,25 @@ public class NvConnection {
                         context.connListener.stageComplete(appName);
                     } catch (HostHttpResponseException e) {
                         e.printStackTrace();
-                        context.connListener.displayMessage(e.getMessage());
+                        // e.getMessage() monta a frase em inglês, cravada na classe de
+                        // exceção. Só o corpo vem do host; a moldura é nossa e segue o
+                        // idioma do resto da tela — mesma decisão já tomada no doQuit.
+                        //
+                        // O corpo pode vir vazio: nesse caso sobra o código, que é pouco,
+                        // mas é honesto — melhor que a moldura anunciar a palavra "null".
+                        String hostBody = e.getErrorMessage();
+                        context.connListener.displayMessage(hostBody == null || hostBody.isEmpty()
+                                ? appContext.getString(R.string.conn_error_no_detail) + " ("
+                                        + appContext.getString(R.string.error_code_prefix) + " "
+                                        + e.getErrorCode() + ")"
+                                : appContext.getString(R.string.host_error_body, hostBody, e.getErrorCode()));
                         retry = context.connListener.stageFailed(appName, 0, e.getErrorCode());
                         if (!retry) {
                             return;
                         }
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
-                        context.connListener.displayMessage(e.getMessage());
+                        context.connListener.displayMessage(describe(e));
                         retry = context.connListener.stageFailed(appName, MoonBridge.ML_PORT_FLAG_TCP_47984 | MoonBridge.ML_PORT_FLAG_TCP_47989, tryCount < 2 ? 0 : -408);
                         if (!retry) {
                             return;
@@ -447,7 +492,7 @@ public class NvConnection {
                 try {
                     connectionAllowed.acquire();
                 } catch (InterruptedException e) {
-                    context.connListener.displayMessage(e.getMessage());
+                    context.connListener.displayMessage(describe(e));
                     context.connListener.stageFailed(appName, 0, 0);
                     return;
                 }
@@ -455,6 +500,10 @@ public class NvConnection {
                 // Moonlight-core is not thread-safe with respect to connection start and stop, so
                 // we must not invoke that functionality in parallel.
                 synchronized (MoonBridge.class) {
+                    // Marcado ANTES do setup: a partir daqui existe estado nativo, e a
+                    // folha de falha não pode mais oferecer repetir a tentativa aqui dentro.
+                    nativeConnectionStarted = true;
+
                     MoonBridge.setupBridge(videoDecoderRenderer, audioRenderer, connectionListener);
                     int ret = MoonBridge.startConnection(context.serverAddress.address,
                             context.serverAppVersion, context.serverGfeVersion, context.rtspSessionUrl,

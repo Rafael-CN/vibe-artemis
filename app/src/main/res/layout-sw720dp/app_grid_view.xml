@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tablet grande — S8 Ultra e companhia, 720dp ou mais de menor largura.
+
+    Seis colunas, não quatro. A altura da capa sai da largura da coluna, na proporção da
+    box art (VidroPosterBox), então é a contagem de colunas que decide o tamanho do card.
+    Em paisagem, 1722dp menos os recuos e as calhas dão ~265dp por coluna com seis — uma
+    vez e meia o card de celular, que é o que uma tela três vezes mais larga pede. Com
+    quatro colunas a mesma conta dá 406dp de largura, e a altura acompanha: um card do
+    tamanho de um quarto da tela para dizer "Desktop", e uma fileira e meia de catálogo.
+    Em retrato (1075dp) as seis colunas dão ~158dp, praticamente a medida do card no
+    protótipo.
+
+    A contagem continua FIXA, e não auto_fit: num aparelho real o auto_fit calculou UMA
+    coluna e ainda a encostou na direita.
+-->
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:horizontalSpacing="@dimen/vidro_space_2"
+    android:listSelector="@android:color/transparent"
+    android:numColumns="6"
+    android:paddingLeft="@dimen/vidro_space_6"
+    android:paddingRight="@dimen/vidro_space_6"
+    android:paddingBottom="@dimen/vidro_thumb_reach"
+    android:scrollbars="none"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="@dimen/vidro_space_2" />

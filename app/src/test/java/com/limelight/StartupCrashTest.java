@@ -1,5 +1,7 @@
 package com.limelight;
 
+import com.limelight.CatalogoDoLugar;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -137,12 +139,12 @@ public class StartupCrashTest {
 
     @Test
     public void testMissingRequiredIntentExtras() {
-        // Test AppView with missing required intent extras
+        // O catalogo virou rota da Casca: quem recebe estes extras agora e a PcView.
         Intent intent = new Intent();
         // Missing NAME_EXTRA and UUID_EXTRA
 
         try {
-            AppView activity = Robolectric.buildActivity(AppView.class, intent).create().get();
+            PcView activity = Robolectric.buildActivity(PcView.class, intent).create().get();
             // Should either handle gracefully or finish cleanly
             assertTrue("Activity should either work or finish cleanly",
                       activity != null && (!activity.isFinishing() || activity.isFinishing()));
@@ -153,13 +155,12 @@ public class StartupCrashTest {
 
     @Test
     public void testInvalidUuidInIntent() {
-        // Test AppView with invalid UUID
         Intent intent = new Intent();
-        intent.putExtra(AppView.NAME_EXTRA, "Test Computer");
-        intent.putExtra(AppView.UUID_EXTRA, "invalid-uuid");
+        intent.putExtra(CatalogoDoLugar.NAME_EXTRA, "Test Computer");
+        intent.putExtra(CatalogoDoLugar.UUID_EXTRA, "invalid-uuid");
 
         try {
-            AppView activity = Robolectric.buildActivity(AppView.class, intent).create().get();
+            PcView activity = Robolectric.buildActivity(PcView.class, intent).create().get();
             assertNotNull("Should handle invalid UUID", activity);
         } catch (Exception e) {
             fail("Invalid UUID should be handled gracefully: " + e.getMessage());

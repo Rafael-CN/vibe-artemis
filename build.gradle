@@ -6,6 +6,10 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.13.0'
+        // Kotlin entra pelo ADR 0004, e só para a casca: a sessão continua em Java.
+        // O plugin do compilador do Compose vem junto do Kotlin desde a versão 2.0.
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20'
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.1.20'
     }
 }
 

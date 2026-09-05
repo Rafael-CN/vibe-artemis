@@ -5,25 +5,92 @@
 
     A Toolbar fica: EditProfileActivity a usa como ActionBar e é dela que sai o botão de
     voltar. O que ela não precisa é parecer de outro app.
+
+    A raiz é RelativeLayout e não LinearLayout porque a luz precisa ficar ATRÁS da barra e
+    da lista, e LinearLayout não empilha em Z. Os números da luz são os mesmos de
+    activity_stream_settings.xml: as duas são telas de preferência do mesmo nível, e uma
+    sangrar azul enquanto a outra sai preta chapada era a única diferença entre elas.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/vidro_void"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.limelight.ui.VidroLightView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/vidro_void"
-        app:titleTextColor="@color/vidro_text" />
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        app:vidro_intensity="0.20" />
 
-    <FrameLayout
-        android:id="@+id/preferences_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <!--
+            Cada ponta leva a compensação que o widget DELA pede, e não a mesma dos dois lados.
+
+            À direita, os 4 dp somados aos 12 dp que o ActionMenuItemView já traz por dentro
+            dão os 16 dp ópticos da coluna que a lista de preferências usa; sem eles o ✓
+            encosta na borda física.
+
+            À esquerda o recuo é ZERO. O botão de navegação é um glifo de 24 dp centrado numa
+            caixa de 56 dp, ou seja, ele já chega com 16 dp por dentro: somar os mesmos 4 dp
+            jogava a seta para 20 dp enquanto o título logo abaixo e todas as linhas da lista
+            começam em 16 dp. Um degrau de 4 dp na mesma calha vertical, logo acima de um
+            título de 32 sp — que é o tamanho da letra que denuncia o desalinhamento a olho.
+
+            Sem background próprio: a barra pintada de vidro_void tapava justamente a faixa
+            onde a luz é mais forte. O fundo é o da raiz.
+        -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="0dp"
+            android:paddingLeft="0dp"
+            android:paddingEnd="@dimen/vidro_space_1"
+            android:paddingRight="@dimen/vidro_space_1"
+            app:contentInsetStart="0dp"
+            app:titleTextColor="@color/vidro_text" />
+
+        <!--
+            O título saiu da Toolbar. Com botão de voltar a Toolbar posiciona o título no
+            contentInsetStartWithNavigation do Material (56 dp para cima), e nenhum atributo
+            traz ele de volta para a coluna do conteúdo — o ícone de navegação ocupa
+            justamente esse espaço. A tela irmã de Ajustes já resolve assim
+            (activity_stream_settings.xml): a barra fica só com voltar e ✓, e o nome da cena
+            é um TextView na mesma coluna do resto. EditProfileActivity escreve nele.
+
+            O recuo é o da linha de preferência (@dimen/vidro_space_4). Em vidro_space_5 o
+            título ficava 6 dp à direita da lista logo abaixo dele — o mesmo degrau de calha
+            que Ajustes tinha.
+
+            E ele é tocável: o nome do perfil é um VALOR editável, não um título de página.
+            O lápis da barra já renomeia, mas ninguém procura um lápis para trocar um nome
+            que está escrito em 32 sp na frente. EditProfileActivity liga o toque.
+        -->
+        <TextView
+            android:id="@+id/vidroProfileTitle"
+            style="@style/VidroText.Display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/vidro_space_4"
+            android:paddingTop="@dimen/vidro_space_3"
+            android:paddingRight="@dimen/vidro_space_4"
+            android:paddingBottom="@dimen/vidro_space_3"
+            android:stateListAnimator="@animator/vidro_press" />
+
+        <FrameLayout
+            android:id="@+id/preferences_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>

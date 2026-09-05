@@ -1,5 +1,6 @@
 package com.limelight.utils;
 
+import com.limelight.ui.VidroToast;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.limelight.AppView;
+import com.limelight.CatalogoDoLugar;
 import com.limelight.Game;
 import com.limelight.LimeLog;
 import com.limelight.R;
@@ -44,16 +45,16 @@ public class ServerHelper {
 
     public static Intent createPcShortcutIntent(Activity parent, ComputerDetails computer) {
         Intent i = new Intent(parent, ShortcutTrampoline.class);
-        i.putExtra(AppView.NAME_EXTRA, computer.name);
-        i.putExtra(AppView.UUID_EXTRA, computer.uuid);
+        i.putExtra(CatalogoDoLugar.NAME_EXTRA, computer.name);
+        i.putExtra(CatalogoDoLugar.UUID_EXTRA, computer.uuid);
         i.setAction(Intent.ACTION_DEFAULT);
         return i;
     }
 
     public static Intent createAppShortcutIntent(Activity parent, ComputerDetails computer, NvApp app) {
         Intent i = new Intent(parent, ShortcutTrampoline.class);
-        i.putExtra(AppView.NAME_EXTRA, computer.name);
-        i.putExtra(AppView.UUID_EXTRA, computer.uuid);
+        i.putExtra(CatalogoDoLugar.NAME_EXTRA, computer.name);
+        i.putExtra(CatalogoDoLugar.UUID_EXTRA, computer.uuid);
         i.putExtra(Game.EXTRA_APP_NAME, app.getAppName());
         i.putExtra(Game.EXTRA_APP_UUID, app.getAppUUID());
         i.putExtra(Game.EXTRA_APP_ID, ""+app.getAppId());
@@ -115,6 +116,21 @@ public class ServerHelper {
         gameIntent.putExtra(Game.EXTRA_VDISPLAY, withVDisplay);
         gameIntent.putExtra(Game.EXTRA_SERVER_COMMANDS, (ArrayList<String>) computer.serverCommands);
 
+        // O que o host sabe fazer viaja junto com onde ele está.
+        //
+        // O Intent já levava endereço, porta, certificado e a lista de comandos do
+        // servidor, mas nada sobre capacidade: dentro da sessão o app oferecia ações que
+        // este host não tem e descobria isso ao falhar. Quem sondou o host foi o
+        // ComputerManagerService, e a sessão não fala com ele — este extra é o único
+        // caminho que existe entre os dois.
+        //
+        // Hoje o canal é um inteiro, porque a máscara de permissões é o único sinal de
+        // capacidade que o serverinfo dá. Quando houver um segundo sinal a atravessar,
+        // HostCapabilities vira Parcelable e passa a viajar inteiro — o nome do extra já é
+        // o do conceito para que essa troca não apareça para quem chama.
+        gameIntent.putExtra(Game.EXTRA_HOST_CAPABILITIES,
+                computer.getCapabilities().getPermissionMask());
+
         try {
             if (computer.serverCert != null) {
                 gameIntent.putExtra(Game.EXTRA_SERVER_CERT, computer.serverCert.getEncoded());
@@ -149,9 +165,28 @@ public class ServerHelper {
             boolean withVDisplay
     ) {
         if (computer.state == ComputerDetails.State.OFFLINE || computer.activeAddress == null) {
-            Toast.makeText(parent, parent.getString(R.string.pair_pc_offline), Toast.LENGTH_SHORT).show();
+            VidroToast.show(parent, parent.getString(R.string.pair_pc_offline), Toast.LENGTH_SHORT);
             return;
         }
+
+        // O funil unico de lancamento. Catalogo, retomar, atalho do lancador e o proprio
+        // "Continuar" da home passam todos por aqui -- por isso o historico e gravado neste
+        // ponto e nao em cada chamador: um funil so e o que impede o "Continuar" de
+        // discordar do que de fato abriu.
+        // O NOME QUE VAI PARA O HISTÓRICO NÃO PODE SER UM MARCADOR.
+        //
+        // Retomar uma sessão constrói um `NvApp("app", …)`: "app" é um marcador interno, e
+        // ele vazou para a tela — na gravação de 26/08 a home mostrava uma entrada chamada
+        // literalmente "app" no "Continuar". Quando o nome não diz nada, o que se guarda é o
+        // nome da MÁQUINA, que sempre diz.
+        String nomeParaOHistorico = app.getAppName();
+        if (nomeParaOHistorico == null || nomeParaOHistorico.isEmpty()
+                || "app".equals(nomeParaOHistorico)) {
+            nomeParaOHistorico = parent.getString(R.string.vidro_session_generic);
+        }
+
+        com.limelight.ui.compose.Historico.registrar(
+                parent, computer.uuid, computer.name, app.getAppId(), nomeParaOHistorico);
 
         Intent intent = createStartIntent(parent, app, computer, managerBinder, withVDisplay);
         parent.startActivity(intent);
@@ -189,33 +224,56 @@ public class ServerHelper {
         }).start();
     }
 
+    /**
+     * O texto do desfecho de um pedido de encerrar sessão.
+     *
+     * Existe para os dois caminhos de encerrar não discordarem. O do catálogo olhava o
+     * retorno de quitApp(); o da própria sessão descartava o retorno e anunciava sucesso
+     * sempre — a pessoa saía confiante e o jogo continuava rodando no PC, segurando o
+     * display virtual. A pergunta é a mesma, então a resposta passa a sair do mesmo lugar.
+     */
+    public static String quitResultMessage(Context context, boolean quit, String appName) {
+        return context.getString(quit ? R.string.applist_quit_success_named
+                : R.string.applist_quit_fail_named, appName);
+    }
+
+    /**
+     * O texto de uma falha ao encerrar, com o detalhe quando ele existe.
+     *
+     * IOException sem mensagem existe, e nesse caso o aviso mostrava a palavra "null" para
+     * a pessoa. Sem texto, vale o nome da falha.
+     */
+    public static String quitFailureMessage(Context context, String detail, String appName) {
+        return (detail == null || detail.isEmpty())
+                ? context.getString(R.string.applist_quit_fail_named, appName)
+                : detail;
+    }
+
     public static void doQuit(final Activity parent,
                               final NvHTTP httpConn,
                               final String appName,
                               final Runnable onComplete,
                               final Runnable onFail
     ) {
-        parent.runOnUiThread(() -> Toast.makeText(parent, parent.getResources().getString(R.string.applist_quit_app) + " " + appName + "...", Toast.LENGTH_SHORT).show());
+        parent.runOnUiThread(() -> VidroToast.show(parent, parent.getString(R.string.applist_quit_app_named, appName), Toast.LENGTH_SHORT));
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String message;
                 boolean failed = false;
                 try {
-                    if (httpConn.quitApp()) {
-                        message = parent.getResources().getString(R.string.applist_quit_success) + " " + appName;
-                    } else {
-                        message = parent.getResources().getString(R.string.applist_quit_fail) + " " + appName;
-                    }
+                    message = quitResultMessage(parent, httpConn.quitApp(), appName);
                 } catch (HostHttpResponseException e) {
                     failed = true;
                     if (e.getErrorCode() == 599) {
-                        message = "This session wasn't started by this device," +
-                                " so it cannot be quit. End streaming on the original " +
-                                "device or the PC itself. (Error code: "+e.getErrorCode()+")";
+                        message = parent.getString(R.string.applist_quit_not_owner, e.getErrorCode());
                     }
                     else {
-                        message = e.getMessage();
+                        // e.getMessage() monta a frase em inglês, cravada na classe de
+                        // exceção. Só o corpo vem do host; a moldura passa a ser nossa e
+                        // segue o idioma do resto da tela.
+                        message = parent.getString(R.string.host_error_body,
+                                e.getErrorMessage(), e.getErrorCode());
                     }
                 } catch (UnknownHostException e) {
                     failed = true;
@@ -239,8 +297,24 @@ public class ServerHelper {
                     }
                 }
 
-                final String toastMessage = message;
-                parent.runOnUiThread(() -> Toast.makeText(parent, toastMessage, Toast.LENGTH_LONG).show());
+                // Só o caminho de IOException chega aqui com texto possivelmente nulo; nos
+                // outros a mensagem já veio pronta e a guarda não faz nada.
+                final String finalMessage = quitFailureMessage(parent, message, appName);
+                final boolean finalFailed = failed;
+                parent.runOnUiThread(() -> {
+                    if (finalFailed) {
+                        // Falha não cabe em aviso passageiro. O aviso é uma pílula de duas
+                        // linhas com ellipsize, e a resposta do host é longa: ela chegava
+                        // cortada em "…" no meio da frase, sem como expandir, rolar ou
+                        // copiar — justamente na única informação de diagnóstico da tela.
+                        Dialog.displayDialog(parent,
+                                parent.getString(R.string.applist_quit_fail_named, appName),
+                                finalMessage, false);
+                    }
+                    else {
+                        VidroToast.show(parent, finalMessage, Toast.LENGTH_LONG);
+                    }
+                });
             }
         }).start();
 
@@ -270,8 +344,10 @@ public class ServerHelper {
         } catch (Exception e) {
             e.printStackTrace();
 
-            final String toastMessage = e.getMessage();
-            parent.runOnUiThread(() -> Toast.makeText(parent, toastMessage, Toast.LENGTH_LONG).show());
+            // Exceção sem mensagem chegava aqui como null, e o aviso simplesmente não
+            // aparecia: a pessoa tocava em "Sair do Jogo" e nada acontecia na tela.
+            final String toastMessage = quitFailureMessage(parent, e.getMessage(), app.getAppName());
+            parent.runOnUiThread(() -> VidroToast.show(parent, toastMessage, Toast.LENGTH_LONG));
         }
     }
 }

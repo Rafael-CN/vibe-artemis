@@ -161,10 +161,10 @@
 
     <string-array name="keyboard_axi_names">
         <item>@string/keyboard_layout_set_1</item>
-        <item>@string/keyboard_layout_set_1</item>
-        <item>@string/keyboard_layout_set_1</item>
-        <item>@string/keyboard_layout_set_1</item>
-        <item>@string/keyboard_layout_set_1</item>
+        <item>@string/keyboard_layout_set_2</item>
+        <item>@string/keyboard_layout_set_3</item>
+        <item>@string/keyboard_layout_set_4</item>
+        <item>@string/keyboard_layout_set_5</item>
     </string-array>
     <string-array name="keyboard_axi_values" translatable="false">
         <item>OSC_Keyboard</item>
@@ -173,31 +173,24 @@
         <item>OSC_Keyboard_4</item>
         <item>OSC_Keyboard_5</item>
     </string-array>
-    <string-array name="render_mode_names">
-        <item>@string/render_mode_2d</item>
-        <item>@string/render_mode_3d_sbs</item>
-        <item>@string/render_mode_3d_sbs_movie</item>
-    </string-array>
-    <string-array name="render_mode_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
+    <!--
+        Os mesmos três da folha de sessão, com os mesmos rótulos — literalmente as mesmas
+        strings, para que a linha dos Ajustes e o chip da sessão não possam divergir numa
+        tradução. Os índices continuam sendo os de sempre (0 multitoque, 1 absoluto,
+        2 trackpad) porque Game.applyMouseMode e a folha falam por número; o que sumiu foram
+        as posições 3, 4 e 5, que a folha não sabia mostrar e rebaixava no primeiro toque.
+        Valor salvo em 3 ou 5 é migrado em PreferenceConfiguration.readPreferences; o 4,
+        "toque não move o mouse", virou checkbox_touchscreen_as_mouse.
+    -->
     <string-array name="mouse_mode_names">
-        <item>@string/mouse_mode_multi_touch</item>
-        <item>@string/mouse_mode_absolute_touch</item>
-        <item>@string/mouse_mode_track_pad_natural</item>
-        <item>@string/mouse_mode_track_pad_gaming</item>
-        <item>@string/mouse_mode_disabled</item>
-        <item>@string/mouse_mode_absolute_touch_swapped</item>
+        <item>@string/vidro_mouse_multitouch</item>
+        <item>@string/vidro_mouse_absolute</item>
+        <item>@string/vidro_mouse_trackpad</item>
     </string-array>
     <string-array name="mouse_mode_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
     </string-array>
 
     <string-array name="onscreen_keyboard_align_modes">

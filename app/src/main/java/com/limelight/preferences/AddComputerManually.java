@@ -1,5 +1,6 @@
 package com.limelight.preferences;
 
+import com.limelight.ui.VidroToast;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -8,7 +9,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.limelight.AppView;
+import com.limelight.CatalogoDoLugar;
 import com.limelight.Game;
 import com.limelight.PcView;
 import com.limelight.ShortcutTrampoline;
@@ -20,6 +21,7 @@ import com.limelight.nvstream.jni.MoonBridge;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.ServerHelper;
 import com.limelight.utils.SpinnerDialog;
+import com.limelight.ui.compose.PonteDoEndereco;
 import com.limelight.utils.UiHelper;
 
 import android.app.AlertDialog;
@@ -29,22 +31,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class AddComputerManually extends AppCompatActivity {
     private TextView hostText;
     private ComputerManagerService.ComputerManagerBinder managerBinder;
     private final LinkedBlockingQueue<String> computersToAdd = new LinkedBlockingQueue<>();
-    private Thread addThread;
+    private volatile Thread addThread;
+
+    // "Estou encerrando" e "cancelei esta adição" chegam à thread pelo mesmo interrupt, e
+    // ela precisa distinguir os dois: no encerramento morre, no cancelamento volta a
+    // esperar o próximo endereço. Sem esta flag, cancelar uma vez mataria a thread e o
+    // botão Adicionar ficaria inerte pelo resto da tela — trocaríamos um beco por outro.
+    private volatile boolean addThreadShuttingDown;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, final IBinder binder) {
             managerBinder = ((ComputerManagerService.ComputerManagerBinder)binder);
@@ -118,14 +133,121 @@ public class AddComputerManually extends AppCompatActivity {
         return null;
     }
 
+    private androidx.compose.ui.platform.ComposeView enderecoCompose;
+    private String textoDoEndereco = "";
+    private int erroDoEndereco;
+    private boolean tentandoConectar;
+
+    /** Os enderecos que ja foram tentados. Ver o comentario em TelaEndereco. */
+    private static final String PREF_TENTADOS = "vidro_enderecos_tentados";
+    private static final int QUANTOS_TENTADOS = 3;
+
+    /**
+     * Liga a tela ao Compose.
+     *
+     * Um lugar so, chamado quando o texto muda, quando uma tentativa comeca e quando ela
+     * termina. Nao ha TextWatcher e nao ha setEnabled: o botao le o mesmo estado que o campo.
+     */
+    private void montarEndereco() {
+        if (enderecoCompose == null) {
+            return;
+        }
+        PonteDoEndereco.montar(
+                enderecoCompose,
+                textoDoEndereco,
+                erroDoEndereco,
+                tentandoConectar,
+                lerTentados(),
+                texto -> {
+                    // Digitar apaga o erro: ele fala da tentativa ANTERIOR, e continuar
+                    // mostrando-o enquanto a pessoa corrige e culpa-la pelo que ela ja esta
+                    // consertando.
+                    textoDoEndereco = texto;
+                    if (erroDoEndereco != 0) {
+                        erroDoEndereco = 0;
+                    }
+                    montarEndereco();
+                    return kotlin.Unit.INSTANCE;
+                },
+                () -> { finish(); return kotlin.Unit.INSTANCE; },
+                () -> { aoConectar(); return kotlin.Unit.INSTANCE; },
+                endereco -> {
+                    textoDoEndereco = endereco;
+                    erroDoEndereco = 0;
+                    montarEndereco();
+                    return kotlin.Unit.INSTANCE;
+                });
+    }
+
+    private void aoConectar() {
+        String endereco = textoDoEndereco.trim();
+        if (endereco.isEmpty()) {
+            // O campo vazio nao merece nem erro: o botao ja diz o que falta.
+            return;
+        }
+        erroDoEndereco = 0;
+        tentandoConectar = true;
+        montarEndereco();
+        guardarTentado(endereco);
+        computersToAdd.add(endereco);
+    }
+
+    private void mostrarErro(final int qual) {
+        runOnUiThread(() -> {
+            erroDoEndereco = qual;
+            tentandoConectar = false;
+            montarEndereco();
+        });
+    }
+
+    private java.util.List<String> lerTentados() {
+        String cru = getSharedPreferences(PREF_TENTADOS, MODE_PRIVATE).getString("lista", "");
+        java.util.List<String> saida = new java.util.ArrayList<>();
+        if (cru == null || cru.isEmpty()) {
+            return saida;
+        }
+        for (String e : cru.split("\u001F")) {
+            if (!e.isEmpty() && !e.equals(textoDoEndereco)) {
+                saida.add(e);
+            }
+        }
+        return saida;
+    }
+
+    private void guardarTentado(String endereco) {
+        java.util.List<String> lista = new java.util.ArrayList<>();
+        lista.add(endereco);
+        for (String e : lerTentados()) {
+            if (!e.equals(endereco) && lista.size() < QUANTOS_TENTADOS) {
+                lista.add(e);
+            }
+        }
+        getSharedPreferences(PREF_TENTADOS, MODE_PRIVATE).edit()
+                .putString("lista", android.text.TextUtils.join("\u001F", lista))
+                .apply();
+    }
+
     private void doAddPc(String rawUserInput) throws InterruptedException {
         boolean wrongSiteLocal = false;
         boolean invalidInput = false;
         boolean success;
         int portTestResult;
 
-        SpinnerDialog dialog = SpinnerDialog.displayDialog(this, getResources().getString(R.string.title_add_pc),
-            getResources().getString(R.string.msg_add_pc), false);
+        // Cancelável: endereço errado são uns dez segundos de sondagem mais o teste de
+        // portas contra a internet, e uma sondagem que trava fica presa para sempre —
+        // parallelPollPc espera no wait() do endereço manual sem prazo nenhum. O interrupt
+        // é o que corta essa espera; addComputerBlocking propaga a InterruptedException e
+        // só chama addTuple/updateComputer DEPOIS da sondagem, então parar antes disso não
+        // deixa PC pela metade no banco.
+        SpinnerDialog dialog = SpinnerDialog.displayCancellableDialog(this,
+            getResources().getString(R.string.title_add_pc),
+            getResources().getString(R.string.msg_add_pc),
+            new Runnable() {
+                @Override
+                public void run() {
+                    interruptAddThread();
+                }
+            });
 
         Uri uri = parseRawUserInputToUri(rawUserInput);
         try {
@@ -175,27 +297,39 @@ public class AddComputerManually extends AppCompatActivity {
 
         dialog.dismiss();
 
+        // O cancelamento pode ter chegado durante o teste de portas, que é nativo e não
+        // olha o interrupt. Sair aqui evita anunciar a falha de uma tentativa que o
+        // usuário já desistiu de fazer.
+        if (Thread.interrupted()) {
+            throw new InterruptedException();
+        }
+
+        // O P03: a causa aparece DENTRO da tela, abaixo do campo.
+        //
+        // Eram tres AlertDialog com o titulo "Connection Error" -- a palavra que o handoff
+        // proibe --, e o do caminho generico ainda oferecia um botao que levava a wiki de
+        // outro projeto, fora do app, no meio de adicionar o primeiro PC. Fechar um dialogo
+        // para so entao reencontrar o campo e voltar a digitar era o custo de cada letra
+        // errada.
         if (invalidInput) {
-            Dialog.displayDialog(this, getResources().getString(R.string.conn_error_title), getResources().getString(R.string.addpc_unknown_host), false);
+            mostrarErro(R.string.addpc_unknown_host);
         }
         else if (wrongSiteLocal) {
-            Dialog.displayDialog(this, getResources().getString(R.string.conn_error_title), getResources().getString(R.string.addpc_wrong_sitelocal), false);
+            mostrarErro(R.string.addpc_wrong_sitelocal);
         }
         else if (!success) {
-            String dialogText;
-            if (portTestResult != MoonBridge.ML_TEST_RESULT_INCONCLUSIVE && portTestResult != 0)  {
-                dialogText = getResources().getString(R.string.nettest_text_blocked);
-            }
-            else {
-                dialogText = getResources().getString(R.string.addpc_fail);
-            }
-            Dialog.displayDialog(this, getResources().getString(R.string.conn_error_title), dialogText, false);
+            // A frase sobre firewall so vale quando o teste de portas de fato acusou
+            // bloqueio. Contra um endereco privado o NetworkScope nem roda o teste, e a
+            // frase generica sobre firewall nao se aplica.
+            mostrarErro(portTestResult != MoonBridge.ML_TEST_RESULT_INCONCLUSIVE && portTestResult != 0
+                    ? R.string.nettest_text_blocked
+                    : R.string.addpc_fail);
         }
         else {
             AddComputerManually.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(AddComputerManually.this, getResources().getString(R.string.addpc_success), Toast.LENGTH_LONG).show();
+                    VidroToast.show(AddComputerManually.this, getResources().getString(R.string.addpc_success), Toast.LENGTH_LONG);
 
                     if (!isFinishing()) {
                         // Close the activity
@@ -222,15 +356,21 @@ public class AddComputerManually extends AppCompatActivity {
     }
 
     private void startAddThread() {
+        addThreadShuttingDown = false;
         addThread = new Thread() {
             @Override
             public void run() {
-                while (!isInterrupted()) {
+                while (!addThreadShuttingDown) {
                     try {
                         String computer = computersToAdd.take();
                         doAddPc(computer);
                     } catch (InterruptedException e) {
-                        return;
+                        // take() e doAddPc limpam o status de interrupção ao lançar. Se não
+                        // é encerramento, foi o usuário cancelando a espera: a thread segue
+                        // viva e volta a esperar o próximo endereço.
+                        if (addThreadShuttingDown) {
+                            return;
+                        }
                     }
                 }
             }
@@ -239,8 +379,22 @@ public class AddComputerManually extends AppCompatActivity {
         addThread.start();
     }
 
+    /**
+     * Corta a adição em curso sem matar a thread que a executa.
+     *
+     * É o que o Cancelar da roda de espera dispara. Chamado na thread da UI, então não
+     * pode esperar pela thread: só levanta o interrupt e volta.
+     */
+    private void interruptAddThread() {
+        Thread thread = addThread;
+        if (thread != null) {
+            thread.interrupt();
+        }
+    }
+
     private void joinAddThread() {
         if (addThread != null) {
+            addThreadShuttingDown = true;
             addThread.interrupt();
 
             try {
@@ -276,6 +430,67 @@ public class AddComputerManually extends AppCompatActivity {
         }
     }
 
+    /**
+     * Faz o conteúdo subir junto com o teclado, em vez de ficar embaixo dele.
+     *
+     * O adjustResize do manifesto não estava chegando até aqui. Da API 29 em diante
+     * UiHelper.notifyNewRootView põe a janela para desenhar sob as barras
+     * (SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) e, nesse modo, o sistema não encolhe mais o
+     * quadro da janela: ele entrega o teclado como INSET, e quem tinha que virá-lo em
+     * recuo era o tratamento padrão do android.R.id.content — justamente o que aquele
+     * ouvinte substitui, e ele só olha as barras. O inset do IME chegava e era descartado.
+     *
+     * O recuo é aplicado no mesmo android.R.id.content porque este ouvinte SUBSTITUI o de
+     * notifyNewRootView (um só por view), e por isso repete aqui o recuo lateral, o do
+     * topo e a barra de navegação translúcida. Encolhendo o container, o rodapé de ação do
+     * celular sobe e a explicação, que está num ScrollView, cede altura; no tablet o bloco
+     * centrado se recentra no que sobrou. É o adjustResize refeito à mão.
+     *
+     * Chamar DEPOIS de notifyNewRootView(), senão ela desfaz isto.
+     */
+    private void setupImeInsets() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            // Abaixo da API 29 notifyNewRootView não instala ouvinte nenhum, a janela não
+            // desenha sob as barras e o adjustResize encolhe o quadro sozinho. Não há o
+            // que consertar ali, e recuar por conta própria só somaria ao que o sistema
+            // já fez.
+            return;
+        }
+
+        final View content = findViewById(android.R.id.content);
+
+        ViewCompat.setOnApplyWindowInsetsListener(content, (v, insets) -> {
+            // Tappable, como em notifyNewRootView: no modo por gestos a barra de navegação
+            // não recebe toque e não precisa de recuo.
+            Insets tappable = insets.getTappableElementInsets();
+
+            // WindowInsetsCompat porque Type.ime() nativo é API 30+ e minSdk é 21.
+            int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+
+            // max, e não soma: o recuo do teclado é medido do fundo da janela e já engloba
+            // a barra de navegação sobre a qual ele se apoia. Somando, o campo pararia uma
+            // barra de navegação acima do teclado. O max também é o que mantém isto seguro
+            // onde o sistema AINDA encolhe o quadro sozinho — ali o IME não sobrepõe a
+            // janela, imeBottom chega zero, e o recuo continua sendo só o das barras.
+            v.setPadding(tappable.left, tappable.top, tappable.right,
+                    Math.max(tappable.bottom, imeBottom));
+
+            // Show a translucent navigation bar if we can't tap there
+            if (tappable.bottom != 0) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
+            else {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
+
+            // Devolvidos intactos: consumir aqui apagaria o inset para qualquer filho que
+            // venha a olhá-lo.
+            return insets;
+        });
+
+        ViewCompat.requestApplyInsets(content);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -299,8 +514,8 @@ public class AddComputerManually extends AppCompatActivity {
 
                     Intent intent = new Intent(AddComputerManually.this, ShortcutTrampoline.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(AppView.UUID_EXTRA, hostUUID);
-                    intent.putExtra(AppView.NAME_EXTRA, hostName);
+                    intent.putExtra(CatalogoDoLugar.UUID_EXTRA, hostUUID);
+                    intent.putExtra(CatalogoDoLugar.NAME_EXTRA, hostName);
                     intent.putExtra(Game.EXTRA_APP_UUID, appUUID);
                     intent.putExtra(Game.EXTRA_APP_NAME, appName);
                     intent.putExtra(Game.EXTRA_APP_ID, appID);
@@ -326,34 +541,8 @@ public class AddComputerManually extends AppCompatActivity {
 
         UiHelper.notifyNewRootView(this);
 
-        this.hostText = findViewById(R.id.hostTextView);
-        hostText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        hostText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_DONE ||
-                        (keyEvent != null &&
-                                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                                keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    return handleDoneEvent();
-                }
-                else if (actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-                    // This is how the Fire TV dismisses the keyboard
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(hostText.getWindowToken(), 0);
-                    return false;
-                }
-
-                return false;
-            }
-        });
-
-        findViewById(R.id.addPcButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleDoneEvent();
-            }
-        });
+        enderecoCompose = findViewById(R.id.vidroEnderecoCompose);
+        montarEndereco();
 
         // Bind to the ComputerManager service
         bindService(new Intent(AddComputerManually.this,
@@ -375,7 +564,7 @@ public class AddComputerManually extends AppCompatActivity {
                 hostName = server;
             }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.VidroDialogPlatform);
             builder.setTitle(R.string.pair_pc_confirm_title);
             builder.setMessage(getString(R.string.pair_pc_confirm_message, hostName));
 
@@ -397,7 +586,7 @@ public class AddComputerManually extends AppCompatActivity {
         String hostAddress = hostText.getText().toString().trim();
 
         if (hostAddress.length() == 0) {
-            Toast.makeText(AddComputerManually.this, getResources().getString(R.string.addpc_enter_ip), Toast.LENGTH_LONG).show();
+            VidroToast.show(AddComputerManually.this, getResources().getString(R.string.addpc_enter_ip), Toast.LENGTH_LONG);
             return true;
         }
 

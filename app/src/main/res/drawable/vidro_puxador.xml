@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O puxador da gaveta da sessao.
+
+    Branco a 22%, e nao o acento: ele nao e uma acao nem um estado, e pintar de azul o faria
+    disputar significado com a lista de lugares, onde azul quer dizer "dormindo". Branco
+    translucido le como "borda que da para pegar" sobre qualquer imagem.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#38FFFFFF" />
+    <corners android:radius="2dp" />
+</shape>

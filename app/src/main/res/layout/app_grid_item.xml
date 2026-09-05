@@ -1,40 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Card de app do catálogo. Capa de 132 dp com raio 20, e o nome POR FORA, embaixo —
-    quando existe. O Vibeshine assa o nome dentro da própria box art, e nesse caso o
-    carregador esconde o rótulo em vez de repetir a palavra duas vezes.
+    Card de app do catálogo. Capa com raio 20 na proporção da própria box art, e o nome
+    POR FORA, embaixo — quando existe. O Vibeshine assa o nome dentro da própria box art,
+    e nesse caso o carregador esconde o rótulo em vez de repetir a palavra duas vezes.
 
-    Remote Monitor e Remote Input usam este mesmo card: o que os diferencia é a pílula,
-    nunca um botão especial. O host publica, o app lista.
+    Remote Monitor e Remote Input usam este mesmo card — o host publica, o app lista, e o
+    toque faz a mesma coisa em qualquer um deles. O que os separa de um jogo é a pílula no
+    canto da capa, nunca um botão especial.
 
-    O container é FrameLayout e não RelativeLayout de propósito. Em RelativeLayout a
-    pílula com wrap_content saía medida mais estreita que o próprio texto — lia-se "nput"
-    em vez de "input", com a palavra transbordando o fundo. FrameLayout mede filho por
-    gravidade sem essa ambiguidade.
+    A mola do toque fica no card INTEIRO, capa e nome juntos, e não só na capa: o alvo do
+    dedo é o item da grade, e o que responde tem de ser o que se toca. A grade não tinha
+    nenhuma resposta ao toque — o listSelector é transparente de propósito, porque o
+    realce cinza do Android não é desta identidade —, então entre o dedo e a troca de tela
+    não acontecia nada.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/vidro_space_1">
+    android:padding="@dimen/vidro_space_1"
+    android:stateListAnimator="@animator/vidro_press">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="132dp">
+        <!--
+            A caixa da capa tira a altura da própria largura, na proporção em que o host
+            publicou a arte (VidroPosterBox; quem mede a arte e passa a proporção é
+            AppGridAdapter). Assim a capa preenche a caixa inteira: nem corte, nem faixa
+            de fundo sobrando ao lado. Até a primeira capa carregar vale 4:3, a proporção
+            do card do protótipo — 170 por 132.
 
+            A altura era cravada nesses 132dp com a largura seguindo a coluna da grade: no
+            tablet em paisagem a coluna passa de 400dp e a caixa saía deitada em mais de
+            3:1, cortando topo e base de toda box art — inclusive do rótulo que o host assa
+            dentro da arte. Depois virou 4:3 fixo, que resolveu o corte e criou a sobra.
+
+            O id existe para o adapter recortar esta caixa no raio do card. O recorte
+            precisa ser da CAIXA e não da ImageView, porque o fundo do placeholder e a
+            máscara de "app aberto" cobrem o retângulo inteiro com canto reto, e sem o
+            recorte sobrava um ombro quadrado do lado de fora do arco de
+            @drawable/vidro_poster_frame.
+        -->
+        <com.limelight.ui.VidroPosterBox
+            android:id="@+id/grid_poster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--
+                fitCenter, nunca centerCrop: a capa é arte do host e aparece inteira, na
+                proporção em que veio. Como a caixa toma a proporção da arte, na prática a
+                capa preenche tudo. fitCenter continua sendo a escolha certa para o host
+                que publique capa em tamanhos diferentes: a que não bate com a proporção da
+                grade sobra fundo listrado nas beiradas, e fundo sobrando é melhor que arte
+                cortada.
+            -->
             <ImageView
                 android:id="@+id/grid_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/vidro_placeholder"
-                android:cropToPadding="false"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter" />
 
             <!-- Camada de estado; o adapter pinta o fundo dela quando o app está aberto. -->
             <RelativeLayout
@@ -49,26 +78,23 @@
                     android:layout_centerInParent="true" />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/grid_pill"
-                style="@style/VidroText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_margin="@dimen/vidro_space_3"
-                android:background="@drawable/vidro_pill"
-                android:fontFamily="@font/manrope_bold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingLeft="@dimen/vidro_space_3"
-                android:paddingTop="@dimen/vidro_space_1"
-                android:paddingRight="@dimen/vidro_space_3"
-                android:paddingBottom="@dimen/vidro_space_1"
-                android:singleLine="true"
-                android:textSize="10sp"
-                android:visibility="gone"
-                tools:text="aberto"
-                tools:visibility="visible" />
+            <!--
+                A pílula que diz de que TIPO é este card: "tela", "entrada" ou "aberto".
+                Numa grade de capas o nome é o que menos se lê, e Remote Monitor e Remote
+                Input chegam do host como cards iguais aos de um jogo.
+
+                Fica DEPOIS da máscara e antes da borda: com o app aberto a máscara escura
+                cobre a capa inteira, e a pílula "aberto" precisa ficar por cima dela para
+                continuar legível.
+
+                Alinhada ao topo e à direita, a 8 dp: a capa é recortada no raio 20, e a
+                esse ponto o canto da pílula ainda cai dentro do arco. O centro da capa é
+                onde o Vibeshine assa o nome do app dentro da própria box art.
+
+                A caixa da capa ser FrameLayout importa. Num RelativeLayout a pílula com
+                wrap_content já saiu medida mais estreita que o próprio texto, e lia-se
+                "nput" no lugar de "input" com a palavra transbordando o fundo.
+            -->
 
             <!-- Borda de acento quando o app está em execução; senão, fio de 1px. -->
             <View
@@ -86,8 +112,30 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/vidro_accent_text"
                 android:visibility="gone" />
-        </FrameLayout>
+        </com.limelight.ui.VidroPosterBox>
 
+        <!--
+            O nome, e só ele. A pílula voltou POR CIMA DA CAPA, não ao lado do nome: a
+            linha horizontal que existia só para acomodar os dois custava uma view E um
+            nível de aninhamento por card, numa grade que rola. Sobre a capa ela é irmã da
+            própria capa, dentro de um FrameLayout que já existe, e o rótulo continua
+            filho direto da coluna.
+
+            As margens ficam no rótulo e não num container, para que o card sem nome — o
+            host assa o nome dentro da própria box art e o carregador esconde o rótulo —
+            não sobre com vão morto embaixo da capa.
+
+            A margem de BAIXO é maior de propósito. O card só tem 4 dp de padding, então o
+            nome ficava a 8 dp da própria capa e a 8 dp da capa da fileira seguinte —
+            distância igual para os dois lados, e a legenda podia ler como etiqueta do card
+            de baixo. Com 12 dp aqui a conta vira 8 para cima contra 20 para baixo, e a
+            proximidade aponta para o dono certo.
+
+            O nome cabe em DUAS linhas. Numa coluna de ~170 dp uma linha só cortava
+            "Microsoft Flight Simul…" no meio da palavra — e o nome é a única identificação
+            do card justamente quando o host não manda capa. A caixa cresce, e a fileira
+            da grade cresce junto; a reticência fica para o nome que não cabe nem em duas.
+        -->
         <TextView
             android:id="@+id/grid_text"
             style="@style/VidroText.Item"
@@ -96,8 +144,11 @@
             android:layout_marginTop="@dimen/vidro_space_2"
             android:layout_marginLeft="2dp"
             android:layout_marginStart="2dp"
+            android:layout_marginRight="@dimen/vidro_space_2"
+            android:layout_marginEnd="@dimen/vidro_space_2"
+            android:layout_marginBottom="@dimen/vidro_space_3"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textSize="15sp"
             tools:text="Desktop" />
     </LinearLayout>

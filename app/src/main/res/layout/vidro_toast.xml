@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Aviso passageiro.
+
+    O app tinha 103 chamadas de Toast.makeText, e o Toast do sistema desenha uma cápsula
+    de cinza neutro com a tipografia do Android e o ícone do app grudado ao lado. Medido
+    na gravação em aparelho: #3C3F43, sem nenhum azul, sobre um app cujo fundo é #010205.
+    Era a peça do sistema que mais aparecia — e sempre no momento em que a pessoa acabou
+    de fazer algo, que é justamente quando ela está olhando.
+
+    A cápsula é a mesma da sessão: fosca, contorno de vidro, raio de pílula.
+
+    SEM TETO DE LINHAS. Havia maxLines=2 com ellipsize=end, e por aqui passa a mensagem
+    crua do host (ServerHelper.doQuit manda e.getMessage()): "Host PC returned error:
+    Active stream terminated. Remote Monitor and Remote I…" — cortado no meio do nome,
+    sendo essa a única informação de diagnóstico da tela. Um aviso longo é raro; um aviso
+    longo TRUNCADO não serve para nada. A cápsula cresce, que é o que ela sabe fazer.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vidroToastText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vidro_glass_pill"
+    android:fontFamily="@font/manrope_semibold"
+    android:letterSpacing="-0.01"
+    android:lineSpacingMultiplier="1.3"
+    android:paddingLeft="@dimen/vidro_space_4"
+    android:paddingTop="@dimen/vidro_space_3"
+    android:paddingRight="@dimen/vidro_space_4"
+    android:paddingBottom="@dimen/vidro_space_3"
+    android:textColor="@color/vidro_text"
+    android:textSize="14sp"
+    tools:text="Área de transferência enviada" />

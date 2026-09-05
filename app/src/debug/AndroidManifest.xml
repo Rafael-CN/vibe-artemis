@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Manifesto que vale SÓ em compilação de depuração.
+
+    Ele existe por um motivo e um só: a sessão é a parte do app que nenhuma ferramenta deste
+    repositório conseguia ver. `tools/screens.mjs` não desenha `SurfaceView`, e um emulador sem
+    host não tem o que decodificar — o resultado foi que a gaveta, o menu e a moldura só eram
+    conferidos quando o dono gravava a tela do aparelho dele. Foi assim que o "o menu flutuante
+    desapareceu completamente" apareceu, três semanas depois de ter acontecido.
+
+    Com `Game` exportada em depuração dá para abrir a sessão direto pelo adb, em modo de moque:
+
+        adb shell am start -n com.limelight.noirdebug/com.limelight.Game  (com o extra booleano MoqueDeStream=true)
+
+    **Isto não vale em release.** A fusão de manifestos aplica este arquivo apenas ao buildType
+    de depuração; o `AndroidManifest.xml` principal continua com `Game` não exportada, que é o
+    certo — ela recebe endereço, porta e certificado por extra.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <activity
+            android:name="com.limelight.Game"
+            android:exported="true"
+            tools:node="merge" />
+    </application>
+</manifest>

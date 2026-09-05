@@ -6,6 +6,13 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
-    <style name="SettingsTheme" parent="AppTheme">
-    </style>
+    <!--
+        Aqui existia um `SettingsTheme` vazio herdando de AppTheme. Um estilo de mesmo
+        nome num qualificador mais alto SUBSTITUI o de values/, não o completa: em API
+        29+ — ou seja, em todo aparelho real — a tela de Ajustes perdia preferenceTheme,
+        colorControlActivated e textColorSecondary e caía no Theme.MaterialComponents,
+        que traz o colorSecondary padrão do Material. Era daí que vinham a caixa de
+        seleção crua e o cinza da faixa pressionada. O SettingsTheme de values/ já
+        declara statusBar/navigationBar, então não há nada de específico de v29 a somar.
+    -->
 </resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A tela que fica ATRÁS quando outra entra por cima. Ela recua um tico e apaga: some
+    para o fundo em vez de deslizar para fora, o que sustenta a leitura de profundidade.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@interpolator/vidro_enter"
+    android:shareInterpolator="true">
+
+    <alpha
+        android:duration="@integer/vidro_motion_enter"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
+
+    <scale
+        android:duration="@integer/vidro_motion_enter"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:pivotX="50%p"
+        android:pivotY="50%p"
+        android:toXScale="1.04"
+        android:toYScale="1.04" />
+
+</set>

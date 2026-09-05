@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tempos de movimento, todos do handoff do protótipo (seção 07 · MOVIMENTO).
+
+    Existem como recurso, e não como número solto no Java, por dois motivos. O primeiro é
+    que a mesma transição aparece em lugares diferentes do código e precisa durar o mesmo
+    tanto nos dois. O segundo é que dá para conferir o app contra a tabela do protótipo
+    lendo um arquivo, em vez de caçar setDuration espalhado por cinco classes.
+
+    Regra do handoff que vale para todos: anime APENAS transform, alpha e cor. Raio de
+    blur, sombra e largura/altura de layout são proibidos de animar — cada um deles custa
+    por quadro, e em sessão o orçamento de quadro é do vídeo.
+-->
+<resources>
+
+    <!-- capa -> vídeo: a capa tocada cresce até a tela cheia -->
+    <integer name="vidro_motion_enter">420</integer>
+
+    <!-- vídeo -> card: o caminho de volta, mais curto que o de ida -->
+    <integer name="vidro_motion_exit">340</integer>
+
+    <!-- ilha recolhe em pílula, 6,2 s depois de aparecer -->
+    <integer name="vidro_motion_island_collapse">260</integer>
+
+    <!-- folha sobe / desce -->
+    <integer name="vidro_motion_sheet_up">240</integer>
+    <integer name="vidro_motion_sheet_down">180</integer>
+
+    <!-- a luz mudando de estado do host -->
+    <integer name="vidro_motion_light">900</integer>
+
+    <!-- mola do toque: scale 0,97 e volta -->
+    <integer name="vidro_motion_press">120</integer>
+
+    <!-- voltar por gesto: segue o dedo, solta com ease-out -->
+    <integer name="vidro_motion_back">220</integer>
+
+    <!-- o quanto o toque encolhe. 0,97 é do handoff: percebe-se, mas não salta. -->
+    <item name="vidro_press_scale" format="float" type="dimen">0.97</item>
+
+</resources>

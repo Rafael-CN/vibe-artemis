@@ -465,7 +465,7 @@ A escolha do eixo dominante usa `absDeltaX/absDeltaY`, calculados a partir dos d
 
 **Por quê:** Com 6 modos de mouse, pan/zoom, cursor local e captura de ponteiro alternáveis em runtime (Game.java:4091-4151, 3992-4004), é fácil o usuário não saber por que o toque "parou de funcionar" — especialmente após `applyMouseMode(4)` (desabilitado) ou `isPanZoomMode`.
 
-**Como:** Reutilizar `notificationOverlayView` (Game.java:225-226) e `updateZoomButtonAppearance` (4001-1009) para exibir um chip persistente com o modo atual; alternativamente, mudar o ícone do `overlayToggleZoomButton` (activity_game.xml:105-117). Emitir a notificação em `applyMouseMode` e `toggleMouseLocalCursor`.
+**Como:** Reutilizar `notificationOverlayView` para exibir um chip persistente com o modo atual, emitido em `applyMouseMode` e `toggleMouseLocalCursor`. **A segunda alternativa deste plano morreu:** `overlayToggleZoomButton` e `updateZoomButtonAppearance` foram apagados pelo P24 do catálogo de produto — quem mostra o estado de zoom hoje é o interruptor `vidroZoomRow` da folha da sessão, e é lá que um indicador melhor deve morar.
 
 **Risco:** Mínimo; apenas UI. Cuidar para não poluir a tela em sessões de jogo (respeitar `isHidingOverlays`, Game.java:222).
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Escolha atual de uma preferência de lista.
+
+    A tela tinha duas convenções para dizer em quanto está um ajuste: a taxa de bits punha
+    o número numa coluna à direita e a resolução enterrava o valor como as primeiras
+    palavras do resumo, na mesma cor e no mesmo tamanho da explicação. Metade das linhas
+    não tinha onde fixar o olho. Aqui a escolha vai para a MESMA coluna do número.
+
+    Não é @style/VidroText.Numeric: mono é o papel do número técnico, e "Nativa Tela Cheia"
+    não é número. O que as duas colunas compartilham é a posição, o corpo e a tinta cheia —
+    o valor é o dado que a pessoa veio conferir, não texto de apoio —, não a face.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vidro_pref_choice"
+    style="@style/VidroText.Support"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:gravity="end"
+    android:maxWidth="@dimen/vidro_pref_value_max"
+    android:paddingLeft="@dimen/vidro_space_3"
+    android:paddingStart="@dimen/vidro_space_3"
+    android:textAlignment="viewEnd"
+    android:textColor="@color/vidro_text"
+    tools:text="Nativa Tela Cheia (3088x1440)" />

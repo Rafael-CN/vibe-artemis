@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O ease-out do handoff — a luz mudando de estado (900 ms) e a mola do toque (120 ms).
+    O decelerate do Android com fator 1,4 é o mais perto do ease-out do CSS sem inventar
+    uma curva que o protótipo não pediu.
+-->
+<decelerateInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:factor="1.4" />

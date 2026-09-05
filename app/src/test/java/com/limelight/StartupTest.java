@@ -1,5 +1,7 @@
 package com.limelight;
 
+import com.limelight.CatalogoDoLugar;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -50,9 +52,10 @@ public class StartupTest {
 
     @Test
     public void testApplicationStartup() {
-        // Test ArtemisApplication creation and initialization
-        ArtemisApplication app = new ArtemisApplication();
-        app.onCreate();
+        // O Robolectric já criou o ArtemisApplication e já rodou onCreate(). Um
+        // Application construído a mão não tem base context e estoura em getResources().
+        ArtemisApplication app = (ArtemisApplication) ApplicationProvider.getApplicationContext();
+        assertNotNull("ArtemisApplication should be the app under test", app);
 
         // Verify ProfilesManager was initialized
         ProfilesManager manager = ProfilesManager.getInstance();
@@ -84,13 +87,13 @@ public class StartupTest {
 
     @Test
     public void testAppViewActivityCreation() {
-        // Test AppView activity startup
+        // O catalogo virou rota da Casca; o Intent com o lugar chega na PcView.
         Intent intent = new Intent();
-        intent.putExtra(AppView.NAME_EXTRA, "Test Computer");
-        intent.putExtra(AppView.UUID_EXTRA, "test-uuid-123");
+        intent.putExtra(CatalogoDoLugar.NAME_EXTRA, "Test Computer");
+        intent.putExtra(CatalogoDoLugar.UUID_EXTRA, "test-uuid-123");
 
-        AppView activity = Robolectric.buildActivity(AppView.class, intent).create().get();
-        assertNotNull("AppView activity should be created", activity);
+        PcView activity = Robolectric.buildActivity(PcView.class, intent).create().get();
+        assertNotNull("a casca precisa ser criada com o atalho", activity);
         assertFalse("Activity should not be finishing", activity.isFinishing());
     }
 

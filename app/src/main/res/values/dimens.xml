@@ -48,10 +48,73 @@
     <dimen name="vidro_thumb_reach">96dp</dimen>
     <dimen name="vidro_touch_target">48dp</dimen>
 
+    <!--
+        Respiro em cima e embaixo da linha de Ajustes. Não sai da escala vidro_space_*
+        porque não é espaço decorativo: é o que garante o alvo de toque sem altura mínima
+        — 14 + 20 (uma linha de título) + 14 = os 48 dp de @dimen/vidro_touch_target.
+    -->
+    <dimen name="vidro_pref_row_gap">14dp</dimen>
+
+    <!--
+        Teto da coluna de valor da linha de Ajustes. Existe porque o valor é medido antes
+        do título repartir o que sobra: "Nativa Tela Cheia (3088x1440)" sem teto tomaria a
+        linha inteira e empurraria o título para fora. Com teto ele quebra em duas linhas —
+        a caixa cresce, nada é cortado — e o título mantém metade da largura.
+    -->
+    <dimen name="vidro_pref_value_max">168dp</dimen>
+
     <!-- Largura da folha de ajustes em sessão. -->
     <dimen name="vidro_sheet_width">352dp</dimen>
 
     <!-- O halo do host. Grande de propósito: é a luz da sala, não um badge. -->
     <dimen name="vidro_halo_size">220dp</dimen>
+
+    <!--
+        Calha entre dois cards de cena lado a lado. Zero onde a lista é uma fila só, que é
+        todo lugar menos o tablet deitado: ali o card já ocupa a largura e uma margem
+        lateral só estreitaria a leitura. Ver values-sw600dp-land/dimens.xml.
+    -->
+    <dimen name="vidro_scene_card_gap">0dp</dimen>
+
+
+    <!--
+        Teto da paleta de comandos.
+
+        Ela sobe do rodape junto com o teclado do sistema; sem teto, uma lista sem filtro
+        empurraria o video ate ele nao caber mais na tela. 220 dp cabem cinco linhas de 48,
+        que e mais do que qualquer filtro util devolve.
+    -->
+    <dimen name="vidro_paleta_altura_max">220dp</dimen>
+
+
+    <!--
+        O puxador da gaveta. Fino de proposito: ele indica onde pegar, nao ocupa lugar.
+        52 dp de altura e o que o polegar acha sem procurar; 3 dp de largura e o que
+        desaparece quando ninguem esta procurando.
+    -->
+    <!--
+        O PUXADOR TEM DUAS MEDIDAS, e confundir as duas foi o defeito.
+
+        `desenho` é o que se vê: uma barra fina, discreta, que não rouba o jogo.
+        `largura`/`altura` são o ALVO, e alvo de 3 dp não existe — o mínimo tocável do
+        Android é 48 dp e o dono do fork simplesmente não conseguia acertá-lo. Ele passava a
+        vida arrastando a borda solta, que é onde o Android põe o Voltar por gesto, e o que
+        acontecia era o app fechar.
+
+        O alvo cresce para dentro da tela, não para fora: assim ele sai da faixa que o sistema
+        reivindica em vez de disputá-la.
+    -->
+    <dimen name="vidro_puxador_desenho">4dp</dimen>
+    <dimen name="vidro_puxador_largura">48dp</dimen>
+    <dimen name="vidro_puxador_altura">96dp</dimen>
+
+
+    <!--
+        A capa na tela de espera. 3:4, a proporção da capa do protocolo, num tamanho de
+        cartão: grande o bastante para ser reconhecida, pequena o bastante para o texto dos
+        passos ter onde morar abaixo dela.
+    -->
+    <dimen name="vidro_capa_espera_largura">168dp</dimen>
+    <dimen name="vidro_capa_espera_altura">224dp</dimen>
 
 </resources>

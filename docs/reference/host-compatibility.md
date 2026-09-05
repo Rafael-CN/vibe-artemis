@@ -59,10 +59,16 @@ else return false;                 // Sunshine devolveu a página de erro com st
 
 Ou seja: **o próprio código documenta que clipboard não funciona com Sunshine vanilla.**
 
-> Não existe hoje um modelo unificado de capacidades do host. A detecção está espalhada
-> entre `IS_SUNSHINE()`, o campo de permissões e heurísticas por endpoint. A análise
-> levantou isso como EPIC ("Modelo explícito de capacidades do host") — ver
-> [`../BACKLOG.md`](../BACKLOG.md).
+> **Desde 2026-08-21 existe um começo de modelo unificado.**
+> `nvstream/http/HostCapabilities` nomeia os bits do enum `PERM` e responde às perguntas
+> em vez de deixar cada chamador testar hexadecimal na mão. Ele atravessa até a sessão
+> pelo extra `Game.EXTRA_HOST_CAPABILITIES`, e o menu da sessão já o consulta antes de
+> oferecer a área de transferência. `IS_SUNSHINE()` no nativo e as heurísticas por
+> endpoint continuam onde estavam — ver [E03](../planos/EPICS.md#e03) para o que falta.
+>
+> Cuidado ao usar: `permission` vale `-1` quando o host não manda o campo, e `-1` tem
+> **todos** os bits ligados. Testar bit direto na máscara responde "sim" justamente para
+> os hosts sem modelo de permissões. Use as consultas do `HostCapabilities`.
 
 ## Matriz de features
 

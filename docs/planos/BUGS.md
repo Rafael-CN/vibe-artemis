@@ -74,6 +74,11 @@ citar o código.
 | **B63** | [Repositório sem nenhum CI; o único arquivo de pipeline é herança quebrada do upstream](#b63) | small |
 | **B64** | [AppVeyor publica um artefato de lint com nome de flavor inexistente](#b64) | small |
 | **B65** | [Trackpad físico é roteado para o emulador de dedo na tela; dois sistemas de scroll competem](#b65) | small |
+| **B66** | [Nenhum gesto de vários dedos funciona no modo de mouse de fábrica — inclusive a saída de emergência](#b66) | small |
+| **B67** | [Teclas fixadas do teclado de tela continuam pressionadas no PC depois que o teclado some](#b67) | small |
+| **B68** | [O modo mover/zoom fica preso quando a pinça volta a 1x, e com ele o toque na tela](#b68) | small |
+| **B69** | [Duas telas sem saída: a roda de "Adicionando PC" e o Cancelar do pareamento](#b69) | small |
+| **B70** | [Teclas da capa descartadas em silêncio: Enter do bloco numérico e a tecla de barra ABNT2](#b70) | small |
 
 ---
 
@@ -517,6 +522,54 @@ Escolher UM caminho de saída por modo de pacing. Sugestão: manter o latest-onl
 
 Severidade high.
 
+**Verificação de 2026-08-20 — releitura do código atual, e por que este subiu de prioridade**
+
+Confirmado, com as linhas de hoje: o gate é `if (!preferLowerDelays)` em
+`MediaCodecDecoderRenderer.java:1226`. `getPreferLowerDelays` devolve `false` por padrão
+(`PreferenceConfiguration.java:670-673` — com o comentário logo acima dizendo *"default
+true"*, o oposto do que o código faz), e o XML confirma (`preferences.xml:97-99`,
+`android:defaultValue="false"`). O bloco chamado LATEST_ONLY_**LOW_LATENCY** roda exatamente
+quando o usuário **não** pediu latência mínima.
+
+**O que mudou desde o levantamento: [B19](#b19) já foi corrigido.** Game.java:748-752 traz o
+comentário explicando que as duas atribuições de `framePacing = BALANCED` saíram. Com a
+escolha de ritmo chegando ao renderer, B20 passou de "escondido atrás de outro bug" para
+**o bloqueio vivo**: quem escolhe Equilibrado, Suavidade máxima ou Limitar FPS tem a escolha
+comida pelo latest-only, a menos que marque também `pref_low_latency_frame_balance` — uma
+caixa que não tem relação nenhuma com ritmo de quadros. O padrão de fábrica é
+`DEFAULT_FRAME_PACING = "latency"` (PreferenceConfiguration.java:195), então quem nunca mexeu
+em nada não sente tranco nenhum; o defeito atinge exatamente quem foi atrás de suavidade.
+
+**Diagnóstico de dez segundos, antes de tocar em qualquer linha:** ligar o overlay de
+desempenho durante uma sessão e olhar o FPS de renderização. `totalFramesRendered` só é
+incrementado em :1126 (Choreographer) e :1441 (fila do BALANCED); o caminho latest-only não
+incrementa nenhum dos dois. Se a linha marcar perto de zero com o vídeo rodando normalmente,
+é o bloco engolindo os quadros — e isso vale como confirmação em aparelho, que é o que falta
+para este item.
+
+**Não inverter a condição e pronto.** Trocar por `if (preferLowerDelays)` joga o modo de
+latência mínima — o padrão — no caminho longo com dequeue bloqueante de 2000 µs, que é pior
+do que ele tem hoje. O plano acima continua valendo: **um caminho de saída por modo de
+ritmo**. Enquanto o latest-only existir, ele precisa (a) incrementar `totalFramesRendered` e
+`numFramesOut`, (b) tratar `INFO_OUTPUT_FORMAT_CHANGED` e (c) chamar
+`doCodecRecoveryIfRequired(CR_FLAG_RENDER_THREAD)` antes do `continue` de :1256 — que é
+[B21](#b21), e é a razão para tratar os dois como um trabalho só, não dois.
+
+Dois acertos baratos cabem na mesma passada, e só nela:
+
+- o `new BufferInfo()` de :1228, alocado a cada iteração de uma thread `URGENT_DISPLAY`,
+  sai do laço;
+- o laço de drenagem de :1299 usa `getOutputDequeueTimeoutUs()` (2000 µs no padrão, 500 µs em
+  latência mínima) para descobrir se veio outro quadro atrás de um que **já está na mão** —
+  a 60 fps o próximo está a 16,7 ms, então a última volta é latência pura somada a cada
+  quadro. O Moonlight de origem passa `0` nessa posição; a espera com prazo faz sentido só
+  no dequeue externo de :1265, que espera um quadro **existir**.
+
+Medir com o overlay antes e depois, nos dois aparelhos, a 60 e a 120 Hz, comparando
+Equilibrado contra Latência mínima. Não misturar com [M53](MELHORIAS.md#m53) na mesma
+mudança: aquele é a reescrita, este é o conserto.
+
+
 ---
 
 ## B21
@@ -538,6 +591,10 @@ Chamar `doCodecRecoveryIfRequired(CR_FLAG_RENDER_THREAD)` imediatamente antes do
 **Risco**
 
 Severidade high.
+
+Verificado em 2026-08-20: o `continue` que pula o `finally` está na linha 1256, e o
+`doCodecRecoveryIfRequired(CR_FLAG_RENDER_THREAD)` na 1488. **Fazer junto com [B20](#b20)** —
+são o mesmo bloco e o mesmo teste em aparelho.
 
 ---
 
@@ -1538,3 +1595,234 @@ Severidade high. A mudança de roteamento fica atrás de
 algum aparelho, desligar devolve exatamente o de hoje sem precisar de outro APK.
 
 ---
+## B66
+
+### Nenhum gesto de vários dedos funciona no modo de mouse de fábrica — inclusive a saída de emergência que o aviso promete
+
+**Tamanho:** small · **Severidade:** high · **Local:** `app/src/main/java/com/limelight/Game.java:4284`
+
+**Subsistema:** Entrada de Toque · Sessão
+
+**Por quê**
+
+O ramo de dedos de `handleMotionEvent` só chama `handleMultiTouchGesture` quando
+`prefConfig.enableMultiTouchGestures || !prefConfig.enableMultiTouchScreen` (Game.java:4284).
+O modo de mouse de fábrica é `mouse_mode_list = "0"` (Multitoque), que liga
+`enableMultiTouchScreen = true` (PreferenceConfiguration.java:952-954), e
+`checkbox_multi_touch_gestures` nasce `false` (PreferenceConfiguration.java:1036). A
+expressão vira `false || !true` = **false**. No modo que vem ligado de fábrica, os três
+gestos de dedo do app nunca são reconhecidos: três dedos (teclado), quatro dedos (teclado
+completo) e cinco dedos (devolver o punho, ou abrir o menu).
+
+O segundo caminho, dentro de `handleTouchInput` (Game.java:4638), está atrás de
+`prefConfig.touchscreenTrackpad`, verdadeiro só nos modos 2 e 3. Ou seja: os gestos
+funcionam em "mouse normal", "trackpad" e "toque desativado", e não funcionam exatamente no
+modo padrão.
+
+O caso grave é o de cinco dedos, porque ele é a saída de emergência. `hideVidroHandle`
+(Game.java:1579-1583) esconde o punho e mostra um aviso dizendo que cinco dedos o trazem de
+volta; no modo padrão essa promessa é falsa e a sessão fica sem controle nenhum até ser
+derrubada. O comentário dentro de `handleMultiTouchGesture` (Game.java:4726-4729) já afirma
+ter coberto "o modo multitoque, que é o padrão" — o corpo do método está certo, mas ninguém
+o chama nesse modo.
+
+Duas portas menores agravam: `if (isPanZoomMode) return true;` (:4273) e
+`if (touchContextMap[0] == null) return true;` (:4280) matam o gesto antes dele. Mesmo com a
+preferência ligada, o resgate não funciona com o zoom ativo.
+
+Isto torna [Q25](QUICK-WINS.md#q25) desnecessário na forma proposta: o que falta não é uma
+preferência nova espelhando o V+, é a chamada.
+
+**Plano de implementação**
+
+1. Extrair o reconhecimento do toque de cinco dedos para um teste feito no topo do ramo de
+   dedos de `handleMotionEvent`, **antes** de `isPanZoomMode` (:4273) e de
+   `touchContextMap[0] == null` (:4280). É a saída de emergência: não pode depender de
+   configuração nem de estado de zoom.
+2. Passar a chamar `handleMultiTouchGesture` também quando `enableMultiTouchScreen` for
+   true. O gate de :4284 volta a governar só o que ele de fato governa (mouse emulado). Se
+   houver receio de falso positivo em jogo multitoque, manter três e quatro dedos atrás de
+   `checkbox_multi_touch_gestures` e deixar o de cinco sempre ligado — os limiares de tempo
+   (`THREE_FINGER_TAP_THRESHOLD` e irmãos) continuam valendo e já filtram arrasto de gesto.
+3. Depois disto, [Q34](QUICK-WINS.md#q34) (três dedos abrindo a barra de composição quando
+   há teclado físico) passa a ter efeito no aparelho principal. Sem este conserto, aquele
+   trabalho não é observável.
+
+**Risco**
+
+Severidade high. Reconhecer cinco dedos antes do pan/zoom pode roubar um quadro de um
+arrasto com muitos dedos na imagem ampliada; o teste só dispara no `ACTION_UP` dentro do
+limiar de tempo, então o risco é baixo. Validar no S8 Ultra: esconder o punho em cada um dos
+seis modos de mouse e confirmar que cinco dedos devolvem, com e sem zoom ativo.
+
+---
+
+## B67
+
+### Teclas fixadas do teclado de tela continuam pressionadas no PC depois que o teclado some
+
+**Tamanho:** small · **Severidade:** high · **Local:** `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java:231-240`
+
+**Subsistema:** Entrada de Teclado
+
+**Por quê**
+
+`hide(boolean)` só faz `setVisibility(GONE)` em cada elemento e esconde o botão de
+configurar — não solta nada. O teclado de tela tem tecla fixa por toque longo, e o
+`onRelease()` dos listeners retorna cedo enquanto `isSticky()` for verdadeiro
+(KeyBoardControllerConfigurationLoader.java:166-194 e :235-271). Fechar o teclado pelo gesto
+de quatro dedos deixa o Ctrl (ou Alt, ou Shift) descido no host, sem nada aceso na tela para
+explicar por quê: o PC fica "estranho" e a causa acabou de sair de cena. O mesmo vale para o
+elemento que vira `GONE` com o dedo em cima, caso em que o `ACTION_UP` nunca chega
+(KeyBoardDigitalButton.java:248-253).
+
+É a mesma doença que `releaseHeldModifiers()` já curou em `Game.onWindowFocusChanged`
+(Game.java:2394), noutra superfície.
+
+**Plano de implementação**
+
+Dar ao `KeyBoardDigitalButton` um `releaseIfSticky()`: quando `isSticky()` (:145), fazer
+`setSticky(false)` (:141) e disparar `onReleaseCallback()` (:204), que é o mesmo caminho do
+soltar normal. Chamar em laço no começo de `KeyBoardController.hide(boolean)` **apenas
+quando `temporary == false`** — `hide(true)` é o modo de configuração, e ali soltar seria
+errado. Ver [M65](MELHORIAS.md#m65) para a versão grande disto (camada de release-all
+unificada para OSC, overlay de teclado e gamepads).
+
+**Risco**
+
+Severidade high pelo efeito, baixo pelo alcance: a mudança fica contida no overlay. Precisa
+de aparelho, com o teclado de tela aberto e ao menos uma modificadora fixada.
+
+---
+
+## B68
+
+### O modo mover/zoom fica preso quando a pinça volta a 1x, e com ele o toque na tela
+
+**Tamanho:** small · **Severidade:** high · **Local:** `app/src/main/java/com/limelight/Game.java:4419-4423`
+
+**Subsistema:** Entrada de Toque · Capa do S8 Ultra
+
+**Por quê**
+
+Uma pinça de abrir no trackpad da capa liga o modo mover/zoom sozinha
+(`if (!isPanZoomMode && factor > 1f) toggleZoomMode();`, Game.java:4419-4421), mas nada
+nunca o desliga. `PanZoomHandler.applyScale` trava a escala em `Math.max(1, ...)`
+(PanZoomHandler.java:121), então pinçar de volta chega a 1.0, `isZoomed()` (:153) passa a
+devolver false e `isPanZoomMode` continua true. Enquanto ele for true, o ramo de dedos de
+`handleMotionEvent` devolve em :4273-4276 sem enviar nada ao host: **o dedo na tela deixa de
+mexer no PC e não há aviso de por quê**.
+
+Uma pinça sem querer no pad da capa — que é o aparelho principal — congela o toque pelo
+resto da sessão. Combina mal com [B66](#b66): sem os gestos de dedo funcionando, também não
+há como abrir o menu para desfazer.
+
+**Plano de implementação**
+
+Depois de `panZoomHandler.applyTrackpadPinch(factor)` (Game.java:4423), se `isPanZoomMode` e
+`!panZoomHandler.isZoomed()`, chamar `toggleZoomMode()` (:5451). É o inverso exato do que a
+linha 4419 faz. O toast de modo desativado já existe e explica o que aconteceu.
+
+**Risco**
+
+Severidade high. Quem gostasse de ficar em modo mover com escala 1x perde esse estado — mas
+com escala 1x não há o que arrastar, o `constrainToBounds` recentra tudo. Precisa do S8 Ultra
+com a capa: a classificação `CLASSIFICATION_PINCH` só existe a partir do Android 13, então
+não há como reproduzir por leitura nem em emulador antigo.
+
+---
+
+## B69
+
+### Duas telas sem saída: a roda de "Adicionando PC" e o Cancelar do pareamento
+
+**Tamanho:** small · **Severidade:** high · **Local:** `app/src/main/java/com/limelight/preferences/AddComputerManually.java:135` e `app/src/main/java/com/limelight/PcView.java:538-548`
+
+**Subsistema:** Rede · Navegação
+
+**Por quê**
+
+Dois becos, pela mesma razão: a tela mostra uma espera que ninguém pode interromper.
+
+1. `AddComputerManually` chama `SpinnerDialog.displayDialog(..., false)` (:135). Em
+   `SpinnerDialog`, "cancelável" e "encerra a Activity" são a mesma flag (:111-120): com
+   `finish=false` o diálogo recebe `setCancelable(false)`. Endereço errado são ~10 s de tela
+   presa (sondagem + teste de portas contra a internet); sondagem travada é para sempre. O
+   caminho de interrupção já existe inteiro — `addThread` trata `InterruptedException` e
+   `doAddPc` a propaga (:161-166) —, falta alguém puxá-lo.
+2. O Cancelar da tela de pareamento (PcView.java:538-548) só esconde a tela; o comentário no
+   próprio código diz que não há caminho para abortar. Há: o primeiro passo do pareamento usa
+   `httpClientLongConnectNoReadTimeout` (PairingManager.java:231 → NvHTTP.java:189,
+   readTimeout 0 = sem prazo) e o protocolo devolve a requisição pendente com `/unpair` — o
+   próprio `PairingManager` usa isso em todos os ramos de erro (:241, :255, :272, :284, :294,
+   :304, :311). Enquanto o `pair()` não retorna, `stopComputerUpdates(true)` (PcView.java:587)
+   segue valendo e **a lista de PCs para de se atualizar sem nada na tela explicando**.
+
+**Plano de implementação**
+
+1. Separar as duas coisas em `SpinnerDialog`: um construtor que aceite "cancelável"
+   independente de "encerra a Activity". No cancelamento, interromper `addThread`
+   (AddComputerManually.java:233-247). `doAddPc` só chama `addTuple`/`updateComputer` depois
+   da sondagem bem-sucedida (ComputerManagerService.java:479-497), então interromper antes
+   disso é limpo.
+2. No Cancelar de PcView:544, disparar `httpConn.unpair()` numa thread separada e numa
+   **instância própria de NvHTTP** — a da thread de pareamento está pendurada na conexão
+   longa. `pm.pair()` retorna, o fluxo desce pelo caminho normal de :657-679 e
+   `startComputerUpdates()` (:676) volta a rodar sozinho.
+
+**Risco**
+
+Severidade high pelo modo de falha (tela presa sem saída), baixo em código. O item 2 precisa
+do Vibeshine para confirmar que ele devolve o `/pair` pendente ao receber `/unpair` (o
+Sunshine faz). Se não devolver, o ganho de destravar a sondagem se mantém e a requisição
+expira sozinha com o código.
+
+---
+
+## B70
+
+### Teclas da capa que o app descarta em silêncio: Enter do bloco numérico e, se a capa for ABNT2, a tecla de barra
+
+**Tamanho:** small · **Severidade:** medium · **Local:** `app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java:387-409` e `app/src/main/java/com/limelight/utils/KeyMapper.java:96,102,103`
+
+**Subsistema:** Entrada de Teclado · Capa do S8 Ultra
+
+**Por quê**
+
+O switch de `KeyboardTranslator` cobre `NUMPAD_DIVIDE`, `MULTIPLY`, `SUBTRACT`, `ADD` e
+`DOT` (:387-405) e para aí — não há caso para `KEYCODE_NUMPAD_ENTER`, `KEYCODE_NUMPAD_COMMA`
+nem `KEYCODE_RO`. O fallback por scancode também não salva: `KeyMapper` **declara** as
+constantes `KEY_KPENTER = 96` (:103), `KEY_KPJPCOMMA = 95` (:102) e `KEY_RO = 89` (:96), mas
+nenhuma delas é inserida em `linuxToWindowsKeyMap` — verificado, as três não aparecem em
+nenhuma das 118 atribuições do mapa. `getWindowsKeyCode` devolve -1 e
+`KeyboardTranslator.translate` devolve 0 (:411-423): **a tecla é descartada, sem erro, sem
+log, sem nada chegar no PC.**
+
+`KEY_RO` é a tecla "/ ? °" ao lado do Shift direito nos teclados ABNT2 — a tecla de digitar
+caminho, URL e opção de comando. Se a capa do Tab S8 Ultra for a versão brasileira, ela não
+funciona dentro da stream.
+
+**Plano de implementação**
+
+**Medir antes de escrever.** Abrir a stream, apertar as teclas suspeitas e ler
+`keyCode`/`scanCode` no log (`KeyboardAccessibilityService.java:26` já tem a linha de debug
+comentada). Se a capa for US-International, `KEY_RO` não existe e sobra só o Enter do bloco
+numérico — nesse caso o trabalho encolhe para uma linha.
+
+Com a medição na mão, são duas linhas em cada arquivo. No switch:
+`KEYCODE_NUMPAD_ENTER → 0x0D` (VK_RETURN), `KEYCODE_NUMPAD_COMMA → 0xC2`,
+`KEYCODE_RO → 0xC1`. No estático do `KeyMapper`, junto das outras:
+`KEY_KPENTER → VK_RETURN`, `KEY_KPJPCOMMA → 0xC2`, `KEY_RO → 0xC1` — o comentário de
+KeyMapper.java:913 marca 0xC1-0xDA como "Reserved", que é justamente onde a Microsoft pôs
+VK_ABNT_C1 e VK_ABNT_C2. Mapear os dois caminhos importa porque em API 33+ o caminho de
+scancode é pulado quando `hasNormalizedMapping` devolve true
+(KeyboardTranslator.java:411-417) — o mesmo detalhe que [B47](#b47) descreve.
+
+**Risco**
+
+Severidade medium. É tabela: risco técnico quase nulo. O risco real é escolher o código
+errado sem ter medido, e aí a tecla passa a mandar a coisa errada em vez de nada — o que é
+pior que o defeito de hoje. Daí a medição vir antes.
+
+---
+

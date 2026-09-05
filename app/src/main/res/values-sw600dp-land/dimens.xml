@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Só o que o tablet DEITADO muda. O resto das medidas de tablet continua em
+    values-sw600dp/dimens.xml — a resolução de recurso é por nome, não por arquivo.
+-->
+<resources>
+    <!--
+        6dp de cada lado dão os 12dp de calha entre dois cards de cena, a mesma medida da
+        margem que já os separa na vertical (@dimen/vidro_space_3). Sem isso os dois cards
+        da linha se encostam e viram um bloco só.
+    -->
+    <dimen name="vidro_scene_card_gap">6dp</dimen>
+</resources>

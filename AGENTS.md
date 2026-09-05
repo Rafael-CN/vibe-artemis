@@ -4,7 +4,9 @@ Fonte canônica de instruções para agentes. Outras ferramentas leem este arqui
 `CLAUDE.md` apenas o importa.
 
 Cliente Android de game streaming. Fork de `ClassicOldSong/moonlight-android` (Artemis),
-que é fork do Moonlight. **Java + C nativo via JNI. Não há Kotlin.**
+que é fork do Moonlight. **Java + C nativo via JNI.** Há **Kotlin só na casca**, e só em Compose — ver
+[ADR 0004](docs/adr/0004-kotlin-e-compose-na-casca.md). A sessão, a entrada e o vídeo
+continuam em Java, e continuam sendo a maior parte.
 63 mil linhas, 213 arquivos de código, pacote raiz `com.limelight`.
 
 ## Setup
@@ -115,7 +117,7 @@ Consulte com `tools/codemap/query.mjs`. Lê-los inteiros custa mais contexto que
 
 ## Pergunte antes de
 
-Introduzir Kotlin · trocar ndkBuild por CMake · mudar `minSdk`/`targetSdk` · adicionar
+Levar Kotlin/Compose ALEM da casca (ADR 0004 permite só ela) · trocar ndkBuild por CMake · mudar `minSdk`/`targetSdk` · adicionar
 dependência nova · editar submódulo · fazer push · alterar o wrapper do Gradle.
 Cada um desses é um ADR em `docs/adr/`, não uma decisão de conveniência.
 

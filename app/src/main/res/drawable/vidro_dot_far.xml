@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Host que não responde: sem resposta, ou fora do ar sem MAC para acordar.
+
+    O traço era #66AEB1B6 e ainda apanhava o alfa de 0,65 da ImageView, então o anel
+    chegava à tela com 0,26 de opacidade: na gravação o pixel mais claro dele deu #313235
+    sobre o cartão, ~1,9:1 — o estado do host ficava pendurado num anel que não se
+    enxerga. O tom agora é o token cheio, e quem separa este ponto do de um host dormindo
+    é a COR do traço, não a transparência.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
     <solid android:color="@android:color/transparent" />
-    <stroke android:width="1.5dp" android:color="#66AEB1B6" />
+    <stroke android:width="1.5dp" android:color="@color/vidro_text_3" />
     <size android:width="9dp" android:height="9dp" />
 </shape>

@@ -51,6 +51,8 @@ public class ComputerManagerService extends Service {
     private static final int INITIAL_POLL_TRIES = 2;
     private static final int EMPTY_LIST_THRESHOLD = 3;
     private static final int POLL_DATA_TTL_MS = 30000;
+    /** Teto da espera por uma sondagem. Ver o wait() com prazo, abaixo. */
+    private static final int POLL_WAIT_TIMEOUT_MS = 20000;
 
     private final ComputerManagerBinder binder = new ComputerManagerBinder();
 
@@ -575,6 +577,16 @@ public class ComputerManagerService extends Service {
             return null;
         } catch (IOException e) {
             return null;
+        } catch (Throwable e) {
+            // Qualquer outra coisa vinda do parser do host — e vem: NvHTTP faz
+            // Long.parseLong de status_code, Integer.parseInt de currentgame e
+            // getLast() na lista de apps, e os três estouram com XML que o host
+            // formate de um jeito inesperado. Antes essa exceção matava a thread de
+            // sondagem ANTES de marcar tuple.complete, e quem esperava ficava em
+            // wait() sem prazo — para sempre. O cartão do PC ficava em "checando" e
+            // não saía mais, sem nada na tela dizendo por quê.
+            LimeLog.warning("Polling failed with unexpected error: " + e);
+            return null;
         }
     }
 
@@ -641,8 +653,18 @@ public class ComputerManagerService extends Service {
         try {
             // Check local first
             synchronized (localInfo) {
+                // Com prazo, e não indefinido: se a thread de sondagem morrer sem marcar
+                // complete, esperar para sempre transforma um erro passageiro numa tela
+                // presa sem saída. O teto é generoso — três tentativas de 1,5 s mais a
+                // folga do handshake.
+                long limite = SystemClock.elapsedRealtime() + POLL_WAIT_TIMEOUT_MS;
                 while (!localInfo.complete) {
-                    localInfo.wait();
+                    long resta = limite - SystemClock.elapsedRealtime();
+                    if (resta <= 0) {
+                        LimeLog.warning("Timed out waiting for poll to complete");
+                        break;
+                    }
+                    localInfo.wait(resta);
                 }
 
                 if (localInfo.returnedDetails != null) {
@@ -756,10 +778,16 @@ public class ComputerManagerService extends Service {
 
                 @Override
                 public void onLost(Network network) {
-                    LimeLog.info("Offlining PCs due to network loss");
+                    LimeLog.info("Network lost, re-probing PCs");
                     synchronized (pollingTuples) {
                         for (PollingTuple tuple : pollingTuples) {
-                            tuple.computer.state = ComputerDetails.State.OFFLINE;
+                            // UNKNOWN, e não OFFLINE. A sondagem exige três tentativas
+                            // falhas antes de declarar um host fora do ar, e o callback de
+                            // rede atropelava essa paciência: trocar de Wi-Fi, ligar a VPN
+                            // ou o rádio engasgar fechava o catálogo na cara de quem
+                            // estava usando, sendo que o host nem tinha saído do ar. O
+                            // par simétrico, onAvailable, já faz assim.
+                            tuple.computer.state = ComputerDetails.State.UNKNOWN;
                             if (listener != null) {
                                 listener.notifyComputerUpdated(tuple.computer);
                             }

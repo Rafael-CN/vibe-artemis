@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A mola do toque: scale 0,97 e volta, 120 ms, ease-out. Do handoff.
+
+    Isto substitui o ?android:attr/selectableItemBackground, que é o ripple do Material —
+    proibido pela identidade. O ripple pinta uma onda cinza que nasce do dedo e não tem
+    nada a ver com esta linguagem; a mola diz "recebi seu toque" pelo movimento, que é o
+    que um produto caro faz.
+
+    StateListAnimator anima o objeto View, não o desenho, então funciona sobre qualquer
+    fundo — cartão, linha de lista, chip — sem cada um precisar de um drawable de estado.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator
+                android:duration="@integer/vidro_motion_press"
+                android:interpolator="@interpolator/vidro_out"
+                android:propertyName="scaleX"
+                android:valueTo="0.97"
+                android:valueType="floatType" />
+            <objectAnimator
+                android:duration="@integer/vidro_motion_press"
+                android:interpolator="@interpolator/vidro_out"
+                android:propertyName="scaleY"
+                android:valueTo="0.97"
+                android:valueType="floatType" />
+        </set>
+    </item>
+
+    <item>
+        <set>
+            <objectAnimator
+                android:duration="@integer/vidro_motion_press"
+                android:interpolator="@interpolator/vidro_out"
+                android:propertyName="scaleX"
+                android:valueTo="1.0"
+                android:valueType="floatType" />
+            <objectAnimator
+                android:duration="@integer/vidro_motion_press"
+                android:interpolator="@interpolator/vidro_out"
+                android:propertyName="scaleY"
+                android:valueTo="1.0"
+                android:valueType="floatType" />
+        </set>
+    </item>
+
+</selector>

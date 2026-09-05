@@ -4,6 +4,7 @@
 
 package com.limelight.binding.input.virtual_controller;
 
+import com.limelight.ui.VidroToast;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
@@ -109,7 +110,7 @@ public class VirtualController {
                     message = context.getString(R.string.configuration_mode_exiting);
                 }
 
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                VidroToast.show(context, message, Toast.LENGTH_SHORT);
 
                 buttonConfigure.invalidate();
 

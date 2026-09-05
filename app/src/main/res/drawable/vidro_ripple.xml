@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O toque na identidade do app, e não no prata do sistema.
+
+    As linhas da folha usavam ?android:attr/selectableItemBackground, e o ripple do
+    framework é um flash claro quase branco: sobre o vidro escuro ele estourava — visível
+    em captura no meio do toque, a linha inteira virando uma barra prateada. O quente a
+    baixa opacidade dá a mesma resposta de "recebi o toque" na única família de cor que o
+    app tem.
+
+    A máscara é o que dá forma ao ripple em linhas sem fundo próprio; sem ela, nada se
+    desenha.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#2EE9C48B">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF" />
+            <corners android:radius="@dimen/vidro_radius_m" />
+        </shape>
+    </item>
+</ripple>

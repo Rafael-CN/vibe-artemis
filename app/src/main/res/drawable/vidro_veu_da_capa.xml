@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O véu sobre a capa do aplicativo, na tela de espera.
+
+    Ele é um GRADIENTE e não uma chapa, e a primeira tentativa provou por que: uma chapa a
+    78% sobre uma capa clara e saturada devolve quase-preto — a capa deixa de ser reconhecível
+    e a tela volta a ser o retângulo escuro que ela era antes de ter uma capa.
+
+    O texto mora no rodapé, a 74 dp da borda de baixo. Então é lá embaixo que o véu precisa
+    ser forte, e é lá em cima que ele pode sumir: 45% no topo deixa a arte respirar, 96% no pé
+    garante o piso de contraste dos três passos sobre qualquer capa que exista.
+
+    O ponto do meio a 78% existe para a transição não ter uma quina visível na diagonal —
+    dois pontos só produzem uma rampa linear, e rampa linear sobre imagem lê como faixa.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="90"
+        android:startColor="#F5020305"
+        android:centerColor="#C7020305"
+        android:endColor="#73020305"
+        android:type="linear" />
+</shape>

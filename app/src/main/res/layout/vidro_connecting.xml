@@ -5,6 +5,23 @@
     Três passos, e cada um espera o EVENTO REAL da conexão — os tempos do protótipo eram
     encenação. Sem spinner: a barra e a luz já dizem que está vivo, e um spinner girando
     sobre "Reservando a tela no PC" só acrescentaria ansiedade.
+
+    ════════════════════════════════════════════════════════════════════════════
+    E ELA DEIXOU DE SER UMA TELA. Agora ela é a CAPA que você tocou.
+    ════════════════════════════════════════════════════════════════════════════
+
+    A regra é geral e é a que mais apaga: se uma tela existe só para cobrir uma espera, ela
+    não é tela — é um estado de um objeto que já estava na tela anterior. Antes, tocar num
+    aplicativo trocava a janela e o que aparecia era um retângulo preto com texto: um elenco
+    novo entrando em cena, e a pessoa tendo de reencontrar onde estava.
+
+    A capa vem do MESMO cache em disco que a grade acabou de usar
+    (`cacheDir/boxart/{uuid}/{appId}.png`), então ela já está carregada e não custa rede. E
+    ela atravessa o Intent de graça: `EXTRA_PC_UUID` e `EXTRA_APP_ID` já viajavam. Bitmap no
+    Intent seria TransactionTooLargeException, e não foi preciso.
+
+    Quando não há capa — o Vibeshine não publica arte — a ImageView fica vazia e o fundo é o
+    de sempre. A tela continua funcionando; ela só deixa de ter de onde vir.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,9 +29,55 @@
         android:id="@+id/vidroConnecting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/vidro_void"
+        android:background="@color/vidro_sessao_fundo"
         android:visibility="gone"
         tools:visibility="visible">
+
+        <!--
+            A CAPA É UM CARTÃO, e não papel de parede. A primeira versão era `centerCrop` em
+            tela cheia e a gravação mostrou por que isso não funciona: a "capa" que o Moonlight
+            entrega não é arte, é um ladrilho GERADO com o nome do aplicativo desenhado dentro
+            da imagem. Ampliada e recortada, ela corta o próprio nome — na gravação saiu
+            "REMOTE MONITO".
+
+            Contida, no tamanho de um cartão, ela volta a ser o que era: a coisa que foi
+            tocada, inteira, crescendo. E é isso que a espera precisa mostrar.
+
+            `fitCenter` e não `centerCrop`: nada dela pode ser cortado, porque parte do
+            conteúdo dela é texto.
+        -->
+        <ImageView
+            android:id="@+id/vidroConnectingCapa"
+            android:layout_width="@dimen/vidro_capa_espera_largura"
+            android:layout_height="@dimen/vidro_capa_espera_altura"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/vidro_space_6"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!--
+            O véu existe pelo texto, não pelo gosto — e ele é gradiente, não chapa.
+
+            A primeira versão era 78% chapados, e a captura provou o problema na hora: sobre
+            uma capa clara e saturada aquilo devolve quase-preto, e a capa deixa de ser
+            reconhecível. A tela voltava a ser o retângulo escuro que ela era antes de ter uma
+            capa — só que agora com o custo de carregar um bitmap.
+
+            O texto mora no rodapé. Então o véu é forte lá embaixo e some lá em cima: a arte
+            respira onde não há nada escrito, e o piso de contraste é garantido onde há. Ver
+            os números em `vidro_veu_da_capa.xml`.
+
+            Ele só aparece junto com a capa: sem capa não há o que velar.
+        -->
+        <View
+            android:id="@+id/vidroConnectingVeu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/vidro_veu_da_capa"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.limelight.ui.VidroLightView
             android:id="@+id/vidroConnectingLight"

@@ -1,105 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Informações de depuração — Ajustes → "Debug Info". Testa vibração do aparelho, lista e
-    testa rumble de gamepad, e mostra versão de Android, kernel e modelo.
+    Depuracao, agora so a casca que hospeda o Compose.
 
-    Era a última tela viva com a aparência original. Nada de estrutura mudou aqui: os ids
-    e os `android:onClick="onClick"` continuam iguais, porque DebugInfoActivity liga tudo
-    pelo atributo do XML e não por setOnClickListener.
-
-    Os botões são AppCompatButton, e isso não é detalhe: DebugInfoActivity declara
-    bt_vibrator e bt_vibrator_value como `Button`, então trocar por TextView — que é a
-    convenção do resto da identidade — daria ClassCastException. E `<Button>` cru sob o
-    tema Material3 é auto-inflado como MaterialButton, que ignora o android:background do
-    VidroButton.Ghost e voltaria a desenhar a pílula do sistema.
+    Saiu tudo que era botao de teste. Testar vibracao e papel do slider de vibracao, nao de
+    um painel a parte, e os quatro botoes apareciam com o texto cortado. O que sobra e o que
+    uma tela de depuracao precisa ser: leitura, e um botao Copiar.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
-    android:orientation="vertical"
-    android:padding="@dimen/vidro_space_5"
-    android:fitsSystemWindows="true">
+    android:background="@color/vidro_void">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_vibrator"
-        style="@style/VidroButton.Ghost"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/vidroDepuracaoCompose"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:onClick="onClick"
-        android:text="@string/debug_info_test_device_vibration" />
+        android:layout_height="match_parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_update_gamepad"
-        style="@style/VidroButton.Ghost"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="@dimen/vidro_space_2"
-        android:onClick="onClick"
-        android:text="@string/debug_info_refresh_gamepad_list" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_vibrator_gamepad"
-        style="@style/VidroButton.Ghost"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="@dimen/vidro_space_2"
-        android:onClick="onClick"
-        android:text="@string/debug_info_test_gamepad_rumble" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vidro_space_2">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bt_vibrator_value"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="@dimen/vidro_space_2"
-            android:layout_marginRight="@dimen/vidro_space_2"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/debug_info_vibration_amplitude" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bt_vibrator_cancle"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="@string/debug_info_stop_vibration" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tx_content"
-        style="@style/VidroText.Support"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vidro_space_5"
-        android:text="@string/debug_info_refresh_gamepad_info" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/vidro_space_3"
-        android:scrollbars="none">
-
-        <!--
-            Saída técnica: mono e tabular. É uma coluna de nome e valor que a pessoa lê
-            comparando linhas, e proporcional faria as colunas dançarem.
-        -->
-        <TextView
-            android:id="@+id/tx_game_pad_info"
-            style="@style/VidroText.Numeric"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.4"
-            android:textSize="12sp"
-            tools:text="Android 14 · SM-X900" />
-    </ScrollView>
-
-</LinearLayout>
+</FrameLayout>

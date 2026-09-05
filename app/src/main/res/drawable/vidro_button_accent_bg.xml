@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O acento era o único botão do sistema sem lista de estados: apertar não mudava um
+    pixel, e não havia como desenhar desabilitado. Mesmo formato do vidro_button_ghost_bg,
+    para os dois botões responderem igual ao toque.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Desabilitado vem primeiro: o seletor para no primeiro item que casa. -->
+    <item android:drawable="@drawable/vidro_button_accent_idle" android:state_enabled="false" />
+    <item android:drawable="@drawable/vidro_button_accent_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/vidro_button_accent_pressed" android:state_focused="true" />
+    <item android:drawable="@drawable/vidro_button_accent" />
+</selector>

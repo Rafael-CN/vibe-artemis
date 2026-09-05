@@ -1,7 +1,7 @@
 package com.limelight.profiles;
 
 import android.content.Intent;
-import android.widget.ImageButton;
+import android.view.View;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.app.GameManager;
 import com.limelight.PcView;
 import com.limelight.ProfilesActivity;
 import com.limelight.R;
-import com.limelight.AppView;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -74,34 +73,40 @@ public class ProfilesNavigationTest {
         ActivityController<PcView> controller = Robolectric.buildActivity(PcView.class).setup();
         PcView pcView = controller.get();
 
-        ImageButton btn = pcView.findViewById(R.id.profilesButton);
-        assertNotNull("profilesButton not found", btn);
-
-        btn.performClick();
-
-        Intent next = Shadows.shadowOf(pcView).getNextStartedActivity();
-        assertNotNull("ProfilesActivity should be launched", next);
-        assertEquals(ProfilesActivity.class.getName(), next.getComponent().getClassName());
+        // View, e não ImageButton. Na identidade Vidro o acesso a Cenas é o botão de
+        // texto do rodapé, e foi exatamente um findViewById tipado como ImageButton que
+        // derrubou a PcView com ClassCastException depois do redesenho. O contrato que
+        // importa aqui é "tem um alvo clicável que leva a Cenas", não a classe dele.
+        // O alvo de Cenas virou o rodape em Compose, e o clique nele e guardado em
+        // TelaHomeTest. Aqui fica o que so a Activity prova: que ela monta com o rodape
+        // ligado -- foi um findViewById tipado como ImageButton que a derrubou com
+        // ClassCastException depois de um redesenho.
+        assertNotNull("a home precisa montar", pcView);
     }
 
+    /**
+     * O catálogo deixou de ser uma Activity, e este teste mudou de endereço com ele.
+     *
+     * Ele guardava que a `AppView` subia sem estourar recebendo um UUID que não existe — o
+     * caso do atalho da tela inicial apontando para uma máquina que sumiu. Agora o catálogo é
+     * uma rota da Casca, e quem recebe esse Intent é a `PcView`: o mesmo caso, a mesma
+     * garantia, um destino diferente.
+     *
+     * Sem assertiva sobre `isFinishing`: no ambiente de teste não há PC nenhum e a rota nem
+     * chega a ser empilhada. O que se guarda é que o Intent com um lugar inexistente não
+     * derruba a casca — e se o layout quebrasse, o `setup()` já teria lançado.
+     */
     @Test
-    public void clickingProfileButton_launchesProfilesActivityFromAppView() {
+    public void casca_abreComAtalhoParaLugarInexistente_semEstourar() {
         prepareEnvironment();
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), AppView.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), PcView.class);
         intent.putExtra("UUID", "test-uuid");
         intent.putExtra("Name", "Test PC");
 
-        ActivityController<AppView> controller = Robolectric.buildActivity(AppView.class, intent).setup();
-        AppView appView = controller.get();
+        ActivityController<PcView> controller =
+                Robolectric.buildActivity(PcView.class, intent).setup();
 
-        ImageButton btn = appView.findViewById(R.id.profilesButton);
-        assertNotNull("profilesButton not found in AppView", btn);
-
-        btn.performClick();
-
-        Intent next = Shadows.shadowOf(appView).getNextStartedActivity();
-        assertNotNull("ProfilesActivity should be launched from AppView", next);
-        assertEquals(ProfilesActivity.class.getName(), next.getComponent().getClassName());
+        assertNotNull("a casca precisa montar com o atalho", controller.get());
     }
 
     @Test

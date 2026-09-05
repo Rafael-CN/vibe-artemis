@@ -236,7 +236,7 @@ historicamente diverge (ver o comentário em `StreamView.onKeyPreIme()`).
 2. **Ligar `enableCommitText` por padrão.** Com ele, digitação por gesto e ditado por voz já
    passam a funcionar pelo caminho Unicode.
 3. **Adicionar um `EditText` em overlay**, acessível pelo `GameMenu` (já existe) ou pelo
-   `floatingMenuButton` (`Game.java:300`): digita, revisa, envia. É o comportamento do
+   a barra de composição: digita, revisa, envia. É o comportamento do
    AnyDesk e resolve digitar senha, comando ou URL no host.
    Mostre um indicador de progresso — a 50 ms de espera inicial mais um pacote por
    caractere, um parágrafo leva um tempo perceptível.

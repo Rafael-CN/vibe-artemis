@@ -183,7 +183,7 @@ public abstract class VirtualControllerElement extends View {
     }
 
     protected void showConfigurationDialog() {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext(), com.limelight.R.style.VidroDialogPlatform);
 
         alertBuilder.setTitle("Configuration");
 

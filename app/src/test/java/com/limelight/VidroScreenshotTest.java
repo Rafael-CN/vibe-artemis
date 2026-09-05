@@ -11,6 +11,8 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.limelight.DebugInfoActivity;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -68,28 +70,22 @@ public class VidroScreenshotTest {
 
         // A Activity de verdade, com o cabeçalho preenchido e a lista montada pelo
         // adapter. Inflar o layout sozinho mostra a casca; isto mostra a tela.
-        shootActivity("00-home-viva", PcView.class, 393, 852);
         shootActivity("00-cenas-viva", ProfilesActivity.class, 393, 852);
-        shootActivity("00-debug-viva", DebugInfoActivity.class, 393, 852);
-        shootActivity("00-endereco-viva",
-                com.limelight.preferences.AddComputerManually.class, 393, 852);
+        // Ajustes só existe de verdade com a Activity de pé: o layout tem um container
+        // vazio que o SettingsFragment preenche em runtime. Enquanto a captura era só do
+        // layout inflado, esta tela aparecia como um título sobre preto — e era
+        // exatamente onde a linha de preferência, a régua, o cabeçalho de seção e a caixa
+        // de seleção tinham acabado de ser reescritos, sem nada olhando.
+        shootActivity("00-ajustes-viva",
+                com.limelight.preferences.StreamSettings.class, 393, 852);
+        shootActivity("00-cena-viva", com.limelight.EditProfileActivity.class, 393, 852);
 
-        shoot("01-home", R.layout.activity_pc_view, 393, 852);
         // A mesma home com o card de antecipação e o pareamento à mostra, que é como
         // ela fica quando há palpite — o estado que mais precisa ser olhado.
-        shoot("01-home-com-palpite", R.layout.activity_pc_view, 393, 852, true);
-        shoot("02-catalogo", R.layout.activity_app_view, 393, 852);
-        shoot("02-catalogo-com-sessao", R.layout.activity_app_view, 393, 852, true);
-        shoot("06-cenas", R.layout.activity_profiles, 393, 852);
-        shoot("07-pareamento", R.layout.vidro_pairing, 393, 852, true);
 
         // Peças soltas, no tamanho em que a grade as usa.
         shoot("peca-card-de-app", R.layout.app_grid_item, 180, 230);
-        shoot("peca-linha-de-host", R.layout.pc_grid_item, 393, 0);
-        shoot("peca-card-de-cena", R.layout.row_profile, 357, 0);
         shoot("peca-linha-de-menu", R.layout.vidro_menu_row, 320, 0);
-        shoot("08-debug-info", R.layout.activity_axitest, 393, 852);
-        shoot("09-endereco", R.layout.activity_add_computer_manually, 393, 852);
         shoot("10-ajustes", R.layout.activity_stream_settings, 393, 852);
     }
 
@@ -101,7 +97,7 @@ public class VidroScreenshotTest {
         onlyWhenAsked();
 
         shoot("03-conectando", R.layout.vidro_connecting, 852, 393, true);
-        shoot("04-sessao-ilha", R.layout.vidro_session_island, 852, 393, true);
+        shootConectandoComCapa("03-conectando-com-capa", 852, 393);
         shoot("05-folha-de-ajustes", R.layout.vidro_session_sheet, 852, 393, true);
         shoot("09-perdemos-o-host", R.layout.vidro_lost, 852, 393, true);
     }
@@ -110,19 +106,32 @@ public class VidroScreenshotTest {
 
     /**
      * 1722x1075 dp é o Tab S8 Ultra real (2960x1848 a ~1,72 de escala). É a tela onde as
-     * medidas fixas do desenho de celular aparecem — painel de 352dp, capa de 132dp,
-     * grade de colunas.
+     * medidas fixas do desenho de celular aparecem — painel de 352dp, grade de colunas,
+     * qualquer altura cravada que a largura da tela desminta.
      */
     @Test
-    @Config(qualifiers = "w1722dp-h1075dp-land-night-xhdpi")
+    /*
+     * sw1075dp NÃO é decoração: sem ele o Robolectric mantém smallestScreenWidthDp no
+     * padrão e o capturador escolhe res/layout/ mesmo pedindo 1722dp de largura — ou
+     * seja, o que saía nestas capturas era o layout de CELULAR esticado, e todo defeito
+     * de tablet passava batido até chegar no aparelho do dono. w/h dizem o tamanho da
+     * janela; quem escolhe a pasta de recurso é o sw.
+     */
+    @Config(qualifiers = "sw1075dp-w1722dp-h1075dp-land-night-xhdpi")
     public void telasNoTablet() throws IOException {
         onlyWhenAsked();
 
-        shoot("tab-01-home", R.layout.activity_pc_view, 1722, 1075);
-        shoot("tab-02-catalogo", R.layout.activity_app_view, 1722, 1075);
-        shoot("tab-04-sessao-ilha", R.layout.vidro_session_island, 1722, 1075, true);
         shoot("tab-05-folha-de-ajustes", R.layout.vidro_session_sheet, 1722, 1075, true);
-        shoot("tab-06-cenas", R.layout.activity_profiles, 1722, 1075);
+
+        // O pareamento faltava aqui e era exatamente onde o defeito morava: sem uma pasta
+        // de tablet ele caía no layout de celular e os quatro dígitos ficavam encostados
+        // na borda esquerda. Nasce gone, daí o forceVisible.
+
+        // O índice de Ajustes na geometria do tablet: treze linhas de navegação numa tela
+        // de 1722 dp de largura é onde a coluna de celular esticada aparece. Precisa da
+        // Activity de pé — o layout sozinho traz só o container vazio.
+        shootActivity("tab-00-ajustes-viva",
+                com.limelight.preferences.StreamSettings.class, 1722, 1075);
     }
 
     // ==================== celular alto · S22 Ultra ====================
@@ -133,9 +142,6 @@ public class VidroScreenshotTest {
     public void telasNoS22Ultra() throws IOException {
         onlyWhenAsked();
 
-        shoot("s22-01-home", R.layout.activity_pc_view, 460, 988);
-        shoot("s22-02-catalogo", R.layout.activity_app_view, 460, 988);
-        shoot("s22-07-pareamento", R.layout.vidro_pairing, 460, 988, true);
     }
 
     // ==================== máquina ====================
@@ -152,6 +158,16 @@ public class VidroScreenshotTest {
     /**
      * @param height 0 = deixa a view dizer a altura dela (para peças, não para telas).
      */
+    /*
+     * A HOME e o CATALOGO nao aparecem mais aqui.
+     *
+     * Os dois layouts viraram cascas finas com um ComposeView dentro, e um ComposeView
+     * inflado sem dono de ciclo de vida estoura na hora -- as capturas falhavam em silencio
+     * e sumiam da pasta sem ninguem notar. Quem captura as duas agora e
+     * VidroComposeScreenshotTest, que sobe uma ComponentActivity de verdade e por isso tem
+     * LifecycleOwner. As duas suites escrevem na MESMA pasta, entao comparar continua sendo
+     * abrir dois PNGs.
+     */
     private void shoot(String name, int layoutId, int widthDp, int heightDp) throws IOException {
         shoot(name, layoutId, widthDp, heightDp, false);
     }
@@ -162,6 +178,68 @@ public class VidroScreenshotTest {
      *                     código mandar aparecer, então sem isto a captura sairia vazia
      *                     e eu concluiria que a tela não existe.
      */
+    /**
+     * A espera COM a capa do aplicativo — a metade que a captura sem capa não mostra.
+     *
+     * A arte de jogo é o pior fundo possível para texto: clara, saturada e cheia de contraste
+     * local. Esta captura existe para provar que os três passos continuam legíveis sobre ela,
+     * porque é o véu que garante isso e véu é fácil de afrouxar sem perceber.
+     *
+     * A arte é sintética e não vem do cache: o que se quer ver aqui é o LAYOUT — capa, véu e
+     * texto empilhados —, e uma arte de verdade traria a variação dela para dentro de um
+     * arquivo que deve mudar só quando o desenho mudar. Um gradiente claro é o caso difícil.
+     */
+    private void shootConectandoComCapa(String name, int widthDp, int heightDp)
+            throws IOException {
+        Context base = ApplicationProvider.getApplicationContext();
+        Context context = new androidx.appcompat.view.ContextThemeWrapper(base, R.style.AppTheme);
+
+        float density = context.getResources().getDisplayMetrics().density;
+        int widthPx = Math.round(widthDp * density);
+        int heightPx = Math.round(heightDp * density);
+
+        FrameLayout root = new FrameLayout(context);
+        LayoutInflater.from(context).inflate(R.layout.vidro_connecting, root, true);
+        revealAll(root);
+
+        android.widget.ImageView capa = root.findViewById(R.id.vidroConnectingCapa);
+        assertNotNull("a captura precisa da ImageView da capa", capa);
+        capa.setImageBitmap(arteSintetica(300, 400));
+
+        // O texto que só o runtime põe. Sem ele a captura mostra a barra e o "Cancelar"
+        // sobre a capa e não prova nada sobre legibilidade — que é o motivo desta captura
+        // existir.
+        ((android.widget.TextView) root.findViewById(R.id.vidroConnectingApp))
+                .setText("Hollow Knight");
+        ((android.widget.TextView) root.findViewById(R.id.vidroConnectingStep))
+                .setText(context.getString(R.string.vidro_step_talking, "PC-RAFAEL"));
+
+        int widthSpec = View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY);
+        int heightSpec = View.MeasureSpec.makeMeasureSpec(heightPx, View.MeasureSpec.EXACTLY);
+        root.measure(widthSpec, heightSpec);
+        root.layout(0, 0, widthPx, heightPx);
+
+        Bitmap bitmap = Bitmap.createBitmap(widthPx, heightPx, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        root.draw(canvas);
+
+        write(name, bitmap, widthPx, heightPx);
+        bitmap.recycle();
+    }
+
+    /** Um gradiente claro e saturado — o caso difícil para o véu. */
+    private static Bitmap arteSintetica(int largura, int altura) {
+        Bitmap arte = Bitmap.createBitmap(largura, altura, Bitmap.Config.ARGB_8888);
+        Canvas pincel = new Canvas(arte);
+        android.graphics.Paint tinta = new android.graphics.Paint();
+        tinta.setShader(new android.graphics.LinearGradient(
+                0, 0, largura, altura,
+                0xFFF2C46A, 0xFF7E3FA8,
+                android.graphics.Shader.TileMode.CLAMP));
+        pincel.drawRect(0, 0, largura, altura, tinta);
+        return arte;
+    }
+
     private void shoot(String name, int layoutId, int widthDp, int heightDp, boolean forceVisible)
             throws IOException {
         Context base = ApplicationProvider.getApplicationContext();

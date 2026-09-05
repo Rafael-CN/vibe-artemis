@@ -189,9 +189,16 @@ public class ShortcutTrampoline extends AppCompatActivity {
                                                 intentStack.add(i);
 
                                                 // Take this intent's data and create an intent to start the app view
-                                                i = new Intent(getIntent());
-                                                i.setClass(ShortcutTrampoline.this, AppView.class);
-                                                intentStack.add(i);
+                                                // O CATÁLOGO NÃO É MAIS UMA JANELA.
+                                                //
+                                                // A pilha tinha dois Intents — PcView atrás,
+                                                // AppView na frente — porque eram duas
+                                                // Activities. Agora são a mesma: os extras
+                                                // sobem no Intent da Casca e ela empilha a
+                                                // rota do catálogo assim que o serviço
+                                                // responde.
+                                                Intent doCatalogo = new Intent(getIntent());
+                                                i.putExtras(doCatalogo);
 
                                                 // If a game is running, we'll make the stream the top level activity
                                                 if (details.runningGameId != 0) {
@@ -385,10 +392,10 @@ public class ShortcutTrampoline extends AppCompatActivity {
         {
             // PC arguments, both are optional, but at least one must be provided
             if (hostUUID == null) {
-                hostUUID = getIntent().getStringExtra(AppView.UUID_EXTRA);
+                hostUUID = getIntent().getStringExtra(CatalogoDoLugar.UUID_EXTRA);
             }
             if (hostName == null) {
-                hostName = getIntent().getStringExtra(AppView.NAME_EXTRA);
+                hostName = getIntent().getStringExtra(CatalogoDoLugar.NAME_EXTRA);
             }
 
             // App arguments, all optional, but one must be provided in order to start an app
@@ -428,7 +435,7 @@ public class ShortcutTrampoline extends AppCompatActivity {
         uuidString = hostUUID;
 
         // Set the AppView UUID intent
-        setIntent(new Intent(getIntent()).putExtra(AppView.UUID_EXTRA, uuidString));
+        setIntent(new Intent(getIntent()).putExtra(CatalogoDoLugar.UUID_EXTRA, uuidString));
 
         if (validateAppInput(appUUID, appIDStr, appName)) {
             // If app data came from .art file or was determined by appNameString from extras

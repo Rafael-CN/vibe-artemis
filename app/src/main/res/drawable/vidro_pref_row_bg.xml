@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Fundo da linha de Ajustes.
+
+    Ela vinha com ?android:attr/selectableItemBackground, o ripple do Material: onda de
+    branco a 20% que sobre o vazio compõe cinza neutro, sangrando de borda a borda
+    enquanto o conteúdo da linha tem 16 dp de recuo. O toque agora é dito pela mola
+    (@animator/vidro_press), como no resto do app.
+
+    O que NÃO dá para simplesmente apagar é o foco: o app tem LEANBACK_LAUNCHER, e no
+    controle remoto o realce de foco é a única coisa que diz onde o cursor está. Então
+    sobra só ele, no realce frio da identidade e recuado das bordas, para o retângulo
+    coincidir com a linha e não com a tela.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="true">
+        <inset
+            android:insetLeft="@dimen/vidro_space_2"
+            android:insetRight="@dimen/vidro_space_2">
+            <shape android:shape="rectangle">
+                <solid android:color="@color/vidro_glass_cool_alt" />
+                <corners android:radius="@dimen/vidro_radius_xs" />
+            </shape>
+        </inset>
+    </item>
+
+    <item android:drawable="@android:color/transparent" />
+
+</selector>

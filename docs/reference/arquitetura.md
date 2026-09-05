@@ -293,8 +293,6 @@ Artemis é um APK monolítico de módulo único (`settings.gradle:1` → `includ
 - `com.limelight.ui.StreamContainer @id/streamContainer (focusable/focusedByDefault)`
 - `TextView @id/notificationOverlay`
 - `LinearLayout @id/performanceOverlay`
-- `ImageButton @id/floatingMenuButton`
-- `ImageButton @id/overlayToggleZoomButton`
 - `bloco ApertureViewGroup comentado (código morto)`
 
 </details>

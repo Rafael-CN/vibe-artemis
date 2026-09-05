@@ -5,6 +5,6 @@
         android:type="radial"
         android:gradientRadius="50%p"
         android:startColor="@color/vidro_halo_asleep"
-        android:centerColor="#141E8FEE"
-        android:endColor="#001E8FEE" />
+        android:centerColor="#14B78003"
+        android:endColor="#00B78003" />
 </shape>

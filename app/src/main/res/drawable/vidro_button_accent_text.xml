@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A tinta acompanha o preenchimento. Sobre a pílula a 16% a tinta escura de
+    vidro_on_accent some, então o desabilitado usa o azul de TEXTO, que é o papel do
+    acento aprovado para ler. Fica em drawable/ como vidro_chip_text, que é onde as
+    listas de cor deste app já moram.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/vidro_accent_text" android:state_enabled="false" />
+    <item android:color="@color/vidro_on_accent" />
+</selector>

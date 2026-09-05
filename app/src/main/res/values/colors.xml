@@ -1,43 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Identidade Vidro. Os valores vêm do handoff 8e do Claude Design, onde foram
-    definidos em OKLCH e medidos por APCA no navegador contra o pior fundo possível
-    (uma cena de vídeo clara). Estão aqui já convertidos para sRGB.
+    Duas Temperaturas. Os valores são definidos em OKLCH e convertidos para sRGB.
 
-    Regra que não se negocia: o acento tem TRÊS papéis e eles não são intercambiáveis.
-    O tom a L 64% reprova como texto e como preenchimento — serve só de brilho.
+    ════════════════════════════════════════════════════════════════════════════
+    A REGRA QUE MUDOU TUDO: cor é ESTADO, não decoração.
+    ════════════════════════════════════════════════════════════════════════════
+
+    Antes o azul era seis coisas ao mesmo tempo na home do tablet: adicionar, novo lugar,
+    pronta, sessão aberta, recarregar e conectar. Seis papéis semânticos num tom só é ruído,
+    não sistema — e o custo aparecia na lista de máquinas, onde o estado de cada uma existia
+    apenas como uma palavra em inglês na margem direita.
+
+    Agora existe um eixo, e ele tem três valores:
+
+      QUENTE   acordada e presente — a luz acesa naquele cômodo
+      FRIO     dormindo, mas ainda sua — alcançável com um toque
+      AUSENTE  sem croma nenhum — o cômodo que não existe mais
+
+    A metáfora já era do produto: a especificação chama os hosts de "lugares" e os estados de
+    "acordado" e "dormindo". Nada disso precisa ser explicado a ninguém.
+
+    Interatividade deixou de ser dita em cor. Ela é dita por ELEVAÇÃO e pela mola do toque,
+    que é onde ela sempre devia ter morado.
+
+    ════════════════════════════════════════════════════════════════════════════
+    O CHÃO SUBIU, e este é o segundo conserto.
+    ════════════════════════════════════════════════════════════════════════════
+
+    O fundo era #020305 e o cartão #090B0F — dois e nove, em 255. Num OLED com o brilho alto,
+    que é como este app é usado como área de trabalho remota de dia, aqueles sete pontos
+    simplesmente não existem: o preto é desligado e o quase-preto quase. O chão novo começa em
+    #06070A e a superfície em #151619 — o triplo de separação absoluta, exatamente na faixa em
+    que o OLED esmaga.
+
+    O croma também caiu, de .010 para .006: o chão para de ser azulado e vira neutro de
+    verdade, o que devolve o azul ao seu único emprego.
 -->
 <resources>
     <color name="profileAccent">#FF4081</color>
 
-    <!-- Fundos -->
-    <color name="vidro_void">#020305</color>          <!-- oklch(9.5% .008 265) · fora da sessão -->
-    <color name="vidro_surface">#090B0F</color>       <!-- oklch(15% .010 265) · cartão, folha -->
-    <color name="vidro_surface_alt">#111419</color>   <!-- oklch(19% .012 265) · cartão elevado -->
-    <color name="vidro_glass_session">#07090E</color> <!-- oklch(14% .012 265) · base do vidro -->
-    <color name="vidro_stroke">#222429</color>        <!-- oklch(26% .010 265) · borda sólida -->
+    <!--
+        O chão, em três degraus que existem de verdade.
 
-    <!-- Texto -->
-    <color name="vidro_text">#F4F5F8</color>          <!-- oklch(97% .004 265) -->
-    <color name="vidro_text_2">#D5D7DD</color>        <!-- oklch(88% .008 265) -->
-    <color name="vidro_text_3">#AEB1B6</color>        <!-- oklch(76% .008 265) -->
+        O nome `vidro_void` ficou porque ele é referenciado em 28 lugares e renomear tudo seria
+        churn sem ganho — mas ele não é mais um vazio: é o chão do app. O preto de verdade
+        continua existindo, com nome próprio, onde ele serve a alguma coisa.
+    -->
+    <color name="vidro_void">#06070A</color>          <!-- oklch(13% .006 265) · o chão do app -->
+    <color name="vidro_surface">#151619</color>       <!-- oklch(20% .006 265) · onde há imagem -->
+    <color name="vidro_surface_alt">#232427</color>   <!-- oklch(26% .006 265) · elevada -->
+
+    <!--
+        O preto reservado à SESSÃO.
+
+        Ali ele não é herança nem timidez: é o fundo do vídeo, e preto absoluto num OLED é
+        pixel desligado — letterbox que desaparece de verdade em vez de virar uma tarja
+        cinza ao lado da imagem.
+    -->
+    <color name="vidro_sessao_fundo">#020305</color>  <!-- oklch(9.5% .008 265) -->
+
+    <color name="vidro_glass_session">#07090E</color> <!-- oklch(14% .012 265) · base do vidro -->
+    <color name="vidro_stroke">#313336</color>        <!-- oklch(32% .006 265) · borda sólida -->
+
+    <!--
+        ═══ O EIXO DE ESTADO ═══
+
+        Três valores e só três. Quem quiser um quarto está inventando um significado novo para
+        a cor, e cor com quatro significados volta a ser ruído.
+    -->
+    <!--
+        ═══ UM MATIZ SÓ, E ELE É O QUENTE ═══
+
+        O app tinha duas famílias de cor viva ao mesmo tempo: o âmbar (matiz 78) dizendo
+        "em vigor", e o azul (matiz 250) dizendo "selecionado aqui" e, num outro lugar,
+        "dormindo". Três significados em dois matizes, e a divisão mudava de tela para tela.
+        O veredito do dono, depois de usar: "amarelo e azul fica estranho, tem que ser um dos
+        dois; se o app todo vai ficar amarelo, ok, mas manter consistente".
+
+        Então o azul saiu. Todo token que era matiz 250 foi girado para 78 mantendo
+        luminosidade e croma — o contraste de cada um contra o fundo é o mesmo de antes, só o
+        matiz mudou. Onde o croma não cabia no gamut sRGB naquele ponto (âmbar não sustenta
+        .17 a 64% de luminosidade), ele desceu para o máximo que cabe, e o número novo está
+        anotado no token.
+
+        O que distingue as coisas agora é LUMINOSIDADE, não matiz:
+
+          acordada / selecionado    #E9C48B, #E8B45E   claro e saturado
+          dormindo                  #826E50            escuro e dessaturado
+          fora do ar / ausente      #868686            cinza neutro, sem matiz nenhum
+
+        Cinza continua sendo ação (ver VidroText.Action), e vermelho continua sendo só o que
+        destrói. A regra não mudou; o que mudou é que ela agora usa uma família de cor só.
+    -->
+    <color name="vidro_quente">#E9C48B</color>        <!-- oklch(84% .085 78) · acordada -->
+    <color name="vidro_quente_halo">#B18B4F</color>   <!-- oklch(66% .090 78) · o brilho dela -->
+
+    <!--
+        O FRIO É DESSATURADO DE PROPÓSITO, e esta é a única decisão do eixo que precisou de
+        uma segunda volta.
+
+        Ele nasceu em oklch(80% .12 250), que é exatamente `vidro_accent_text`. E aí o mesmo
+        azul dizia duas coisas na mesma tela: "esta máquina está dormindo" e "isto aqui é a
+        ação". Trocar seis significados por dois é melhor que seis, e ainda é um a mais do que
+        o certo.
+
+        A 72% e croma .07 ele continua lendo como frio — é o polo oposto do quente — e para de
+        competir com o acento, que ficou brilhante e saturado. A separação é de luminosidade E
+        de croma junto: uma só das duas não bastava.
+    -->
+    <color name="vidro_frio">#826E50</color>          <!-- oklch(55% .05 78) · dormindo -->
+    <color name="vidro_frio_halo">#594B35</color>     <!-- oklch(42% .038 78) · o brilho dela -->
+    <color name="vidro_ausente">#868686</color>       <!-- oklch(62% 0 0) · sem croma -->
+
+    <!--
+        ═══ A AÇÃO PRIMÁRIA, e ela deixou de ser azul ═══
+
+        Enquanto azul quis dizer "clicável", ele não podia querer dizer "dormindo" — e é
+        dormindo o que a lista de lugares precisa dizer. A home foi consertada primeiro; o
+        resto do app continuou com o botão azul cheio em "Conectar", "Salvar", "Recarregar" e
+        "Salvar a sessão atual como cena", que é a colisão inteira de volta.
+
+        A resposta da identidade é ELEVAÇÃO, não cor: o botão primário é um degrau de chão
+        acima da superfície elevada, com a tinta principal por cima. Ele é o objeto mais alto
+        da tela, e é isso que o faz primário — não o brilho.
+    -->
+    <color name="vidro_botao">#36383B</color>         <!-- oklch(34% .006 265) -->
+    <color name="vidro_botao_tocado">#4B4D50</color>  <!-- oklch(42% .006 265) -->
+    <color name="vidro_botao_morto">#191B1D</color>   <!-- oklch(22% .006 265) -->
+
+    <!--
+        Texto. Os três degraus afastaram-se junto com o chão: sobre #06070A, um terciário a
+        76% lia quase como o secundário, e a hierarquia de três níveis virava de dois.
+    -->
+    <color name="vidro_text">#F0F2F4</color>          <!-- oklch(96% .004 265) -->
+    <color name="vidro_text_2">#B6B7BA</color>        <!-- oklch(78% .004 265) -->
+    <color name="vidro_text_3">#737477</color>        <!-- oklch(56% .004 265) -->
     <color name="vidro_text_night">#DDDEE1</color>    <!-- oklch(90% .004 265) · sala escura -->
 
     <!-- O acento, nos seus três papéis -->
-    <color name="vidro_accent_glow">#1E8FEE</color>   <!-- oklch(64% .17 250) · SÓ brilho -->
-    <color name="vidro_accent_text">#80C3FF</color>   <!-- oklch(80% .12 250) · texto -->
-    <color name="vidro_accent_fill">#69BDFF</color>   <!-- oklch(78% .145 250) · preenchimento -->
-    <color name="vidro_on_accent">#030819</color>     <!-- oklch(14% .04 265) · tinta sobre ele -->
-    <color name="vidro_light_core">#4378AD</color>    <!-- oklch(56% .10 250) · núcleo do halo -->
+    <color name="vidro_accent_glow">#B68115</color>   <!-- oklch(64% .128 78) · SÓ brilho -->
+    <color name="vidro_accent_text">#E8B45E</color>   <!-- oklch(80% .12 78) · texto -->
+    <color name="vidro_accent_fill">#EAAA36</color>   <!-- oklch(78% .145 78) · preenchimento -->
+    <color name="vidro_on_accent">#120700</color>     <!-- oklch(14% .04 78) · tinta sobre ele -->
+    <color name="vidro_light_core">#956C24</color>    <!-- oklch(56% .10 250) · núcleo do halo -->
+
+    <!--
+        Os dois estados do preenchimento. O desabilitado é o MESMO azul rebaixado a 16%,
+        não um cinza: um botão que ainda não pode ser tocado continua sendo a ação da tela,
+        e cinza neutro o tiraria da identidade e da hierarquia ao mesmo tempo.
+    -->
+    <color name="vidro_accent_fill_pressed">#D08F17</color> <!-- oklch(70% .146 78) · tocado -->
+    <color name="vidro_accent_fill_idle">#29EAAA36</color>  <!-- 0,16 do preenchimento · à espera -->
 
     <!--
         Vidro composto. Em sessão o painel é FOSCO, não embaçado: o vídeo desenha num
         SurfaceView, numa camada de hardware separada, e RenderEffect não consegue
-        amostrar o que está lá. Um blur por cima borraria o nada. Alpha 0,88 resolve
-        pelo mesmo efeito visual e não custa GPU nenhuma — que é o que o decodificador
+        amostrar o que está lá. Um blur por cima borraria o nada. O alpha resolve pelo
+        mesmo efeito visual e não custa GPU nenhuma — que é o que o decodificador
         precisa. Fora da sessão o fundo é composto pela própria hierarquia e o blur vale.
+
+        Era 0,88, e 12% de vídeo atravessando a superfície aparecia. Medido na gravação:
+        o fundo da ilha dava luminância 6 sobre a tarja preta do letterbox e 12–13 sobre a
+        imagem, ou seja um degrau vertical dentro da própria ilha, na divisa da tarja; e a
+        folha de ajustes deixava passar o contorno de um botão da ilha bem em cima de um
+        rótulo de seção. Pior que o desenho: o contraste do texto por cima cai junto com o
+        brilho do jogo, então a legibilidade da ilha dependia da cena. Com 0,96 sobra 4%,
+        que é véu e não imagem — continua fosco, sem virar chapa opaca.
     -->
-    <color name="vidro_glass_fill_session">#E007090E</color> <!-- alpha 0,88 -->
+    <color name="vidro_glass_fill_session">#F507090E</color> <!-- alpha 0,96 -->
     <color name="vidro_glass_fill_idle">#8C07090E</color>    <!-- alpha 0,55 -->
 
     <!-- Bordas por peso. Sempre 1px; o que muda é quanto ela aparece. -->
@@ -47,9 +177,33 @@
     <color name="vidro_surface_overlay">#0FFFFFFF</color><!-- 0,06 · realce sobre fundo -->
     <color name="vidro_surface_overlay_alt">#1CFFFFFF</color><!-- 0,11 · pressionado -->
 
+    <!--
+        Campo de texto EM SESSÃO, opaco de propósito.
+
+        O realce de 6% de branco é feito para compor com o fundo que estiver embaixo; por
+        cima do vídeo ele compõe com o vídeo. Medido na gravação: fora das colunas da
+        imagem o campo era um (21,22,27) chapado, e dentro delas oscilava até (24,28,31) —
+        duas emendas verticais dentro do campo e um fundo mosqueado justamente onde o
+        texto branco é escrito. O valor abaixo é aquele mesmo (21,22,27), agora fixo: o
+        desenho não muda onde não há vídeo, e para de mudar onde há.
+    -->
+    <color name="vidro_field_fill_session">#FF15161B</color>
+
+    <!--
+        Realce de vidro FRIO. Branco puro a 6% sobre o vazio compõe (17,18,20): a mesma
+        diferença azul-vermelho do próprio fundo, ou seja cinza neutro — que esta
+        identidade não usa. Com a base fria a mesma clareza compõe (18,20,25), que é o
+        azulamento de vidro_surface_alt. Serve ao botão fantasma; os tokens neutros
+        continuam valendo para quem já os usa.
+    -->
+    <color name="vidro_glass_cool">#14EFD8B6</color>     <!-- 0,08 · realce frio sobre o vazio -->
+    <color name="vidro_glass_cool_alt">#26EFD8B6</color> <!-- 0,15 · pressionado -->
+
     <!-- Estado do host, dito pela luz e não por rótulo -->
-    <color name="vidro_halo_awake">#B81E8FEE</color>  <!-- 0,72 -->
-    <color name="vidro_halo_night">#571E8FEE</color>  <!-- 0,34 -->
-    <color name="vidro_halo_asleep">#331E8FEE</color> <!-- 0,20 -->
-    <color name="vidro_halo_none">#121E8FEE</color>   <!-- 0,07 · nenhum host -->
+    <color name="vidro_halo_awake">#B8B78003</color>  <!-- 0,72 -->
+    <color name="vidro_halo_night">#57B78003</color>  <!-- 0,34 -->
+    <color name="vidro_halo_asleep">#33B78003</color> <!-- 0,20 -->
+    <color name="vidro_halo_none">#12B78003</color>   <!-- 0,07 · nenhum host -->
+    <color name="vidro_scrim_cor">#8C020305</color><!-- O veu, como cor. O drawable vidro_scrim ja usava este tom; o Compose precisa dele como cor. -->
+    <color name="vidro_alerta">#FF9A8B</color><!-- Acao destrutiva. Coral dessaturado: avisa sem gritar, e nao e o vermelho de erro do sistema. -->
 </resources>

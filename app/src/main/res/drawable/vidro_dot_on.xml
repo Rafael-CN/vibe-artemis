@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ponto de host acordado. Usa o acento de PREENCHIMENTO, nao o de brilho: brilho e o
+    papel do halo por tras da tela, e num disco de 8dp ele le mais escuro e mais saturado
+    que o resto da identidade - na gravacao em aparelho o ponto media #C38803 enquanto o
+    botao Conectar media #DFAE5D, dois azuis convivendo onde a identidade pede um.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="@color/vidro_accent_glow" />
+    <solid android:color="@color/vidro_accent_fill" />
     <size android:width="9dp" android:height="9dp" />
 </shape>

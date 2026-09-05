@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Cursor de texto. O padrão do AppCompat é branco cravado (abc_text_cursor_material), e
+    com o campo vazio o cursor cai no mesmo x da dica: duas peças claras no mesmo ponto
+    lêem como um glifo só. No acento eles se separam por cor, que é a única coisa que os
+    separa — padding move os dois juntos.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <size android:width="2dp" />
+    <solid android:color="@color/vidro_accent_fill" />
+    <corners android:radius="1dp" />
+</shape>

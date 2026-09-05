@@ -18,6 +18,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:horizontalSpacing="0dp"
+    android:listSelector="@android:color/transparent"
     android:numColumns="2"
     android:paddingLeft="@dimen/vidro_inset_card"
     android:paddingRight="@dimen/vidro_inset_card"

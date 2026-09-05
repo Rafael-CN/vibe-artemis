@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A tela de trás reaparecendo quando a de cima sai. Vem do recuo de volta ao lugar.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@interpolator/vidro_exit"
+    android:shareInterpolator="true">
+
+    <alpha
+        android:duration="@integer/vidro_motion_exit"
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
+
+    <scale
+        android:duration="@integer/vidro_motion_exit"
+        android:fromXScale="1.04"
+        android:fromYScale="1.04"
+        android:pivotX="50%p"
+        android:pivotY="50%p"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+</set>

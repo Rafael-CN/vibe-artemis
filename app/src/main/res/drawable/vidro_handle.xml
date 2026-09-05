@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    O punho de controles, em sessão. Círculo, não cápsula: a cápsula existia para caber a
+    palavra, e a palavra saiu.
+
+    Fosco pelo mesmo motivo da ilha — o RenderEffect não alcança a SurfaceView do vídeo,
+    então o que se pode fazer é uma superfície translúcida que deixa a imagem passar em
+    vez de fingir um desfoque que não acontece.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/vidro_glass_fill_session" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/vidro_stroke_glass" />
+</shape>

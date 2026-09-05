@@ -1,5 +1,6 @@
 package com.limelight.utils;
 
+import com.limelight.ui.VidroToast;
 import static com.limelight.StartExternalDisplayControlReceiver.requestFocusToGameActivity;
 import static com.limelight.utils.ServerHelper.getSecondaryDisplay;
 
@@ -126,12 +127,12 @@ public class ExternalDisplayControlActivity extends AppCompatActivity implements
                 if (secondaryDisplay != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     ActivityOptions options = ActivityOptions.makeBasic();
                     options.setLaunchDisplayId(secondaryDisplay.getDisplayId());
-                    Toast.makeText(this,
+                    VidroToast.show(this,
                             getString(R.string.external_display_info,
                                     secondaryDisplay.getMode().getPhysicalWidth(),
                                     secondaryDisplay.getMode().getPhysicalHeight(),
                                     secondaryDisplay.getMode().getRefreshRate()),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG);
 
                     startActivity(gameIntent, options.toBundle());
                 } else {
@@ -148,7 +149,7 @@ public class ExternalDisplayControlActivity extends AppCompatActivity implements
     private void initViews() {
         if (Game.instance == null) {
             if (failCount > 10) {
-                Toast.makeText(this, getString(R.string.no_game_instance), Toast.LENGTH_LONG).show();
+                VidroToast.show(this, getString(R.string.no_game_instance), Toast.LENGTH_LONG);
                 finish();
             }
             // Wait for the intent to get started
@@ -554,7 +555,7 @@ public class ExternalDisplayControlActivity extends AppCompatActivity implements
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showStickyNotification();
             } else {
-                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                VidroToast.show(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT);
             }
         }
     }

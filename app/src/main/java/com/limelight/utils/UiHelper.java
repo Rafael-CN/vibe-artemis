@@ -2,6 +2,7 @@ package com.limelight.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.widget.Button;
 import android.app.GameManager;
 import android.app.GameState;
 import android.app.LocaleManager;
@@ -22,7 +23,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.limelight.AppView;
 import com.limelight.Game;
 import com.limelight.LimeLog;
 import com.limelight.R;
@@ -179,6 +179,68 @@ public class UiHelper {
         }
     }
 
+    /**
+     * Zera o recuo de topo da janela e o devolve a uma view só — o cabeçalho.
+     *
+     * A luz do Vidro é o primeiro filho da raiz e precisa encostar na borda física; o
+     * recuo da barra de status aplicado por notifyNewRootView() no android.R.id.content
+     * empurra a luz junto com o resto e deixa acima dela a faixa chapada que a identidade
+     * não admite. Aqui o conteúdo sobe até a borda e quem recua é o texto, que é o único
+     * que não pode ficar embaixo do relógio.
+     *
+     * Vale também para API 21-28, onde notifyNewRootView() não instala listener nenhum:
+     * a barra é opaca, mas a janela desenha por baixo dela (windowDrawsSystemBarBackgrounds
+     * do tema Material), então sem este recuo o cabeçalho ficaria escondido.
+     *
+     * Chamar DEPOIS de notifyNewRootView(): substitui o listener dela, e por isso repete
+     * aqui o recuo lateral/inferior e a barra de navegação translúcida.
+     */
+    public static void applyTopInsetToHeader(final Activity activity, final View header)
+    {
+        UiModeManager modeMgr = (UiModeManager) activity.getSystemService(Context.UI_MODE_SERVICE);
+        if (modeMgr.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
+            // Na TV quem manda é o padding de overscan de notifyNewRootView, e não há barras.
+            return;
+        }
+
+        final View contentView = activity.findViewById(android.R.id.content);
+        final int headerPaddingTop = header.getPaddingTop();
+
+        contentView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    // Tappable, como em notifyNewRootView: no modo por gestos a barra de
+                    // navegação não recebe toque e não precisa de recuo.
+                    Insets tappableInsets = windowInsets.getTappableElementInsets();
+                    view.setPadding(tappableInsets.left, 0, tappableInsets.right, tappableInsets.bottom);
+
+                    // Show a translucent navigation bar if we can't tap there
+                    if (tappableInsets.bottom != 0) {
+                        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                    }
+                    else {
+                        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                    }
+                }
+                else {
+                    view.setPadding(windowInsets.getSystemWindowInsetLeft(), 0,
+                            windowInsets.getSystemWindowInsetRight(),
+                            windowInsets.getSystemWindowInsetBottom());
+                }
+
+                header.setPadding(header.getPaddingLeft(),
+                        headerPaddingTop + windowInsets.getSystemWindowInsetTop(),
+                        header.getPaddingRight(),
+                        header.getPaddingBottom());
+
+                return windowInsets;
+            }
+        });
+
+        contentView.requestApplyInsets();
+    }
+
     public static void showDecoderCrashDialog(Activity activity) {
         final SharedPreferences prefs = activity.getSharedPreferences("DecoderTombstone", 0);
         final int crashCount = prefs.getInt("CrashCount", 0);
@@ -234,7 +296,10 @@ public class UiHelper {
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+        // Tema Vidro, e o par de plataforma: este é o android.app.AlertDialog, não o do
+        // AppCompat. Alimenta sair da sessao, apagar PC e display virtual — as tres
+        // confirmacoes que qualquer pessoa encontra no primeiro dia de uso.
+        AlertDialog.Builder builder = new AlertDialog.Builder(parent, R.style.VidroDialogPlatform);
         builder.setMessage(Html.fromHtml(message));
         if (title != null) {
             builder.setTitle(title);
@@ -248,6 +313,64 @@ public class UiHelper {
         AlertDialog dialog = builder.create();
         dialog.show();
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+        // Pinta os botoes a mao, pelo mesmo motivo do utils/Dialog: o AlertDialog resolve
+        // a cor do botao contra o tema da Activity, que sob Material3 devolve o roxo do
+        // sistema — e roxo e exatamente o que esta identidade nao tem.
+        //
+        // Cada um com a tinta do seu papel. O botao de confirmar veste a pilula de acento
+        // preenchida, e vidro_accent_text sobre vidro_accent_fill da 1,1:1 — o rotulo
+        // sumia dentro do proprio botao. Sobre preenchimento a tinta e vidro_on_accent.
+        vestirBotoesDoDialogo(dialog, parent.getResources());
+    }
+
+    /**
+     * Veste os botões de um AlertDialog nos papéis da identidade: confirmar na pílula de
+     * acento, os outros na tinta comum.
+     *
+     * É um FUNIL de propósito. O mesmo defeito foi morto três vezes em cópias separadas —
+     * o "OK" apagado do Dialog.java, o "Sim" lilás do quit, o confirmar daqui — e cada
+     * cópia esquecia um pedaço: sob Material o botão resolve a cor contra o tema da
+     * Activity (sai lilás), e setBackgroundResource sem limpar o backgroundTint sai
+     * escurecido por cima. As duas metades têm de andar sempre juntas, então moram aqui.
+     *
+     * Chame DEPOIS do show() — antes dele os botões ainda não existem.
+     */
+    /** A mesma veste para o AlertDialog do AppCompat, que não compartilha ancestral útil. */
+    public static void vestirBotoesDoDialogo(androidx.appcompat.app.AlertDialog dialog,
+                                             android.content.res.Resources res) {
+        Button confirm = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (confirm != null) {
+            confirm.setBackgroundResource(R.drawable.vidro_button_accent_bg);
+            confirm.setBackgroundTintList(null);
+            confirm.setTextColor(res.getColor(R.color.vidro_on_accent));
+            confirm.setAllCaps(false);
+        }
+        for (int qual : new int[] { AlertDialog.BUTTON_NEGATIVE, AlertDialog.BUTTON_NEUTRAL }) {
+            Button b = dialog.getButton(qual);
+            if (b != null) {
+                b.setTextColor(res.getColor(R.color.vidro_text));
+                b.setAllCaps(false);
+            }
+        }
+    }
+
+    public static void vestirBotoesDoDialogo(android.app.AlertDialog dialog,
+                                             android.content.res.Resources res) {
+        Button confirm = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (confirm != null) {
+            confirm.setBackgroundResource(R.drawable.vidro_button_accent_bg);
+            confirm.setBackgroundTintList(null);
+            confirm.setTextColor(res.getColor(R.color.vidro_on_accent));
+            confirm.setAllCaps(false);
+        }
+        for (int qual : new int[] { AlertDialog.BUTTON_NEGATIVE, AlertDialog.BUTTON_NEUTRAL }) {
+            Button b = dialog.getButton(qual);
+            if (b != null) {
+                b.setTextColor(res.getColor(R.color.vidro_text));
+                b.setAllCaps(false);
+            }
+        }
     }
 
     public static void displayVdisplayConfirmationDialog(Activity parent, ComputerDetails computer, final Runnable onYes, final Runnable onNo) {

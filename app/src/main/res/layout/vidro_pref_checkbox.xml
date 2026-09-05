@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Caixa de seleção das telas de preferência.
+
+    O widget padrão do androidx é um CheckBox nu, que o AppCompat veste com o indicador do
+    Material — forma e azul do sistema, e uma margem transparente embutida no glifo que
+    deixava o quadrado visível a ~22dp da borda enquanto o título começa a 16dp. Como o
+    recuo nasce dentro do drawable, margem no XML da preferência não o alcança.
+
+    O desenho entra como FUNDO e não como android:button: o fundo recebe o state_checked
+    do próprio CheckBox e nenhum tingimento, enquanto o button ainda passaria pelo tinte do
+    AppCompat. O app:buttonCompat nulo é o que impede o estilo padrão de recolocar o
+    indicador do Material por cima — ele só é aplicado quando aponta para um recurso.
+-->
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/checkbox"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:layout_gravity="center_vertical|end"
+    android:background="@drawable/vidro_check_box"
+    android:button="@null"
+    android:clickable="false"
+    android:focusable="false"
+    android:minWidth="0dp"
+    android:minHeight="0dp"
+    android:padding="0dp"
+    app:buttonCompat="@null" />

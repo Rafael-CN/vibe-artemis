@@ -104,6 +104,19 @@ public class KeyBoardLayoutController {
         this.context = context;
         this.prefConfig = prefConfig;
         this.keyboardView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_axixi_keyboard, null);
+
+        // A saída do próprio teclado. Sem ela, ligar este teclado era um caminho sem volta:
+        // o interruptor que o desliga fica na folha de ajustes, e o teclado cobre a faixa
+        // por onde a folha é chamada.
+        View sair = this.keyboardView.findViewById(R.id.keyboardDismiss);
+        if (sair != null) {
+            sair.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hide();
+                }
+            });
+        }
         this.handler = new Handler(Looper.getMainLooper());
         initKeyPopup();
         initKeyboard();

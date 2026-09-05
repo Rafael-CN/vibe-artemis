@@ -3,12 +3,20 @@
     Card de cena. Raio 23, e o estado ativo dito por borda no acento além do rádio — um
     ponto de 20dp num card de 300 é invisível para quem não distingue o matiz, então a
     borda inteira carrega a mesma informação.
+
+    A calha lateral é @dimen/vidro_scene_card_gap e vale zero em quase todo lugar: só o
+    tablet deitado põe dois cards na mesma linha, e é lá que eles precisam de folga entre
+    si. Em fila única a margem estreitaria a leitura sem separar nada.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/vidro_space_3"
+    android:layout_marginLeft="@dimen/vidro_scene_card_gap"
+    android:layout_marginStart="@dimen/vidro_scene_card_gap"
+    android:layout_marginRight="@dimen/vidro_scene_card_gap"
+    android:layout_marginEnd="@dimen/vidro_scene_card_gap"
     android:background="@drawable/vidro_scene_card_bg"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -23,15 +31,22 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!--
+            O nome da cena é escrito pelo dono e cabia numa linha só: com os três alvos da
+            direita, sobram ~180 dp para 20 sp em negrito, ou seja ~13 caracteres antes das
+            reticências. "Segunda tela do escritório" virava "Segunda tela do es…" — corte
+            no meio da palavra num nome próprio, que é o defeito que o app mais repete.
+            Duas linhas resolvem o caso real; o card cresce, que é o lado certo de ceder.
+        -->
         <TextView
             android:id="@+id/profileName"
             style="@style/VidroText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/manrope_bold"
             android:letterSpacing="-0.03"
-            android:singleLine="true"
+            android:maxLines="2"
             android:textSize="20sp"
             tools:text="Trabalho" />
 
@@ -50,20 +65,31 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/vidro_space_3"
         android:layout_marginLeft="@dimen/vidro_space_3"
-        android:buttonTint="@color/vidro_accent_text" />
+        android:buttonTint="@color/vidro_accent_text"
+        android:contentDescription="@string/vidro_scene_active" />
 
+    <!--
+        44 dp era alvo abaixo do mínimo, e dois deles lado a lado num card que também
+        responde ao toque: errar o de apagar por 4 dp aqui custa uma cena. Passam a
+        @dimen/vidro_touch_target como todo alvo isolado do app.
+
+        E os dois eram ImageButton sem rótulo: para quem usa leitor de tela, o card
+        terminava em dois botões sem nome, um deles destrutivo.
+    -->
     <ImageButton
         android:id="@+id/editProfile"
         style="@style/VidroIconButton"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="@dimen/vidro_touch_target"
+        android:layout_height="@dimen/vidro_touch_target"
+        android:contentDescription="@string/vidro_scene_edit"
         android:src="@drawable/ic_edit" />
 
     <ImageButton
         android:id="@+id/deleteProfile"
         style="@style/VidroIconButton"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="@dimen/vidro_touch_target"
+        android:layout_height="@dimen/vidro_touch_target"
+        android:contentDescription="@string/vidro_scene_delete"
         android:src="@drawable/ic_delete" />
 
 </LinearLayout>

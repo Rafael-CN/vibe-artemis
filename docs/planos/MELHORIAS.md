@@ -105,6 +105,9 @@ citar o código.
 | **M94** | [Migrar o teclado virtual próprio para layouts orientados a dados, com AltGr e localização](#m94) | large |
 | **M95** | [EPIC — Camada de confianca explicita: fim do downgrade silencioso e visibilidade do estad…](#m95) | large |
 | **M96** | [Enxugar o fork: remover Stereo3D/IA se não for usado](#m96) | large |
+| **M97** | [Tratar "Remote Monitor" e "Remote Input" como funções, não como jogos](#m97) | medium |
+| **M98** | [A barra de composição vira uma ilha de foco: Esc fecha, um acorde abre, Enter chega ao PC](#m98) | medium |
+| **M99** | [A sessão diz a verdade quando termina: motivo real, "Tentar de novo" e nada de sucesso inventado](#m99) | medium |
 
 ---
 
@@ -694,7 +697,7 @@ Hoje a tela inicial tem três botões anônimos, cada card de jogo é uma imagem
 
 **Plano de implementação**
 
-1) Adicionar android:contentDescription com @string em settingsButton/helpButton/manuallyAddPc de activity_pc_view.xml (:52,:65,:78) e layout-land/activity_pc_view.xml (:45,:58,:71). 2) Em ExternalDisplayControlActivity.createImageButton (:505), acrescentar um parâmetro de contentDescription e preencher nas 5 chamadas (:406,:423,:424,:430,:441). 3) Em AppGridAdapter.populateView (:171) setar imgView.setContentDescription(obj.app.getAppName()) e marcar grid_overlay com setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO); análogo em PcGridAdapter.populateView (:53) com o nome do PC + estado. 4) Substituir os literais 'Edit profile'/'Delete profile' em row_profile.xml:50,:58 por @string. 5) Verificar tamanhos de alvo: floatingMenuButton e overlayToggleZoomButton em activity_game.xml (:92,:105) têm 36dp, abaixo do mínimo de 48dp.
+1) Adicionar android:contentDescription com @string em settingsButton/helpButton/manuallyAddPc de activity_pc_view.xml (:52,:65,:78) e layout-land/activity_pc_view.xml (:45,:58,:71). 2) Em ExternalDisplayControlActivity.createImageButton (:505), acrescentar um parâmetro de contentDescription e preencher nas 5 chamadas (:406,:423,:424,:430,:441). 3) Em AppGridAdapter.populateView (:171) setar imgView.setContentDescription(obj.app.getAppName()) e marcar grid_overlay com setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO); análogo em PcGridAdapter.populateView (:53) com o nome do PC + estado. 4) Substituir os literais 'Edit profile'/'Delete profile' em row_profile.xml:50,:58 por @string. 5) ~~Verificar tamanhos de alvo dos botões flutuantes~~ — resolvido apagando a causa: os dois tinham 36dp, abaixo do mínimo de 48dp, e saíram da sessão com o P24 do catálogo de produto. O punho da ilha, que os substitui, nasce no tamanho certo.
 
 **Risco**
 
@@ -2279,3 +2282,163 @@ app real que por acaso tenha um ID nessa faixa — daí casar ID **e** UUID ante
 como sintético. Os IDs ficam logo abaixo de `INT32_MAX`, justamente para não colidir.
 
 ---
+## M98
+
+### A barra de composição vira uma ilha de foco: Esc fecha, um acorde abre, Enter chega ao PC e o "enviado" só aparece quando saiu
+
+**Tamanho:** medium
+
+**Subsistema:** Entrada de Teclado — ver [referência](../reference/input-teclado.md)
+
+**Por quê**
+
+Quatro defeitos da mesma superfície, todos no caminho que o dono do fork mais usa: o campo
+de texto com a capa do S8 Ultra acoplada. Quatro lentes independentes chegaram aos mesmos
+quatro pontos, o que é o sinal mais forte deste lote de que aqui é onde vale mexer.
+
+1. **Nada isola o campo do jogo.** `Game.onKeyDown` (:3199) chama `handleKeyDown` sem
+   nenhuma guarda de barra aberta. Com o campo em foco, tudo que o `EditText` não consome
+   viaja para o PC: Esc pausa o jogo enquanto a barra continua aberta, F1 abre a ajuda do
+   host, Tab passa o foco lá do outro lado. Quem tem teclado de verdade usa Esc e Tab por
+   reflexo — é o oposto do que o AnyDesk faz, que é justamente o modelo pedido.
+2. **Não há como chegar ao campo sem largar o teclado.** Hoje: achar o punho na tela, abrir
+   a ilha, tocar no bloco "Teclado". A máquina de acordes Ctrl+Alt+Shift já existe inteira
+   (Game.java:3147-3160 arma, :3110-3138 executa) e hoje só conhece Z, Q e C.
+3. **O Enter físico provavelmente não envia.** O campo é `inputType="textMultiLine"`
+   (vidro_compose_bar.xml:73), e num campo multilinha o Android **não** chama
+   `onEditorAction` quando o Enter vem de teclado físico — insere quebra de linha. O teste de
+   `KEYCODE_ENTER` que está em `setOnEditorActionListener` (Game.java:1824-1835) mora no
+   lugar errado. E mesmo quando envia, o texto chega e o cursor fica parado: para confirmar
+   um comando são cinco toques pela paleta de teclas.
+4. **O aviso "enviado" mente.** `sendTextBlock` só enfileira e o `VidroToast` dispara na
+   linha seguinte (Game.java:1805-1811), enquanto o `TextInputPump` ainda está drenando —
+   o protocolo manda um pacote por code point e dorme 50 ms antes de cada bloco
+   (moonlight-common-c `InputStream.c:602-612`, ver [B24](BUGS.md#b24) e
+   [B25](BUGS.md#b25)). Quem confia no aviso fecha a barra ou aperta Enter cedo e
+   corta o próprio comando; quem não confia manda de novo e chega duplicado.
+
+**Plano de implementação**
+
+Quatro peças pequenas, todas em `Game.java` mais uma linha de layout. Fazer nesta ordem:
+
+1. **Guarda de foco.** Sobrescrever `dispatchKeyEvent`: se a view `R.id.vidroComposeBar`
+   está `VISIBLE`, chamar só `super.dispatchKeyEvent` e nunca `handleKeyDown`/`handleKeyUp`.
+   Amarrar à **visibilidade real da view**, nunca a um booleano paralelo — se a barra ficar
+   `VISIBLE` por engano, o teclado inteiro para de chegar no PC, e a visibilidade é o único
+   estado que não dessincroniza. Antes disso, conferir
+   `KeyboardAccessibilityService.java:28-46`: se estiver ligado no aparelho, ele engole
+   **todas** as teclas enquanto `Game.connected` e devolve true, o que tornaria o campo
+   impossível de usar.
+2. **Esc e Enter no lugar certo.** Um `setOnKeyListener` no `vidroComposeInput`:
+   `KEYCODE_ESCAPE` (e `KEYCODE_BACK`) chama `closeComposeBar()` e consome;
+   `KEYCODE_ENTER` sem Shift dispara o mesmo `dispatch` que o botão Enviar. Shift+Enter
+   continua quebrando linha, como a condição de :1829 já prevê. O
+   `setOnEditorActionListener` continua servindo o teclado de tela.
+3. **Enter também chega ao PC.** O toque em "Enviar" continua mandando só texto; o Enter
+   manda o texto e, **quando o pump esvaziar**, emite
+   `sendKeys(new short[]{KeyboardTranslator.VK_RETURN})`. O gancho é a continuação do dreno
+   em `TextInputPump.java:62-64`, onde `textFlushScheduled` volta a false. Se o Enter sair
+   antes do último bloco, o comando chega cortado — é este o teste que decide se a
+   implementação está certa.
+4. **O aviso passa a ser verdade.** Manter "Enviar" desabilitado enquanto
+   `!textInputPump.isIdle()` (o `setEnabled` já existe em Game.java:1792) e mover o
+   `VidroToast` para o mesmo ponto de dreno do item 3. Para texto curto nada muda; para texto
+   longo o botão apagado é a informação exata de que ainda está saindo. Limpar o pump
+   (`TextInputPump.clear()`) se a conexão cair no meio, para o botão não ficar apagado para
+   sempre.
+5. **Atalho de abertura.** Acrescentar `KEYCODE_T` aos dois switches do acorde
+   Ctrl+Alt+Shift (:3147-3160 e :3110-3138) chamando `openComposeBar()`. Duas linhas em cada.
+   Como o campo pede foco, as teclas seguintes já vão para ele pela guarda do item 1.
+
+O item 4 é provável em teste unitário (`TextInputPumpTest`); os itens 1-3 e 5 precisam de
+aparelho.
+
+**Risco**
+
+O ponto sensível é a guarda de `dispatchKeyEvent`, mitigado amarrando-a à visibilidade real.
+Reservar Ctrl+Alt+Shift+T tira essa combinação do host — custo real, e o mesmo que Z/Q/C já
+cobram. O item 3 muda um comportamento existente: quem usava Enter esperando só "enviar"
+passa a ver um Enter chegar no PC; a pista tem de estar no rótulo, senão vira surpresa.
+Validar no Tab S8 Ultra com a capa, testando Esc, Tab, F5 e o atalho com o campo aberto e
+fechado, e com um texto de uns 2 mil caracteres para o item 4.
+
+---
+
+## M99
+
+### A sessão diz a verdade quando termina: o motivo real na folha, um "Tentar de novo", e nada de sucesso inventado
+
+**Tamanho:** medium
+
+**Subsistema:** Arquitetura Geral e Ciclo de Vida do App
+
+**Por quê**
+
+Quatro defeitos do mesmo momento — o fim da sessão —, dois deles levantados por duas lentes
+independentes. Com o Vibeshine criando display virtual por cliente, falhar na primeira
+tentativa enquanto o display ainda sobe é rotina, e é justamente aí que o app é pior.
+
+1. **O único desfecho é desistir.** `Dialog.java` só sabe montar OK
+   (`BUTTON_POSITIVE`, :121) e Ajuda (`BUTTON_NEUTRAL`, :131, que abre a wiki do Moonlight
+   em inglês — inútil para quem roda Vibeshine). O slot `BUTTON_NEGATIVE` está livre. Tanto
+   `stageFailed` (Game.java:4962) quanto `connectionTerminated` (:5063) chamam
+   `displayDialog(..., true)`, cujo único desfecho é `finish()`. Repetir a tentativa — que é
+   o gesto que a pessoa ia fazer de qualquer jeito — custa quatro toques e uma navegação.
+2. **A folha não diz o motivo.** Ela mostra "Falha ao iniciar &lt;app&gt; (error 0)". O
+   motivo de verdade ("o dispositivo não está pareado", "o app não está na lista do host")
+   passou como torrada, em inglês, atrás da folha modal, e sumiu. São 14 frases cravadas em
+   inglês dentro de `NvConnection` (:233, :244, :263, :268, :308, :318, :331, :337, :357,
+   :362, :379, :413, :420, :450), mais a de Game.java:906.
+3. **O teste de portas roda mesmo em rede local.** `stageFailed` chama
+   `MoonBridge.testClientConnectivity(CONNECTION_TEST_SERVER, 443, portFlags)` na primeira
+   linha (Game.java:4903) e `connectionTerminated` de novo (:4989). Para um host em
+   192.168.x.x o resultado só sabe responder sobre as portas do provedor — informação sem
+   uso — e paga resolução de DNS mais conexões TCP em **cada** uma das três tentativas,
+   justamente quando a internet está ruim. É segundos de tela parada antes de a folha
+   aparecer.
+4. **Encerrar anuncia sucesso sem olhar a resposta.** `stopConnection` (Game.java:4888-4894)
+   chama `httpConn.quitApp()`, descarta o boolean e mostra a torrada de sucesso. O outro
+   caminho de encerrar, `ServerHelper.doQuit:206-210`, ramifica certo e usa
+   `applist_quit_fail_named` quando vem false — os dois discordam entre si. A pessoa sai
+   confiante, o jogo continua rodando no PC segurando o display virtual, e ela descobre
+   depois. No `catch` de :4895, um `IOException` sem mensagem imprime a palavra "null" na
+   tela; `ServerHelper.java:247` já tem a guarda certa.
+
+**Plano de implementação**
+
+1. **Ação opcional no diálogo.** Uma sobrecarga de `Dialog.displayDialog` que aceite rótulo
+   + `Runnable`, ligada ao `BUTTON_NEGATIVE` livre. Em `stageFailed` e em
+   `connectionTerminated`, a ação é "Tentar de novo". **Não** oferecer retentativa em
+   `ML_ERROR_GRACEFUL_TERMINATION`, que é saída pedida. Cuidar para o retry não reentrar com
+   `displayedFailureDialog` já em true.
+   O `Game` é `noHistory` + `singleTask` + `excludeFromRecents`
+   (AndroidManifest.xml:194-204), então relançar de dentro dele pode chegar como
+   `onNewIntent` em vez de um `onCreate` limpo — **medir isso primeiro**, num aparelho, com o
+   host desligado no meio da stream. Se chegar como `onNewIntent`, a saída segura é sinalizar
+   a retentativa como resultado e deixar quem lançou relançar
+   (`ServerHelper.createStartIntent:106-138` já carrega tudo, inclusive o certificado).
+2. **O motivo entra na folha.** Guardar a última mensagem de `Game.displayMessage` (:5185)
+   num campo e anexá-la ao `dialogText` em :4937 quando existir. Extrair as 14 frases do
+   `NvConnection` para `values/strings.xml` (e a tradução em `values-pt-rBR`, que este fork
+   mantém) e chamar por resource. Tapar os `e.getMessage()` crus que podem ser null:
+   NvConnection.java:413, :420, :450; Game.java:4895; ServerHelper.java:294.
+3. **Pular o teste de portas em endereço privado.** O campo `host` de Game.java já basta
+   para decidir. Manter o teste quando o endereço não for privado, que é onde ele responde
+   algo útil. Medir o tempo até a folha aparecer antes e depois.
+4. **Encerrar com honestidade.** Ramificar em `quitApp()` como `ServerHelper.doQuit` faz, ou
+   melhor: apontar este caminho para `ServerHelper.doQuit` e ficar com uma implementação só.
+   Detalhe de ciclo de vida: o bloco roda em `onStop` com a Activity já encerrando, então a
+   torrada pode não chegar a aparecer — se a validação em aparelho mostrar que não aparece, a
+   falha precisa se manifestar no catálogo, que volta ao primeiro plano em seguida e continua
+   sondando o host.
+
+**Risco**
+
+O item 1 é o único com risco de verdade, e é risco de ciclo de vida, não de lógica — daí a
+medição vir antes do código. O item 2 tem um cuidado de tamanho: a folha não pode crescer a
+ponto de ser cortada; medir o texto final no pior caso (falha de porta + motivo longo do
+host) num aparelho. O item 3 muda o texto da folha em cenário remoto — por isso o teste
+continua quando o endereço não é privado.
+
+---
+

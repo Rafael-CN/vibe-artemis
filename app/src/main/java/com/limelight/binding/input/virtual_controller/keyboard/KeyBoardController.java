@@ -4,6 +4,7 @@
 
 package com.limelight.binding.input.virtual_controller.keyboard;
 
+import com.limelight.ui.VidroToast;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -95,7 +96,7 @@ public class KeyBoardController {
         buttonConfigure.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(context, context.getString(R.string.keyboard_configure_movable), Toast.LENGTH_SHORT).show();
+                VidroToast.show(context, context.getString(R.string.keyboard_configure_movable), Toast.LENGTH_SHORT);
                 buttonConfigure.setTag("movable");
                 vibrator.vibrate(100); // Give haptic feedback
                 return true;
@@ -178,7 +179,7 @@ public class KeyBoardController {
                     message = context.getString(R.string.configuration_mode_exiting);
                 }
 
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                VidroToast.show(context, message, Toast.LENGTH_SHORT);
 
                 buttonConfigure.invalidate();
 
@@ -195,7 +196,7 @@ public class KeyBoardController {
         buttonClearAll.setAlpha(0.7f);
         buttonClearAll.setVisibility(View.GONE);
         buttonClearAll.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.VidroDialogPlatform);
             builder.setTitle(context.getString(R.string.keyboard_clear_all_confirm_title));
             builder.setMessage(context.getString(R.string.keyboard_clear_all_confirm_message));
             builder.setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
@@ -228,6 +229,20 @@ public class KeyBoardController {
     }
 
     public void hide(boolean temporary) {
+        // Sumir com o teclado não solta nada por si só: a tecla fixada por toque longo, ou
+        // a de trava, continua descida no host depois que o botão vira GONE — e a causa
+        // acabou de sair de cena, então o PC fica "estranho" sem nada na tela explicando.
+        // Mesmo remédio de releaseHeldModifiers() em Game.onWindowFocusChanged, noutra
+        // superfície. O ocultamento temporário (PiP) é a exceção: ali o estado do overlay
+        // é preservado para ser restaurado depois, e soltar a tecla seria perdê-lo.
+        if (!temporary) {
+            for (keyBoardVirtualControllerElement element : elements) {
+                if (element instanceof KeyBoardDigitalButton) {
+                    ((KeyBoardDigitalButton) element).releaseIfSticky();
+                }
+            }
+        }
+
         for (keyBoardVirtualControllerElement element : elements) {
             element.setVisibility(View.GONE);
         }
@@ -495,14 +510,14 @@ public class KeyBoardController {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(context, "Error loading custom keys: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    VidroToast.show(context, "Error loading custom keys: " + e.getMessage(), Toast.LENGTH_SHORT);
                 }
             }
 
             String[] keyNames = keyNamesList.toArray(new String[0]);
             boolean[] checkedItems = new boolean[keyNames.length];
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.VidroDialogPlatform);
             builder.setTitle(context.getString(R.string.keyboard_select_keys));
             builder.setMultiChoiceItems(keyNames, checkedItems, (dialog, which, isChecked) -> {
                 checkedItems[which] = isChecked;
@@ -686,7 +701,7 @@ public class KeyBoardController {
                 }
 
                 if (feedback.length() > 0) {
-                    Toast.makeText(context, feedback.toString(), Toast.LENGTH_LONG).show();
+                    VidroToast.show(context, feedback.toString(), Toast.LENGTH_LONG);
                 }
             });
 
@@ -696,7 +711,7 @@ public class KeyBoardController {
         } catch (Exception e) {
             LimeLog.warning("Error loading keyboard configuration: " + e.getMessage());
             e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.keyboard_load_error, e.getMessage()), Toast.LENGTH_SHORT).show();
+            VidroToast.show(context, context.getString(R.string.keyboard_load_error, e.getMessage()), Toast.LENGTH_SHORT);
         }
     }
 

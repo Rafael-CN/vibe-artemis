@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Voltar. Traço de 2 dp com ponta arredondada, não o glifo cheio do Material: a
+    identidade desenha por linha, e o ic_close daqui do lado é o único ícone da casa que
+    ainda vem preenchido.
+
+    A cor mora no desenho porque ele só serve ao cabeçalho de Ajustes; tingir no XML da
+    view exigiria AppCompatImageView para valer abaixo de API 21 do jeito certo.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:pathData="M19,12 L5,12 M11,6 L5,12 L11,18"
+        android:strokeColor="@color/vidro_text"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+</vector>

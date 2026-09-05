@@ -1146,7 +1146,7 @@ public class MediaCodecDecoderRenderer extends VideoDecoderRenderer implements C
     }
 
     private void startChoreographerThread() {
-        if (prefs.framePacing != PreferenceConfiguration.FRAME_PACING_BALANCED) {
+        if (!FramePacingRoute.usesChoreographer(prefs.framePacing)) {
             // Not using Choreographer in this pacing mode
             return;
         }
@@ -1192,7 +1192,10 @@ public class MediaCodecDecoderRenderer extends VideoDecoderRenderer implements C
 
                 // Adaptive period selection to avoid added latency on high-refresh devices
                 final boolean highRefresh = displayHz >= 90f;
-                final boolean managedMode = (prefs != null && prefs.framePacing == PreferenceConfiguration.FRAME_PACING_BALANCED);
+                // O modo de ritmo escolhido pelo usuário decide qual caminho de saída esta thread
+                // usa, e é lido uma vez só: trocar de ritmo no meio da sessão exige recriar o
+                // decoder de qualquer forma.
+                final int pacingMode = (prefs != null ? prefs.framePacing : PreferenceConfiguration.FRAME_PACING_BALANCED);
                 // Use stream-aligned thresholds only on lower-refresh screens while in Balanced.
                 final long periodNs = (preferLowerDelays ? vsyncPeriodNs : Math.max(vsyncPeriodNs, streamPeriodNs));
                 boolean isC2Decoder = false;
@@ -1220,47 +1223,77 @@ public class MediaCodecDecoderRenderer extends VideoDecoderRenderer implements C
                 double ewmaJitterNs            = periodNs * 0.1;
 
                 BufferInfo info = new BufferInfo();
+                // Reaproveitado a cada volta do caminho latest-only. Alocar um BufferInfo por
+                // iteração numa thread URGENT_DISPLAY só rende trabalho de GC no pior momento.
+                BufferInfo latestOnlyInfo = new BufferInfo();
                 long lastOutputNs = System.nanoTime();
                 while (!stopping) {
-                    /* LATEST_ONLY_LOW_LATENCY */
-                    if (!preferLowerDelays) {
-                        try {
-                            android.media.MediaCodec.BufferInfo __tmpInfo = new android.media.MediaCodec.BufferInfo();
-                            int __idx = videoDecoder.dequeueOutputBuffer(__tmpInfo, 0);
-                            int __last = -1;
-                            long __lastPtsUs = -1L;
+                    // O try cobre a iteração inteira, inclusive o caminho latest-only. É o que
+                    // garante que o finally com doCodecRecoveryIfRequired() rode mesmo quando o
+                    // latest-only resolve o quadro e dá continue — antes ele saía por fora do
+                    // finally e esta thread nunca sinalizava CR_FLAG_RENDER_THREAD, deixando a
+                    // thread de input presa em 'Waiting to quiesce decoder threads'.
+                    try {
+                        /* LATEST_ONLY_LOW_LATENCY */
+                        // Um caminho de saída por modo de ritmo. Só latência mínima drena tudo e
+                        // apresenta o quadro mais novo na hora; Equilibrado depende do
+                        // Choreographer e Suavidade/Limitar FPS dependem do controle de descarte
+                        // mais abaixo, então nenhum dos três pode passar por aqui. O gate antigo
+                        // era preferLowerDelays, que não tem relação com ritmo de quadros e
+                        // roubava os quadros justamente dos modos que pedem suavidade.
+                        if (FramePacingRoute.usesLatestOnly(pacingMode)) {
+                            int latestIndex = -1;
+                            long latestPtsUs = -1L;
 
                             // Drain non-blocking; keep only the newest buffer
-                            while (__idx >= 0) {
-                                if (__last >= 0) {
-                                    try { videoDecoder.releaseOutputBuffer(__last, false); } catch (Throwable ignored) {}
+                            for (;;) {
+                                int nextIndex = videoDecoder.dequeueOutputBuffer(latestOnlyInfo, 0);
+                                if (nextIndex >= 0) {
+                                    numFramesOut++;
+                                    if (latestIndex >= 0) {
+                                        // Já veio um mais novo atrás dele: solta sem exibir
+                                        videoDecoder.releaseOutputBuffer(latestIndex, false);
+                                    }
+                                    latestIndex = nextIndex;
+                                    latestPtsUs = latestOnlyInfo.presentationTimeUs;
                                 }
-                                __last = __idx;
-                                __lastPtsUs = __tmpInfo.presentationTimeUs;
-                                __idx = videoDecoder.dequeueOutputBuffer(__tmpInfo, 0);
+                                else if (nextIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                                    // O evento é entregue uma única vez. Descartá-lo aqui deixava
+                                    // outputFormat null e fazia a RendererException reportar
+                                    // 'PreOutputConfigError' em sessões que estavam decodificando.
+                                    LimeLog.info("Output format changed");
+                                    outputFormat = videoDecoder.getOutputFormat();
+                                    LimeLog.info("New output format: " + outputFormat);
+                                }
+                                else {
+                                    // INFO_TRY_AGAIN_LATER e qualquer outro retorno negativo
+                                    break;
+                                }
                             }
 
-                            if (__last >= 0) {
-                                long __nowNs = System.nanoTime();
-                                if (android.os.Build.VERSION.SDK_INT >= 21) {
-                                    releaseWithPolicy(__last, System.nanoTime());} else {
-                                    releaseWithPolicy(__last, System.nanoTime());}
+                            if (latestIndex >= 0) {
+                                long nowNs = System.nanoTime();
+                                releaseWithPolicy(latestIndex, nowNs);
+
+                                // Sem isto o quadro é exibido mas não aparece no 'Rendering FPS'
+                                // do overlay, e a heurística de RendererException enxerga o
+                                // decoder parado.
+                                activeWindowVideoStats.totalFramesRendered++;
 
                                 // Update decode->present EWMA and decode stats if we have a valid PTS
-                                if (__lastPtsUs >= 0) {
-                                    long __d2pNs = __nowNs - (__lastPtsUs * 1000L);
-                                    ewmaDecodeToPresentNs += EWMA_ALPHA * (__d2pNs - ewmaDecodeToPresentNs);
-                                    try { updateDecodeLatencyStats(__lastPtsUs); } catch (Throwable ignored) {}
+                                if (latestPtsUs >= 0) {
+                                    long decodeToPresentNs = nowNs - (latestPtsUs * 1000L);
+                                    ewmaDecodeToPresentNs += EWMA_ALPHA * (decodeToPresentNs - ewmaDecodeToPresentNs);
+                                    try { updateDecodeLatencyStats(latestPtsUs); } catch (Throwable ignored) {}
                                 }
 
-                                continue; // handled this iteration
+                                // O continue passa pelo finally, então a recuperação de codec
+                                // desta iteração continua sendo sinalizada.
+                                continue;
                             }
-                        } catch (Throwable ignored) {}
-                    }
-                    /* /LATEST_ONLY_LOW_LATENCY */
+                        }
+                        /* /LATEST_ONLY_LOW_LATENCY */
 
-
-                    try {
                         // Try to output a frame
                         int outIndex = videoDecoder.dequeueOutputBuffer(info, getOutputDequeueTimeoutUs());
 
@@ -1294,9 +1327,15 @@ public class MediaCodecDecoderRenderer extends VideoDecoderRenderer implements C
                             lastDecoderPtsUs = presentationTimeUs;
 
                             // Render the latest frame now if frame pacing isn't in balanced mode
-                            if (prefs.framePacing != PreferenceConfiguration.FRAME_PACING_BALANCED) {
+                            if (!FramePacingRoute.usesChoreographer(pacingMode)) {
                                 // Get the last output buffer in the queue
-                                while ((outIndex = videoDecoder.dequeueOutputBuffer(info, getOutputDequeueTimeoutUs())) >= 0) {
+                                //
+                                // Timeout 0: aqui já existe um quadro na mão e só queremos saber
+                                // se veio outro atrás dele. Esperar o prazo do dequeue (2 ms no
+                                // padrão) a 60 fps é aguardar por algo que só chega em 16,7 ms —
+                                // latência pura somada a cada quadro. O prazo faz sentido apenas
+                                // no dequeue externo, que espera um quadro passar a existir.
+                                while ((outIndex = videoDecoder.dequeueOutputBuffer(info, 0)) >= 0) {
                                     videoDecoder.releaseOutputBuffer(lastIndex, false);
                                     frameDropped = true; // we're discarding the oldest one
 
@@ -1305,8 +1344,7 @@ public class MediaCodecDecoderRenderer extends VideoDecoderRenderer implements C
                                     presentationTimeUs = info.presentationTimeUs;
                                 }
 
-                                if (prefs.framePacing == PreferenceConfiguration.FRAME_PACING_MAX_SMOOTHNESS ||
-                                        prefs.framePacing == PreferenceConfiguration.FRAME_PACING_CAP_FPS) {
+                                if (FramePacingRoute.neverDropsLateFrames(pacingMode)) {
                                     // In max smoothness or cap FPS mode, we want to never drop frames
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                         final long nowNs = System.nanoTime();

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Só o tablet deitado. Em pé a coluna de cenas continua com 720dp de leitura e uma fila
+    única, que é onde ela lê melhor.
+-->
+<resources>
+    <!--
+        Duas, e não três: a coluna dos cards tem ~1300dp e cada card carrega nome,
+        descrição e três alvos. Em três colunas o nome da cena volta a caber em ~13
+        caracteres antes das reticências, que é o defeito que row_profile.xml já
+        documenta.
+    -->
+    <integer name="vidro_scenes_columns">2</integer>
+</resources>

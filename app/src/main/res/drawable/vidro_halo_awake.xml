@@ -8,6 +8,6 @@
         android:type="radial"
         android:gradientRadius="50%p"
         android:startColor="@color/vidro_halo_awake"
-        android:centerColor="#3D1E8FEE"
-        android:endColor="#001E8FEE" />
+        android:centerColor="#3DB78003"
+        android:endColor="#00B78003" />
 </shape>

@@ -7,32 +7,54 @@
     sessão é 852×393 paisagem, e uma folha subindo do rodapé come justamente a dimensão
     curta — sobraria uma faixa. Na lateral ela cabe inteira sem encostar no vídeo útil.
 
-    O stream NÃO desmonta e o aparelho não volta para retrato: isto é uma View por cima,
-    não uma Activity nova.
+    O stream NÃO desmonta e o aparelho não volta para retrato: isto é uma View, não uma
+    Activity nova. E desde a gaveta ela não é mais uma View por CIMA: ela fica ATRÁS do
+    vídeo, e é o vídeo que anda para o lado para descobri-la. Ver GavetaDaSessao.
+
+    Ela cresceu porque absorveu o ESTADO que vivia no menu de sessão. Lá tudo era linha de
+    lista — "Toggle On-screen controller", "Enable Pan/Zoom", "Select Mouse mode" —, e uma
+    linha de lista só sabe dizer que dá para tocar, nunca em que pé a coisa está: para
+    saber se o teclado na tela estava ligado era preciso ligar e olhar. Aqui cada um vira o
+    controle que sempre foi, com a mesma gramática das seções que já existiam: chip onde há
+    escolha única, interruptor onde há liga-desliga, versalete separando os grupos.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
-        android:id="@+id/vidroSheetScrim"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/vidro_scrim"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        tools:visibility="visible">
+    <!--
+        O VÉU MORREU, e com ele o pior defeito desta tela.
 
+        Para trocar o modo do mouse a pessoa parava de ver o desktop para o qual estava
+        trocando: o véu de tela cheia escurecia justamente a coisa que o controle afeta. Um
+        painel atrás do vídeo não tem esse problema — o vídeo continua aceso, inteiro, ao lado.
+
+        A dispensa que o véu fazia (tocar fora fecha) não se perdeu: com a gaveta aberta, um
+        toque em qualquer lugar do vídeo fecha, e é a GavetaDaSessao que trata isso.
+    -->
+
+        <!--
+            A borda esmaecida é o que diz que a lista continua.
+
+            Em paisagem a última seção — MODO DO MOUSE — ficava cortada no meio: os chips
+            apareciam com 21 dp dos 49 que têm, sem barra de rolagem, sem sombra e sem
+            gradiente, e ainda sobrava painel vazio abaixo do corte. Lia como componente
+            quebrado, não como conteúdo que segue para baixo. É o mesmo recurso que a
+            fileira da ilha já usa na horizontal, pelo mesmo motivo.
+        -->
         <ScrollView
             android:id="@+id/vidroSheet"
             android:layout_width="@dimen/vidro_sheet_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            tools:visibility="visible"
             android:background="@drawable/vidro_sheet_bg"
+            android:fadingEdgeLength="@dimen/vidro_space_6"
             android:paddingLeft="@dimen/vidro_space_4"
             android:paddingTop="@dimen/vidro_space_4"
             android:paddingRight="@dimen/vidro_space_4"
             android:paddingBottom="@dimen/vidro_space_4"
+            android:descendantFocusability="blocksDescendants"
+            android:requiresFadingEdge="vertical"
             android:scrollbars="none">
 
             <LinearLayout
@@ -44,32 +66,59 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <!--
+                        O NOME DO APP, que era a única coisa da ilha sem substituto.
+
+                        A ilha o mostrava porque ela morava sobre o vídeo e precisava dizer de
+                        que sessão estava falando. A gaveta herda o papel: quem a abre está
+                        olhando para o painel, não para o jogo, e o nome é o que ancora as
+                        escolhas abaixo dele numa máquina concreta.
+
+                        Cai para @string/vidro_sheet_title enquanto o nome não chegou — ele vem
+                        do host e pode demorar um instante.
+                    -->
                     <TextView
+                        android:id="@+id/vidroSheetApp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:ellipsize="end"
                         android:fontFamily="@font/manrope_extrabold"
                         android:includeFontPadding="false"
                         android:letterSpacing="-0.03"
+                        android:maxLines="1"
                         android:text="@string/vidro_sheet_title"
                         android:textColor="@color/vidro_text"
                         android:textSize="18sp" />
 
+                    <!--
+                        VidroText.Action, e não Support pintado de azul: esta é a mesma peça
+                        de "Adicionar" e "Recarregar" no resto do app, e ação inline já tem
+                        estilo próprio aqui.
+
+                        O piso de largura é o que faltava. A única pista de alvo era a tinta
+                        da palavra — ~39 dp de largura por 10 dp de altura de glifo —, e sair
+                        da folha é a única saída visível dela. O respiro entra à ESQUERDA do
+                        rótulo (paddingStart) porque a borda direita é a coluna do conteúdo:
+                        crescer para lá tiraria o rótulo do alinhamento com tudo o que está
+                        abaixo dele.
+                    -->
                     <TextView
                         android:id="@+id/vidroSheetClose"
-                        style="@style/VidroText.Support"
+                        style="@style/VidroText.Action"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|end"
                         android:minHeight="@dimen/vidro_touch_target"
-                        android:text="@string/vidro_close"
-                        android:textColor="@color/vidro_accent_text" />
+                        android:minWidth="@dimen/vidro_touch_target"
+                        android:paddingLeft="@dimen/vidro_space_4"
+                        android:paddingStart="@dimen/vidro_space_4"
+                        android:text="@string/vidro_close" />
                 </RelativeLayout>
 
                 <TextView
@@ -79,61 +128,19 @@
                     android:layout_marginTop="@dimen/vidro_space_1"
                     android:text="@string/vidro_sheet_sub" />
 
-                <!-- ===== taxa de bits ===== -->
-
-                <TextView
-                    style="@style/VidroText.Overline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vidro_space_5"
-                    android:text="@string/vidro_bitrate" />
-
                 <!--
-                    A taxa de bits é a única coisa desta folha que NÃO vale agora: ela
-                    entra na StreamConfiguration ao conectar e não há como trocá-la com a
-                    sessão de pé. Dizer isso custa uma linha; deixar a pessoa mexer e não
-                    ver nada mudar custa a confiança na folha inteira.
+                    A taxa de bits SAIU daqui, e o topo da folha volta a ser verdade.
+
+                    Ela era o primeiro bloco, e o único que não podia cumprir o que a linha
+                    acima promete: a taxa entra na StreamConfiguration ao conectar e não
+                    existe API que a troque com a sessão de pé — nem em MoonBridge, nem no
+                    moonlight-common. Quem mexia nos chips esperava a imagem melhorar na
+                    hora e não acontecia nada; a linha de desculpa embaixo ("vale para a
+                    próxima sessão") contradizia a folha na primeira dobra.
+
+                    A taxa continua onde manda efeito: em Ajustes, antes de conectar. Se um
+                    dia a folha souber reconectar, o bloco volta — aí sem desculpa.
                 -->
-                <TextView
-                    style="@style/VidroText.Support"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="@string/vidro_next_session"
-                    android:textSize="12sp" />
-
-                <LinearLayout
-                    android:id="@+id/vidroBitrateGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vidro_space_2"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/vidroBitrate20"
-                        style="@style/VidroChip"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="20 Mbps" />
-
-                    <TextView
-                        android:id="@+id/vidroBitrate40"
-                        style="@style/VidroChip"
-                        android:layout_width="0dp"
-                        android:layout_marginStart="@dimen/vidro_space_2"
-                        android:layout_marginLeft="@dimen/vidro_space_2"
-                        android:layout_weight="1"
-                        android:text="40 Mbps" />
-
-                    <TextView
-                        android:id="@+id/vidroBitrate60"
-                        style="@style/VidroChip"
-                        android:layout_width="0dp"
-                        android:layout_marginStart="@dimen/vidro_space_2"
-                        android:layout_marginLeft="@dimen/vidro_space_2"
-                        android:layout_weight="1"
-                        android:text="60 Mbps" />
-                </LinearLayout>
 
                 <!-- ===== ritmo de quadros ===== -->
 
@@ -178,57 +185,191 @@
 
                 <!-- ===== modo do mouse ===== -->
 
+                <!--
+                    Três modos, e não dois.
+
+                    "Selecionar modo do mouse" abria uma lista de seis rótulos dentro de um
+                    diálogo que já era um diálogo. Os três que sobram aqui são os que valem
+                    com o dedo na tela — os outros três são variações de botão trocado e o
+                    "desativado", que é uma preferência de quem sempre usa mouse físico e
+                    mora em Ajustes, não no meio de uma sessão.
+
+                    O rótulo da seção anda junto dos chips num grupo próprio porque a
+                    sessão de Remote Input trava o modo do mouse: lá a seção inteira sai da
+                    folha, e um versalete sem nada embaixo lia como conteúdo que não
+                    carregou.
+                -->
+                <LinearLayout
+                    android:id="@+id/vidroMouseModeGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/VidroText.Overline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/vidro_space_5"
+                        android:text="@string/vidro_mouse_mode" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/vidro_space_2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/vidroMouseMultitouch"
+                            style="@style/VidroChip"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/vidro_mouse_multitouch" />
+
+                        <TextView
+                            android:id="@+id/vidroMouseAbsolute"
+                            style="@style/VidroChip"
+                            android:layout_width="0dp"
+                            android:layout_marginStart="@dimen/vidro_space_2"
+                            android:layout_marginLeft="@dimen/vidro_space_2"
+                            android:layout_weight="1"
+                            android:text="@string/vidro_mouse_absolute" />
+
+                        <TextView
+                            android:id="@+id/vidroMouseTrackpad"
+                            style="@style/VidroChip"
+                            android:layout_width="0dp"
+                            android:layout_marginStart="@dimen/vidro_space_2"
+                            android:layout_marginLeft="@dimen/vidro_space_2"
+                            android:layout_weight="1"
+                            android:text="@string/vidro_mouse_trackpad" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--
+                    Ampliar e mover fica AQUI, colado nos modos, porque trocar de modo
+                    desliga o zoom — está escrito em applyMouseMode e sempre foi assim.
+                    Duas coisas que se derrubam vivendo em seções diferentes fariam o
+                    interruptor apagar sozinho sem nada por perto que explicasse.
+                -->
+                <RelativeLayout
+                    android:id="@+id/vidroZoomRow"
+                    style="@style/VidroSheetSwitchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vidro_space_2">
+
+                    <Switch
+                        android:id="@+id/vidroZoomSwitch"
+                        style="@style/VidroSheetSwitchToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/vidro_space_3"
+                        android:layout_marginRight="@dimen/vidro_space_3"
+                        android:layout_toStartOf="@id/vidroZoomSwitch"
+                        android:layout_toLeftOf="@id/vidroZoomSwitch"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/VidroSheetSwitchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_zoom_mode" />
+
+                        <TextView
+                            style="@style/VidroSheetSwitchSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_zoom_mode_sub" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vidroLocalCursorRow"
+                    style="@style/VidroSheetSwitchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:id="@+id/vidroLocalCursorSwitch"
+                        style="@style/VidroSheetSwitchToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/vidro_space_3"
+                        android:layout_marginRight="@dimen/vidro_space_3"
+                        android:layout_toStartOf="@id/vidroLocalCursorSwitch"
+                        android:layout_toLeftOf="@id/vidroLocalCursorSwitch"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/VidroSheetSwitchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_local_cursor" />
+
+                        <TextView
+                            style="@style/VidroSheetSwitchSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_local_cursor_sub" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!-- ===== na tela ===== -->
+
+                <!--
+                    Esta seção também ganha overline.
+
+                    Sem ele o interruptor era o único bloco da folha sem cabeçalho, e o
+                    próprio título dele — em caixa alta-e-baixa, com peso maior — fazia as
+                    vezes de seção no meio de três versaletes. Duas gramáticas de linha na
+                    mesma lista: quem lê não conseguia prever o que é seção e o que é
+                    preferência. Com o overline aqui, as quatro seções leem igual e o
+                    rótulo da linha volta a ser só "Números".
+                -->
                 <TextView
                     style="@style/VidroText.Overline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vidro_space_5"
-                    android:text="@string/vidro_mouse_mode" />
+                    android:text="@string/vidro_sheet_on_screen" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vidro_space_2"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/vidroMouseMultitouch"
-                        style="@style/VidroChip"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="@string/vidro_mouse_multitouch" />
-
-                    <TextView
-                        android:id="@+id/vidroMouseTrackpad"
-                        style="@style/VidroChip"
-                        android:layout_width="0dp"
-                        android:layout_marginStart="@dimen/vidro_space_2"
-                        android:layout_marginLeft="@dimen/vidro_space_2"
-                        android:layout_weight="1"
-                        android:text="@string/vidro_mouse_trackpad" />
-                </LinearLayout>
-
-                <!-- ===== números na tela ===== -->
-
+                <!--
+                    As três camadas que o menu avançado escondia — controle, teclado
+                    completo e teclas especiais — passam a morar ao lado dos Números, que
+                    é a quarta coisa desenhada sobre o vídeo. Todas eram "Toggle X" numa
+                    lista que não sabia dizer se X estava ligado; aqui o interruptor diz.
+                -->
                 <RelativeLayout
                     android:id="@+id/vidroNumbersRow"
+                    style="@style/VidroSheetSwitchRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vidro_space_5"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:minHeight="52dp">
+                    android:layout_marginTop="@dimen/vidro_space_2">
 
                     <Switch
                         android:id="@+id/vidroNumbersSwitch"
+                        style="@style/VidroSheetSwitchToggle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:thumbTint="@color/vidro_text"
-                        android:trackTint="@color/vidro_accent_glow" />
+                        android:layout_centerVertical="true" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -241,24 +382,235 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/VidroText"
+                            style="@style/VidroSheetSwitchLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/manrope_semibold"
-                            android:letterSpacing="-0.015"
-                            android:text="@string/vidro_numbers_on_screen"
-                            android:textSize="14sp" />
+                            android:text="@string/vidro_numbers_on_screen" />
 
                         <TextView
-                            style="@style/VidroText.Support"
+                            style="@style/VidroSheetSwitchSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/vidro_numbers_sub"
-                            android:textSize="12sp" />
+                            android:text="@string/vidro_numbers_sub" />
                     </LinearLayout>
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vidroControllerRow"
+                    style="@style/VidroSheetSwitchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:id="@+id/vidroControllerSwitch"
+                        style="@style/VidroSheetSwitchToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/vidro_space_3"
+                        android:layout_marginRight="@dimen/vidro_space_3"
+                        android:layout_toStartOf="@id/vidroControllerSwitch"
+                        android:layout_toLeftOf="@id/vidroControllerSwitch"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/VidroSheetSwitchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_controller" />
+
+                        <TextView
+                            style="@style/VidroSheetSwitchSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_controller_sub" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vidroFullKeyboardRow"
+                    style="@style/VidroSheetSwitchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:id="@+id/vidroFullKeyboardSwitch"
+                        style="@style/VidroSheetSwitchToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/vidro_space_3"
+                        android:layout_marginRight="@dimen/vidro_space_3"
+                        android:layout_toStartOf="@id/vidroFullKeyboardSwitch"
+                        android:layout_toLeftOf="@id/vidroFullKeyboardSwitch"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/VidroSheetSwitchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_keyboard" />
+
+                        <TextView
+                            style="@style/VidroSheetSwitchSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_keyboard_sub" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vidroSpecialKeysRow"
+                    style="@style/VidroSheetSwitchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:id="@+id/vidroSpecialKeysSwitch"
+                        style="@style/VidroSheetSwitchToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/vidro_space_3"
+                        android:layout_marginRight="@dimen/vidro_space_3"
+                        android:layout_toStartOf="@id/vidroSpecialKeysSwitch"
+                        android:layout_toLeftOf="@id/vidroSpecialKeysSwitch"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/VidroSheetSwitchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_special_keys" />
+
+                        <TextView
+                            style="@style/VidroSheetSwitchSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vidro_onscreen_special_keys_sub" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!--
+                    AS AÇÕES, e é aqui que a ilha termina de ser absorvida.
+
+                    Ela tinha três blocos e um botão: Teclado, Ajustar, Ações e "Sair da tela".
+                    "Ajustar" abria esta própria folha — deixou de existir por ser a porta para
+                    o cômodo em que já se está. Os outros três são ações de verdade e viraram
+                    linhas, na mesma gramática do resto do painel.
+
+                    A ordem é a da consequência: o que se faz muitas vezes em cima, o que se
+                    faz uma vez e acaba com a sessão embaixo, atrás de um respiro maior. É a
+                    mesma regra da FolhaVidro da casca — a distância é o que protege, não um
+                    diálogo de confirmação.
+                -->
+                <TextView
+                    style="@style/VidroText.Overline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vidro_space_5"
+                    android:text="@string/vidro_sheet_actions" />
+
+                <TextView
+                    android:id="@+id/vidroSheetCompose"
+                    style="@style/VidroSheetSwitchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vidro_space_3"
+                    android:background="@drawable/vidro_ripple"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:text="@string/vidro_keyboard" />
+
+                <!--
+                    As duas que só o menu legado tinha.
+
+                    "Ações desta sessão" era um AlertDialog em lista, e ele foi a ÚNICA
+                    superfície de controle que a gravação de 26/08 mostrou — a gaveta não
+                    tinha afordância e o dono nunca a encontrou. Consertada a afordância, ter
+                    as duas superfícies seria manter duas linguagens para o mesmo trabalho.
+                    Então estas duas vêm para cá e o menu deixa de ser convocado.
+                -->
+                <TextView
+                    android:id="@+id/vidroSheetGirar"
+                    style="@style/VidroSheetSwitchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/vidro_ripple"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:text="@string/game_menu_rotate_screen" />
+
+                <TextView
+                    android:id="@+id/vidroSheetTeclasEspeciais"
+                    style="@style/VidroSheetSwitchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/vidro_ripple"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:text="@string/game_menu_send_keys" />
+
+                <!--
+                    A saida SEGURA, e ela e diferente da destrutiva logo abaixo.
+                    Escolher outra coisa nao encerra o que esta rodando: a casca vem por cima
+                    do video, que continua vivo atras dela por dois minutos. E o mesmo que o
+                    gesto de empurrar a imagem para baixo faz.
+                -->
+                <TextView
+                    android:id="@+id/vidroSheetTrocar"
+                    style="@style/VidroSheetSwitchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/vidro_ripple"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:text="@string/vidro_choose_other" />
+
+                <TextView
+                    style="@style/VidroSheetSwitchSub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vidro_choose_other_hint" />
+
+                <TextView
+                    android:id="@+id/vidroSheetLeave"
+                    style="@style/VidroSheetSwitchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vidro_space_5"
+                    android:background="@drawable/vidro_ripple"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/vidro_touch_target"
+                    android:text="@string/vidro_leave_screen" />
+
+                <TextView
+                    style="@style/VidroSheetSwitchSub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vidro_leave_screen_hint" />
             </LinearLayout>
         </ScrollView>
-    </FrameLayout>
 
 </merge>

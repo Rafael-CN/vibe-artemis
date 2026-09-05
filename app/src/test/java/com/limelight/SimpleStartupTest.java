@@ -56,10 +56,13 @@ public class SimpleStartupTest {
         // Test application onCreate which initializes ProfilesManager
         // After the fix, this should no longer crash
         try {
-            ArtemisApplication app = new ArtemisApplication();
-            app.onCreate();
+            // O Robolectric já instanciou o ArtemisApplication e já chamou onCreate()
+            // antes deste método rodar. Construir um segundo a mão dava um Application
+            // sem base context, e onCreate() estourava em getResources() — falha do
+            // teste, não do app.
+            ArtemisApplication app = (ArtemisApplication) ApplicationProvider.getApplicationContext();
+            assertNotNull("ArtemisApplication should be the app under test", app);
 
-            // Should now work without crashing
             ProfilesManager manager = ProfilesManager.getInstance();
             assertNotNull("ProfilesManager should be initialized", manager);
             assertNotNull("Profiles list should be initialized", manager.getProfiles());

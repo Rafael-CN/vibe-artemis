@@ -14,6 +14,11 @@ análise estão marcadas — são as de maior confiança.
 | **Q** | Ganho rápido | [planos/QUICK-WINS.md](planos/QUICK-WINS.md) |
 | **B** | Bug confirmado | [planos/BUGS.md](planos/BUGS.md) |
 
+> **Produto tem catálogo próprio.** O que o usuário vê, toca e sente — interface,
+> experiência, funcionalidade, fluxo — mora em
+> [CATALOGO-PRODUTO.md](CATALOGO-PRODUTO.md) (prefixos **P** e **PE**). Este arquivo aqui é
+> o lado de dentro. Os dois se citam quando um item depende do outro.
+
 ## Em andamento
 
 | Código | Proposta | Estado |
@@ -21,14 +26,55 @@ análise estão marcadas — são as de maior confiança.
 | [**E01**](epics/E01-teclado-anydesk.md) | Teclado no padrão AnyDesk | implementado, pendente de validação em dispositivo |
 | **D01** | Identidade visual Vidro aplicada ao app | tokens, tema, home, catálogo e overlays em sessão prontos; falta embutir a face tipográfica |
 | [**B65**](planos/BUGS.md#b65) | Trackpad físico no padrão nativo | corrigido atrás de preferência, pendente de validação no S8 Ultra |
+| [**Q33**](planos/QUICK-WINS.md#q33) | Um toque retoma o que já está rodando | implementado (home, catálogo, faixa e cartão de celular); falta conferir no Vibeshine se o `virtualDisplay` do retomar muda algo no host |
+| [**B20**](planos/BUGS.md#b20) + [**B21**](planos/BUGS.md#b21) | Um caminho de saída por modo de ritmo de quadros | corrigido: latest-only agora é só de Latência mínima, a recuperação de codec cobre a iteração inteira e o overlay volta a contar os quadros. Tabela de roteamento presa em `FramePacingRouteTest`. **Pendente de medição em aparelho** — comparar Equilibrado × Latência mínima a 60 e 120 Hz nos dois aparelhos |
+| [**M98**](planos/MELHORIAS.md#m98) | A barra de composição vira ilha de foco | implementado: `Game.dispatchKeyEvent` para o teclado na barra visível (gamepad segue passando), Esc/Back fecham, Enter físico envia e emite VK_RETURN no fim do dreno, "Enviar" apagado enquanto o pump não esvazia e o aviso migrou para o mesmo gancho, Ctrl+Alt+Shift+**T** abre. Fim de dreno preso em `TextInputPumpTest`. **Pendente de validação no S8 Ultra com a capa** — Esc, Tab, F5, o acorde, e um texto de ~2 mil caracteres |
+| [**Q34**](planos/QUICK-WINS.md#q34) | Três dedos abrem a barra de composição quando há teclado físico | implementado em `Game.toggleKeyboard` via `hasHardwareKeyboard()`. **Depende de [B66](planos/BUGS.md#b66) para ser observável** no modo de mouse de fábrica, e da premissa de que `toggleSoftInput` não abre nada com a capa acoplada — medir no tablet |
+| [**B68**](planos/BUGS.md#b68) | O modo mover/zoom preso quando a pinça volta a 1x | corrigido: a saída do modo virou o inverso exato da entrada, em `handlePhysicalTouchpadPinch`. **Pendente de validação no S8 Ultra com a capa** — `CLASSIFICATION_PINCH` só existe a partir do Android 13 |
+| [**B67**](planos/BUGS.md#b67) | Tecla fixada do teclado de tela presa no PC depois que o teclado some | corrigido: `KeyBoardDigitalButton.releaseIfSticky()` desfaz a fixação **antes** de disparar o release, e `KeyBoardController.hide(false)` o chama em laço — `hide(true)`, o do PiP, segue preservando o estado. Cobre também a tecla de trava (`switchDown`). Mecanismo preso em `StickyKeyReleaseTest`. **Pendente de validação no S8 Ultra** — fixar Ctrl por toque longo e fechar o teclado pelo gesto |
+| [**E04**](planos/EPICS.md#e04) | Camada de áudio resiliente | **fatia da saída de áudio feita, fases 1-3 do plano NÃO** — a `AudioTrack` deixou de ser criada uma vez e usada até o fim: erro de escrita (`ERROR_DEAD_OBJECT`/`ERROR_INVALID_OPERATION`, ou `IllegalStateException`) e troca de rota de saída disparam recriação com a cascata refeita, o layout de canal saiu de um `switch` por contagem para `AudioTrackPlan` (que conserta o caso de 4 canais e ganha uma última tentativa por máscara de índice, para o aparelho que recusa o layout não derrubar a conexão inteira). Plano preso em `AudioTrackPlanTest` (19 casos). O acoplamento Surface↔conexão (fases 1-3) fica fora: mora em `Game.java`/`AndroidManifest.xml`, não no pacote de áudio. Áudio focus descartado com argumento — ver relatório. **Pendente de validação nos dois aparelhos**: tirar/pôr fone com e sem Bluetooth durante a sessão |
+| [**M99**](planos/MELHORIAS.md#m99) | A sessão diz a verdade quando termina | implementado: a folha de falha ganhou "Tentar de novo" no slot `BUTTON_NEGATIVE` (`Dialog.displayDialog` com rótulo + `Runnable`), o motivo real de `displayMessage` entra no texto da folha, as 13 frases cravadas em inglês do `NvConnection` foram para `strings.xml` (`values/` e `values-pt-rBR/`), `stopConnection` passou a ramificar em `quitApp()` em vez de anunciar sucesso sempre, e o teste de portas contra a internet só roda quando o endereço não é privado (`NetworkScope`). Presos em `NetworkScopeTest` e `FailureDialogActionTest`. **Retentativa deliberadamente limitada à falha ANTES do lado nativo subir** — ver Riscos abaixo. **Pendente de medição no Vibeshine**: tempo até a folha aparecer com o host em 192.168.x.x, e se a torrada de "não foi possível encerrar" chega a aparecer sobre o catálogo |
+| [**B69**](planos/BUGS.md#b69) | Duas telas sem saída: a roda de "Adicionando PC" e o Cancelar do pareamento | corrigido: `SpinnerDialog` separou "cancelável" de "encerra a Activity" (`displayCancellableDialog`) e o cancelamento interrompe a thread de adição sem matá-la; o Cancelar do pareamento dispara `/unpair` em thread e `NvHTTP` próprios, devolvendo o `/pair` pendurado e destravando a lista de PCs. Contrato do diálogo preso em `SpinnerDialogCancelTest`. **Pendente de confirmar no Vibeshine** que o `/unpair` devolve o `/pair` pendente (o Sunshine devolve) |
+| [**Q36**](planos/QUICK-WINS.md#q36) | Fluidez barata: home, luz Vidro e overdraw do catálogo | implementado nos três pontos: a home só remonta a grade quando o cartão realmente muda (`PcCellSnapshot` copia estado, pareamento, jogo aberto, nome, MAC e endereços — a sondagem entrega SEMPRE a mesma instância mutada no lugar, então comparar referência não serviria), o cabeçalho guarda as views e só escreve texto diferente, a luz Vidro compara o epsilon contra o ALVO da transição antes de cancelar e tirou a intensidade do shader para o alpha do paint (zero reconstrução de gradiente durante os 900 ms), e o fundo listrado sai da capa quando a arte real preenche o card e volta no bind seguinte, junto com o `ColorDrawable` transparente da máscara. Comparação presa em `PcCellSnapshotTest`. **Pendente de medição nos dois aparelhos** — depurador de GPU overdraw rolando o catálogo, e a home com dois hosts (um dormindo) para conferir que a lista ainda reage ao Wake-on-LAN |
+| [**E03**](planos/EPICS.md#e03) | Modelo explícito de capacidades do host | primeira fatia feita: `HostCapabilities` nomeia os bits do enum `PERM` do Apollo e guarda a armadilha do `-1` (todos os bits ligados); `ComputerDetails.getCapabilities()` deriva, `ServerHelper` leva no `EXTRA_HOST_CAPABILITIES` e `GameMenu` consome — "Buscar" e "Enviar área de transferência" voltaram ao menu, uma linha por direção, cada uma presa ao seu bit. No Vibeshine nenhuma aparece. Regra presa em `HostCapabilitiesTest`. Fora do SQLite de propósito, e as próximas fatias estão listadas no plano. **Pendente de validação**: o caminho positivo só existe em teste, porque não há Apollo à mão |
+
+## Fila priorizada — rodada de 2026-08-20
+
+> 50 propostas de seis lentes independentes, fundidas e verificadas por leitura de código.
+> Ordem por ganho sentido dividido por esforço, com peso extra para teclado e capa do S8
+> Ultra, para tirar passos do uso diário e para robustez em caminho de erro. **✳ = a mesma
+> ideia chegou por mais de uma lente.**
+
+| # | Código | Proposta | Esforço |
+|---|---|---|---|
+| 1 | [**B66**](planos/BUGS.md#b66) | Nenhum gesto de vários dedos funciona no modo de mouse de fábrica — a saída de emergência que o aviso promete não existe | P |
+| 2 | [**B20**](planos/BUGS.md#b20) + [**B21**](planos/BUGS.md#b21) | ~~LATEST_ONLY com a condição invertida — **confirmado**, e agora que B19 caiu virou o bloqueio vivo do ritmo de quadros~~ — **feito**, ver *Em andamento* | P |
+| 3 | [**M98**](planos/MELHORIAS.md#m98) | ~~A barra de composição vira ilha de foco: Esc fecha, acorde abre, Enter chega ao PC, o "enviado" deixa de mentir~~ ✳ — **feito**, ver *Em andamento* | M |
+| 4 | [**Q33**](planos/QUICK-WINS.md#q33) | ~~Um toque retoma o que já está rodando, nos três lugares em que hoje ele não retoma~~ ✳ — **feito**, ver *Em andamento* | P |
+| 5 | [**M99**](planos/MELHORIAS.md#m99) | ~~A sessão diz a verdade quando termina: motivo real, "Tentar de novo", nada de sucesso inventado~~ ✳ — **feito**, ver *Em andamento* | M |
+| 6 | [**B67**](planos/BUGS.md#b67) | ~~Teclas fixadas continuam pressionadas no PC depois que o teclado de tela some~~ — **feito**, ver *Em andamento* | P |
+| 7 | [**B68**](planos/BUGS.md#b68) | ~~O modo mover/zoom fica preso quando a pinça da capa volta a 1x~~ — **feito**, ver *Em andamento* | P |
+| 8 | [**Q34**](planos/QUICK-WINS.md#q34) | ~~Três dedos abrem a barra de composição quando há teclado físico~~ ✳ — **feito**, ver *Em andamento* (segue dependendo de B66 para ser observável) | P |
+| 9 | [**B69**](planos/BUGS.md#b69) | ~~Duas telas sem saída: a roda de "Adicionando PC" e o Cancelar do pareamento~~ ✳ — **feito**, ver *Em andamento* | P |
+| 10 | [**B70**](planos/BUGS.md#b70) | Teclas da capa descartadas em silêncio — **medir no aparelho antes de escolher os códigos** | P |
+| 11 | [**Q35**](planos/QUICK-WINS.md#q35) | O tablet com a capa: podar a folha e impedir que o teclado completo tome metade da tela ✳ | P |
+| 12 | [**Q36**](planos/QUICK-WINS.md#q36) | ~~Fluidez barata: home, luz Vidro e overdraw do catálogo~~ ✳ — **feito**, ver *Em andamento* | P |
+
+Saíram do lote por já estarem feitos nesta rodada: soltar modificadores ao perder o foco,
+endurecer os laços de sondagem, a piscada de rede derrubando o catálogo, a saída própria do
+teclado completo e a calibração de trackpad por gesto. Descartados por já estarem
+catalogados: leitura de preferências no `onDraw` ([Q17](planos/QUICK-WINS.md#q17),
+[B33](planos/BUGS.md#b33)) e o lixo por quadro do decodificador
+([B22](planos/BUGS.md#b22), [B27](planos/BUGS.md#b27)). [Q25](planos/QUICK-WINS.md#q25) fica
+absorvido por B66: o que falta não é uma preferência nova, é a chamada.
 
 ## EPICs
 
 | Código | Proposta | Tamanho | Subsistema |
 |---|---|---|---|
 | [**E02**](planos/EPICS.md#e02) | EPIC — Empacotar múltiplos code points por pacote UTF-8 quando o host for Sunshine/Apollo | epic | Rede, Protocolo e Descoberta de Hosts |
-| [**E03**](planos/EPICS.md#e03) | Modelo explícito de capacidades do host — **prioridade elevada**, o clipboard aparece sem funcionar no Vibeshine | epic | Rede |
-| [**E04**](planos/EPICS.md#e04) | EPIC: Camada de audio resiliente a mudancas de layout e ciclo de vida (pre-requisito da featur… | epic | Pipeline de Audio |
+| [**E03**](planos/EPICS.md#e03) | Modelo explícito de capacidades do host — **primeira fatia feita**, ver *Em andamento*; o canal existe e o clipboard já pergunta antes de aparecer | epic | Rede |
+| [**E04**](planos/EPICS.md#e04) | EPIC: Camada de audio resiliente a mudancas de layout e ciclo de vida (pre-requisito da featur… — **saída de áudio feita**, ver *Em andamento*; fases 1-3 (Surface × conexão) seguem abertas | epic | Pipeline de Audio |
 | [**E05**](planos/EPICS.md#e05) | Passagem de microfone do cliente — ⚠ **não recomendado**, o protocolo não tem canal ascendente | epic | Áudio |
 | [**E06**](planos/EPICS.md#e06) | EPIC: Extrair MediaCodecDecoderRenderer em componentes testáveis | epic | Pipeline de Vídeo e Decodificação |
 | [**E07**](planos/EPICS.md#e07) | Perfis por host e por app (resolução automática de perfil) | epic | Preferências, Configuração e Perfis |
@@ -136,6 +182,8 @@ análise estão marcadas — são as de maior confiança.
 | [**M95**](planos/MELHORIAS.md#m95) | EPIC — Camada de confianca explicita: fim do downgrade silencioso e visibilidade do estado TLS | large | Segurança, Privacidade e Robustez |
 | [**M96**](planos/MELHORIAS.md#m96) | Enxugar o fork: remover Stereo3D/IA se não for usado | large | Delta Artemis vs Moonlight upstream |
 | [**M97**](planos/MELHORIAS.md#m97) | Tratar "Remote Monitor" e "Remote Input" como funções, não como jogos | medium | UI, Rede |
+| [**M98**](planos/MELHORIAS.md#m98) | A barra de composição vira uma ilha de foco: Esc fecha, um acorde abre, Enter chega ao PC ✳ — **implementado**, pendente de validação no S8 Ultra | medium | Entrada de Teclado |
+| [**M99**](planos/MELHORIAS.md#m99) | A sessão diz a verdade quando termina: motivo real, "Tentar de novo" e nada de sucesso inventado ✳ | medium | Ciclo de Vida |
 
 ## Ganhos rápidos
 
@@ -173,6 +221,10 @@ análise estão marcadas — são as de maior confiança.
 | [**Q30**](planos/QUICK-WINS.md#q30) | Documentar o delta CRLF para não desperdiçar leitura de diff | quick-win | Delta Artemis vs Moonlight upstream |
 | [**Q31**](planos/QUICK-WINS.md#q31) | Mover robolectric.properties para o classpath de teste e centralizar a configuração | quick-win | Build, CI, Testes e Qualidade |
 | [**Q32**](planos/QUICK-WINS.md#q32) | Higiene de build: limpar código morto e acelerar a iteração local | quick-win | Build, CI, Testes e Qualidade |
+| [**Q33**](planos/QUICK-WINS.md#q33) | Um toque retoma o que já está rodando, nos três lugares em que hoje ele não retoma ✳ | quick-win | Navegação |
+| [**Q34**](planos/QUICK-WINS.md#q34) | Três dedos abrem a barra de composição quando há teclado físico acoplado ✳ — **implementado**, pendente de medição no tablet | quick-win | Entrada de Teclado |
+| [**Q35**](planos/QUICK-WINS.md#q35) | O tablet com a capa: podar a folha e limitar o teclado completo ✳ | quick-win | UI |
+| [**Q36**](planos/QUICK-WINS.md#q36) | Fluidez barata: home, luz Vidro e overdraw do catálogo ✳ | quick-win | UI |
 
 ## Bugs
 
@@ -243,6 +295,11 @@ análise estão marcadas — são as de maior confiança.
 | [**B63**](planos/BUGS.md#b63) | Repositório sem nenhum CI; o único arquivo de pipeline é herança quebrada do upstream | small | Build, CI, Testes e Qualidade |
 | [**B64**](planos/BUGS.md#b64) | AppVeyor publica um artefato de lint com nome de flavor inexistente | small | Build, CI, Testes e Qualidade |
 | [**B65**](planos/BUGS.md#b65) | Trackpad físico roteado para o emulador de dedo na tela; dois sistemas de scroll competem — **corrigido**, pendente de validação no S8 Ultra | small | Entrada |
+| [**B66**](planos/BUGS.md#b66) | Nenhum gesto de vários dedos funciona no modo de mouse de fábrica — inclusive a saída de emergência | small | Entrada de Toque |
+| [**B67**](planos/BUGS.md#b67) | Teclas fixadas do teclado de tela continuam pressionadas no PC depois que o teclado some — **corrigido**, pendente de validação no S8 Ultra | small | Entrada de Teclado |
+| [**B68**](planos/BUGS.md#b68) | O modo mover/zoom fica preso quando a pinça volta a 1x, e com ele o toque na tela — **corrigido**, pendente de validação no S8 Ultra | small | Entrada de Toque |
+| [**B69**](planos/BUGS.md#b69) | Duas telas sem saída: a roda de "Adicionando PC" e o Cancelar do pareamento ✳ — **corrigido**, pendente de confirmar o `/unpair` no Vibeshine | small | Rede, Navegação |
+| [**B70**](planos/BUGS.md#b70) | Teclas da capa descartadas em silêncio: Enter do bloco numérico e a tecla de barra ABNT2 | small | Entrada de Teclado |
 
 
 ✱ = levantado por mais de uma análise independente.

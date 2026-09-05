@@ -1,5 +1,6 @@
 package com.limelight.preferences;
 
+import com.limelight.ui.VidroToast;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -44,7 +45,7 @@ public class ConfirmDeleteOscPreference extends DialogPreference {
         public void onDialogClosed(boolean positiveResult) {
             if (positiveResult) {
                 getContext().getSharedPreferences(OSC_PREFERENCE, Context.MODE_PRIVATE).edit().clear().apply();
-                Toast.makeText(getContext(), R.string.toast_reset_osc_success, Toast.LENGTH_SHORT).show();
+                VidroToast.show(getContext(), R.string.toast_reset_osc_success, Toast.LENGTH_SHORT);
             }
         }
     }

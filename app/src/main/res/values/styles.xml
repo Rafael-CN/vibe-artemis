@@ -6,6 +6,21 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     -->
+    <!--
+        Transição entre telas. Sem isto o app herdava o slide lateral padrão do Android,
+        que conta uma história de páginas lado a lado; o protótipo conta uma de
+        profundidade — "a capa tocada cresce para a tela cheia". Entrar 420 ms, sair 340.
+
+        Está no tema, e não em overridePendingTransition espalhado por cada startActivity,
+        porque assim vale também para as telas que ninguém lembrou de instrumentar.
+    -->
+    <style name="VidroWindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/vidro_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/vidro_enter_behind</item>
+        <item name="android:activityCloseEnterAnimation">@anim/vidro_exit_behind</item>
+        <item name="android:activityCloseExitAnimation">@anim/vidro_exit</item>
+    </style>
+
     <style name="AppBaseTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
@@ -16,6 +31,7 @@
 
     <!-- Application theme. Identidade Vidro. -->
     <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowAnimationStyle">@style/VidroWindowAnimation</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -51,20 +67,32 @@
 
     <!-- Stream activity theme -->
     <style name="StreamTheme" parent="StreamBaseTheme">
+        <!--
+            A entrada da sessão também é profundidade, não slide lateral. O item mora aqui e
+            não em StreamBaseTheme porque values-v24 redefine StreamBaseTheme inteiro — lá
+            ele sumiria em API 24+, que é todo aparelho real.
+        -->
+        <item name="android:windowAnimationStyle">@style/VidroWindowAnimation</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <!-- Added for API 34+ where ImageButton requires these color attrs to inflate -->
+        <!--
+            Added for API 34+ where ImageButton requires these color attrs to inflate.
+
+            O ATIVADO é a exceção: ele tinge cursor de texto e alças de seleção, e branco
+            puro no campo de composição some dentro da dica, que também é clara. Os outros
+            continuam brancos porque só existem para a inflação acontecer.
+        -->
         <item name="android:colorControlNormal">@android:color/white</item>
         <item name="android:colorControlHighlight">@android:color/white</item>
         <item name="android:colorAccent">@android:color/white</item>
-        <item name="android:colorControlActivated">@android:color/white</item>
+        <item name="android:colorControlActivated">@color/vidro_accent_text</item>
         <item name="android:colorButtonNormal">@android:color/white</item>
         <!-- Duplicate non-prefixed color attributes for AppCompat widgets -->
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@android:color/white</item>
         <item name="colorAccent">@android:color/white</item>
-        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlActivated">@color/vidro_accent_text</item>
         <item name="colorButtonNormal">@android:color/white</item>
         <!-- O menu da sessão sai daqui; sem isto ele abre com a cara do sistema. -->
         <item name="alertDialogTheme">@style/VidroDialog</item>
@@ -77,6 +105,7 @@
         certos — sem isso ela abria em cinza de sistema com o azul do Android.
     -->
     <style name="SettingsTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/VidroWindowAnimation</item>
         <item name="android:statusBarColor">@color/vidro_void</item>
         <item name="android:navigationBarColor">@color/vidro_void</item>
         <item name="android:colorBackground">@color/vidro_void</item>
@@ -86,6 +115,12 @@
         <item name="colorAccent">@color/vidro_accent_text</item>
         <item name="android:colorAccent">@color/vidro_accent_text</item>
         <item name="colorControlActivated">@color/vidro_accent_text</item>
+        <!--
+            O par com prefixo existe porque nem tudo nesta tela passa pelo inflater do
+            AppCompat: o que cair num widget de plataforma perde o atributo sem prefixo e
+            volta para o acento do sistema.
+        -->
+        <item name="android:colorControlActivated">@color/vidro_accent_text</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
         <item name="alertDialogTheme">@style/VidroDialog</item>
@@ -95,9 +130,80 @@
 
     <style name="VidroPreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="preferenceCategoryTitleTextColor">@color/vidro_accent_text</item>
+        <!--
+            Só a cor não dava hierarquia: a face continuava sendo a que a biblioteca põe
+            por padrão, TextAppearance.AppCompat.Body2, o mesmo corpo dos resumos logo
+            abaixo. O textColor do estilo da linha vence o da textAppearance, então o
+            acento acima continua valendo.
+        -->
+        <item name="preferenceCategoryTitleTextAppearance">@style/VidroPrefCategoryTitle</item>
         <item name="android:textColorPrimary">@color/vidro_text</item>
         <item name="android:textColorSecondary">@color/vidro_text_3</item>
+        <!--
+            Cor e fonte sozinhas não davam ritmo: a linha continuava sendo a do
+            androidx, com 16 dp cravados no bloco de texto e altura decidida por
+            listPreferredItemHeightSmall. Aqui a lista inteira passa a usar a linha
+            Vidro, e a régua deixa de ser sangrada.
+        -->
+        <item name="preferenceStyle">@style/VidroPreferenceRow</item>
+        <item name="checkBoxPreferenceStyle">@style/VidroPreferenceRowCheckBox</item>
+        <item name="dialogPreferenceStyle">@style/VidroPreferenceRowDialog</item>
+        <item name="editTextPreferenceStyle">@style/VidroPreferenceRowEditText</item>
+        <item name="switchPreferenceCompatStyle">@style/VidroPreferenceRowSwitch</item>
+        <!--
+            A linha do índice de Ajustes é um PreferenceScreen aninhado, e sem esta entrada
+            ela caía em Preference.PreferenceScreen.Material — a linha da biblioteca, com os
+            16 dp cravados no bloco de texto e a altura de listPreferredItemHeightSmall — no
+            meio de uma lista em que todo o resto já é a linha Vidro. A raiz também usa este
+            estilo, mas ela nunca é desenhada: o adaptador só rende os filhos dela.
+        -->
+        <item name="preferenceScreenStyle">@style/VidroPreferenceRowScreen</item>
+        <item name="preferenceFragmentCompatStyle">@style/VidroPreferenceFragment</item>
     </style>
+
+    <!--
+        Um layout de linha só para todas as famílias. O que muda de uma para a outra é o
+        widgetLayout — caixa de seleção, interruptor —, e esse vem do estilo da biblioteca
+        que cada uma herda; por isso cada estilo aqui troca só o android:layout.
+    -->
+    <style name="VidroPreferenceRow" parent="Preference.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <style name="VidroPreferenceRowCheckBox" parent="Preference.CheckBoxPreference.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <!-- ListPreference entra por aqui: no androidx ela é uma DialogPreference. -->
+    <style name="VidroPreferenceRowDialog" parent="Preference.DialogPreference.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <style name="VidroPreferenceRowEditText" parent="Preference.DialogPreference.EditTextPreference.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <style name="VidroPreferenceRowSwitch" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <!-- A linha do índice: a mesma de todas as outras, mais a seta de avançar. -->
+    <style name="VidroPreferenceRowScreen" parent="Preference.PreferenceScreen.Material">
+        <item name="android:layout">@layout/vidro_preference_item</item>
+    </style>
+
+    <style name="VidroPreferenceFragment" parent="PreferenceFragment.Material">
+        <item name="android:divider">@drawable/vidro_pref_divider</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <!--
+        Cabeçalho de seção da lista de Ajustes. É o mesmo papel de "MODO DE MOUSE" e
+        "Seus lugares" no resto do app, então é a mesma peça: overline. Entra como
+        textAppearance porque é assim que a biblioteca veste esse título — includeFontPadding
+        vem junto de VidroText e é ignorado por aí, sem efeito colateral.
+    -->
+    <style name="VidroPrefCategoryTitle" parent="VidroText.Overline" />
 
     <style name="ExternalDisplayControllerTheme" parent="AppTheme">
         <item name="android:statusBarColor">@android:color/black</item>
@@ -194,11 +300,26 @@
     </style>
 
     <!-- Ação inline ao lado de um rótulo de seção: "Adicionar", "Recarregar". -->
+    <!--
+        A acao inline. Ela deixou de ser azul, e a razao nao e estetica.
+
+        Enquanto azul quis dizer "clicavel", ele nao podia querer dizer "dormindo", e
+        dormindo e o que a lista de lugares precisa dizer. A home foi consertada primeiro e o
+        resto do app continuou azul: "Fechar", "Recarregar", "Adicionar". Este estilo e o
+        funil de todas elas em XML, entao trocar aqui troca em todas de uma vez.
+
+        Interatividade passa a ser dita por peso, tamanho e pela mola do toque, que este
+        estilo ja aplica logo abaixo.
+    -->
     <style name="VidroText.Action" parent="VidroText">
         <item name="android:fontFamily">@font/manrope_bold</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/vidro_accent_text</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/vidro_text_2</item>
+        <!--
+            A mola do toque no lugar do ripple do Material. O ripple pinta uma onda cinza
+            que nasce do dedo, e cinza neutro é justamente o que esta identidade não tem.
+        -->
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">44dp</item>
     </style>
@@ -224,15 +345,22 @@
 
     <style name="VidroButton.Accent" parent="VidroText">
         <item name="android:fontFamily">@font/manrope_bold</item>
-        <item name="android:background">@drawable/vidro_button_accent</item>
-        <item name="android:textColor">@color/vidro_on_accent</item>
+        <item name="android:background">@drawable/vidro_button_accent_bg</item>
+        <!-- Lista de cor, não cor fixa: sobre o preenchimento rebaixado a tinta escura some. -->
+        <item name="android:textColor">@drawable/vidro_button_accent_text</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:minHeight">@dimen/vidro_touch_target</item>
         <item name="android:paddingLeft">26dp</item>
         <item name="android:paddingRight">26dp</item>
-        <item name="android:stateListAnimator">@null</item>
+        <!--
+            A mola, e não @null. O @null entrou aqui só para desligar a elevação do
+            Material, e o lugar ficou vago: o botão trocava de cor ao toque como o
+            vidro_button_accent_bg manda, mas não se MEXIA, enquanto linha de menu, chip e
+            preferência já molavam. Um app com duas gramáticas de toque parece dois apps.
+        -->
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
         <item name="android:elevation">0dp</item>
     </style>
 
@@ -246,7 +374,8 @@
         <item name="android:minHeight">@dimen/vidro_touch_target</item>
         <item name="android:paddingLeft">22dp</item>
         <item name="android:paddingRight">22dp</item>
-        <item name="android:stateListAnimator">@null</item>
+        <!-- Mesma mola do acento: os dois botões respondem igual ao dedo. -->
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
         <item name="android:elevation">0dp</item>
     </style>
 
@@ -257,13 +386,28 @@
         de 352dp; forçar 48 quebraria a linha.
     -->
     <style name="VidroChip" parent="VidroText">
-        <item name="android:layout_height">44dp</item>
+        <!--
+            48 dp, e não 44: 44 era o número do desenho e 48 é o mínimo tocável do Android.
+
+            Medido na gaveta com uiautomator, no emulador em 420 dpi: os seis chips de RITMO e
+            MODO DO MOUSE saíam a 44,2 dp de altura — o alvo mais estreito da sessão inteira,
+            e o único abaixo do mínimo. Pior: o chip equivalente em Compose
+            (TelaEditorDeCena.Chip) já usava @dimen/vidro_touch_target, então as duas metades
+            do app discordavam sobre a mesma peça.
+        -->
+        <item name="android:layout_height">@dimen/vidro_touch_target</item>
         <item name="android:background">@drawable/vidro_chip_bg</item>
         <item name="android:textColor">@drawable/vidro_chip_text</item>
         <item name="android:fontFamily">@font/manrope_semibold</item>
         <item name="android:textSize">13sp</item>
         <item name="android:gravity">center</item>
         <item name="android:letterSpacing">-0.01</item>
+        <!--
+            O chip é o alvo mais estreito do app e o único que muda de estado no lugar,
+            sem trocar de tela. Sem a mola, tocar no chip errado e tocar no certo davam a
+            mesma sensação — nenhuma — até o olho conferir qual acendeu.
+        -->
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
     </style>
 
     <style name="VidroIconButton">
@@ -271,6 +415,40 @@
         <item name="android:scaleType">centerInside</item>
         <item name="android:padding">12dp</item>
         <item name="android:tint">@color/vidro_text_2</item>
+    </style>
+
+    <!--
+        Linha de liga-desliga da folha de ajustes.
+
+        Havia uma só — "Números" — escrita à mão dentro da folha. Com o que veio do menu
+        modal são cinco do mesmo formato, e cinco cópias das mesmas trinta linhas divergem
+        na primeira vez que alguém mexe em uma delas. O que é igual vira estilo; o que
+        muda de linha para linha — rótulo, apoio, id — continua escrito no lugar, para que
+        a folha ainda possa ser lida (e rasterizada por tools/screens.mjs) sem código.
+
+        O interruptor não recebe toque: quem recebe é a linha inteira. Um alvo de 48 dp no
+        canto direito de um painel de 352 dp obriga a mirar.
+    -->
+    <style name="VidroSheetSwitchRow">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
+    </style>
+
+    <style name="VidroSheetSwitchToggle">
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:thumbTint">@color/vidro_text</item>
+        <item name="android:trackTint">@color/vidro_accent_glow</item>
+    </style>
+
+    <style name="VidroSheetSwitchLabel" parent="VidroText">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="VidroSheetSwitchSub" parent="VidroText.Support">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!--
@@ -289,12 +467,88 @@
         <item name="android:textColorPrimary">@color/vidro_text</item>
         <item name="android:textColorSecondary">@color/vidro_text_2</item>
         <item name="colorAccent">@color/vidro_accent_text</item>
+        <!--
+            A lista de escolha da preferência (setSingleChoiceItems) desenha o rádio da
+            plataforma, e quem o tinge é colorControlNormal/Activated — não colorAccent.
+            Sem os dois o anel apagado saía no cinza padrão do AppCompat: componente cru
+            do sistema no meio da folha. Ativado é o acento de TEXTO, o mesmo que a lista
+            atrás já usa (SettingsTheme), para não haver dois azuis para o mesmo papel.
+
+            Os quatro juntos pelo mesmo motivo da largura: o AppCompat lê os sem prefixo e
+            a lista de cor do drawable da plataforma lê os com prefixo.
+        -->
+        <item name="colorControlNormal">@color/vidro_text_3</item>
+        <item name="colorControlActivated">@color/vidro_accent_text</item>
+        <item name="android:colorControlNormal">@color/vidro_text_3</item>
+        <item name="android:colorControlActivated">@color/vidro_accent_text</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
-        <item name="buttonBarPositiveButtonStyle">@style/VidroDialogButton</item>
+        <!--
+            A ação que confirma ganha corpo; as outras ganham contorno. Antes as três eram
+            o mesmo texto solto: nada dizia qual era A ação da folha, e o alvo era só a
+            tinta do rótulo — "OK" media 15x13 dp de affordance na gravação. Com fundo
+            próprio o alvo passa a ser a pílula inteira, e o piso de vidro_touch_target
+            garante os 48 dp.
+
+            O par com prefixo existe porque utils/Dialog.java monta um
+            android.app.AlertDialog: a janela da plataforma só lê os atributos com
+            android:, e sem eles o botão caía no Widget.Material.Button.Borderless — canto
+            reto e o retângulo cinza do foco, que é o bloco que aparecia sob o "OK".
+        -->
+        <item name="buttonBarPositiveButtonStyle">@style/VidroDialogButton.Primary</item>
         <item name="buttonBarNegativeButtonStyle">@style/VidroDialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/VidroDialogButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/VidroDialogButton.Primary</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/VidroDialogButton</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/VidroDialogButton</item>
+        <!--
+            O realce de toque e de foco herdado é cinza neutro, e é ele que desenhava o
+            retângulo apagado por baixo do botão focado. O tom frio do vidro faz o mesmo
+            trabalho dentro da identidade.
+        -->
+        <item name="colorControlHighlight">@color/vidro_glass_cool_alt</item>
+        <item name="android:colorControlHighlight">@color/vidro_glass_cool_alt</item>
         <item name="android:windowTitleStyle">@style/VidroDialogTitle</item>
+        <!--
+            Os quatro juntos porque o AppCompat lê os sem prefixo (ContentFrameLayout) e a
+            janela lê os com prefixo; declarar só um lado deixa metade no padrão de 95%.
+        -->
+        <item name="windowMinWidthMinor">@dimen/vidro_dialog_min_width_minor</item>
+        <item name="windowMinWidthMajor">@dimen/vidro_dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/vidro_dialog_min_width_minor</item>
+        <item name="android:windowMinWidthMajor">@dimen/vidro_dialog_min_width_major</item>
+        <!--
+            UMA GUIA SÓ DENTRO DA FOLHA.
+
+            Havia três recuos diferentes no mesmo cartão: o título em 12 dp (este atributo),
+            a linha de escolha em 24 dp (listPreferredItemPadding, o padrão do AppCompat) e
+            o corpo do diálogo de barra em 24 dp cravados no código. Nada compartilhava
+            alinhamento com nada, e o título ficava sozinho 12 dp à esquerda de todo o resto.
+
+            Agora os três são @dimen/vidro_space_4 — a mesma coluna de 16 dp em que a lista
+            de Ajustes atrás já escreve, para a folha não inventar uma régua própria.
+        -->
+        <item name="dialogPreferredPadding">@dimen/vidro_space_4</item>
+        <!--
+            Os quatro pares porque a linha de escolha do AppCompat leu ora left/right, ora
+            start/end conforme a versão da AAR, e a de plataforma lê as com prefixo.
+            Declarar só um lado deixa metade da lista no recuo padrão de 24 dp.
+        -->
+        <item name="listPreferredItemPaddingLeft">@dimen/vidro_space_4</item>
+        <item name="listPreferredItemPaddingRight">@dimen/vidro_space_4</item>
+        <item name="listPreferredItemPaddingStart">@dimen/vidro_space_4</item>
+        <item name="listPreferredItemPaddingEnd">@dimen/vidro_space_4</item>
+        <item name="android:listPreferredItemPaddingLeft">@dimen/vidro_space_4</item>
+        <item name="android:listPreferredItemPaddingRight">@dimen/vidro_space_4</item>
+        <item name="android:listPreferredItemPaddingStart">@dimen/vidro_space_4</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/vidro_space_4</item>
+        <!--
+            Sem véu declarado o modal fica na mão do tema pai, e sobre um fundo que já é
+            quase preto o escurecimento herdado não se nota — o que se vê é a grade de
+            capas continuar acesa por trás da folha.
+        -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.62</item>
     </style>
 
     <!--
@@ -309,6 +563,20 @@
         <item name="android:colorAccent">@color/vidro_accent_text</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:windowTitleStyle">@style/VidroDialogTitle</item>
+        <!-- Mesmos papéis do VidroDialog: confirmar preenchido, o resto com contorno. -->
+        <item name="android:buttonBarPositiveButtonStyle">@style/VidroDialogButton.Primary</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/VidroDialogButton</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/VidroDialogButton</item>
+        <item name="android:colorControlHighlight">@color/vidro_glass_cool_alt</item>
+        <!--
+            O menu de contexto do catálogo sai daqui, e sem piso próprio ele herda os 95%
+            do eixo menor do Material: dois itens curtos e o resto vazio.
+        -->
+        <item name="android:windowMinWidthMinor">@dimen/vidro_dialog_min_width_minor</item>
+        <item name="android:windowMinWidthMajor">@dimen/vidro_dialog_min_width_major</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.62</item>
     </style>
 
     <style name="VidroDialogTitle" parent="TextAppearance.AppCompat.Title">
@@ -318,12 +586,46 @@
         <item name="android:textColor">@color/vidro_text</item>
     </style>
 
+    <!--
+        Ação secundária do diálogo — "Cancelar", "Ajuda". Contorno de vidro, não texto
+        solto: sem contêiner não havia como saber onde o alvo começa, e a linha de botões
+        de dois diálogos irmãos parava em guias diferentes porque cada rótulo tem uma
+        largura de tinta.
+
+        As margens laterais são do próprio estilo porque a barra de botões do sistema
+        encosta um botão no outro; sem elas as duas pílulas ficariam coladas.
+    -->
     <style name="VidroDialogButton" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:fontFamily">@font/manrope_semibold</item>
-        <item name="android:textColor">@color/vidro_accent_text</item>
+        <item name="android:background">@drawable/vidro_button_ghost_bg</item>
+        <item name="android:textColor">@color/vidro_text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">-0.01</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">@dimen/vidro_touch_target</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:layout_marginLeft">@dimen/vidro_space_1</item>
+        <item name="android:layout_marginRight">@dimen/vidro_space_1</item>
+        <!--
+            A mola no lugar do @null, como nos botões de tela. Aqui o @null tinha um
+            segundo motivo — o pai é um botão do AppCompat e traz a elevação do Material
+            junto —, mas sobrescrever o animador inteiro desliga a elevação do mesmo jeito
+            que zerá-lo, e ainda devolve o toque.
+        -->
+        <item name="android:stateListAnimator">@animator/vidro_press</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <!--
+        A ação que confirma. Mesma pílula de acento do resto do app, para o diálogo não
+        inventar um terceiro peso de botão só para si.
+    -->
+    <style name="VidroDialogButton.Primary" parent="VidroDialogButton">
+        <item name="android:fontFamily">@font/manrope_bold</item>
+        <item name="android:background">@drawable/vidro_button_accent_bg</item>
+        <item name="android:textColor">@drawable/vidro_button_accent_text</item>
     </style>
 
     <declare-styleable name="VidroLightView">

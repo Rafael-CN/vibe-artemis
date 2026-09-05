@@ -146,6 +146,27 @@ public class KeyBoardDigitalButton extends keyBoardVirtualControllerElement {
         return this.sticky;
     }
 
+    /**
+     * Solta a tecla se ela ficou fixada, e não faz nada se não ficou.
+     *
+     * Fixar a tecla desliga o caminho normal do soltar: com sticky (toque longo) o
+     * onRelease dos ouvintes volta cedo, e com switchDown (tecla de trava) o próprio
+     * ACTION_UP volta antes de disparar o callback. Nos dois casos o KEY_UP nunca sai e
+     * a tecla fica descida no host. Desfazer a trava ANTES de chamar onReleaseCallback()
+     * faz o ouvinte percorrer exatamente o mesmo caminho do soltar normal.
+     */
+    public void releaseIfSticky() {
+        if (!sticky && !switchDown) {
+            return;
+        }
+
+        sticky = false;
+        switchDown = false;
+        setPressed(false);
+        onReleaseCallback();
+        invalidate();
+    }
+
     @Override
     protected void onElementDraw(Canvas canvas) {
         // set transparent background

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Trilha do controle deslizante dos diálogos de Ajustes.
+
+    A SeekBar vinha com o desenho da plataforma tingido pelo acento: trilha de 2 px de
+    linha reta, canto vivo, e o percorrido pintado por setProgressTintList — que tinge o
+    drawable INTEIRO, percorrido e resto, e por isso obrigava a contar com o alfa embutido
+    do tema para diferenciar os dois. Aqui os dois pedaços têm cor própria e a trilha ganha
+    corpo: 4 dp arredondados, na mesma família de cantos do resto da identidade.
+
+    O id de cada camada é o que a SeekBar procura para saber onde desenhar o progresso;
+    trocá-los quebra o controle em silêncio.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <size android:height="4dp" />
+            <corners android:radius="2dp" />
+            <solid android:color="@color/vidro_stroke" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <size android:height="4dp" />
+                <corners android:radius="2dp" />
+                <solid android:color="@color/vidro_accent_fill" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

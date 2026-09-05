@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Contagens que dependem da tela. Ficam em recurso e não em código porque quem sabe
+    quantas colunas cabem é a pasta de recurso escolhida pelo aparelho, não um if sobre
+    largura em pixel espalhado por uma Activity.
+-->
+<resources>
+    <!--
+        Colunas da lista de cenas. Uma no celular e no tablet em pé, duas no tablet
+        deitado (values-sw600dp-land/) — ver layout-sw600dp-land/activity_profiles.xml.
+    -->
+    <integer name="vidro_scenes_columns">1</integer>
+</resources>

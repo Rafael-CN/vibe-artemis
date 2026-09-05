@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Caixa de seleção ligada: preenchimento no acento, marca por cima.
+
+    A folga da marca vem de android:left/top/right/bottom e não de android:width/height —
+    essas duas só existem em item de layer-list a partir da API 23, e o mínimo aqui é 21,
+    onde a marca seria esticada até a borda do quadrado.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/vidro_accent_fill" />
+            <corners android:radius="6dp" />
+            <size
+                android:width="20dp"
+                android:height="20dp" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/vidro_check_glyph"
+        android:left="3dp"
+        android:top="3dp"
+        android:right="3dp"
+        android:bottom="3dp" />
+</layer-list>

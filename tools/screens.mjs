@@ -39,6 +39,9 @@ const run = spawnSync(
   [
     ':app:testNonRoot_gameDebugUnitTest',
     '--tests', 'com.limelight.VidroScreenshotTest',
+    // O que e desenhado em Compose nao se infla como layout: precisa de Activity
+    // com ciclo de vida. Classe separada, mesma pasta de saida.
+    '--tests', 'com.limelight.VidroComposeScreenshotTest',
     '-Dvidro.screens=1',
     '--console=plain',
     '-q',

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Avançar. É o mesmo traço de 2 dp com ponta arredondada do ic_vidro_back, virado, porque
+    ele aparece na MESMA tela que a seta de voltar do cabeçalho: dois desenhos diferentes
+    para ida e volta leriam como duas famílias de ícone.
+
+    Só a ponta, sem a haste: a seta cheia é o gesto de sair da tela, papel que já é do
+    cabeçalho. Aqui a linha do índice diz "tem mais coisa por aqui", e a ponta basta.
+
+    A tinta é vidro_text_3, a dos resumos, e não vidro_text: as treze linhas do índice são
+    todas navegáveis, então a marca não distingue nada — ela só informa. No tom do título
+    ela viraria treze acentos claros empilhados na borda direita.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:autoMirrored="true"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:pathData="M10,6 L16,12 L10,18"
+        android:strokeColor="@color/vidro_text_3"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+</vector>

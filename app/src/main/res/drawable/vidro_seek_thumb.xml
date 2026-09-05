@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pega do controle deslizante.
+
+    A da plataforma mede 13 px na gravação — é o alvo com que se escolhe uma taxa de bits
+    exata, e é menor que a ponta do dedo por uma ordem de grandeza. 22 dp é o disco que dá
+    para ver e para agarrar; o anel escuro em volta existe porque sobre a trilha percorrida
+    (mesma cor) o disco sumiria dentro dela.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <size
+        android:width="22dp"
+        android:height="22dp" />
+
+    <solid android:color="@color/vidro_accent_fill" />
+
+    <stroke
+        android:width="3dp"
+        android:color="@color/vidro_surface_alt" />
+
+</shape>

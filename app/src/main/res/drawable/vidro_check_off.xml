@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Caixa de seleção desligada.
+
+    O raio não sai da escada de @dimen/vidro_radius_*: o menor dela é 12dp, e num quadrado
+    de 20dp isso vira um disco — que nesta gramática significa escolha única, não múltipla.
+    6dp é a mesma proporção de canto dos cartões, na escala do controle.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/vidro_surface_overlay" />
+    <stroke
+        android:width="@dimen/vidro_stroke_width"
+        android:color="@color/vidro_stroke_glass" />
+    <corners android:radius="6dp" />
+    <size
+        android:width="20dp"
+        android:height="20dp" />
+</shape>

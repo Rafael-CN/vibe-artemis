@@ -48,6 +48,15 @@ public class TextInputPump {
     private final Scheduler scheduler;
     private final Queue<String> textQueue = new ArrayDeque<>();
 
+    /**
+     * O que fazer depois que tudo o que foi enfileirado saiu de verdade.
+     *
+     * Enfileirar não é enviar: o dreno manda um pedaço por tique e o protocolo ainda dorme
+     * entre blocos. Quem quisesse avisar "enviado", ou mandar um Enter DEPOIS do texto,
+     * fazia isso na linha seguinte ao {@link #offerText} e acertava só nos textos curtos.
+     */
+    private final Queue<Runnable> idleTasks = new ArrayDeque<>();
+
     private boolean textFlushScheduled = false;
     private int pendingBackspaces = 0;
     private boolean backspaceFlushScheduled = false;
@@ -65,6 +74,7 @@ public class TextInputPump {
             else {
                 scheduler.postDelayed(this, 15);
             }
+            runIdleTasks();
         }
     };
 
@@ -82,6 +92,7 @@ public class TextInputPump {
             else {
                 backspaceFlushScheduled = false;
             }
+            runIdleTasks();
         }
     };
 
@@ -130,12 +141,48 @@ public class TextInputPump {
         }
     }
 
-    /** Drops anything still queued. Used when the connection goes away. */
+    /**
+     * Agenda uma ação para quando a fila esvaziar — e a roda na hora se ela já estiver vazia.
+     *
+     * É o único ponto em que se pode afirmar que o texto saiu. Serve para o aviso de
+     * "enviado" e para o Enter que acompanha um bloco: emitido antes do último pedaço, ele
+     * confirma um comando pela metade no host.
+     */
+    public void runWhenIdle(Runnable task) {
+        if (task == null) {
+            return;
+        }
+        if (isIdle()) {
+            task.run();
+            return;
+        }
+        idleTasks.add(task);
+    }
+
+    /**
+     * Roda o que estava esperando o fim do dreno.
+     *
+     * Uma tarefa pode enfileirar texto novo. Nesse caso o laço para sozinho e as tarefas
+     * restantes esperam o próximo esvaziamento, em vez de dispararem com a fila já suja.
+     */
+    private void runIdleTasks() {
+        while (isIdle() && !idleTasks.isEmpty()) {
+            idleTasks.poll().run();
+        }
+    }
+
+    /**
+     * Drops anything still queued. Used when the connection goes away.
+     *
+     * As tarefas de fim de dreno caem junto: elas existem para dizer que o texto chegou, e
+     * aqui ele justamente não chegou.
+     */
     public void clear() {
         textQueue.clear();
         pendingBackspaces = 0;
         textFlushScheduled = false;
         backspaceFlushScheduled = false;
+        idleTasks.clear();
     }
 
     public boolean isIdle() {

@@ -40,8 +40,10 @@ public class PreferenceConfiguration {
         LEFT
     }
 
-    public static final String CUSTOM_BITRATE_PREF_STRING = "edit_diy_bitrate";
     public static final String CUSTOM_REFRESH_RATE_PREF_STRING = "custom_refresh_rate";
+    // A tela não oferece mais como digitar uma resolução — o campo era uma segunda porta
+    // para a mesma lista. A chave sobrevive só para leitura: quem já digitou uma continua
+    // vendo o valor como uma entrada extra da lista, em vez de perdê-lo na atualização.
     public static final String CUSTOM_RESOLUTION_PREF_STRING = "edit_diy_w_h";
 
     private static final String LEGACY_RES_FPS_PREF_STRING = "list_resolution_fps";
@@ -49,17 +51,15 @@ public class PreferenceConfiguration {
     private static final String LEGACY_STRETCH_PREF_STRING = "checkbox_stretch_video";
     private static final String LEGACY_ENFORCE_REFRESH_RATE_STRING = "checkbox_enforce_refresh_rate";
 
-    static final String RESOLUTION_PREF_STRING = "list_resolution";
-    static final String FPS_PREF_STRING = "list_fps";
-    static final String BITRATE_PREF_STRING = "seekbar_bitrate_kbps";
+    public static final String RESOLUTION_PREF_STRING = "list_resolution";
+    public static final String FPS_PREF_STRING = "list_fps";
+    public static final String BITRATE_PREF_STRING = "seekbar_bitrate_kbps";
     private static final String BITRATE_PREF_OLD_STRING = "seekbar_bitrate";
     private static final String METERED_BITRATE_PREF_STRING = "seekbar_metered_bitrate_kbps";
-    private static final String ENABLE_ULTRA_LOW_LATENCY_PREF_STRING = "checkbox_ultra_low_latency";
     private static final String ENFORCE_DISPLAY_MODE_PREF_STRING = "checkbox_enforce_display_mode";
     private static final String USE_VIRTUAL_DISPLAY_PREF_STRING = "checkbox_use_virtual_display";
     private static final String AUTO_INVERT_VIDEO_RESOLUTION_PREF_STRING = "checkbox_auto_invert_video_resolution";
     private static final String RESOLUTION_SCALE_FACTOR_PREF_STRING = "seekbar_resolution_scale_factor";
-    private static final String RESUME_WITHOUT_CONFIRM_PREF_STRING = "checkbox_resume_without_confirm";
     private static final String VIDEO_SCALE_MODE_PREF_STRING = "list_video_scale_mode";
     private static final String IME_DISPLAY_MODE_PREF_STRING = "list_ime_display_mode";
     private static final String SOPS_PREF_STRING = "checkbox_enable_sops";
@@ -84,7 +84,7 @@ public class PreferenceConfiguration {
     private static final String ENABLE_PERF_LOGGING = "checkbox_enable_perf_logging";
     private static final String BIND_ALL_USB_STRING = "checkbox_usb_bind_all";
     private static final String MOUSE_EMULATION_STRING = "checkbox_mouse_emulation";
-    private static final String REMEMBER_MOUSE_MODE_PREF_STRING = "checkbox_remember_mouse_mode";
+    public static final String MOUSE_MODE_PREF_STRING = "mouse_mode_list";
     private static final String ANALOG_SCROLLING_PREF_STRING = "analog_scrolling";
     private static final String MOUSE_NAV_BUTTONS_STRING = "checkbox_mouse_nav_buttons";
     static final String UNLOCK_FPS_STRING = "checkbox_unlock_fps";
@@ -95,8 +95,6 @@ public class PreferenceConfiguration {
 //    static final String TOUCHSCREEN_TRACKPAD_PREF_STRING = "checkbox_touchscreen_trackpad";
     private static final String LATENCY_TOAST_PREF_STRING = "checkbox_enable_post_stream_toast";
     private static final String FRAME_PACING_PREF_STRING = "frame_pacing";
-    private static final String LOW_LATENCY_FRAME_BALANCE_PREF_STRING = "pref_low_latency_frame_balance";
-    private static final String ABSOLUTE_MOUSE_MODE_PREF_STRING = "checkbox_absolute_mouse_mode";
     private static final String ENABLE_AUDIO_FX_PREF_STRING = "checkbox_enable_audiofx";
     private static final String REDUCE_REFRESH_RATE_PREF_STRING = "checkbox_reduce_refresh_rate";
     private static final String FULL_RANGE_PREF_STRING = "checkbox_full_range";
@@ -151,15 +149,25 @@ public class PreferenceConfiguration {
 
     private static final String CHECKBOX_ENABLE_COMMIT_TEXT = "checkbox_enable_commit_text";
 
-    static final String DEFAULT_RESOLUTION = "1280x720";
-    static final String DEFAULT_FPS = "60";
-    private static final boolean DEFAULT_ENABLE_ULTRA_LOW_LATENCY = false;
+    public static final String DEFAULT_RESOLUTION = "1280x720";
+    public static final String DEFAULT_FPS = "60";
     private static final boolean DEFAULT_ENFORCE_DISPLAY_MODE = false;
     private static final boolean DEFAULT_USE_VIRTUAL_DISPLAY = false;
-    private static final String DEFAULT_VIDEO_SCALE_MODE = "fit";
+    /**
+     * Preencher, e nao caber.
+     *
+     * "fit" era o padrao herdado: mantem a proporcao e deixa barras onde a forma nao bate.
+     * Com o teclado aberto em pe isso deixava uma faixa morta grande -- e a imagem e o
+     * produto, entao espaco vazio ali e area util jogada fora. "fill" mantem a proporcao
+     * TAMBEM, mas escolhe o outro lado do compromisso: preenche e corta a sobra, em vez de
+     * caber e sobrar. "stretch", que deforma, continua existindo e continua nao sendo o
+     * padrao.
+     *
+     * Quem preferir ver o quadro inteiro troca em Ajustes > Video, numa lista de tres.
+     */
+    private static final String DEFAULT_VIDEO_SCALE_MODE = "fill";
     private static final boolean DEFAULT_AUTO_INVERT_VIDEO_RESOLUTION = true;
     private static final int DEFAULT_RESOLUTION_SCALE_FACTOR = 100;
-    private static final boolean DEFAULT_RESUME_WITHOUT_CONFIRM = false;
     private static final boolean DEFAULT_SOPS = true;
     private static final boolean DEFAULT_DISABLE_TOASTS = false;
     private static final boolean DEFAULT_HOST_AUDIO = false;
@@ -175,13 +183,23 @@ public class PreferenceConfiguration {
     private static final boolean ONLY_L3_R3_DEFAULT = false;
     private static final boolean SHOW_GUIDE_BUTTON_DEFAULT = true;
     private static final boolean DEFAULT_ENABLE_HDR = false;
-    private static final boolean DEFAULT_ENABLE_PIP = false;
+    /**
+     * Ligado de fabrica, porque ele nao e sobre assistir.
+     *
+     * onStop() derruba a conexao e chama finish(): sair do app por um segundo -- uma
+     * notificacao tocada, uma ligacao, um toque no botao de inicio -- e o fim da sessao. O
+     * que evita isso e o PiP, e ele estava desligado.
+     *
+     * O texto da preferencia falava de observacao ("assiste sem controlar enquanto usa
+     * outros apps") e nao dizia a unica coisa que importa: que e isto que impede a sessao de
+     * morrer. Ele mudou junto com o padrao.
+     */
+    private static final boolean DEFAULT_ENABLE_PIP = true;
     private static final boolean DEFAULT_ENABLE_PERF_OVERLAY = false;
     private static final boolean DEFAULT_PERF_OVERLAY_BOTTOM = false;
     private static final boolean DEFAULT_ENABLE_PERF_LOGGING = false;
     private static final boolean DEFAULT_BIND_ALL_USB = false;
     private static final boolean DEFAULT_MOUSE_EMULATION = true;
-    private static final boolean DEFAULT_REMEMBER_MOUSE_MODE = false;
     private static final String DEFAULT_ANALOG_STICK_FOR_SCROLLING = "right";
     private static final boolean DEFAULT_MOUSE_NAV_BUTTONS = false;
     private static final boolean DEFAULT_UNLOCK_FPS = false;
@@ -193,7 +211,6 @@ public class PreferenceConfiguration {
     private static final String DEFAULT_AUDIO_CONFIG = "2"; // Stereo
     private static final boolean DEFAULT_LATENCY_TOAST = false;
     private static final String DEFAULT_FRAME_PACING = "latency";
-    private static final boolean DEFAULT_ABSOLUTE_MOUSE_MODE = false;
     private static final boolean DEFAULT_ENABLE_AUDIO_FX = false;
     private static final boolean DEFAULT_REDUCE_REFRESH_RATE = false;
     private static final boolean DEFAULT_FULL_RANGE = false;
@@ -229,7 +246,9 @@ public class PreferenceConfiguration {
     private static final String DEFAULT_ONSCREEN_KEYBOARD_ALIGN_MODE = "center";
     private static final boolean DEFAULT_SHOW_OVERLAY_TOGGLE_BUTTON = false;
 
-    private static final boolean DEFAULT_REMEMBER_ZOOM_PAN = false;
+    // Ligado: reenquadrar a tela é trabalho manual, e refazê-lo a cada sessão é o mesmo
+    // desperdício de reescolher o modo do mouse toda vez.
+    private static final boolean DEFAULT_REMEMBER_ZOOM_PAN = true;
     private static final float DEFAULT_ZOOM_SCALE = 1.0f;
     private static final float DEFAULT_PAN_OFFSET = 0.0f;
     private static final boolean DEFAULT_FULL_SCREEN = true;
@@ -247,11 +266,25 @@ public class PreferenceConfiguration {
     public static final String RES_4K = "3840x2160";
     public static final String RES_NATIVE = "Native";
 
+    // Os três modos que sobraram são os mesmos três da folha de sessão, e os números são os
+    // de sempre — a folha, Game.applyMouseMode e esta lista falam por índice.
+    public static final String MOUSE_MODE_MULTI_TOUCH = "0";
+    static final String MOUSE_MODE_ABSOLUTE = "1";
+    static final String MOUSE_MODE_TRACKPAD = "2";
+    /** "O toque na tela move o mouse", desligado. Não está na lista: virou interruptor. */
+    public static final String MOUSE_MODE_TOUCH_DISABLED = "4";
+    // Saíram da lista porque a folha nunca soube mostrá-las: cada uma cai na família a que
+    // pertence, que é o mesmo que a folha já fazia ao acender o chip.
+    private static final String LEGACY_MOUSE_MODE_TRACKPAD_GAMING = "3";
+    private static final String LEGACY_MOUSE_MODE_ABSOLUTE_SWAPPED = "5";
+
     public int width, height, bitrate;
     public float fps;
-//    public String customBitrate;
-    public boolean forceTightThresholds = false; // default off
-    public boolean enableUltraLowLatency;
+    // Nasce e morre desligado. A preferência que o acendia saiu da tela: nascia desligada,
+    // valia só em alguns SoCs e não havia comportamento a promover — ver B27 para o irmão
+    // dela, "Vsync rígido", que nunca chegava sequer a ser lido. Quem quiser medir de novo
+    // mede aqui, não numa caixa de Ajustes.
+    public boolean enableUltraLowLatency = false;
     public String customResolution;
     public String customRefreshRate;
     public int meteredBitrate;
@@ -307,7 +340,6 @@ public class PreferenceConfiguration {
     //Invert video width/height
     public boolean autoInvertVideoResolution;
     public int resolutionScaleFactor;
-    public boolean resumeWithoutConfirm;
     //竖屏模式
     public boolean autoOrientation;
     //虚拟屏幕键盘按键
@@ -379,9 +411,16 @@ public class PreferenceConfiguration {
     public boolean mouseEmulation;
     public AnalogStickForScrolling analogStickForScrolling;
     public boolean mouseNavButtons;
-    public boolean rememberMouseMode;
+    // Sempre. Escolher "Trackpad" na folha e reencontrar "Multitoque" na sessão seguinte é
+    // a mesma escolha refeita todo dia; a caixa que perguntava se devia lembrar nascia
+    // desligada, então o padrão era esquecer. O campo continua existindo porque
+    // Game.setMouseMode o consulta antes de gravar.
+    public boolean rememberMouseMode = true;
     public boolean unlockFps;
-    public boolean preferLowerDelays;
+    // Mesma história do enableUltraLowLatency: interruptor experimental que nascia
+    // desligado. Game.java continua ramificando por ele e continua caindo no ramo de
+    // sempre — 2 ms de timeout no dequeue.
+    public boolean preferLowerDelays = false;
 
     public boolean vibrateOsc;
     public boolean vibrateFallbackToDevice;
@@ -389,7 +428,9 @@ public class PreferenceConfiguration {
     public boolean touchscreenTrackpad;
     public MoonBridge.AudioConfiguration audioConfiguration;
     public int framePacing;
-    public boolean absoluteMouseMode;
+    // Terceiro caminho para o mesmo estado que a lista de modos e a folha de sessão já
+    // governam — e nada na tela dizia qual dos três ganhava. Fica no padrão de sempre.
+    public boolean absoluteMouseMode = false;
     public boolean enableAudioFx;
     public boolean reduceRefreshRate;
     public boolean fullRange;
@@ -666,13 +707,8 @@ public class PreferenceConfiguration {
         return prefs.getString(FRAME_PACING_PREF_STRING, DEFAULT_FRAME_PACING);
     }
 
-    
-    public static boolean getPreferLowerDelays(Context context) {
-        SharedPreferences prefs = ProfilesManager.getInstance().getOverlayingSharedPreferences(context);
-        // default true: favor lower delay unless user opts out
-        return prefs.getBoolean(LOW_LATENCY_FRAME_BALANCE_PREF_STRING, false);
-    }
-private static int getFramePacingValue(Context context) {
+
+    private static int getFramePacingValue(Context context) {
         SharedPreferences prefs = ProfilesManager.getInstance().getOverlayingSharedPreferences(context);
 
         // Migrate legacy never drop frames option to the new location
@@ -911,7 +947,6 @@ private static int getFramePacingValue(Context context) {
 
         config.videoFormat = getVideoFormatValue(context);
         config.framePacing = getFramePacingValue(context);
-        config.preferLowerDelays = getPreferLowerDelays(context);
 
 
         String warpFactorStr = prefs.getString(FRAME_PACING_PREF_STRING, "");
@@ -933,7 +968,6 @@ private static int getFramePacingValue(Context context) {
         config.disableWarnings = prefs.getBoolean(DISABLE_TOASTS_PREF_STRING, DEFAULT_DISABLE_TOASTS);
         config.enforceDisplayMode = prefs.getBoolean(ENFORCE_DISPLAY_MODE_PREF_STRING, DEFAULT_ENFORCE_DISPLAY_MODE);
         config.useVirtualDisplay = prefs.getBoolean(USE_VIRTUAL_DISPLAY_PREF_STRING, DEFAULT_USE_VIRTUAL_DISPLAY);
-        config.enableUltraLowLatency = prefs.getBoolean(ENABLE_ULTRA_LOW_LATENCY_PREF_STRING, DEFAULT_ENABLE_ULTRA_LOW_LATENCY);
         config.enableSops = prefs.getBoolean(SOPS_PREF_STRING, DEFAULT_SOPS);
         config.playHostAudio = prefs.getBoolean(HOST_AUDIO_PREF_STRING, DEFAULT_HOST_AUDIO);
         config.smallIconMode = prefs.getBoolean(SMALL_ICONS_PREF_STRING, getDefaultSmallMode(context));
@@ -945,9 +979,29 @@ private static int getFramePacingValue(Context context) {
         int renderModeInt = Integer.parseInt(renderMode);
         config.renderMode = renderModeInt;
 
-        // Read mouse mode and set touch settings accordingly
-        String mouseMode = prefs.getString("mouse_mode_list", "0");
-        int mouseModeInt = Integer.parseInt(mouseMode);
+        // Read mouse mode and set touch settings accordingly.
+        //
+        // A gravação da migração é definitiva, e não só um valor corrigido em memória, porque
+        // Game.initMouseMode lê esta chave direto das preferências e usa o número como ÍNDICE
+        // do array de rótulos. Um 3 ou um 5 sobrevivendo no disco viraria índice fora da
+        // lista de três, e o modo se perderia na primeira sessão em tela externa.
+        String mouseMode = prefs.getString(MOUSE_MODE_PREF_STRING, MOUSE_MODE_MULTI_TOUCH);
+        if (LEGACY_MOUSE_MODE_TRACKPAD_GAMING.equals(mouseMode)) {
+            mouseMode = MOUSE_MODE_TRACKPAD;
+            prefs.edit().putString(MOUSE_MODE_PREF_STRING, mouseMode).apply();
+        }
+        else if (LEGACY_MOUSE_MODE_ABSOLUTE_SWAPPED.equals(mouseMode)) {
+            mouseMode = MOUSE_MODE_ABSOLUTE;
+            prefs.edit().putString(MOUSE_MODE_PREF_STRING, mouseMode).apply();
+        }
+
+        int mouseModeInt;
+        try {
+            mouseModeInt = Integer.parseInt(mouseMode);
+        } catch (NumberFormatException e) {
+            // Perfil importado ou preferência adulterada: multitoque é o padrão da lista.
+            mouseModeInt = 0;
+        }
         switch (mouseModeInt) {
             case 0: // Multi-touch
                 config.enableMultiTouchScreen = true;
@@ -981,7 +1035,6 @@ private static int getFramePacingValue(Context context) {
         config.bindAllUsb = prefs.getBoolean(BIND_ALL_USB_STRING, DEFAULT_BIND_ALL_USB);
         config.mouseEmulation = prefs.getBoolean(MOUSE_EMULATION_STRING, DEFAULT_MOUSE_EMULATION);
         config.mouseNavButtons = prefs.getBoolean(MOUSE_NAV_BUTTONS_STRING, DEFAULT_MOUSE_NAV_BUTTONS);
-        config.rememberMouseMode = prefs.getBoolean(REMEMBER_MOUSE_MODE_PREF_STRING, DEFAULT_REMEMBER_MOUSE_MODE);
         config.unlockFps = prefs.getBoolean(UNLOCK_FPS_STRING, DEFAULT_UNLOCK_FPS);
         config.vibrateOsc = prefs.getBoolean(VIBRATE_OSC_PREF_STRING, DEFAULT_VIBRATE_OSC);
         config.vibrateFallbackToDevice = prefs.getBoolean(VIBRATE_FALLBACK_PREF_STRING, DEFAULT_VIBRATE_FALLBACK);
@@ -995,8 +1048,6 @@ private static int getFramePacingValue(Context context) {
         config.autoOrientation = prefs.getBoolean(CHECKBOX_AUTO_ORIENTATION,false);
         config.autoInvertVideoResolution = prefs.getBoolean(AUTO_INVERT_VIDEO_RESOLUTION_PREF_STRING, DEFAULT_AUTO_INVERT_VIDEO_RESOLUTION);
         config.resolutionScaleFactor = prefs.getInt(RESOLUTION_SCALE_FACTOR_PREF_STRING, DEFAULT_RESOLUTION_SCALE_FACTOR);
-
-        config.resumeWithoutConfirm = prefs.getBoolean(RESUME_WITHOUT_CONFIRM_PREF_STRING, DEFAULT_RESUME_WITHOUT_CONFIRM);
 
         config.enableKeyboard = prefs.getBoolean(CHECKBOX_ENABLE_KEYBOARD,false);
 
@@ -1058,7 +1109,6 @@ private static int getFramePacingValue(Context context) {
         config.physicalTrackpadNative = prefs.getBoolean(CHECKBOX_PHYSICAL_TRACKPAD_NATIVE, DEFAULT_PHYSICAL_TRACKPAD_NATIVE);
         config.allowPortraitSession = prefs.getBoolean(CHECKBOX_ALLOW_PORTRAIT_SESSION, DEFAULT_ALLOW_PORTRAIT_SESSION);
 
-        config.absoluteMouseMode = prefs.getBoolean(ABSOLUTE_MOUSE_MODE_PREF_STRING, DEFAULT_ABSOLUTE_MOUSE_MODE);
         config.enableBatteryReport = prefs.getBoolean(CHECKBOX_ENABLE_BATTERY_REPORT, DEFAULT_GAMEPAD_ENABLE_BATTERY_REPORT);
         config.forceQwerty = prefs.getBoolean(CHECKBOX_FORCE_QWERTY, DEFAULT_FORCE_QWERTY);
         config.backAsMeta = prefs.getBoolean(CHECKBOX_BACK_AS_META, DEFAULT_SEND_META_ON_PHYSICAL_BACK);
@@ -1081,7 +1131,6 @@ private static int getFramePacingValue(Context context) {
         // Read custom values
         config.customResolution = prefs.getString(CUSTOM_RESOLUTION_PREF_STRING, null);
         config.customRefreshRate = prefs.getString(CUSTOM_REFRESH_RATE_PREF_STRING, null);
-//        config.customBitrate = prefs.getString(CUSTOM_BITRATE_PREF_STRING, null);
 
         config.rememberZoomPan = prefs.getBoolean(CHECKBOX_REMEMBER_ZOOM_PAN, DEFAULT_REMEMBER_ZOOM_PAN);
         config.zoomScale = prefs.getFloat(NUMBER_ZOOM_SCALE, DEFAULT_ZOOM_SCALE);

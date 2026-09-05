@@ -23,6 +23,26 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CachedAppAssetLoader {
+    /**
+     * Avisa quem monta a grade da proporção em que o host publicou a box art.
+     *
+     * O card assume essa proporção para a capa preencher a caixa inteira — sem corte e sem
+     * faixa de fundo sobrando nas beiradas. Só o carregador sabe o tamanho original da
+     * arte: o bitmap que chega à ImageView já foi reamostrado.
+     */
+    public interface ArtAspectListener {
+        void onArtAspectMeasured(int width, int height);
+
+        /**
+         * Esta arte cobre a caixa da capa inteira, sem sobra nas beiradas?
+         *
+         * Só quem monta a grade sabe: a proporção da caixa é UMA para todos os cards. A
+         * resposta decide se o fundo listrado do placeholder pode ser largado — arte que
+         * sobra beirada ainda precisa dele atrás.
+         */
+        boolean artFillsCard(int width, int height);
+    }
+
     private static final int MAX_CONCURRENT_DISK_LOADS = 3;
     private static final int MAX_CONCURRENT_NETWORK_LOADS = 3;
     private static final int MAX_CONCURRENT_CACHE_LOADS = 1;
@@ -57,6 +77,8 @@ public class CachedAppAssetLoader {
     private final Bitmap placeholderBitmap;
     private final Bitmap noAppImageBitmap;
 
+    private ArtAspectListener artAspectListener;
+
     public CachedAppAssetLoader(ComputerDetails computer, double scalingDivider,
                                 NetworkAssetLoader networkLoader, MemoryAssetLoader memoryLoader,
                                 DiskAssetLoader diskLoader, Bitmap noAppImageBitmap) {
@@ -85,6 +107,22 @@ public class CachedAppAssetLoader {
 
         while ((r = networkExecutor.getQueue().poll()) != null) {
             networkExecutor.remove(r);
+        }
+    }
+
+    public void setArtAspectListener(ArtAspectListener listener) {
+        this.artAspectListener = listener;
+    }
+
+    /**
+     * Chamado só da thread da UI, dos dois pontos em que uma capa real vai para a tela.
+     *
+     * Placeholder do GFE não conta: tem tamanho próprio e daria a forma da grade a um asset
+     * que nem é capa de app.
+     */
+    private void reportArtAspect(ScaledBitmap bmp) {
+        if (artAspectListener != null && bmp != null && !isBitmapPlaceholder(bmp)) {
+            artAspectListener.onArtAspectMeasured(bmp.originalWidth, bmp.originalHeight);
         }
     }
 
@@ -220,7 +258,13 @@ public class CachedAppAssetLoader {
                 // Fade in the box art
                 if (bitmap != null) {
                     // Show the text if it's a placeholder
-                    textView.setVisibility(isBitmapPlaceholder(bitmap) ? View.VISIBLE : View.GONE);
+                    boolean placeholder = isBitmapPlaceholder(bitmap);
+                    textView.setVisibility(placeholder ? View.VISIBLE : View.GONE);
+
+                    // Antes de perguntar se a arte preenche o card: é aqui que a grade
+                    // aprende a proporção, se esta for a primeira capa a carregar.
+                    reportArtAspect(bitmap);
+                    final boolean largarFundo = !placeholder && artFillsCard(bitmap);
 
                     if (imageView.getVisibility() == View.VISIBLE) {
                         // Fade out the placeholder first
@@ -231,8 +275,18 @@ public class CachedAppAssetLoader {
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
+                                // Durante o fade a grade pode ter reciclado esta view para
+                                // outro app. Aí quem manda nela é outra tarefa, e largar o
+                                // fundo daqui deixaria o card do outro app sem o listrado
+                                // enquanto a capa dele ainda carrega. A pergunta vem antes
+                                // do setImageBitmap, que é o que apaga o AsyncDrawable.
+                                boolean aindaNossa = getLoaderTask(imageView) == LoaderTask.this;
+
                                 // Fade in the new box art
                                 imageView.setImageBitmap(bitmap.bitmap);
+                                if (largarFundo && aindaNossa) {
+                                    setPlaceholderBackground(imageView, false);
+                                }
                                 imageView.startAnimation(AnimationUtils.loadAnimation(imageView.getContext(), R.anim.boxart_fadein));
                             }
 
@@ -244,6 +298,9 @@ public class CachedAppAssetLoader {
                     else {
                         // View is invisible already, so just fade in the new art
                         imageView.setImageBitmap(bitmap.bitmap);
+                        if (largarFundo) {
+                            setPlaceholderBackground(imageView, false);
+                        }
                         imageView.startAnimation(AnimationUtils.loadAnimation(imageView.getContext(), R.anim.boxart_fadein));
                         imageView.setVisibility(View.VISIBLE);
                     }
@@ -325,6 +382,38 @@ public class CachedAppAssetLoader {
         });
     }
 
+    /**
+     * O fundo listrado da ImageView da capa.
+     *
+     * Ele existe para o card SEM capa — o lugar continua lá, com o nome por cima. Quando a
+     * box art real entra, ela cobre esse fundo 100% e ele nunca mais sai: overdraw
+     * permanente em toda a grade, e num Tab S8 Ultra deitado são seis colunas de cards
+     * visíveis o tempo todo enquanto se rola o catálogo.
+     *
+     * Sai quando a arte real entra e volta no próximo bind, por onde toda view reciclada
+     * passa. É pintado em UM ponto por bind, e não zerado-e-reposto: setBackground(null)
+     * limpa o registro de qual recurso está lá, então alternar os dois na mesma passada
+     * custaria duas remedidas por card.
+     */
+    private static void setPlaceholderBackground(ImageView imgView, boolean visible) {
+        if (visible) {
+            imgView.setBackgroundResource(R.drawable.vidro_placeholder);
+        }
+        else {
+            imgView.setBackground(null);
+        }
+    }
+
+    /**
+     * A arte preenche a caixa do card? Sem quem responda — grade sem listener —, a
+     * resposta é não, e o fundo fica onde estava.
+     */
+    private boolean artFillsCard(ScaledBitmap bitmap) {
+        return artAspectListener != null
+                && bitmap != null
+                && artAspectListener.artFillsCard(bitmap.originalWidth, bitmap.originalHeight);
+    }
+
     private boolean isBitmapPlaceholder(ScaledBitmap bitmap) {
         return (bitmap == null) ||
                 (bitmap.originalWidth == 130 && bitmap.originalHeight == 180) || // GFE 2.0
@@ -352,7 +441,13 @@ public class CachedAppAssetLoader {
             imgView.setImageBitmap(bmp.bitmap);
 
             // Show the text if it's a placeholder bitmap
-            textView.setVisibility(isBitmapPlaceholder(bmp) ? View.VISIBLE : View.GONE);
+            boolean placeholder = isBitmapPlaceholder(bmp);
+            textView.setVisibility(placeholder ? View.VISIBLE : View.GONE);
+
+            // reportArtAspect vem ANTES: é ele que ensina a grade a proporção da primeira
+            // capa, e é contra essa proporção que artFillsCard responde.
+            reportArtAspect(bmp);
+            setPlaceholderBackground(imgView, placeholder || !artFillsCard(bmp));
             return true;
         }
 
@@ -363,6 +458,10 @@ public class CachedAppAssetLoader {
         textView.setVisibility(View.INVISIBLE);
         imgView.setVisibility(View.INVISIBLE);
         imgView.setImageDrawable(asyncDrawable);
+
+        // Enquanto a capa não chega o lugar dela é o fundo listrado. A view pode vir
+        // reciclada de um card que já tinha capa e estar sem fundo nenhum.
+        setPlaceholderBackground(imgView, true);
 
         // Run the task on our foreground executor
         task.executeOnExecutor(foregroundExecutor, tuple);

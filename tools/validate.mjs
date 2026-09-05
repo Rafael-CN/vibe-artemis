@@ -180,6 +180,29 @@ for (const s of STAGES) {
   // por elas tornaria a definição de pronto inalcançável e treinaria todo mundo a
   // ignorar o gate. Reprovamos só o que é NOVO.
   if (s.name === 'test') {
+    // ERRO DE COMPILAÇÃO NÃO É FALHA DE TESTE — e não pode ser perdoado pela baseline.
+    //
+    // classifyTestFailures() lê os XML de resultado do JUnit. Quando a compilação das
+    // fontes de teste quebra, não existe XML nenhum: a lista de falhas novas vem vazia e
+    // este estágio reportava "[ OK ] test — nenhuma nova", com o gate inteiro verde por
+    // cima de um módulo que nem compila.
+    //
+    // Aconteceu de verdade: um teste de captura ficou com uma chamada desatualizada e dois
+    // checkpoints foram declarados verdes assim. A baseline existe para tolerar falhas
+    // herdadas do upstream, não para tolerar código quebrado.
+    const naoCompila = /\.java:\d+: error:|Compilation failed|^e: file:/m;
+    if (naoCompila.test(output)) {
+      result.ok = false;
+      result.stage = s.name;
+      result.failures = output
+        .split(String.fromCharCode(10))
+        .filter((l) => naoCompila.test(l))
+        .slice(0, 20);
+      console.error('[FAIL] test — as fontes de teste NÃO COMPILAM:');
+      for (const f of result.failures) console.error(`  ${f.trim()}`);
+      break;
+    }
+
     const { newFailures, known } = classifyTestFailures();
     result.knownFailures = known;
     result.failures = newFailures;

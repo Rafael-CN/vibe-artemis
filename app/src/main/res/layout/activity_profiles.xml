@@ -1,104 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Cenas. Tela 06 do handoff.
+    Cenas, agora so a casca que hospeda o Compose.
 
-    O que o app já chamava de perfil é o que o protótipo chama de cena: um toque troca
-    papel, tela, taxa e entrada. É preferência local do cliente — o host não sabe de cena,
-    e nada disto viaja pela rede.
+    O que havia aqui - cabecalho, descricao, RecyclerView com GridLayoutManager, estado
+    vazio e o botao do rodape - virou com.limelight.ui.compose.TelaCenas. Junto foram as
+    variantes de tablet e o R.integer que contava colunas por pasta de recurso: a contagem
+    agora sai da largura real, que e o que ela sempre quis dizer.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
-    android:fitsSystemWindows="true">
+    android:background="@color/vidro_void">
 
-    <com.limelight.ui.VidroLightView
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/vidroCenasCompose"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_alignParentTop="true"
-        app:vidro_intensity="0.07"
-        app:vidro_center_y="0" />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/vidroScenesHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_5"
-        android:paddingRight="@dimen/vidro_space_5">
-
-        <TextView
-            style="@style/VidroText.Display"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/vidro_scenes" />
-
-        <TextView
-            android:id="@+id/profilesDescription"
-            style="@style/VidroText.Support"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_2"
-            android:text="@string/vidro_scenes_sub" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profilesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/vidroScenesHeader"
-        android:layout_marginTop="@dimen/vidro_space_4"
-        android:clipToPadding="false"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingRight="@dimen/vidro_space_5"
-        android:paddingBottom="@dimen/vidro_thumb_reach"
-        android:scrollbars="none" />
-
-    <LinearLayout
-        android:id="@+id/emptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            style="@style/VidroText.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/vidro_no_scenes" />
-
-        <TextView
-            style="@style/VidroText.Support"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_2"
-            android:gravity="center"
-            android:text="@string/vidro_no_scenes_sub" />
-    </LinearLayout>
-
-    <!--
-        "Salvar a sessão atual como cena". Tracejado porque é o lugar de uma cena que
-        ainda não existe — a forma diz que ali cabe algo, sem fingir que já tem.
-    -->
-    <TextView
-        android:id="@+id/addProfileFab"
-        style="@style/VidroText"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/vidro_space_5"
-        android:background="@drawable/vidro_dashed"
-        android:contentDescription="@string/profile_manager_new_profile"
-        android:fontFamily="@font/manrope_semibold"
-        android:gravity="center"
-        android:text="@string/vidro_scene_save"
-        android:textColor="@color/vidro_text_2"
-        android:textSize="14sp" />
-
-</RelativeLayout>
+</FrameLayout>

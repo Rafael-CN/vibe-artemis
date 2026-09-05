@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Mesma forma do vidro_button_accent, um degrau de luz abaixo. O toque se diz na cor
+    porque o stateListAnimator do acento é @null: sem isto apertar não muda um pixel.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/vidro_accent_fill_pressed" />
+    <corners android:radius="@dimen/vidro_radius_pill" />
+</shape>

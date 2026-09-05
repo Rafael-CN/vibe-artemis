@@ -37,7 +37,7 @@ O subsistema de UI do Artemis é composto por 131 XMLs em app/src/main/res/ (18 
 | [`app/src/main/AndroidManifest.xml`](../../app/src/main/AndroidManifest.xml) | 269 | Declara 11 Activities, 3 Services, 1 AccessibilityService, 2 Providers. Ponto onde falta windowSoftInputMode no .Game e onde faltam supportsRtl e labels localizados. |
 | [`app/src/main/java/com/limelight/Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4400 | Activity de streaming (4300+ linhas). Relevante aqui: infla activity_game, controla immersive mode, faz o toggle do IME e implementa o caminho de commitText -> conn.sendUtf8Text (base da feature de 'enviar texto inteiro'). |
 | [`app/src/main/java/com/limelight/utils/UiHelper.java`](../../app/src/main/java/com/limelight/utils/UiHelper.java) | 295 | Utilitário de UI compartilhado: troca de locale em runtime, padding de insets, padding de TV, diálogos de confirmação. É o ponto único de i18n em runtime. |
-| [`app/src/main/java/com/limelight/GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 348 | Menu rápido in-game (AlertDialog com ArrayAdapter). Despacha as ações comparando o LABEL da opção com string equality. É onde entraria um item 'Enviar texto'. |
+| [`app/src/main/java/com/limelight/GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 505 | Ações da sessão in-game (AlertDialog com ArrayAdapter). Desde 2026-08 é só COMANDO: o estado que ele carregava — modo do mouse, pan/zoom, camadas na tela, overlay de números — migrou para a folha lateral (`vidro_session_sheet.xml` / `ui/VidroSession.java`), e o menu avançado deixou de existir. O adaptador carrega `MenuOption`, não o rótulo. |
 | [`app/src/main/res/layout/activity_pc_view.xml`](../../app/src/main/res/layout/activity_pc_view.xml) | 103 | Layout portrait da tela inicial. Contém o bug de âncora do helpButton e três ImageButtons sem contentDescription. |
 | [`app/src/main/res/layout/row_profile.xml`](../../app/src/main/res/layout/row_profile.xml) | 68 | Item da lista de perfis. Cores hardcoded e contentDescriptions em inglês literal. |
 | [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 600 | Host da tela de preferências (PreferenceFragmentCompat). Trata reload por mudança de display (foldables) e o restart por mudança de idioma. |
@@ -72,8 +72,6 @@ O subsistema de UI do Artemis é composto por 131 XMLs em app/src/main/res/ (18 
 - `StreamContainer streamContainer :14`
 - `notificationOverlay :39`
 - `performanceOverlay/performanceOverlayBig/performanceOverlayLite :53-87`
-- `floatingMenuButton :92`
-- `overlayToggleZoomButton :105`
 - `ApertureViewGroup comentado :26-37`
 
 **`app/src/main/java/com/limelight/ui/StreamContainer.java`**
@@ -493,9 +491,16 @@ onCreateInputConnection (:186) seta apenas outAttrs.imeOptions = EditorInfo.IME_
 
 **Correção sugerida:** Setar outAttrs.imeOptions = IME_FLAG_NO_EXTRACT_UI | IME_FLAG_NO_FULLSCREEN | IME_ACTION_NONE e outAttrs.inputType = TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_NO_SUGGESTIONS (ou TYPE_TEXT_VARIATION_VISIBLE_PASSWORD para desligar predição) nos três pontos. Testar com Gboard e teclado Samsung em landscape.
 
-#### 🟡 médio GameMenu despacha ações comparando o rótulo traduzido da opção
+#### ✅ resolvido GameMenu despacha ações comparando o rótulo traduzido da opção
 
 **Local:** `app/src/main/java/com/limelight/GameMenu.java:120` · **Categoria:** bug
+
+> Corrigido no redesenho do menu de sessão (2026-08): o adaptador passou a ser
+> `ArrayAdapter<MenuOption>` e o clique usa o índice `which` direto, sem comparar texto.
+> O caso que mais assustava — comandos de servidor com o mesmo nome — ficou mais provável
+> e não mais perigoso: eles agora entram no primeiro nível do menu. O hack do
+> `OnGlobalLayoutListener` continua, porque quem depende dele é o teto de altura da folha,
+> não o despacho.
 
 showMenuDialog (:103) monta um ArrayAdapter<String> e, no onClick, percorre as options procurando 'label.equals(option.label)' (:120) para descobrir qual Runnable executar. Se duas opções tiverem o mesmo texto — o que é plausível em traduções parciais, em atalhos customizados importados pelo usuário (showSpecialKeysMenu:203 usa sc.name vindo de JSON externo, sem validação de unicidade) ou em comandos de servidor duplicados (showServerCmd:279 prefixa com '> ') — a PRIMEIRA opção com aquele texto é executada, não a clicada. Também é O(n) por clique e acopla lógica a texto localizado.
 
@@ -694,7 +699,7 @@ AdapterFragment estende android.app.Fragment (framework) e sobrescreve onAttach(
 
 **Por quê:** Hoje a tela inicial tem três botões anônimos, cada card de jogo é uma imagem sem rótulo e a UI inteira do display externo (5 botões) é invisível para TalkBack. É baixo esforço e alto impacto para usuários de leitor de tela, e também melhora a navegação por D-pad em TV.
 
-**Como:** 1) Adicionar android:contentDescription com @string em settingsButton/helpButton/manuallyAddPc de activity_pc_view.xml (:52,:65,:78) e layout-land/activity_pc_view.xml (:45,:58,:71). 2) Em ExternalDisplayControlActivity.createImageButton (:505), acrescentar um parâmetro de contentDescription e preencher nas 5 chamadas (:406,:423,:424,:430,:441). 3) Em AppGridAdapter.populateView (:171) setar imgView.setContentDescription(obj.app.getAppName()) e marcar grid_overlay com setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO); análogo em PcGridAdapter.populateView (:53) com o nome do PC + estado. 4) Substituir os literais 'Edit profile'/'Delete profile' em row_profile.xml:50,:58 por @string. 5) Verificar tamanhos de alvo: floatingMenuButton e overlayToggleZoomButton em activity_game.xml (:92,:105) têm 36dp, abaixo do mínimo de 48dp.
+**Como:** 1) Adicionar android:contentDescription com @string em settingsButton/helpButton/manuallyAddPc de activity_pc_view.xml (:52,:65,:78) e layout-land/activity_pc_view.xml (:45,:58,:71). 2) Em ExternalDisplayControlActivity.createImageButton (:505), acrescentar um parâmetro de contentDescription e preencher nas 5 chamadas (:406,:423,:424,:430,:441). 3) Em AppGridAdapter.populateView (:171) setar imgView.setContentDescription(obj.app.getAppName()) e marcar grid_overlay com setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO); análogo em PcGridAdapter.populateView (:53) com o nome do PC + estado. 4) Substituir os literais 'Edit profile'/'Delete profile' em row_profile.xml:50,:58 por @string. 5) ~~Verificar tamanhos de alvo dos botões flutuantes~~ — resolvido apagando a causa: os dois tinham 36dp, abaixo do mínimo de 48dp, e saíram da sessão com o P24 do catálogo de produto. O punho da ilha, que os substitui, nasce no tamanho certo.
 
 **Risco:** Muito baixo. Nenhuma mudança funcional.
 

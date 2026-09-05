@@ -6,6 +6,11 @@
     O id `stream_settings` continua sendo o container do fragment — StreamSettings.java
     injeta nele — só que agora ele é um FrameLayout ABAIXO do título, e não mais a raiz.
     Como raiz, o fragment cobria o cabeçalho inteiro.
+
+    O recuo do título é o MESMO da linha de preferência (@dimen/vidro_space_4). Ele vinha
+    em vidro_space_5 e a lista em vidro_space_4: um degrau de 6 dp entre o cabeçalho e o
+    conteúdo, na mesma calha vertical e logo abaixo de um título de 32 sp — o tamanho da
+    letra é justamente o que denuncia o desalinhamento a olho nu.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,18 +25,46 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        app:vidro_intensity="0.20"
-        app:vidro_center_y="0" />
+        app:vidro_intensity="0.20" />
+
+    <!--
+        A saída da tela.
+
+        Ajustes e Cenas dependiam só da tecla Voltar do sistema, enquanto o editor de perfil
+        — mesmo nível, mesma lista embaixo — abre com barra, seta e ✓. Três telas irmãs com
+        dois modelos de navegação, e o único jeito de sair de duas delas não está desenhado
+        em lugar nenhum.
+
+        Os 4 dp de margem somados aos 12 dp que sobram dentro do alvo de 48 dp dão os 16 dp
+        da coluna do título e da lista — o mesmo cálculo da Toolbar em
+        activity_edit_profile.xml. O fundo é transparente porque a luz do topo passa por
+        aqui; quem responde ao dedo é a mola.
+    -->
+    <ImageButton
+        android:id="@+id/vidroSettingsBack"
+        android:layout_width="@dimen/vidro_touch_target"
+        android:layout_height="@dimen/vidro_touch_target"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/vidro_space_1"
+        android:layout_marginStart="@dimen/vidro_space_1"
+        android:layout_marginTop="@dimen/vidro_space_1"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/vidro_return"
+        android:scaleType="center"
+        android:src="@drawable/ic_vidro_back"
+        android:stateListAnimator="@animator/vidro_press" />
 
     <TextView
         android:id="@+id/vidroSettingsTitle"
         style="@style/VidroText.Display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_5"
-        android:paddingRight="@dimen/vidro_space_5"
+        android:layout_below="@id/vidroSettingsBack"
+        android:paddingLeft="@dimen/vidro_space_4"
+        android:paddingTop="@dimen/vidro_space_1"
+        android:paddingRight="@dimen/vidro_space_4"
         android:paddingBottom="@dimen/vidro_space_3"
         android:text="@string/vidro_settings" />
 

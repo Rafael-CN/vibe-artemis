@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tela saindo, no caminho de volta: 340 ms, o inverso da entrada. Encolhe e apaga —
+    volta a ser o card de onde veio.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@interpolator/vidro_exit"
+    android:shareInterpolator="true">
+
+    <alpha
+        android:duration="@integer/vidro_motion_exit"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
+
+    <scale
+        android:duration="@integer/vidro_motion_exit"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:pivotX="50%p"
+        android:pivotY="50%p"
+        android:toXScale="0.94"
+        android:toYScale="0.94" />
+
+</set>

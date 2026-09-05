@@ -108,31 +108,56 @@ public class PanZoomHandler {
         constrainToBounds();
     }
 
+    /**
+     * Aplica um fator de escala em torno de um ponto.
+     *
+     * Estava dentro do onScale do ScaleGestureDetector, que só existe para o toque na
+     * tela. A pinça do trackpad não passa por detector nenhum — ela chega como um número
+     * pronto num eixo do MotionEvent —, então a conta precisa morar num lugar que os dois
+     * caminhos possam chamar.
+     */
+    public void applyScale(float factor, float focusX, float focusY) {
+        float newScaleFactor = scaleFactor * factor;
+        newScaleFactor = Math.max(1, Math.min(newScaleFactor, MAX_SCALE)); // Apply minimum scale
+
+        float dPivotX = (childX - focusX) / scaleFactor * newScaleFactor;
+        float dPivotY = (childY - focusY) / scaleFactor * newScaleFactor;
+
+        childX = focusX + dPivotX;
+        childY = focusY + dPivotY;
+
+        scaleFactor = newScaleFactor;
+
+        streamView.setScaleX(scaleFactor);
+        streamView.setScaleY(scaleFactor);
+
+        streamView.setX(childX);
+        streamView.setY(childY);
+
+        constrainToBounds();
+    }
+
+    /**
+     * Pinça vinda do trackpad. O gesto não acontece sobre a tela, então não há ponto focal
+     * para respeitar: o zoom se ancora no centro do que está visível, que é o que qualquer
+     * um espera de um pad separado da imagem.
+     */
+    public void applyTrackpadPinch(float factor) {
+        if (factor <= 0 || Math.abs(factor - 1f) < 0.0005f) {
+            return;
+        }
+        applyScale(factor, parent.getWidth() / 2f, parent.getHeight() / 2f);
+    }
+
+    /** Já está ampliado? O menu usa isto para saber se tem zoom a desfazer. */
+    public boolean isZoomed() {
+        return scaleFactor > 1.0f;
+    }
+
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            float newScaleFactor = scaleFactor * detector.getScaleFactor();
-            newScaleFactor = Math.max(1, Math.min(newScaleFactor, MAX_SCALE)); // Apply minimum scale
-
-            // Calculate pivot point
-            float focusX = detector.getFocusX();
-            float focusY = detector.getFocusY();
-
-            float dPivotX = (childX - focusX) / scaleFactor * newScaleFactor;
-            float dPivotY = (childY - focusY) / scaleFactor * newScaleFactor;
-
-            childX = focusX + dPivotX;
-            childY = focusY + dPivotY;
-
-            scaleFactor = newScaleFactor;
-
-            streamView.setScaleX(scaleFactor);
-            streamView.setScaleY(scaleFactor);
-
-            streamView.setX(childX);
-            streamView.setY(childY);
-
-            constrainToBounds();
+            applyScale(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY());
             return true;
         }
 

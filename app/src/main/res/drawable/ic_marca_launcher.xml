@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A marca, para o ícone adaptativo.
+
+    É a mesma geometria de Marca.kt e da luz das telas: um círculo com a fonte de luz fora do
+    centro. O deslocamento do núcleo é a única coisa que separa isto de um ponto qualquer, e
+    por isso ele sobrevive à máscara redonda e à squircle — as duas cortam a borda, nenhuma
+    move o núcleo.
+
+    O diâmetro é 62 de 108 porque a zona segura do ícone adaptativo é o centro de 66: o
+    sistema pode cortar tudo que estiver fora dela, e uma marca que depende da borda para ser
+    reconhecida é uma marca que some no launcher de alguém.
+
+    O gradiente radial em VectorDrawable é API 24+. O ícone adaptativo é API 26+, então aqui
+    ele nunca chega a um aparelho que não o entenda. Abaixo disso vale o PNG das pastas mipmap.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:pathData="M54,54 m-31,0 a31,31 0 1,0 62,0 a31,31 0 1,0 -62,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="44.7"
+                android:centerY="44.7"
+                android:gradientRadius="41.85">
+                <item android:offset="0.00" android:color="#FFF3D9B4" />
+                <item android:offset="0.22" android:color="#FFE9C48B" />
+                <item android:offset="0.62" android:color="#FF7A5F35" />
+                <item android:offset="1.00" android:color="#FF2A2114" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

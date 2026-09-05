@@ -41,6 +41,10 @@ citar o código.
 | **Q30** | [Documentar o delta CRLF para não desperdiçar leitura de diff](#q30) | quick-win |
 | **Q31** | [Mover robolectric.properties para o classpath de teste e centralizar a configuração](#q31) | quick-win |
 | **Q32** | [Higiene de build: limpar código morto e acelerar a iteração local](#q32) | quick-win |
+| **Q33** | [Um toque retoma o que já está rodando, nos três lugares em que hoje ele não retoma](#q33) | quick-win |
+| **Q34** | [Três dedos abrem a barra de composição quando há teclado físico acoplado](#q34) | quick-win |
+| **Q35** | [O tablet com a capa: podar a folha e impedir que o teclado completo tome metade da tela](#q35) | quick-win |
+| **Q36** | [Fluidez barata: home, luz Vidro e overdraw do catálogo](#q36) | quick-win |
 
 ---
 
@@ -212,7 +216,7 @@ Com 6 modos de mouse, pan/zoom, cursor local e captura de ponteiro alternáveis 
 
 **Plano de implementação**
 
-Reutilizar `notificationOverlayView` (Game.java:225-226) e `updateZoomButtonAppearance` (4001-1009) para exibir um chip persistente com o modo atual; alternativamente, mudar o ícone do `overlayToggleZoomButton` (activity_game.xml:105-117). Emitir a notificação em `applyMouseMode` e `toggleMouseLocalCursor`.
+Reutilizar `notificationOverlayView` para exibir um chip persistente com o modo atual, emitido em `applyMouseMode` e `toggleMouseLocalCursor`. **A segunda alternativa deste plano morreu:** `overlayToggleZoomButton` e `updateZoomButtonAppearance` foram apagados pelo P24 do catálogo de produto — quem mostra o estado de zoom hoje é o interruptor `vidroZoomRow` da folha da sessão, e é lá que um indicador melhor deve morar.
 
 **Risco**
 
@@ -745,6 +749,224 @@ Um punhado de correções mecânicas e independentes que juntas reduzem bastante
 **Risco**
 
 Baixo, e cada item é reversível isoladamente. O único que merece verificação é o 3: se algum crash só se manifesta com R8 ativo, desligá-lo no debug o esconde localmente — daí a importância de o job release-check existir antes ou junto. Manter este PR sem nenhuma mudança de comportamento, para que a revisão seja trivial.
+
+---
+
+## Q33
+
+### Um toque retoma o que já está rodando, nos três lugares em que hoje ele não retoma
+
+**Tamanho:** quick-win
+
+**Subsistema:** Navegação — UI
+
+**Por quê**
+
+Voltar para a sessão aberta é o gesto mais frequente do dia e é o que mais custa toques.
+Três pontos discordam entre si sobre o que "retomar" significa:
+
+- `PcView.onItemClick` (:1078-1088) sempre cai em `doAppList`, mesmo com
+  `runningGameId != 0`. O cartão do tablet já **escreve** "sessão aberta"
+  (PcGridAdapter.java:131-140) e o toque nele ignora o que ele mesmo acabou de dizer: abre o
+  catálogo, onde a pessoa toca de novo para chegar no mesmo lugar. Três toques e duas telas
+  para voltar ao que está rodando.
+- `AppView.onItemClick` (:946-951) só inicia direto quando `prefConfig.resumeWithoutConfirm`
+  está ligada — e ela nasce **false** (preferences.xml:612-617), então quem nunca foi caçar a
+  caixa recebe um menu de dois itens cuja primeira opção é exatamente o que o toque acabou de
+  pedir.
+- A faixa de retomar do catálogo (`AppView.java:791`) passa `true` cravado no último
+  argumento de `doStart` enquanto as outras quatro chamadas da mesma tela (:636, :655, :948,
+  :961) passam `prefConfig.useVirtualDisplay`, e o RESUME do menu de contexto de `PcView`
+  (:879) passa `false`. Três botões que parecem a mesma ação pedem coisas diferentes ao host.
+
+**Plano de implementação**
+
+1. Em `PcView.onItemClick`, antes do `doAppList`, tratar ONLINE + PAIRED +
+   `runningGameId != 0` com o mesmo caminho do item RESUME do menu de contexto (:874-881):
+   `ServerHelper.doStart` com `new NvApp("app", null, computer.details.runningGameId, false)`.
+   O catálogo continua alcançável pelo pressionar longo, que já tem o item de lista completa
+   (:870-872) — vale renomeá-lo para "Ver catálogo", que é o que ele faz.
+2. Em `AppView.onItemClick`, inverter a condição: se o app tocado **é** o que está rodando,
+   `doStart` direto; se é outro, aí sim o menu de contexto, que é onde "encerrar e iniciar"
+   precisa mesmo ser lido antes de tocar. Encerrar continua no pressionar longo — é o mesmo
+   argumento que `GameMenu.java:466-476` já faz por escrito ("irreversível não pede destaque,
+   pede distância"). Com isso `checkbox_resume_without_confirm` perde função e sai de
+   `preferences.xml`.
+3. Trocar o `true` de AppView.java:791 por `prefConfig.useVirtualDisplay` e alinhar o RESUME
+   de PcView:879 ao mesmo valor. Um único significado de "retomar" no app inteiro.
+4. Levar a segunda linha do cartão (`grid_session`) também para
+   `res/layout/pc_grid_item.xml`: sem ela o S22 Ultra muda de destino no toque sem nada na
+   tela explicando por quê. Hoje ela só existe em `layout-sw600dp/`.
+
+**Risco**
+
+Quem quiser abrir **outro** app com uma sessão aberta perde o caminho curto e passa pelo
+pressionar longo. Tirar `resumeWithoutConfirm` não é neutro: quem a tinha desligada (o
+padrão) passa a ter o comportamento sem ter pedido — mas é justamente esse o objetivo.
+Precisa de aparelho para o item 3: conferir contra o Vibeshine se o `virtualDisplay` extra
+estava mudando alguma coisa do lado do host; se estava, a decisão é qual dos dois vira o
+padrão, não deixar os dois convivendo. E confirmar que retomar por `runningGameId` cai na
+sessão certa com o display virtual automático.
+
+---
+
+## Q34
+
+### Três dedos abrem a barra de composição quando há teclado físico acoplado
+
+**Tamanho:** quick-win
+
+**Subsistema:** Entrada de Teclado · Capa do S8 Ultra
+
+**Por quê**
+
+No Tab S8 Ultra com a capa acoplada, o toque de três dedos é um gesto morto: `toggleKeyboard`
+(Game.java:3585-3601) manda o `InputMethodManager` abrir o teclado do sistema, e o Android
+não abre teclado de tela quando há teclado de verdade conectado (padrão, com
+`show_ime_with_hard_keyboard` desligado). A tela não muda e ainda aparece um aviso dizendo
+que as teclas agora vão direto. No aparelho onde a stream mais roda, um dos três gestos do
+app não faz nada.
+
+Redirecionado, o mesmo gesto abre justamente o que foi pedido: um campo que monta o texto e
+manda de uma vez. De quebra conserta uma segunda coisa: `rawKeyboardShown` (:3582) é
+alternado mesmo quando o IME não subiu, então o estado que o aviso reporta já está errado
+nesse aparelho.
+
+**Depende de [B66](BUGS.md#b66).** No modo de mouse de fábrica o toque de três dedos nem
+chega a ser reconhecido, então este trabalho não é observável antes daquele conserto.
+
+**Plano de implementação**
+
+Em `toggleKeyboard()`, antes de chamar o `InputMethodManager`, testar teclado físico
+acoplado: `Configuration.keyboard == KEYBOARD_QWERTY && hardKeyboardHidden ==
+HARDKEYBOARDHIDDEN_NO`. Havendo teclado, chamar `openComposeBar()` (:1237-1260) e sair — sem
+toast, porque aí o estado está desenhado na tela. Sem teclado físico, nada muda. É o mesmo
+teste que [Q35](#q35) usa; extrair para um método só.
+
+Se `KeyboardTranslator.java:154` (`InputDevice.KEYBOARD_TYPE_ALPHABETIC`) for o caminho
+preferido, é **obrigatório** excluir `device.isVirtual()`, senão o próprio IME conta como
+teclado físico.
+
+**Risco**
+
+Baixo no código; a premissa é que precisa de medição. A afirmação de que
+`imm.toggleSoftInput` não abre nada com a capa acoplada tem de ser confirmada no Tab S8 Ultra
+antes de escrever a linha — se em algum caso o IME abrir mesmo assim, o redirecionamento
+troca um comportamento útil por outro. Validar nos dois aparelhos: tablet com capa (abre a
+barra) e S22 Ultra (abre o teclado do sistema, como sempre).
+
+---
+
+## Q35
+
+### O tablet com a capa: podar da folha o que a capa já resolve e impedir que o teclado completo tome metade da tela
+
+**Tamanho:** quick-win
+
+**Subsistema:** UI · Capa do S8 Ultra
+
+**Por quê**
+
+Duas coisas que só doem no aparelho grande com a capa, e que são a mesma queixa por dois
+lados: teclado de tela ocupando espaço para quem tem teclado de verdade debaixo da mão.
+
+1. Dois dos quatro interruptores da seção NA TELA da folha de sessão — "Teclado completo"
+   (`vidro_session_sheet.xml:462`) e "Teclas especiais" (:501) — são teclado de tela. São
+   duas linhas de ruído numa folha já reclamada de longa, e são justamente as duas que ligam
+   camadas que cobrem o vídeo.
+2. Com o ajuste automático ligado, que é o padrão, o teclado completo nasce com a largura
+   inteira da tela e **metade** da altura
+   (`KeyBoardLayoutController.java:344-348`: `width = screen.widthPixels`,
+   `height = heightPixels * 0.5`). No Tab S8 Ultra deitado isso é uma laje de 1480 × 462 dp:
+   82 teclas viram lajotas de ~95 × 77 dp com letra de 12sp, e o vídeo fica reduzido à metade
+   de cima. No celular a mesma conta dá algo razoável, então o defeito só existe no aparelho
+   grande.
+
+**Plano de implementação**
+
+1. Um teste único em `VidroSession`, no ponto em que a folha é montada:
+   `Configuration.keyboard == KEYBOARD_QWERTY && hardKeyboardHidden == HARDKEYBOARDHIDDEN_NO`
+   → `setVisibility(GONE)` nas duas linhas. **Não remover a funcionalidade**: o gesto de
+   quatro dedos e o `toggleFullKeyboard()` continuam existindo para quem destacar a capa.
+   Reaplicar em `Game.onConfigurationChanged`, que já é chamado quando a capa acopla ou
+   desacopla porque `keyboard|keyboardHidden` estão em `configChanges`
+   (AndroidManifest.xml:195). Mesmo método de [Q34](#q34).
+2. No ramo automático do `KeyBoardLayoutController`, tirar as duas frações e derivar do que
+   uma tecla precisa medir: altura = 6 × altura-de-tecla (uma dimen em `values/dimens.xml`
+   com valor próprio em `values-sw600dp`), com teto na metade da tela; largura =
+   `min(largura da tela, um teto em dp)`. A gravidade já é `BOTTOM|CENTER_HORIZONTAL`
+   (:359-362), então um teclado mais estreito nasce centrado sem mais nada. Quem desligou o
+   ajuste automático continua mandando nas próprias medidas — o ramo :340-343 não é tocado.
+   Conferir se o controlador de teclas especiais faz a mesma conta.
+
+**Risco**
+
+Baixo, e o item 2 é reversível pela preferência que já existe. O jeito de errar o item 1 é o
+teste dar positivo com um gamepad ou com o IME contando como teclado — daí duas opções
+sumirem no celular sem motivo. O número certo de altura de tecla é chute até medir. Precisa
+dos **dois** aparelhos: Tab S8 Ultra com a capa acoplada (as linhas somem, o teclado encolhe),
+com a capa destacada (voltam, sem reiniciar a sessão) e S22 Ultra (nada muda).
+
+---
+
+## Q36
+
+### Fluidez barata: a home para de se redesenhar inteira, a luz para de rastejar e o catálogo para de pintar o que já está coberto
+
+**Tamanho:** quick-win
+
+**Subsistema:** UI, Recursos e Internacionalização
+
+**Por quê**
+
+Três desperdícios pequenos, independentes, todos confirmados por leitura, todos no caminho
+que ele vê todo dia.
+
+1. `PcView.updateComputer` chama `pcGridAdapter.notifyDataSetChanged()` **incondicionalmente**
+   a cada resultado de sondagem (:981), e a sondagem é de 1500 ms por host
+   (ComputerManagerService.java:46). Com o app aberto na lista, a grade remonta e o cabeçalho
+   se reescreve em ciclo sem nada ter mudado: a tela nunca fica parada e o painel nunca desce
+   de taxa de atualização. O `AppView` já acertou isso — lá o notify está atrás de
+   `if (updated)` (:827 e :908).
+2. `VidroLightView.setIntensity` (:165-170) cancela o animador **antes** de testar o epsilon
+   (:177), então uma chamada repetida no meio da transição corta a curva e recomeça um
+   ease-out de 900 ms a partir do valor atual. Com o item 1 disparando a cada 1,5 s, a luz
+   rasteja em vez de pousar.
+3. `app_grid_item.xml:56-57` dá à `ImageView` da capa um
+   `android:background="@drawable/vidro_placeholder"`, que é uma layer-list com `<solid>`
+   opaco. A box art cobre 100% dele e o fundo nunca sai. No Tab S8 Ultra deitado são 6 colunas
+   (`layout-sw720dp/app_grid_view.xml:26`) e ~15 cards visíveis: quase uma tela inteira de
+   overdraw por quadro, o tempo todo, enquanto ele rola o catálogo.
+
+**Plano de implementação**
+
+1. Comparar o `ComputerDetails` novo com o existente e só notificar quando algo **visível**
+   mudou — `state`, `runningGameId`, `name` e `macAddress` cobrem o que a célula desenha. No
+   mesmo passo, em `updateVidroHeader` (:995): guardar os três `findViewById` (:996-998) em
+   campos e trocar `Calendar.getInstance()` por `System.currentTimeMillis` com cache (hoje
+   aloca um `GregorianCalendar` e resolve fuso a cada sondagem, para escolher entre três
+   saudações que mudam três vezes por dia).
+2. Em `setIntensity`, testar o epsilon contra o **alvo** da animação em curso e sair antes de
+   cancelar.
+3. Nos dois pontos em que a capa real chega à tela — `CachedAppAssetLoader.java:266/277`
+   (`onPostExecute`) e :383 (acerto no cache de memória) — chamar `imgView.setBackground(null)`
+   quando `!isBitmapPlaceholder(bitmap)`, e restaurar `R.drawable.vidro_placeholder` no início
+   de `populateImageView` (:366), por onde todo rebind passa. Já que é a mesma passada:
+   `AppGridAdapter:254` faz `gridMask.setBackgroundColor(0x00000000)` quando o app não está
+   rodando — trocar por `setBackground(null)` tira um RenderNode por card que existe só para
+   não desenhar nada.
+
+**Risco**
+
+Baixo. O risco do item 1 é o inverso: apertar demais a comparação e a grade parar de refletir
+uma mudança de estado — validar com dois hosts, um deles dormindo, e ver se a lista ainda
+reage ao Wake-on-LAN. O item 3 tem uma ressalva: se o host publicar capas em proporções
+diferentes entre si, a arte que não bate com a proporção da grade desenha por `fitCenter` e a
+faixa das beiradas passa a mostrar o que estiver atrás em vez do listrado — o Vibeshine
+publica tudo no mesmo tamanho, e se preocupar, condicionar a remoção à proporção bater.
+Validar rolando o catálogo com o depurador de GPU overdraw ligado, nos dois aparelhos. **Não
+sei medir o ganho em quadros sem o aparelho** — o que dá para afirmar por leitura é que o
+trabalho é feito e jogado fora, não quanto ele custa.
 
 ---
 

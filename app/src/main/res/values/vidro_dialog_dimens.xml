@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Piso de largura do diálogo. A plataforma pede 95% do eixo menor, e com isso um menu de
+    dois itens curtos abre quase da largura da tela, com o texto ilhado num canto. Estes
+    valores só baixam o piso — conteúdo maior continua esticando a folha.
+
+    Vão como <item type="dimen"> porque o valor é fração, não dimensão.
+-->
+<resources>
+    <item name="vidro_dialog_min_width_minor" type="dimen">72%</item>
+    <item name="vidro_dialog_min_width_major" type="dimen">48%</item>
+</resources>

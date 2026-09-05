@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Bloco da ilha: rótulo em cima, estado atual embaixo. O estado é sempre uma palavra,
-    nunca um ícone sozinho — no meio de um jogo ninguém decifra pictograma.
+    Bloco da ilha: o rótulo no meio e, quando houver, o estado atual embaixo. O estado é
+    sempre uma palavra, nunca um ícone sozinho — no meio de um jogo ninguém decifra
+    pictograma. Segunda linha só para ESTADO: explicação do rótulo não entra aqui, porque
+    a ilha fica permanentemente sobre o vídeo e ninguém lê 10sp durante uma partida.
+
+    A largura mínima caiu de 104 para 88 dp junto com a saída das segundas linhas: ela
+    fora dimensionada para caber "digitar e enviar", e sem elas os 104 dp viravam vão
+    morto multiplicado por três blocos. Continua muito acima dos 48 dp que o dedo pede.
+
+    O rótulo é centralizado nos dois eixos. Ele já era centralizado na vertical, mas
+    continuava encostado na esquerda enquanto o bloco tem 88 dp de largura mínima e as
+    palavras têm larguras diferentes — "Ajustes" sobra 30 dp à direita, "Detalhes" sobra
+    quase nada, e três blocos vizinhos com o texto começando no mesmo lugar e terminando
+    cada um no seu liam como fileira desalinhada.
+
+    A mola é um StateListAnimator e por isso só roda no toque: sem dedo, sem quadro. Isso
+    aqui não é detalhe — a ilha vive permanentemente por cima do vídeo, e qualquer coisa
+    que anime em laço nesta camada disputa GPU com o quadro que a pessoa está jogando. O
+    fundo do bloco já trocava de cor ao ser pressionado; o que faltava era o movimento,
+    que é o que se percebe sem olhar direto para o bloco — e no meio de uma partida
+    ninguém olha direto para a ilha.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,11 +29,12 @@
     android:layout_marginStart="@dimen/vidro_space_2"
     android:layout_marginLeft="@dimen/vidro_space_2"
     android:background="@drawable/vidro_island_tile_bg"
-    android:gravity="center_vertical"
-    android:minWidth="104dp"
+    android:gravity="center"
+    android:minWidth="88dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/vidro_space_4"
-    android:paddingRight="@dimen/vidro_space_4">
+    android:paddingRight="@dimen/vidro_space_4"
+    android:stateListAnimator="@animator/vidro_press">
 
     <TextView
         android:id="@+id/tile_label"
@@ -22,17 +42,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_semibold"
+        android:gravity="center"
         android:letterSpacing="-0.02"
         android:textSize="13sp"
         tools:text="Teclado" />
 
+    <!--
+        Hoje nasce e morre GONE: os três blocos chamam setTile() com valor nulo, e a última
+        segunda linha da ilha — a frase de qualidade, no bloco de identidade — também saiu.
+        Fica declarada porque a API de setTile() continua aceitando um estado, e é aqui que
+        ele apareceria; não é dívida esquecida.
+
+        Meio tom abaixo do rótulo, que é o que separa estado de nome — a hierarquia contra
+        o rótulo vem do peso e dos 13sp dele, não de mais brilho.
+    -->
     <TextView
         android:id="@+id/tile_value"
         style="@style/VidroText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_regular"
-        android:textColor="@color/vidro_text_3"
-        android:textSize="11sp"
+        android:gravity="center"
+        android:textColor="@color/vidro_text_2"
+        android:textSize="11.5sp"
         tools:text="na tela" />
 </LinearLayout>

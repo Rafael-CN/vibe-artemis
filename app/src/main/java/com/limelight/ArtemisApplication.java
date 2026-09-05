@@ -1,5 +1,6 @@
 package com.limelight;
 
+import com.limelight.ui.VidroToast;
 import android.app.Application;
 import android.widget.Toast;
 
@@ -11,7 +12,7 @@ public class ArtemisApplication extends Application {
         super.onCreate();
         ProfilesManager profilesManager = ProfilesManager.getInstance();
         if (!profilesManager.load(this)) {
-            Toast.makeText(this, R.string.profile_manager_failed_to_load, Toast.LENGTH_LONG).show();
+            VidroToast.show(this, R.string.profile_manager_failed_to_load, Toast.LENGTH_LONG);
         }
     }
 }

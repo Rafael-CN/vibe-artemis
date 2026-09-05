@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Valor da linha de preferência.
+
+    A taxa de bits só existia DENTRO do diálogo: para saber em quanto ela estava era
+    preciso abrir e fechar. Aqui o número fica na própria linha.
+
+    Tinta cheia, e não o tom secundário do estilo de apoio: medido na gravação, o valor era
+    o elemento MENOS brilhante da linha (título 197, valor 157, resumo 149) — tinha o peso
+    do texto de apoio quando é justamente o dado que a pessoa veio conferir.
+
+    Manrope, e não mono. Mono é o papel do número que MUDA enquanto se olha, e ali ele
+    continua: no diálogo do controle deslizante, onde o valor corre com o dedo e dígito
+    tabular impede a linha de dançar. Aqui a coluna é um resumo parado, e divide o lugar
+    com valores que não são número nenhum ("Automático", "Preferir menor latência") —
+    duas tipografias na mesma coluna leem como dois campos diferentes.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vidro_pref_value"
+    style="@style/VidroText.Support"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:paddingStart="@dimen/vidro_space_3"
+    android:paddingLeft="@dimen/vidro_space_3"
+    android:textColor="@color/vidro_text"
+    tools:text="20 Mbps" />

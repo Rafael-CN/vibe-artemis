@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Host dormindo — dá para acordar daqui. Anel, como todo host apagado, mas um degrau
+    acima de vidro_dot_far no tom: dormindo e fora do ar viravam o mesmo desenho quando o
+    anel distante perdeu a transparência, e a linha precisa continuar dizendo qual dos
+    dois estados dá para resolver com um toque.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
     <solid android:color="@android:color/transparent" />
-    <stroke android:width="1.5dp" android:color="@color/vidro_text_3" />
+    <stroke android:width="1.5dp" android:color="@color/vidro_text_2" />
     <size android:width="9dp" android:height="9dp" />
 </shape>

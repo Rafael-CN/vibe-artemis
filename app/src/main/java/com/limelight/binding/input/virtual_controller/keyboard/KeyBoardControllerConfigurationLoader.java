@@ -4,6 +4,7 @@
 
 package com.limelight.binding.input.virtual_controller.keyboard;
 
+import com.limelight.ui.VidroToast;
 import static com.limelight.binding.input.KeyboardTranslator.getModifier;
 
 import android.app.Activity;
@@ -538,7 +539,7 @@ public class KeyBoardControllerConfigurationLoader {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(context, context.getString(R.string.wrong_import_format), Toast.LENGTH_SHORT).show();
+                    VidroToast.show(context, context.getString(R.string.wrong_import_format), Toast.LENGTH_SHORT);
                 }
             }
 

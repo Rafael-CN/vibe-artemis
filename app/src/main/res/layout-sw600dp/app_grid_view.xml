@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- No tablet cabem quatro colunas sem esticar a capa, como no protótipo de paisagem. -->
+<!--
+    Quatro colunas no tablet pequeno e no dobrável aberto — 600 a 719dp de menor largura,
+    onde a coluna fica entre 120 e 210dp. O tablet grande tem arquivo próprio em
+    layout-sw720dp, com mais colunas.
+
+    A calha entre os cards vem daqui, e não do card: a altura da capa agora sai da
+    largura da coluna (VidroPosterBox), então a célula cresce junto com a tela e dois
+    cards separados só pelos 4dp de padding de cada um leem como uma faixa contínua de
+    arte. Com os 8dp daqui a calha fecha em 16.
+-->
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
     android:layout_width="match_parent"
@@ -7,11 +16,12 @@
     android:clipToPadding="false"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:horizontalSpacing="0dp"
+    android:horizontalSpacing="@dimen/vidro_space_2"
+    android:listSelector="@android:color/transparent"
     android:numColumns="4"
     android:paddingLeft="@dimen/vidro_space_6"
     android:paddingRight="@dimen/vidro_space_6"
     android:paddingBottom="@dimen/vidro_thumb_reach"
     android:scrollbars="none"
     android:stretchMode="columnWidth"
-    android:verticalSpacing="0dp" />
+    android:verticalSpacing="@dimen/vidro_space_2" />

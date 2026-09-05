@@ -190,6 +190,147 @@ public class TextInputPumpTest {
         assertEquals(0, pump.pendingBackspaces());
     }
 
+    /**
+     * O defeito que motivou runWhenIdle: o aviso de "enviado" e o Enter que confirma o
+     * comando disparavam na linha seguinte ao enfileiramento, com o texto ainda saindo.
+     */
+    @Test
+    public void idleTaskOnlyRunsAfterTheLastChunkIsDelivered() {
+        final List<String> seenWhenFired = new ArrayList<>();
+
+        pump.offerText(repeat("e", TextInputPump.UTF8_CHUNK_SIZE * 3));
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                seenWhenFired.add(sink.joined());
+            }
+        });
+
+        assertTrue("nada pode disparar enquanto a fila tem pedaços", seenWhenFired.isEmpty());
+
+        scheduler.drain();
+
+        assertEquals(1, seenWhenFired.size());
+        assertEquals("a tarefa tem de ver o texto INTEIRO já entregue",
+                TextInputPump.UTF8_CHUNK_SIZE * 3, seenWhenFired.get(0).length());
+        assertTrue(pump.isIdle());
+    }
+
+    /** Backspaces também seguram a tarefa: a fila só está vazia quando os dois acabaram. */
+    @Test
+    public void idleTaskWaitsForBackspacesToo() {
+        final int[] fired = {0};
+
+        pump.offerBackspaces(20);
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                fired[0]++;
+            }
+        });
+
+        assertEquals(0, fired[0]);
+        scheduler.drain();
+        assertEquals(1, fired[0]);
+        assertEquals(20, sink.backspaces);
+    }
+
+    /** Com a fila já vazia não há o que esperar, e adiar seria mentira ao contrário. */
+    @Test
+    public void idleTaskRunsImmediatelyWhenNothingIsQueued() {
+        final int[] fired = {0};
+
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                fired[0]++;
+            }
+        });
+
+        assertEquals(1, fired[0]);
+        assertTrue(scheduler.pending.isEmpty());
+    }
+
+    /** Duas mandadas seguidas: cada uma leva a própria tarefa, na ordem. */
+    @Test
+    public void idleTasksFireInOrderAndOnlyOnce() {
+        final List<String> order = new ArrayList<>();
+
+        pump.offerText(repeat("f", TextInputPump.UTF8_CHUNK_SIZE * 2));
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                order.add("primeira");
+            }
+        });
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                order.add("segunda");
+            }
+        });
+
+        scheduler.drain();
+
+        assertEquals(2, order.size());
+        assertEquals("primeira", order.get(0));
+        assertEquals("segunda", order.get(1));
+
+        // Um dreno posterior não pode ressuscitar tarefa já executada.
+        pump.offerText("mais");
+        scheduler.drain();
+        assertEquals(2, order.size());
+    }
+
+    /**
+     * Uma tarefa que enfileira texto novo não pode arrastar as seguintes junto: elas
+     * esperam o próximo esvaziamento.
+     */
+    @Test
+    public void idleTaskThatQueuesMoreTextDefersTheRest() {
+        final List<String> order = new ArrayList<>();
+
+        pump.offerText("primeiro");
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                order.add("reenfileira");
+                pump.offerText("segundo");
+            }
+        });
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                order.add("depois");
+            }
+        });
+
+        scheduler.drain();
+
+        assertEquals(2, order.size());
+        assertEquals("reenfileira", order.get(0));
+        assertEquals("depois", order.get(1));
+        assertEquals("primeirosegundo", sink.joined());
+    }
+
+    /** Se a conexão cair no meio, o texto não chegou — o aviso de chegada some junto. */
+    @Test
+    public void clearDropsIdleTasks() {
+        final int[] fired = {0};
+
+        pump.offerText(repeat("g", TextInputPump.UTF8_CHUNK_SIZE * 2));
+        pump.runWhenIdle(new Runnable() {
+            @Override
+            public void run() {
+                fired[0]++;
+            }
+        });
+        pump.clear();
+        scheduler.drain();
+
+        assertEquals(0, fired[0]);
+    }
+
     @Test
     public void interleavedTextAndBackspacesBothComplete() {
         pump.offerText(repeat("d", TextInputPump.UTF8_CHUNK_SIZE + 1));

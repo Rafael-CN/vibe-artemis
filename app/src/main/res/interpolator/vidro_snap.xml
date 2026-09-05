@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A curva do punho que gruda numa âncora.
+
+    As outras curvas da identidade são de entrada e saída: uma coisa aparece, uma coisa sai.
+    Esta é de destino — o dedo soltou e o objeto viaja até um lugar que já estava lá. Uma
+    curva neutra faz isso parecer "reposicionamento"; uma passada curta faz parecer ímã, que
+    é o que a âncora é.
+
+    Tensão baixa de propósito: 1,1 é o suficiente para o olho ler intenção. Acima disso vira
+    gelatina, e gelatina em cima de um jogo é o oposto de discreto.
+-->
+<overshootInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tension="1.1" />

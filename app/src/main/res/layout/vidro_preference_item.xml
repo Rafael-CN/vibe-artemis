@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A linha da tela de Ajustes.
+
+    Até aqui a tela inteira usava preference_material.xml, a linha padrão do
+    androidx.preference, e por isso não havia ritmo nenhum: os 16 dp de respiro moravam
+    CRAVADOS no bloco de texto, e a altura da linha era max(texto, listPreferredItemHeightSmall,
+    widget). Numa linha de resumo curto sobrava altura e o texto era centralizado nessa
+    sobra; numa de resumo longo não sobrava nada. O espaço entre uma linha e a próxima
+    passava a depender de quantas linhas o resumo quebrou e de a linha ter ou não caixa de
+    seleção — três medidas diferentes na mesma lista.
+
+    Aqui o respiro vem do padding da própria linha, então é o mesmo em toda a lista.
+    E não há altura mínima: ela é justamente o que reintroduzia a sobra distribuída — numa
+    linha curta o texto voltava a ser centralizado nela, e o valor à direita descolava da
+    primeira linha do título. O alvo de toque passa a sair do padding, @dimen/vidro_pref_row_gap
+    (14 dp em cima e embaixo, mais os 20 dp de uma linha de título = os 48 dp que o dedo
+    precisa), que é medida de conteúdo e não espaço vazio para alguém centralizar dentro.
+
+    A tipografia também deixa de ser a do sistema. textAppearanceListItem resolve para
+    Roboto — fonte de sistema numa identidade que não tem nenhuma.
+
+    E o toque deixa de ser o ripple do Material: a mola de @animator/vidro_press responde
+    ao dedo e @drawable/vidro_pref_row_bg guarda só o foco, para o controle remoto.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vidro_pref_row_bg"
+    android:baselineAligned="false"
+    android:clipToPadding="false"
+    android:paddingLeft="@dimen/vidro_space_4"
+    android:paddingStart="@dimen/vidro_space_4"
+    android:paddingTop="@dimen/vidro_pref_row_gap"
+    android:paddingRight="@dimen/vidro_space_4"
+    android:paddingEnd="@dimen/vidro_space_4"
+    android:paddingBottom="@dimen/vidro_pref_row_gap"
+    android:orientation="vertical"
+    android:stateListAnimator="@animator/vidro_press">
+
+    <!--
+        Título e valor dividem UMA linha; o resumo desce inteiro para baixo dos dois.
+
+        Antes o resumo dividia a coluna com o valor, e por isso cada parágrafo da lista
+        terminava numa guia diferente: a linha com "60.0 Mbps" à direita perdia a largura
+        do número, a vizinha sem valor não perdia nada, e a borda direita da lista virava
+        uma serra de quatro degraus. Largura de linha é o que dá à coluna de texto o
+        aspecto de coluna; ela não pode depender de quanto ocupa o valor da linha.
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <!--
+            A moldura de ícone é a da biblioteca de propósito: o id que o Preference procura
+            para escondê-la é o dela. Quase toda preferência daqui traz iconSpaceReserved=false
+            e some com esta moldura; a de idioma tem ícone e continua precisando dela.
+        -->
+        <include layout="@layout/image_frame" />
+
+        <!--
+            Sem singleLine: era ele, na linha da biblioteca, que cortava "Taxa de quadros
+            por segundo" em ".." no meio da palavra. Também não há teto de linhas — o
+            androidx chama setSingleLine(false) nas famílias cujo estilo declara
+            singleLineTitle, e isso zera qualquer maxLines; um teto que só vale para
+            metade da lista é pior que nenhum.
+        -->
+        <!--
+            Entrelinha apertada porque as duas linhas são O MESMO nome. Em "Taxa de bits do
+            vídeo em redes / limitadas" o vão entre as linhas do título media 25 px contra
+            24 px até o resumo: dois níveis semânticos separados por 1 px, e "limitadas"
+            lia como item próprio. Um título que quebra tem de se ler como um bloco.
+        -->
+        <TextView
+            android:id="@android:id/title"
+            style="@style/VidroText.Item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:lineSpacingMultiplier="1.05" />
+
+        <!--
+            Caixa de seleção, valor da taxa de bits, escolha da lista — o que a preferência
+            pendurar.
+
+            Alinha pelo TOPO, não pelo centro: numa linha com título de duas linhas o valor
+            pertence à PRIMEIRA delas, que é a que o nomeia. E agora ele divide a linha só
+            com o título, então "topo" é literalmente a primeira linha do título.
+        -->
+        <LinearLayout
+            android:id="@android:id/widget_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="end|top"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/vidro_space_4"
+            android:paddingStart="@dimen/vidro_space_4"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp" />
+
+    </LinearLayout>
+
+    <!--
+        Corpo pelo entrelinhamento — os resumos daqui são frases de uma e duas linhas —,
+        mas no tom terciário: Body vem em vidro_text_2, que competiria com o título.
+
+        O entrelinhamento cai para 1,3 e o respiro acima sobe para vidro_space_2 por causa
+        da hierarquia medida na gravação: com 1,45 de entrelinha e 4 dp acima, o branco que
+        separava DUAS LINHAS DO MESMO parágrafo era maior que o branco entre o título e o
+        parágrafo dele. O agrupamento visual ficava ao contrário — o resumo lia como bloco
+        solto e a segunda linha do título como item próprio.
+
+        Sem teto de linhas: um resumo que estourasse o teto seria cortado no meio da
+        palavra, e aqui a caixa cresce, o texto não encolhe.
+    -->
+    <TextView
+        android:id="@android:id/summary"
+        style="@style/VidroText.Body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vidro_space_2"
+        android:lineSpacingMultiplier="1.3"
+        android:textAlignment="viewStart"
+        android:textColor="@color/vidro_text_3" />
+
+</LinearLayout>

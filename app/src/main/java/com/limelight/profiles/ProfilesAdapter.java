@@ -1,5 +1,6 @@
 package com.limelight.profiles;
 
+import com.limelight.ui.VidroToast;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -54,10 +55,10 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
         holder.profileActive.setOnClickListener(v -> {
             if (isActive) {
                 profilesManager.setActive(null);
-                Toast.makeText(context, R.string.profile_manager_deactivated_profile, Toast.LENGTH_SHORT).show();
+                VidroToast.show(context, R.string.profile_manager_deactivated_profile, Toast.LENGTH_SHORT);
             } else {
                 profilesManager.setActive(profile.getUuid());
-                Toast.makeText(context, context.getString(R.string.profile_manager_activated_profile, profile.getName()), Toast.LENGTH_SHORT).show();
+                VidroToast.show(context, context.getString(R.string.profile_manager_activated_profile, profile.getName()), Toast.LENGTH_SHORT);
             }
             profilesManager.save(context);
         });
@@ -69,16 +70,23 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
         });
 
         holder.deleteProfile.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
+            // O ultimo dialogo cru do app: apagar uma cena saia cinza-de-sistema, com o
+            // botao lilas do Material, enquanto as outras tres confirmacoes que a pessoa
+            // encontra -- sair da sessao, apagar PC, display virtual -- ja usam o tema Vidro.
+            // Apagar uma cena e tao destrutivo quanto apagar um PC e merece a mesma voz.
+            AlertDialog dialogoDeApagar = new AlertDialog.Builder(context, R.style.VidroDialogPlatform)
                 .setTitle(R.string.profile_manager_delete_profile)
                 .setMessage(context.getString(R.string.profile_manager_confirm_profile_deleteion, profile.getName()))
                 .setPositiveButton(R.string.profile_manager_delete, (dialog, which) -> {
                     profilesManager.delete(profile.getUuid());
                     profilesManager.save(context);
-                    Toast.makeText(context, context.getString(R.string.profile_manager_profile_deleted, profile.getName()), Toast.LENGTH_SHORT).show();
+                    VidroToast.show(context, context.getString(R.string.profile_manager_profile_deleted, profile.getName()), Toast.LENGTH_SHORT);
                 })
                 .setNegativeButton(context.getString(R.string.cancel), null)
                 .show();
+            // Depois do show, porque antes dele os botões não existem. Sem a veste, o
+            // "Apagar" saía no lilás do Material — ver UiHelper.vestirBotoesDoDialogo.
+            com.limelight.utils.UiHelper.vestirBotoesDoDialogo(dialogoDeApagar, context.getResources());
         });
 
         // Also make the whole row clickable to edit

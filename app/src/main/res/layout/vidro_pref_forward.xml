@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Marca de "esta linha abre outra tela", no widget da linha de preferência.
+
+    O androidx não desenha nada à direita de um PreferenceScreen aninhado: no índice de
+    Ajustes as treze linhas ficariam idênticas às linhas de ajuste que abrem diálogo ou
+    marcam caixa, e nada na lista diria que o toque muda de tela.
+
+    Sem contentDescription e fora da acessibilidade de propósito: o título da linha já é o
+    rótulo, e a seta repetida em treze linhas seguidas só faria o leitor de tela anunciar
+    o mesmo ruído treze vezes.
+-->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:importantForAccessibility="no"
+    android:src="@drawable/ic_vidro_forward" />

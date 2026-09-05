@@ -1,5 +1,6 @@
 package com.limelight;
 
+import com.limelight.ui.VidroToast;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.view.KeyEvent;
@@ -22,9 +23,15 @@ public class KeyboardAccessibilityService extends AccessibilityService {
     public boolean onKeyEvent(KeyEvent event) {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
-//        Toast.makeText(getApplicationContext(),"scancode:"+event.getScanCode()+",code:"+event.getKeyCode(),Toast.LENGTH_LONG).show();
+//        VidroToast.show(getApplicationContext(),"scancode:"+event.getScanCode()+",code:"+event.getKeyCode(),Toast.LENGTH_LONG);
         //主要解决系统自带快捷键在pc端无法使用问题 home键 scancode=172 code- 3
-        if (Game.instance != null && Game.instance.connected && !BLACKLIST_KEYS.contains(keyCode)) {
+        // A barra de composição é uma ilha de foco, e este serviço fica ANTES da janela:
+        // sem esta condição ele engoliria cada tecla e devolveria true, e o campo de texto
+        // ficaria impossível de usar em quem tem o serviço ligado — não daria nem para
+        // digitar dentro dele. Com a barra aberta as teclas seguem o caminho normal e
+        // Game.dispatchKeyEvent é quem decide o que não vai para o PC.
+        if (Game.instance != null && Game.instance.connected && !BLACKLIST_KEYS.contains(keyCode)
+                && !Game.instance.isComposeBarVisible()) {
 
             if (action == KeyEvent.ACTION_DOWN) {
                 //fix 小米平板esc键按钮映射错误 KEYCODE_BACK=4

@@ -80,6 +80,61 @@ Criar com.limelight.nvstream.http.HostCapabilities preenchida em NvHTTP.getCompu
 
 Mudança de schema do banco (precisa de migração ou de coluna nova tolerante a null). Requer alinhamento com o significado real dos bits de permissão do Apollo — o comentário em ComputerDetails.java:173-204 é a única fonte e pode envelhecer se o Apollo mudar o enum.
 
+**Estado em 2026-08-21 — primeira fatia entregue**
+
+O canal existe e tem um consumidor real. Feito:
+
+- `nvstream/http/HostCapabilities.java` — objeto imutável com a tabela de bits do enum
+  `PERM` do Apollo nomeada (a transcrição do enum mudou de `ComputerDetails.toString()`
+  para lá, e o `toString()` passou a usar as constantes em vez de hexadecimais soltos) e
+  as consultas que alguém pergunta hoje. Guarda a armadilha do `-1`: `PERMISSION_UNKNOWN`
+  tem todos os bits ligados, então toda consulta passa por `hasPermissionModel()` antes de
+  olhar o bit e ninguém de fora vê a máscara crua.
+- `ComputerDetails.getCapabilities()` — derivado do campo `permission` que o `NvHTTP` já
+  preenchia.
+- `ServerHelper.createStartIntent` → `Game.EXTRA_HOST_CAPABILITIES` (inteiro) →
+  `Game.getHostCapabilities()`.
+- `GameMenu` volta a ter "Buscar" e "Enviar área de transferência", uma linha por direção,
+  cada uma condicionada ao seu bit. No Vibeshine nenhuma das duas aparece; num Apollo com
+  permissão só de leitura, aparece só a de buscar.
+- `HostCapabilitiesTest` — 10 casos, JVM pura.
+
+**Divergências deliberadas do plano acima**
+
+- **Nada foi persistido no SQLite.** A máscara é o dado mais perecível do `ComputerDetails`
+  — o host pode revogar permissão a qualquer momento e a sondagem seguinte tem que refletir
+  isso. Cache em banco criaria uma segunda verdade envelhecida, e a migração de schema seria
+  paga por nada: a máscara é reescrita a cada sondagem e `doStart` já exige host ONLINE,
+  o que implica sondagem bem-sucedida. Pelo mesmo motivo `getCapabilities()` é derivado e
+  não um campo.
+- **`NvHTTP` não foi tocado** e `isNvidia`/`isSunshineFamily`/`isApollo` não entraram.
+  `nvidiaServer` e `vDisplaySupported` já existem em `ComputerDetails` e ninguém pediu por
+  eles dentro da sessão; criar as flags antes do consumidor é a abstração que este fork
+  evita. Quando o primeiro consumidor aparecer, elas entram em `HostCapabilities` e o extra
+  do Intent vira `Parcelable` — o nome do extra já é o do conceito para que a troca não
+  vaze para os chamadores.
+
+**O que ficou fora, para a próxima fatia**
+
+1. **Sincronização automática de clipboard** (`Game.java`, no ramo
+   `prefConfig.smartClipboardSync` do tratamento de foco, e no retomar). Continua tentando
+   contra qualquer host e falhando no Vibeshine; é o mesmo bug pelo mesmo motivo, e agora
+   tem uma pergunta pronta a fazer. Um `HostCapabilities.supportsClipboardSync()` (as duas
+   direções em OU) foi deixado de fora justamente por não ter chamador ainda.
+2. **A preferência de clipboard na folha de ajustes** — os três interruptores
+   (`checkbox_smart_clipboard_sync` e companhia) aparecem para todo mundo, inclusive em
+   host que não tem o endpoint. Ligar/desligar interruptor inerte é o mesmo defeito uma
+   camada acima.
+3. **Comandos de servidor** ainda são decididos pela lista vir vazia, não pelo bit
+   `server_cmd`. Funciona hoje — host sem suporte não manda `ServerCommand` nenhum — mas
+   um Apollo que mande a lista e negue a permissão a este cliente ofereceria ações que
+   falham. `PERM_SERVER_CMD` já está nomeado esperando isso.
+4. **Toque nativo e caneta** (`input_touch`, `input_pen`) — a [M08](MELHORIAS.md#m08) fala
+   de fallback quando o host não suporta; os bits para decidir isso agora existem.
+5. **A validação em aparelho**: no Vibeshine as duas linhas não podem aparecer, e não há
+   Apollo à mão para conferir o caminho positivo. O caminho positivo está coberto só por
+   teste.
+
 ---
 
 ## E04

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:padding="3dp"
-    android:background="#212121"
+    android:background="@color/vidro_surface"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,6 +11,31 @@
         android:layout_height="match_parent"
         android:layout_weight="100"
         android:orientation="horizontal">
+
+        <!--
+            A saída do próprio teclado.
+
+            Ela existe porque a alternativa era um estado sem volta: o interruptor que
+            desliga este teclado mora na folha de ajustes da sessão, e o teclado cobre
+            exatamente a faixa por onde a folha é chamada. Quem ligava só saía derrubando a
+            sessão. Toda sobreposição que tapa a tela precisa carregar a própria porta.
+
+            Fica na primeira posição, antes do ESC, porque é o canto que o polegar alcança
+            sem atravessar o teclado inteiro.
+        -->
+        <TextView
+            android:id="@+id/keyboardDismiss"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="120"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:contentDescription="@string/vidro_close"
+            android:fontFamily="@font/manrope_bold"
+            android:gravity="center"
+            android:text="@string/vidro_close"
+            android:textColor="@color/vidro_accent_text"
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="0dp"

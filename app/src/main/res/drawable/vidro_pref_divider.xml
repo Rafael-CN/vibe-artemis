@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A régua entre linhas de Ajustes.
+
+    Quem a desenha é a DividerDecoration do PreferenceFragmentCompat, e ela é sangrada por
+    construção: o onDrawOver manda setBounds(0, y, largura_da_lista, y + altura), ignorando
+    qualquer recuo do conteúdo. Como o conteúdo respeita 16 dp de margem, a régua sobrava
+    dos dois lados e virava a única coisa da tela encostada na borda física.
+
+    O InsetDrawable recolhe o traço para dentro desses mesmos bounds, então a régua passa a
+    começar e terminar na coluna do texto. O tom é o de divisória interna, não o cinza do
+    sistema.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="@dimen/vidro_space_4"
+    android:insetRight="@dimen/vidro_space_4">
+
+    <shape android:shape="rectangle">
+        <size android:height="1dp" />
+        <solid android:color="@color/vidro_stroke_faint" />
+    </shape>
+
+</inset>
