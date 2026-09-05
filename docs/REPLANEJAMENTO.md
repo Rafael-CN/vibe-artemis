@@ -40,11 +40,13 @@ nativa por uma ponte. O custo: um segundo runtime no APK, duas linguagens, uma p
 preferência, e **nenhum ganho onde a dor mora** — o menu dentro da stream e o teclado são
 exatamente a parte que ficaria igual. O problema não foi o XML; foi verificar no lugar errado.
 
-**Por que Jetpack Compose para a casca.** Já está no projeto (ADR 0004), é o stack moderno da
-própria plataforma, tem Material 3, adapta tablet/celular por classe de janela, e as telas
-**renderizam na JVM sem emulador** (Roborazzi): eu vejo a tela como imagem, de forma
-determinística, no gate. Estado declarativo elimina a família de bugs de `findViewById` nulo que
-caçamos hoje.
+**Por que Java + XML para a casca, não Compose.** `AGENTS.md` já exige perguntar antes de
+introduzir Kotlin, e Compose sem Kotlin não é opção real — seria trazer as duas de uma vez, no
+meio de um plano que existe pra reduzir risco. `tools/screens.mjs` já rasteriza layouts XML na
+JVM via Robolectric, em segundos, sem emulador — é o mesmo ganho que se buscaria em Roborazzi,
+sem dependência nova nem harness segundo. E foco por D-pad (a B usa foco como navegação
+principal, em capas e na guia da sessão) é território nativo de `View`. Decisão registrada e com
+os detalhes em ADR 0003 (`docs/adr/0003-stack-da-interface.md`), fatia F0 do plano B.
 
 **A sessão (`Game.java`) volta ao que o Artemis original faz e que funciona no S22:** o menu é um
 `Dialog` (é assim no upstream, e é por isso que o menu do Artemis aparece no aparelho dele), o
@@ -58,11 +60,11 @@ celular e no tablet**. Não existe emulador que prometa isso. Então:
 
 1. **Depuração por Wi-Fi nos dois aparelhos** (Android 11+): Configurações → Opções do
    desenvolvedor → Depuração por Wi-Fi → "Parear dispositivo com código". Uma vez pareado, todo
-   build é instalado e fotografado **nos aparelhos**, pelos mesmos scripts que hoje rodam no
-   emulador (`auditor.py`, `percurso.py`). O emulador vira opcional.
+   build é instalado e fotografado **nos aparelhos**, pela mesma ferramenta que hoje roda no
+   emulador (`tools/fotos.mjs --serial <ip:porta>`, F0 do plano B). O emulador vira opcional.
 2. **A referência é o desenho aprovado.** Cada tela do aparelho é comparada ao mockup escolhido
    (diferença de pixels com tolerância). Divergiu, o gate fica vermelho.
-3. **Roborazzi na JVM** para a casca, nas duas larguras, dentro de `node tools/validate.mjs`.
+3. **`tools/screens.mjs` (Robolectric)** para a casca, nas duas larguras, como parte do gate.
 4. **Entrega pequena**: uma mudança por APK, com as fotos dos dois aparelhos anexadas.
    "Verificado" passa a significar uma coisa só: *no aparelho*.
 5. **Commit por fatia.** Sempre há ponto de retorno.
@@ -96,12 +98,23 @@ direção for escolhida.
 
 ## 7. Ordem depois da escolha
 
-1. Arquivo do solto e volta ao HEAD de 19/08.
-2. Depuração por Wi-Fi nos dois aparelhos; scripts de foto apontando para eles; Roborazzi no gate.
-3. **Sessão primeiro**: menu como `Dialog` + gatilho flutuante + barra de texto — verificado no
-   S22 antes de qualquer outra coisa, porque é o bug que prende o Rafael na stream.
-4. Casca em Compose, uma tela por fatia, na ordem: PCs → apps → conectando/erro → ajustes → cenas.
-5. Polimento, contra o mockup, com diff de pixels.
+Detalhe fatia por fatia em `docs/planos/B-CONSOLE.md`; aqui só o resumo, pra este documento não
+divergir de novo do plano real:
+
+1. Arquivo do solto e volta ao HEAD de 19/08. Feito.
+2. **F0 — Ver e provar**: `tools/fotos.mjs` (fotos nos dois AVDs sem host, via moque), moques de
+   casca e de stream debug-only, ADR 0003 (Java + XML, não Compose).
+3. **F1 — Tokens da B**: cores, dimensões, tipografia e o drawable de foco, sem redesenhar tela
+   nenhuma ainda.
+4. **F2 ‖ F3** (arquivos disjuntos, correm em paralelo): **F2 — a sessão** (guia como `Dialog`,
+   aba, barra de texto — o bug que prende o Rafael na stream, resolvido antes de qualquer outra
+   tela); **F3 — Início** (tablet) **e Computadores/Apps** (celular).
+5. **F4 — Ajustes** básico + Avançado (a árvore de hoje, intocada, atrás de um card).
+6. **F5 — Conectando/parear/queda/adicionar PC**: troca de pele nas quatro telas que faltam.
+7. **F6 — Polimento** contra o mockup, com diff de pixels, e limpeza dos aliases `vidro_*`.
+
+Depois das fatias: os mesmos aparelhos (S22 Ultra, Tab S8 Ultra) por depuração Wi-Fi, porque
+"verificado" sem foto de aparelho continua provisório.
 
 ## 8. O que preciso do Rafael
 
