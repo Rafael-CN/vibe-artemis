@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Medidas do tablet. Só o que precisa crescer cresce: alvo de toque e respiro entre
-    grupos. Raio e espessura de borda ficam iguais — são assinatura, não escala.
+    Overrides de tablet para as dimensões Console (Plano B — F1). Só os dois
+    tokens que docs/planos/B-CONSOLE.md §F1 marca como diferentes por aparelho;
+    os demais valem dos dois lados e ficam só em values/dimens.xml.
 -->
 <resources>
-    <dimen name="vidro_space_5">28dp</dimen>
-    <dimen name="vidro_space_6">44dp</dimen>
-    <dimen name="vidro_touch_target">52dp</dimen>
-    <!-- A faixa de ação em paisagem, que no tablet tem folga de sobra. -->
-    <dimen name="vidro_thumb_reach">120dp</dimen>
-    <dimen name="vidro_sheet_width">420dp</dimen>
+
+    <!-- Linha de ajuste: 64dp no tablet (o celular, em values/, é 56dp). -->
+    <dimen name="console_linha_ajuste">64dp</dimen>
+
+    <!-- Aba do menu da sessão: 64x20 no tablet (o celular, em values/, é 56x16). -->
+    <dimen name="console_aba_w">64dp</dimen>
+    <dimen name="console_aba_h">20dp</dimen>
+
 </resources>

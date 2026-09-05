@@ -1,55 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Identidade Vidro. Os valores vêm do handoff 8e do Claude Design, onde foram
-    definidos em OKLCH e medidos por APCA no navegador contra o pior fundo possível
-    (uma cena de vídeo clara). Estão aqui já convertidos para sRGB.
+    Tokens do redesenho "Console" (Plano B). Fonte de verdade: docs/design/console/NOTA.md
+    §2 — os hex já vêm prontos de lá, sem conversão de espaço de cor.
 
-    Regra que não se negocia: o acento tem TRÊS papéis e eles não são intercambiáveis.
-    O tom a L 64% reprova como texto e como preenchimento — serve só de brilho.
+    Os `console_*` são a paleta viva. Os `vidro_*` logo abaixo são um degrau de
+    transição: cada um agora é um ALIAS do `console_*` mais próximo (não guarda mais
+    seu hex antigo), para nenhuma tela ainda não redesenhada quebrar ou destoar
+    enquanto as fatias seguintes (F2 sessão, F3 início/computadores/apps, F5
+    conectando/pareamento/queda) trocam layout por layout. A fatia F6 apaga estes
+    aliases quando a última tela migrar — ver docs/planos/B-CONSOLE.md.
 -->
 <resources>
     <color name="profileAccent">#FF4081</color>
 
+    <!-- ================= Console (Plano B) — NOTA.md §2 ================= -->
+
     <!-- Fundos -->
-    <color name="vidro_void">#020305</color>          <!-- oklch(9.5% .008 265) · fora da sessão -->
-    <color name="vidro_surface">#090B0F</color>       <!-- oklch(15% .010 265) · cartão, folha -->
-    <color name="vidro_surface_alt">#111419</color>   <!-- oklch(19% .012 265) · cartão elevado -->
-    <color name="vidro_glass_session">#07090E</color> <!-- oklch(14% .012 265) · base do vidro -->
-    <color name="vidro_stroke">#222429</color>        <!-- oklch(26% .010 265) · borda sólida -->
+    <color name="console_fundo">#0B0B0D</color>                  <!-- fundo do app, vídeo de fora da sessão -->
+    <color name="console_superficie">#16161A</color>             <!-- cards em repouso, listas, painéis, barra da sessão -->
+    <color name="console_superficie_elevada">#1C1C20</color>     <!-- popover do seletor de PC, item com foco, capa focada -->
+    <color name="console_superficie_selecionada">#22232A</color> <!-- linha "atual" no seletor, capa focada (fundo) -->
+    <color name="console_borda">#2A2A30</color>                  <!-- divisórias, contorno de cards em repouso -->
 
     <!-- Texto -->
-    <color name="vidro_text">#F4F5F8</color>          <!-- oklch(97% .004 265) -->
-    <color name="vidro_text_2">#D5D7DD</color>        <!-- oklch(88% .008 265) -->
-    <color name="vidro_text_3">#AEB1B6</color>        <!-- oklch(76% .008 265) -->
-    <color name="vidro_text_night">#DDDEE1</color>    <!-- oklch(90% .004 265) · sala escura -->
-
-    <!-- O acento, nos seus três papéis -->
-    <color name="vidro_accent_glow">#1E8FEE</color>   <!-- oklch(64% .17 250) · SÓ brilho -->
-    <color name="vidro_accent_text">#80C3FF</color>   <!-- oklch(80% .12 250) · texto -->
-    <color name="vidro_accent_fill">#69BDFF</color>   <!-- oklch(78% .145 250) · preenchimento -->
-    <color name="vidro_on_accent">#030819</color>     <!-- oklch(14% .04 265) · tinta sobre ele -->
-    <color name="vidro_light_core">#4378AD</color>    <!-- oklch(56% .10 250) · núcleo do halo -->
+    <color name="console_texto">#F2F2F4</color>                  <!-- títulos, rótulos, valores -->
+    <color name="console_texto_2">#9A9AA5</color>                <!-- legendas, estado, "on-line", valores inativos -->
+    <color name="console_texto_desabilitado">#5A5A62</color>     <!-- rótulo de item desabilitado -->
+    <color name="console_texto_desabilitado_2">#6A6A72</color>   <!-- legenda de item desabilitado -->
 
     <!--
-        Vidro composto. Em sessão o painel é FOSCO, não embaçado: o vídeo desenha num
-        SurfaceView, numa camada de hardware separada, e RenderEffect não consegue
-        amostrar o que está lá. Um blur por cima borraria o nada. Alpha 0,88 resolve
-        pelo mesmo efeito visual e não custa GPU nenhuma — que é o que o decodificador
-        precisa. Fora da sessão o fundo é composto pela própria hierarquia e o blur vale.
+        Uma cor só faz o trabalho: nunca aparece em decoração, só em contorno de
+        foco, indicador "em execução"/"on-line" e botão primário. Nada de azul,
+        nada de segunda cor de marca.
     -->
-    <color name="vidro_glass_fill_session">#E007090E</color> <!-- alpha 0,88 -->
-    <color name="vidro_glass_fill_idle">#8C07090E</color>    <!-- alpha 0,55 -->
+    <color name="console_acento">#7FE0C7</color>                 <!-- oklch(82% .10 175) aprox. -->
+    <color name="console_acento_sobre">#0A1F1A</color>           <!-- texto/ícone sobre superfície de acento -->
 
-    <!-- Bordas por peso. Sempre 1px; o que muda é quanto ela aparece. -->
-    <color name="vidro_stroke_glass">#29FFFFFF</color>   <!-- 0,16 · sobre vidro em sessão -->
-    <color name="vidro_stroke_hairline">#1CFFFFFF</color><!-- 0,11 · cartão comum -->
-    <color name="vidro_stroke_faint">#0FFFFFFF</color>   <!-- 0,06 · divisória interna -->
-    <color name="vidro_surface_overlay">#0FFFFFFF</color><!-- 0,06 · realce sobre fundo -->
-    <color name="vidro_surface_overlay_alt">#1CFFFFFF</color><!-- 0,11 · pressionado -->
+    <color name="console_destrutivo">#F2555B</color>             <!-- oklch(62% .19 25) aprox. · "Encerrar no PC" -->
+    <color name="console_destrutivo_fundo">#1FF2555B</color>     <!-- destrutivo a 12% · fundo do bloco de confirmação -->
 
-    <!-- Estado do host, dito pela luz e não por rótulo -->
-    <color name="vidro_halo_awake">#B81E8FEE</color>  <!-- 0,72 -->
-    <color name="vidro_halo_night">#571E8FEE</color>  <!-- 0,34 -->
-    <color name="vidro_halo_asleep">#331E8FEE</color> <!-- 0,20 -->
-    <color name="vidro_halo_none">#121E8FEE</color>   <!-- 0,07 · nenhum host -->
+    <!--
+        ================================================================
+        Aliases `vidro_*` — transitórios, apagados em F6
+
+        Mapeamento por PAPEL semântico (o comentário original de cada um, entre
+        parênteses abaixo), não por nome — os 24 nomes `vidro_*` não têm
+        correspondência 1:1 com os 13 `console_*`, e não precisam ter: onde o
+        Vidro tinha três tons de acento (glow/text/fill) o Console tem um só, e
+        onde tinha três pesos de borda o Console tem um só. Os que já não têm
+        nenhum uso em res/ hoje (light_core, halo_night, halo_none, text_night)
+        recebem o alias mais neutro possível, porque não há tela para conferir
+        contra o mockup.
+        ================================================================
+    -->
+
+    <!-- Fundos -->
+    <color name="vidro_void">@color/console_fundo</color>                       <!-- fundo do app -->
+    <color name="vidro_surface">@color/console_superficie</color>               <!-- cartão, folha -->
+    <color name="vidro_surface_alt">@color/console_superficie_elevada</color>   <!-- cartão elevado -->
+    <color name="vidro_glass_session">@color/console_superficie_elevada</color> <!-- base do vidro / painel da sessão -->
+
+    <!-- Texto -->
+    <color name="vidro_text">@color/console_texto</color>           <!-- títulos, rótulos, valores -->
+    <color name="vidro_text_2">@color/console_texto_2</color>       <!-- legendas, estado -->
+    <color name="vidro_text_3">@color/console_texto_2</color>       <!-- terciário — console só tem duas camadas de texto vivo -->
+    <color name="vidro_text_night">@color/console_texto</color>     <!-- variante "sala escura" do texto primário; sem uso hoje -->
+
+    <!-- O acento, nos seus três papéis antigos — todos colapsam no papel único da Console -->
+    <color name="vidro_accent_glow">@color/console_acento</color>
+    <color name="vidro_accent_text">@color/console_acento</color>
+    <color name="vidro_accent_fill">@color/console_acento</color>
+    <color name="vidro_on_accent">@color/console_acento_sobre</color>
+    <color name="vidro_light_core">@color/console_acento</color>    <!-- núcleo do halo; sem uso hoje -->
+
+    <!-- Vidro composto — painéis translúcidos viram sólidos na superfície mais próxima -->
+    <color name="vidro_glass_fill_session">@color/console_superficie_elevada</color>
+    <color name="vidro_glass_fill_idle">@color/console_superficie</color>
+
+    <!-- Bordas por peso — a Console tem uma borda só -->
+    <color name="vidro_stroke">@color/console_borda</color>
+    <color name="vidro_stroke_glass">@color/console_borda</color>
+    <color name="vidro_stroke_hairline">@color/console_borda</color>
+    <color name="vidro_stroke_faint">@color/console_borda</color>
+    <color name="vidro_surface_overlay">@color/console_superficie</color>
+    <color name="vidro_surface_overlay_alt">@color/console_superficie_selecionada</color>
+
+    <!-- Estado do host, dito pela luz — a Console não tem halo; aceso vira acento, o resto vira texto neutro -->
+    <color name="vidro_halo_awake">@color/console_acento</color>
+    <color name="vidro_halo_night">@color/console_texto_2</color>   <!-- sem uso hoje -->
+    <color name="vidro_halo_asleep">@color/console_texto_2</color>
+    <color name="vidro_halo_none">@color/console_texto_2</color>    <!-- sem uso hoje -->
 </resources>

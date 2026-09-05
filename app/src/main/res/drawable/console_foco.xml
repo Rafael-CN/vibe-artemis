@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Foco é o coração da Console (Plano B): contorno de acento de 3dp
+    (console_foco_borda) mais um anel suave de 4dp (console_foco_anel) a 15%
+    de opacidade do acento — não é brilho, é a mesma cor do contorno esmaecida
+    (NOTA.md §2). Pensado como android:foreground/background de item focável
+    genérico (botão, linha de lista); a capa tem sua própria variante em
+    console_capa_foco.xml, com o raio de card em vez do raio de controle.
+
+    #267FE0C7 é console_acento (#7FE0C7) a 15% de alpha (0,15 × 255 ≈ 38 = 0x26),
+    calculado igual ao console_destrutivo_fundo em colors.xml — não é um token
+    novo, é a mesma cor do anel em NOTA.md §2, só que a NOTA não nomeia essa
+    variante como recurso separado. Mantém "nenhuma cor nova além da NOTA".
+
+    Nota para quem for aplicar isto num item com minSdk 21: android:foreground
+    em View comum (não ViewGroup) só existe a partir da API 23. Em botão/linha
+    que precisem do efeito abaixo de 23, use como android:background, ou
+    verifique Build.VERSION.SDK_INT antes de chamar setForeground em runtime.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="true">
+        <layer-list>
+            <!-- Anel externo: 4dp a 15% de opacidade do acento. -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_anel"
+                        android:color="#267FE0C7" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+            <!-- Contorno sólido: 3dp cheio, por dentro do anel. -->
+            <item
+                android:top="@dimen/console_foco_anel"
+                android:bottom="@dimen/console_foco_anel"
+                android:left="@dimen/console_foco_anel"
+                android:right="@dimen/console_foco_anel">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_borda"
+                        android:color="@color/console_acento" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/console_superficie_selecionada" />
+            <corners android:radius="@dimen/console_raio_controle" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+</selector>
