@@ -2,12 +2,17 @@
 <!--
     A luz do host. Não é enfeite: a intensidade é o estado. Aceso 0,72, sala escura
     0,34, dormindo 0,20. Quem não distingue a cor ainda lê a diferença de brilho.
+
+    Corrigido pelo verificador da F1: centerColor/endColor eram hex cravado do azul
+    antigo do Vidro (#1E8FEE) — só o startColor resolvia pelo alias `vidro_halo_awake`
+    (agora console_acento). Mesmos alphas (0x3D e 0x00), matiz trocado para
+    console_acento (#7FE0C7) para o halo inteiro ficar menta, não meio azul meio menta.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
     <gradient
         android:type="radial"
         android:gradientRadius="50%p"
         android:startColor="@color/vidro_halo_awake"
-        android:centerColor="#3D1E8FEE"
-        android:endColor="#001E8FEE" />
+        android:centerColor="#3D7FE0C7"
+        android:endColor="#007FE0C7" />
 </shape>
