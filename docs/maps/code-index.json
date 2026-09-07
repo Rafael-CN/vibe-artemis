@@ -4,7 +4,7 @@
   "files": 224,
   "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 67273,
+  "lines": 67248,
   "types": 280,
   "methods": 2648,
   "packages": 30,
@@ -14,7 +14,7 @@
   {
    "path": "app/src/main/java/com/limelight/AppView.java",
    "lang": "java",
-   "lines": 913,
+   "lines": 888,
    "package": "com.limelight",
    "imports": [
     "java.io.IOException",
@@ -78,7 +78,7 @@
     {
      "kind": "class",
      "name": "AppObject",
-     "line": 895
+     "line": 870
     }
    ],
    "methods": [
@@ -87,252 +87,252 @@
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className, IBinder binder",
-     "line": 102
+     "line": 103
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 109
+     "line": 110
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 153
+     "line": 154
     },
     {
      "name": "onServiceDisconnected",
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className",
-     "line": 174
+     "line": 175
     },
     {
      "name": "onConfigurationChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "Configuration newConfig",
-     "line": 180
+     "line": 181
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 202
+     "line": 203
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 210
+     "line": 211
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 225
+     "line": 226
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 239
+     "line": 240
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 289
+     "line": 290
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 304
+     "line": 305
     },
     {
      "name": "popularAppsDeMentira",
      "modifiers": "private",
      "returns": "void",
      "params": "String computerName",
-     "line": 379
+     "line": 374
     },
     {
      "name": "emModoDeApps",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 400
+     "line": 395
     },
     {
      "name": "updateHiddenApps",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean hideImmediately",
-     "line": 404
+     "line": 399
     },
     {
      "name": "populateAppGridWithCache",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 419
+     "line": 414
     },
     {
      "name": "loadAppsBlocking",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 437
+     "line": 432
     },
     {
      "name": "onDestroy",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 443
+     "line": 438
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 455
+     "line": 450
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 467
+     "line": 462
     },
     {
      "name": "onActivityResult",
      "modifiers": "protected",
      "returns": "void",
      "params": "int requestCode, int resultCode, @Nullable Intent data",
-     "line": 475
+     "line": 470
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 494
+     "line": 489
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 551
+     "line": 552
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 555
+     "line": 556
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 569
+     "line": 570
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 579
+     "line": 580
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 608
+     "line": 609
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 613
+     "line": 614
     },
     {
      "name": "updateVidroCatalogHeader",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 682
+     "line": 694
     },
     {
      "name": "updateUiWithServerinfo",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 733
+     "line": 708
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 736
+     "line": 711
     },
     {
      "name": "updateUiWithAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "final List<NvApp> appList",
-     "line": 772
+     "line": 747
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 775
+     "line": 750
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 848
+     "line": 823
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 861
+     "line": 836
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 865
+     "line": 840
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 908
+     "line": 883
     }
    ],
    "nativeMethods": [],
@@ -343,7 +343,7 @@
     {
      "kind": "TODO",
      "text": "celular — até o S22 Ultra, com 460dp. Na prática o",
-     "line": 852
+     "line": 827
     }
    ]
   },

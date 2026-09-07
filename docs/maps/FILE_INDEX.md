@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.273 linhas**, **280 tipos**, **2648 métodos**.
+Total: **224 arquivos**, **67.248 linhas**, **280 tipos**, **2648 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -12,7 +12,7 @@ Total: **224 arquivos**, **67.273 linhas**, **280 tipos**, **2648 métodos**.
 |---|--:|--:|---|---|
 | [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4935 | 14.3 | Game, GameMenuCallbacks | `onServiceConnected()`:264 `onServiceDisconnected()`:273 `sendText()`:377 `sendBackspaces()`:384 `onCreate()`:406 `onCapturedPointer()`:604 `notifyCrash()`:744 `onDisplayAdded()`:1140 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1630 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:114 `run()`:121 `onServiceDisconnected()`:144 `onConfigurationChanged()`:150 `onClick()`:218 `onClick()`:242 `onClick()`:249 `onCreate()`:288 |
-| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 913 | 9.2 | AppView, AppObject | `onServiceConnected()`:102 `run()`:109 `run()`:153 `onServiceDisconnected()`:174 `onConfigurationChanged()`:180 `notifyComputerUpdated()`:210 `run()`:225 `run()`:239 |
+| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 888 | 9.2 | AppView, AppObject | `onServiceConnected()`:103 `run()`:110 `run()`:154 `onServiceDisconnected()`:175 `onConfigurationChanged()`:181 `notifyComputerUpdated()`:211 `run()`:226 `run()`:240 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.3 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.2 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
 | [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 300 | 16.1 | GameMenu, MenuOption | `showMenu()`:103 `hideMenu()`:146 `isMenuOpen()`:154 |
