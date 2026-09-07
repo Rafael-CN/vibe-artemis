@@ -406,8 +406,9 @@
     </style>
 
     <!--
-        O GameMenu usa android.app.AlertDialog, não o do AppCompat — e um tema AppCompat
-        num diálogo de plataforma não pega. Este é o par do VidroDialog para esse lado.
+        A guia da sessão (GameMenu, Plano B / F2) usa um android.app.Dialog de
+        plataforma, não o AlertDialog do AppCompat — e um tema AppCompat num diálogo
+        de plataforma não pega. Este é o par do VidroDialog para esse lado.
     -->
     <style name="ConsoleDialog" parent="android:Theme.Material.Dialog.Alert">
         <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
