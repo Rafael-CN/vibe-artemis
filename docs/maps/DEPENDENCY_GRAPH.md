@@ -8,7 +8,7 @@
 
 | Pacote | PageRank | Arquivos | Linhas |
 |---|--:|--:|--:|
-| `com.limelight` | 230.6 | 22 | 10888 |
+| `com.limelight` | 230.6 | 22 | 10887 |
 | `com.limelight.nvstream.http` | 106.8 | 6 | 1678 |
 | `com.limelight.utils` | 97.7 | 22 | 5747 |
 | `com.limelight.nvstream.jni` | 70.8 | 1 | 445 |
@@ -26,7 +26,7 @@
 | `com.limelight.nvstream.mdns` | 15.0 | 5 | 733 |
 | `com.limelight.binding.input.capture` | 14.6 | 6 | 403 |
 | `com.limelight.binding` | 14.4 | 1 | 15 |
-| `com.limelight.grid` | 14.2 | 4 | 567 |
+| `com.limelight.grid` | 14.2 | 4 | 577 |
 | `com.limelight.binding.input.evdev` | 13.5 | 6 | 627 |
 | `com.limelight.binding.input.virtual_controller.keyboard` | 13.1 | 12 | 4198 |
 | `com.limelight.binding.input.touch` | 13.0 | 4 | 1104 |

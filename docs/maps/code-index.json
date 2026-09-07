@@ -4,7 +4,7 @@
   "files": 224,
   "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 67264,
+  "lines": 67273,
   "types": 280,
   "methods": 2648,
   "packages": 30,
@@ -11204,7 +11204,7 @@
   {
    "path": "app/src/main/java/com/limelight/grid/PcGridAdapter.java",
    "lang": "java",
-   "lines": 123,
+   "lines": 133,
    "package": "com.limelight.grid",
    "imports": [
     "android.content.Context",
@@ -27157,7 +27157,7 @@
   {
    "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
    "lang": "java",
-   "lines": 320,
+   "lines": 319,
    "package": "com.limelight",
    "imports": [
     "android.content.Context",
@@ -27208,56 +27208,56 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 104
+     "line": 103
     },
     {
      "name": "telasNoTablet",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 127
+     "line": 126
     },
     {
      "name": "telasNoS22Ultra",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 144
+     "line": 143
     },
     {
      "name": "onlyWhenAsked",
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 158
+     "line": 157
     },
     {
      "name": "shoot",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, int layoutId, int widthDp, int heightDp",
-     "line": 166
+     "line": 165
     },
     {
      "name": "shootActivity",
      "modifiers": "private",
      "returns": "<T extends android.app.Activity> void",
      "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
-     "line": 243
+     "line": 242
     },
     {
      "name": "write",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, Bitmap bitmap, int w, int h",
-     "line": 292
+     "line": 291
     },
     {
      "name": "revealAll",
      "modifiers": "static",
      "returns": "void",
      "params": "View view",
-     "line": 307
+     "line": 306
     }
    ],
    "nativeMethods": [],
