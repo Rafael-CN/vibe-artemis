@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Conectando. Tela 03 do handoff.
+    Conectando. Tela 03 do handoff — pele da Console (Plano B / F5, B-CONSOLE.md §F5).
 
     Três passos, e cada um espera o EVENTO REAL da conexão — os tempos do protótipo eram
-    encenação. Sem spinner: a barra e a luz já dizem que está vivo, e um spinner girando
-    sobre "Reservando a tela no PC" só acrescentaria ansiedade.
+    encenação. Sem spinner: a barra e o ponto de estado já dizem que está vivo, e um
+    spinner girando sobre "Reservando a tela no PC" só acrescentaria ansiedade.
+
+    A luz radial (VidroLightView) saiu — B-CONSOLE.md §F5 pede "um ponto de estado
+    simples (acento = ativo)" no lugar dela. O ponto começa apagado (console_borda,
+    vidro_dot_off) e acende (console_acento, vidro_dot_on) no mesmo instante em que a
+    barra avança para "Reservando a tela" — ver VidroSession#onStageStarting.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,14 +17,9 @@
         android:id="@+id/vidroConnecting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/vidro_void"
+        android:background="@color/console_fundo"
         android:visibility="gone"
         tools:visibility="visible">
-
-        <com.limelight.ui.VidroLightView
-            android:id="@+id/vidroConnectingLight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,19 +28,23 @@
             android:layout_marginBottom="74dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/vidro_space_5"
-            android:paddingRight="@dimen/vidro_space_5">
+            android:paddingLeft="@dimen/console_espaco_5"
+            android:paddingRight="@dimen/console_espaco_5">
+
+            <View
+                android:id="@+id/vidroConnectingLight"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginBottom="@dimen/console_espaco_3"
+                android:background="@drawable/vidro_dot_off" />
 
             <TextView
                 android:id="@+id/vidroConnectingApp"
-                style="@style/VidroText"
+                style="@style/ConsoleText.Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/manrope_extrabold"
-                android:letterSpacing="-0.035"
                 android:maxLines="1"
-                android:textSize="24sp"
                 tools:text="Remote Display" />
 
             <ProgressBar
@@ -48,29 +52,28 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="214dp"
                 android:layout_height="3dp"
-                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginTop="@dimen/console_espaco_5"
                 android:max="100"
                 android:progress="18"
                 android:progressDrawable="@drawable/vidro_progress_track" />
 
             <TextView
                 android:id="@+id/vidroConnectingStep"
-                style="@style/VidroText"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
-                android:fontFamily="@font/manrope_semibold"
-                android:textColor="@color/vidro_text_2"
-                android:textSize="13sp"
+                android:layout_marginTop="@dimen/console_espaco_4"
                 tools:text="Falando com PC-RAFAEL" />
 
             <TextView
                 android:id="@+id/vidroConnectingCancel"
-                style="@style/VidroButton.Ghost"
+                style="@style/ConsoleBotao.Neutro"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginTop="@dimen/vidro_space_6"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/console_espaco_6"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/console_foco_botao"
                 android:text="@string/vidro_cancel" />
         </LinearLayout>
     </FrameLayout>

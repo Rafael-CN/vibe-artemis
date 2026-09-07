@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Interrupção 09 · caiu. O app não mente, mas continua calmo: nada de "erro", nada de
-    código de status. A frase de apoio é literal do protótipo e diz a coisa que importa —
-    a sessão ainda está lá do outro lado.
+    Interrupção 09 · caiu — pele da Console (Plano B / F5, B-CONSOLE.md §F5). O app não
+    mente, mas continua calmo: nada de "erro", nada de código de status. A frase de
+    apoio é literal do protótipo e diz a coisa que importa — a sessão ainda está lá do
+    outro lado.
+
+    Fundo console_fundo (não mais o véu vidro_scrim): esta tela nunca chegou a subir de
+    verdade sobre um vídeo em execução (a queda de rede que a reativaria é escopo de
+    rede — fora desta fatia, "não mexa em rede"); B-CONSOLE.md §F5 pede o fundo sólido
+    como as outras três, e é o que se vê hoje no único caminho que a mostra — o moque de
+    stream em modo de depuração (extra MoqueEstado=queda), que não tem vídeo por trás
+    para o véu preservar.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,7 +18,7 @@
         android:id="@+id/vidroLost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/vidro_scrim"
+        android:background="@color/console_fundo"
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
@@ -22,59 +30,62 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/vidro_space_6"
-            android:paddingRight="@dimen/vidro_space_6">
+            android:paddingLeft="@dimen/console_espaco_6"
+            android:paddingRight="@dimen/console_espaco_6">
 
             <TextView
                 android:id="@+id/vidroLostTitle"
-                style="@style/VidroText"
+                style="@style/ConsoleText.Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/manrope_extrabold"
-                android:letterSpacing="-0.03"
-                android:textSize="24sp"
+                android:gravity="center"
                 tools:text="Perdemos o PC-RAFAEL" />
 
             <TextView
-                style="@style/VidroText.Body"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_2"
+                android:layout_marginTop="@dimen/console_espaco_2"
                 android:gravity="center"
+                android:lineSpacingMultiplier="1.35"
                 android:maxWidth="360dp"
                 android:text="@string/vidro_lost_support" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
+                android:layout_marginTop="@dimen/console_espaco_4"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/vidroLostRetry"
-                    style="@style/VidroButton.Accent"
+                    style="@style/ConsoleBotao.Primario"
                     android:layout_width="wrap_content"
                     android:layout_height="52dp"
-                    android:layout_marginEnd="@dimen/vidro_space_3"
-                    android:layout_marginRight="@dimen/vidro_space_3"
-                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/console_espaco_3"
+                    android:layout_marginRight="@dimen/console_espaco_3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/console_foco_botao"
                     android:text="@string/vidro_try_again" />
 
                 <TextView
                     android:id="@+id/vidroLostLeave"
-                    style="@style/VidroButton.Ghost"
+                    style="@style/ConsoleBotao.Neutro"
                     android:layout_width="wrap_content"
                     android:layout_height="52dp"
-                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/console_foco_botao"
                     android:text="@string/vidro_leave" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/vidroLostRetryCount"
-                style="@style/VidroText.Support"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
+                android:layout_marginTop="@dimen/console_espaco_4"
                 android:visibility="gone"
                 tools:text="tentando sozinho · 3ª de 5"
                 tools:visibility="visible" />

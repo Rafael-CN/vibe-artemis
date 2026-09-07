@@ -1,88 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    "Não apareceu — inserir endereço". É a saída alternativa do pareamento, e o protótipo
-    a trata como tela própria: título, uma explicação que diz por que a porta existe, o
-    campo, e a volta para a busca.
+    "Não apareceu — inserir endereço" — pele da Console (Plano B / F5, B-CONSOLE.md §F5).
+    É a saída alternativa do pareamento, e o protótipo a trata como tela própria: título,
+    uma explicação que diz por que a porta existe, o campo, e a volta para a busca.
 
-    Era a última tela com a cara do Moonlight original — fundo #1A1A1A, textAppearanceLarge
-    e um Button de sistema no canto.
+    A luz radial (VidroLightView, intensidade 0,20 fixa) saiu sem substituto: ela era
+    puramente decorativa aqui — nenhum estado real (ligado/rede/erro) para um ponto
+    representar antes de a pessoa digitar algo. B-CONSOLE.md §F5 pede o ponto de estado
+    só como troca do papel que a luz cumpria noutras telas (conectando, pareamento); aqui
+    o papel dela era ambiente, então a remoção pura é a leitura mais honesta — inventar
+    um ponto sem estado para preencher o vazio seria decoração, não sinal.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
+    android:background="@color/console_fundo"
     tools:context=".preferences.AddComputerManually"
     android:fitsSystemWindows="true">
-
-    <com.limelight.ui.VidroLightView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        app:vidro_intensity="0.20"
-        app:vidro_center_y="0" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_5"
-        android:paddingRight="@dimen/vidro_space_5">
+        android:paddingLeft="@dimen/console_espaco_5"
+        android:paddingTop="@dimen/console_espaco_5"
+        android:paddingRight="@dimen/console_espaco_5">
 
         <TextView
-            style="@style/VidroText.Overline"
+            style="@style/ConsoleText.Legenda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vidro_new_place" />
 
         <TextView
             android:id="@+id/manuallyAddPcText"
-            style="@style/VidroText.Display"
+            style="@style/ConsoleText.Titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_2"
+            android:layout_marginTop="@dimen/console_espaco_2"
             android:preferKeepClear="true"
             android:text="@string/vidro_pc_address" />
 
         <TextView
-            style="@style/VidroText.Body"
+            style="@style/ConsoleText.Rotulo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_2"
+            android:layout_marginTop="@dimen/console_espaco_2"
+            android:lineSpacingMultiplier="1.35"
             android:text="@string/vidro_address_help" />
 
         <EditText
             android:id="@+id/hostTextView"
-            style="@style/VidroText"
+            style="@style/ConsoleText.Mono"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginTop="@dimen/vidro_space_5"
+            android:layout_marginTop="@dimen/console_espaco_5"
             android:background="@drawable/vidro_field"
-            android:fontFamily="@font/jetbrains_mono_regular"
             android:hint="@string/ip_hint"
             android:inputType="textNoSuggestions"
-            android:paddingLeft="@dimen/vidro_space_4"
-            android:paddingRight="@dimen/vidro_space_4"
+            android:paddingLeft="@dimen/console_espaco_4"
+            android:paddingRight="@dimen/console_espaco_4"
             android:preferKeepClear="true"
             android:singleLine="true"
-            android:textColor="@color/vidro_text"
-            android:textColorHint="@color/vidro_text_3"
-            android:textCursorDrawable="@null"
-            android:textSize="15sp">
+            android:textColorHint="@color/console_texto_2"
+            android:textCursorDrawable="@null">
 
             <requestFocus />
         </EditText>
 
         <TextView
             android:id="@+id/addPcButton"
-            style="@style/VidroButton.Accent"
+            style="@style/ConsoleBotao.Primario"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginTop="@dimen/vidro_space_4"
-            android:gravity="center"
+            android:layout_marginTop="@dimen/console_espaco_4"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/console_foco_botao"
             android:preferKeepClear="true"
             android:text="@string/vidro_connect" />
     </LinearLayout>

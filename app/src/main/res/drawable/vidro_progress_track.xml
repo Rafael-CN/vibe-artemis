@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Barra de progresso da conexão. Fina de propósito: ela informa que está vivo, não
-    convida a olhar. Nada de spinner — a barra e a luz já dizem isso.
+    Barra de progresso da conexão (Plano B / F5). Fina de propósito: ela informa
+    que está vivo, não convida a olhar. Nada de spinner — a barra e o ponto de
+    estado já dizem isso. Trilho e preenchimento nos tokens da Console.
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <solid android:color="#24FFFFFF" />
+            <solid android:color="@color/console_borda" />
             <corners android:radius="@dimen/vidro_radius_pill" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape android:shape="rectangle">
-                <solid android:color="@color/vidro_accent_fill" />
+                <solid android:color="@color/console_acento" />
                 <corners android:radius="@dimen/vidro_radius_pill" />
             </shape>
         </clip>
