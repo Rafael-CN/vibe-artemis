@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Contorno de repouso da capa do carrossel "APPS" da Início (tablet, F6 — pendência
+    da folha de contato: as capas ficavam com canto quadrado enquanto sem foco,
+    diferente do mockup B_Tablet_Inicio.png, que mostra as seis capas com o mesmo
+    contorno arredondado leve de app_grid_item.xml (vidro_poster_frame, estado
+    default). console_capa_foco.xml de propósito não tem esse estado — só cuida do
+    foco (ver o comentário lá) — então este é o par que faltava, mesmo raio
+    (console_raio_card), mesma espessura de fio (vidro_stroke_width) e cor
+    (console_borda) do card de app do celular.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/console_borda" />
+    <corners android:radius="@dimen/console_raio_card" />
+</shape>
