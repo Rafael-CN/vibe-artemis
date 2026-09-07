@@ -280,12 +280,7 @@
     <string name="vidro_settings">Ajustes</string>
     <string name="vidro_open_now">aberto agora</string>
     <string name="vidro_back_places">Lugares</string>
-    <string name="vidro_published_apps">%1$d aplicativos publicados pelo host</string>
-    <string name="vidro_published_app_one">1 aplicativo publicado pelo host</string>
     <string name="vidro_reload">Recarregar</string>
-    <string name="vidro_session_open">%1$s está aberto</string>
-    <string name="vidro_session_return">Volte de onde parou</string>
-    <string name="vidro_return">Voltar</string>
     <string name="vidro_pill_open">Em execução</string>
     <string name="vidro_pill_screen">tela</string>
     <string name="vidro_pill_input">entrada</string>

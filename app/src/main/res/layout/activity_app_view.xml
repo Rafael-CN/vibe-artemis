@@ -2,12 +2,22 @@
     Apps (celular) — Plano B / F3, B-CONSOLE.md. Hierarquia da referência
     B_Celular_Apps.png / Celular_Apps.dc.html:
 
-        "‹ ● ARTEMIS · on-line" → título "Apps" → contagem · Recarregar → faixa de
-        sessão aberta (quando existe) → grade de 2 colunas.
+        "‹ ● ARTEMIS · on-line" → título "Apps" → grade de 2 colunas.
 
     vidroBack agora é o próprio cabeçalho clicável (chevron + ponto de estado + nome),
     não só um link "‹ Lugares" — o nome do id não mudou porque AppView#onCreate só
     chama setOnClickListener nele, nunca lê texto seu.
+
+    F6 (devolvida pela verificação): a faixa "N apps publicados · Recarregar" e o
+    banner de retomar sessão saíram daqui porque o mockup não tem nenhum dos dois —
+    decisão do dono do fork, "esconder pode, apagar não". As duas ações continuam
+    alcançáveis: retomar é o selo "Em execução" na própria capa (grid_pill em
+    app_grid_item.xml, tocar abre o menu com "Retomar"/"Encerrar e abrir"), e
+    recarregar virou item do menu de toque longo da capa (ver AppView#onCreateContextMenu,
+    RELOAD_ID) — o gesto de puxar-para-atualizar foi descartado porque a grade
+    (app_grid_view.xml) é compartilhada com PcView via AdapterFragment, e um
+    SwipeRefreshLayout sem tratamento equivalente lá ficaria girando sem nunca
+    completar.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -76,112 +86,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/console_espaco_2"
             android:text="@string/console_secao_apps" />
-
-        <!-- Contagem e recarregar. Nada de número técnico: quantos apps não é telemetria. -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/console_espaco_3">
-
-            <TextView
-                android:id="@+id/vidroAppCount"
-                style="@style/ConsoleText.Rotulo2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                tools:text="6 aplicativos publicados pelo host" />
-
-            <TextView
-                android:id="@+id/vidroReload"
-                style="@style/ConsoleText.Rotulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:minHeight="@dimen/vidro_touch_target"
-                android:gravity="center"
-                android:paddingLeft="@dimen/console_espaco_3"
-                android:paddingRight="@dimen/console_espaco_3"
-                android:text="@string/vidro_reload"
-                android:textColor="@color/console_acento" />
-        </RelativeLayout>
-
-        <!--
-            Faixa de sessão aberta. Só existe quando há sessão de verdade no host, e é a
-            forma de voltar sem procurar o card certo na grade.
-        -->
-        <RelativeLayout
-            android:id="@+id/vidroResumeStrip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/console_espaco_3"
-            android:background="@drawable/console_card_bg"
-            android:paddingLeft="@dimen/console_espaco_4"
-            android:paddingTop="@dimen/console_espaco_3"
-            android:paddingRight="@dimen/console_espaco_3"
-            android:paddingBottom="@dimen/console_espaco_3"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <View
-                android:id="@+id/vidroResumeDot"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/vidro_dot_on" />
-
-            <TextView
-                android:id="@+id/vidroResumeAction"
-                style="@style/ConsoleBotao.Primario"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:minHeight="0dp"
-                android:paddingLeft="@dimen/console_espaco_4"
-                android:paddingRight="@dimen/console_espaco_4"
-                android:text="@string/vidro_return"
-                android:textSize="13sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/console_espaco_3"
-                android:layout_marginLeft="@dimen/console_espaco_3"
-                android:layout_marginEnd="@dimen/console_espaco_3"
-                android:layout_marginRight="@dimen/console_espaco_3"
-                android:layout_toStartOf="@id/vidroResumeAction"
-                android:layout_toLeftOf="@id/vidroResumeAction"
-                android:layout_toEndOf="@id/vidroResumeDot"
-                android:layout_toRightOf="@id/vidroResumeDot"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/vidroResumeTitle"
-                    style="@style/ConsoleText.Rotulo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    tools:text="Desktop está aberto" />
-
-                <TextView
-                    style="@style/ConsoleText.Rotulo2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/vidro_session_return" />
-            </LinearLayout>
-        </RelativeLayout>
     </LinearLayout>
 
     <FrameLayout

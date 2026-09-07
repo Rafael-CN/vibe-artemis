@@ -80,6 +80,7 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
     private final static int CREATE_SHORTCUT_ID = 6;
     private final static int EXPORT_LAUNCHER_FILE_ID = 7;
     private final static int HIDE_APP_ID = 8;
+    private final static int RELOAD_ID = 9;
     private final static int START_WITH_VDISPLAY = 20;
     private final static int START_WITH_QUIT_VDISPLAY = 21;
 
@@ -343,12 +344,6 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         setTitle(computerName);
         label.setText(computerName);
 
-        findViewById(R.id.vidroReload).setOnClickListener(v -> {
-            if (managerBinder != null) {
-                managerBinder.invalidateStateForComputer(computer.uuid);
-            }
-        });
-
         findViewById(R.id.vidroBack).setOnClickListener(v -> finish());
 
         this.prefConfig = PreferenceConfiguration.readPreferences(this);
@@ -545,6 +540,12 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         }
 
         menu.add(Menu.NONE, EXPORT_LAUNCHER_FILE_ID, 6, getResources().getString(R.string.applist_menu_export_launcher));
+
+        // F6: "Recarregar" morava numa faixa fixa acima da grade que o mockup não tem
+        // (B_Celular_Apps.png). A ação continua igual — chama o mesmo
+        // invalidateStateForComputer de antes — só muda o lugar: toque longo em
+        // qualquer capa, não uma única app selecionada.
+        menu.add(Menu.NONE, RELOAD_ID, 7, getResources().getString(R.string.vidro_reload));
     }
 
     @Override
@@ -666,6 +667,13 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
                 return true;
             }
 
+            case RELOAD_ID: {
+                if (managerBinder != null) {
+                    managerBinder.invalidateStateForComputer(computer.uuid);
+                }
+                return true;
+            }
+
             default: {
                 return super.onContextItemSelected(item);
             }
@@ -673,17 +681,21 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
     }
 
     /**
-     * A linha de contagem e a faixa de sessão aberta.
+     * O rótulo "‹ ● ARTEMIS · on-line" do cabeçalho (B-CONSOLE.md §F3).
      *
-     * As duas existiam no layout e ninguém escrevia nelas — a tela abria com um espaço em
-     * branco onde deveria estar "6 aplicativos publicados pelo host" e a faixa nunca
-     * aparecia, nem quando havia sessão de verdade no host.
+     * Até a F6 este método também escrevia a linha de contagem ("N apps publicados") e
+     * decidia a visibilidade da faixa de retomar sessão — nenhuma das duas está no
+     * mockup (B_Celular_Apps.png), e a verificação da F6 devolveu a fatia por isso. A
+     * contagem saiu de vez (é informação, não ação); retomar sessão continua
+     * alcançável tocando na capa do app com o selo "Em execução" na grade
+     * (AppGridAdapter#populateView pinta `grid_pill`/`grid_overlay`, e o
+     * OnItemClickListener/onCreateContextMenu abaixo tratam o toque nela).
      */
     private void updateVidroCatalogHeader() {
-        // "‹ ● ARTEMIS · on-line" (B-CONSOLE.md §F3). Enquanto esta tela está aberta o
-        // PC só pode estar on-line — notifyComputerUpdated() já fecha a Activity se o
-        // host cair ou perder o pareamento (mais acima nesta classe) — então não há
-        // estado "fora do ar" a desenhar aqui.
+        // Enquanto esta tela está aberta o PC só pode estar on-line —
+        // notifyComputerUpdated() já fecha a Activity se o host cair ou perder o
+        // pareamento (mais acima nesta classe) — então não há estado "fora do ar" a
+        // desenhar aqui.
         if (computer != null) {
             TextView label = findViewById(R.id.appListText);
             if (label != null) {
@@ -691,43 +703,6 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
                         computer.name, getString(R.string.console_estado_online)));
             }
         }
-
-        TextView count = findViewById(R.id.vidroAppCount);
-        if (count != null) {
-            int n = appGridAdapter != null ? appGridAdapter.getCount() : 0;
-            count.setText(n == 1
-                    ? getString(R.string.vidro_published_app_one)
-                    : getString(R.string.vidro_published_apps, n));
-            count.setVisibility(n > 0 ? View.VISIBLE : View.INVISIBLE);
-        }
-
-        View strip = findViewById(R.id.vidroResumeStrip);
-        TextView title = findViewById(R.id.vidroResumeTitle);
-        if (strip == null || title == null) {
-            return;
-        }
-
-        // Só existe faixa quando há app rodando de verdade no host.
-        AppView.AppObject running = null;
-        if (appGridAdapter != null) {
-            for (int i = 0; i < appGridAdapter.getCount(); i++) {
-                AppObject candidate = (AppObject) appGridAdapter.getItem(i);
-                if (candidate.isRunning) {
-                    running = candidate;
-                    break;
-                }
-            }
-        }
-
-        if (running == null) {
-            strip.setVisibility(View.GONE);
-            return;
-        }
-
-        final AppObject target = running;
-        title.setText(getString(R.string.vidro_session_open, target.app.getAppName()));
-        strip.setVisibility(View.VISIBLE);
-        strip.setOnClickListener(v -> ServerHelper.doStart(AppView.this, target.app, computer, managerBinder, true));
     }
 
     private void updateUiWithServerinfo(final ComputerDetails details) {
