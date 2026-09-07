@@ -117,6 +117,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
@@ -1388,6 +1389,49 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                     return true;
                 }
                 return false;
+            }
+        });
+
+        setupComposeBarTeclasToggle();
+    }
+
+    /**
+     * G2, defeito 4 ("o digitar com input tá mto grande e n dá pra ver a tela"): no
+     * celular a fileira Esc·Tab·Win·Alt+Tab·Ctrl+Alt+Del começa recolhida atrás deste
+     * alternador — console_barra_teclas_recolhida_por_padrao é false no tablet
+     * (values-sw600dp/bools.xml), então lá o alternador nem aparece e a fileira segue
+     * sempre visível, como sempre esteve. wireComposeBarTecla continua ligando os
+     * cliques dentro dela nas duas telas; isto só decide se ela começa visível.
+     */
+    private void setupComposeBarTeclasToggle() {
+        final View toggle = findViewById(R.id.consoleBarraTextoTeclasToggle);
+        final View teclasRow = findViewById(R.id.consoleBarraTextoTeclasRow);
+        final ImageView chevron = findViewById(R.id.consoleBarraTextoTeclasToggleChevron);
+        if (toggle == null || teclasRow == null) {
+            return;
+        }
+
+        if (!getResources().getBoolean(R.bool.console_barra_teclas_recolhida_por_padrao)) {
+            toggle.setVisibility(View.GONE);
+            teclasRow.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        teclasRow.setVisibility(View.GONE);
+        if (chevron != null) {
+            chevron.setImageResource(R.drawable.ic_console_chevron_down);
+        }
+
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean expanded = teclasRow.getVisibility() == View.VISIBLE;
+                teclasRow.setVisibility(expanded ? View.GONE : View.VISIBLE);
+                if (chevron != null) {
+                    chevron.setImageResource(expanded
+                            ? R.drawable.ic_console_chevron_down
+                            : R.drawable.ic_console_chevron_up);
+                }
             }
         });
     }

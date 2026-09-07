@@ -35,4 +35,10 @@
     <dimen name="console_bloco_voltar_min_w">88dp</dimen>
     <dimen name="console_bloco_encerrar_min_w">104dp</dimen>
 
+    <!-- Barra de texto: os mesmos console_espaco_4/3/2 que a barra sempre usou (G2,
+         defeito 4 — só o celular encolheu, em values/dimens.xml). -->
+    <dimen name="console_barra_texto_pad_h">16dp</dimen>
+    <dimen name="console_barra_texto_pad_v">12dp</dimen>
+    <dimen name="console_barra_texto_gap">8dp</dimen>
+
 </resources>

@@ -108,4 +108,15 @@
     <dimen name="console_bloco_voltar_min_w">56dp</dimen>
     <dimen name="console_bloco_encerrar_min_w">72dp</dimen>
 
+    <!--
+        Barra de texto (G2, defeito 4: "o digitar com input tá mto grande e n dá pra
+        ver a tela"). Com o teclado virtual aberto, cada dp que a barra ocupa é um dp
+        de vídeo a menos. Aqui os recuos e os respiros entre as três fileiras (cabeçalho
+        / campo+enviar / teclas especiais) encolhem; values-sw600dp mantém os valores
+        que a barra sempre teve (console_espaco_4/3/2), porque no tablet sobra altura.
+    -->
+    <dimen name="console_barra_texto_pad_h">12dp</dimen>
+    <dimen name="console_barra_texto_pad_v">8dp</dimen>
+    <dimen name="console_barra_texto_gap">4dp</dimen>
+
 </resources>

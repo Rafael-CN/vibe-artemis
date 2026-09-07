@@ -8,6 +8,14 @@
 
     Digitar direto no stream é digitar às cegas: cada tecla viaja e o que volta é
     vídeo. Aqui o texto se monta LOCALMENTE e só atravessa quando a pessoa manda.
+
+    G2, defeito 4 ("o digitar com input tá mto grande e n dá pra ver a tela"): os
+    recuos e respiros usam console_barra_texto_pad_h/pad_v/gap em vez dos
+    console_espaco_* compartilhados — no celular (values/dimens.xml) eles encolhem;
+    no tablet (values-sw600dp) valem o mesmo que console_espaco_4/3/2 sempre
+    valeram. A fileira de teclas especiais some atrás de um alternador
+    (consoleBarraTextoTeclasToggle) que Game.java liga; começa recolhida no
+    celular e sempre visível no tablet (console_barra_teclas_recolhida_por_padrao).
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -19,10 +27,10 @@
         android:layout_gravity="bottom"
         android:background="@drawable/console_barra_texto_bg"
         android:orientation="vertical"
-        android:paddingStart="@dimen/console_espaco_4"
-        android:paddingEnd="@dimen/console_espaco_4"
-        android:paddingTop="@dimen/console_espaco_3"
-        android:paddingBottom="@dimen/console_espaco_3"
+        android:paddingStart="@dimen/console_barra_texto_pad_h"
+        android:paddingEnd="@dimen/console_barra_texto_pad_h"
+        android:paddingTop="@dimen/console_barra_texto_pad_v"
+        android:paddingBottom="@dimen/console_barra_texto_pad_v"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -57,7 +65,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/console_espaco_2"
+            android:layout_marginTop="@dimen/console_barra_texto_gap"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -91,15 +99,56 @@
                 android:text="@string/vidro_compose_send" />
         </LinearLayout>
 
+        <!-- Alternador: só existe para dar pra recolher a fileira abaixo no celular
+             (console_barra_teclas_recolhida_por_padrao). No tablet Game.java o
+             deixa GONE e a fileira fica sempre visível, como sempre esteve. -->
         <LinearLayout
+            android:id="@+id/consoleBarraTextoTeclasToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/console_barra_texto_gap"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/console_espaco_1"
+            android:paddingBottom="@dimen/console_espaco_1">
+
+            <TextView
+                style="@style/ConsoleText.Legenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/console_guia_teclas_especiais" />
+
+            <ImageView
+                android:id="@+id/consoleBarraTextoTeclasToggleChevron"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="@dimen/console_espaco_1"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_console_chevron_down" />
+        </LinearLayout>
+
+        <!-- HorizontalScrollView, não LinearLayout: cinco teclas (a mais larga,
+             Ctrl+Alt+Del, sozinha já passa de 112dp) não cabem lado a lado na
+             largura de um celular em retrato sem rolar — sem isso as últimas
+             ficavam fora da tela e inalcançáveis (G2, defeito 4). -->
+        <HorizontalScrollView
+            android:id="@+id/consoleBarraTextoTeclasRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/console_espaco_2"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/console_barra_texto_gap"
+            android:scrollbars="none">
 
-            <include layout="@layout/console_teclas_fileira" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <include layout="@layout/console_teclas_fileira" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
 </merge>

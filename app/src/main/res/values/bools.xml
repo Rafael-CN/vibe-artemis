@@ -8,4 +8,10 @@
 -->
 <resources>
     <bool name="console_avancado_legenda_curta">true</bool>
+
+    <!-- G2, defeito 4: no celular a fileira de teclas especiais da barra de texto
+         começa recolhida (atrás de um alternador) para sobrar mais vídeo com o
+         teclado virtual aberto — no tablet (values-sw600dp/bools.xml) sobra altura
+         de sobra e ela fica sempre visível, como sempre esteve. -->
+    <bool name="console_barra_teclas_recolhida_por_padrao">true</bool>
 </resources>
