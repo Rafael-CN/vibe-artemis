@@ -4,26 +4,26 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
+Total: **221 arquivos**, **66.037 linhas**, **274 tipos**, **2599 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4956 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:266 `onServiceDisconnected()`:275 `sendText()`:362 `sendBackspaces()`:369 `onCreate()`:391 `onCapturedPointer()`:589 `notifyCrash()`:729 `onDisplayAdded()`:1114 |
+| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4900 | 14.5 | Game, GameMenuCallbacks | `onServiceConnected()`:265 `onServiceDisconnected()`:274 `sendText()`:360 `sendBackspaces()`:367 `onCreate()`:389 `onCapturedPointer()`:587 `notifyCrash()`:727 `onDisplayAdded()`:1108 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1131 | 4.6 | PcView, ComputerObject | `onServiceConnected()`:85 `run()`:92 `onServiceDisconnected()`:108 `onConfigurationChanged()`:114 `onClick()`:182 `onClick()`:190 `onClick()`:197 `onCreate()`:226 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 965 | 6.4 | AppView, AppObject | `onServiceConnected()`:107 `run()`:114 `run()`:158 `onServiceDisconnected()`:179 `onConfigurationChanged()`:185 `notifyComputerUpdated()`:215 `run()`:230 `run()`:244 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.4 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.4 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
-| [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 405 | 12.3 | GameMenu, MenuOption | `onGlobalLayout()`:193 `showMenu()`:341 `hideMenu()`:393 `isMenuOpen()`:401 |
+| [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 300 | 16.5 | GameMenu, MenuOption | `showMenu()`:103 `hideMenu()`:146 `isMenuOpen()`:154 |
 | [`DebugInfoActivity.java`](../../app/src/main/java/com/limelight/DebugInfoActivity.java) | 266 | 5.6 | DebugInfoActivity | `onCreate()`:41 `onClick()`:82 `onClick()`:92 `onClick()`:119 `onClick()`:125 `onProgressChanged()`:168 `onStartTrackingTouch()`:174 `onStopTrackingTouch()`:177 |
 | [`PosterContentProvider.java`](../../app/src/main/java/com/limelight/PosterContentProvider.java) | 153 | 3.4 | PosterContentProvider | `openFile()`:45 `openBoxArtFile()`:55 `delete()`:109 `getType()`:114 `insert()`:119 `onCreate()`:124 `query()`:130 `update()`:136 |
-| [`HelpActivity.java`](../../app/src/main/java/com/limelight/HelpActivity.java) | 119 | 7.4 | HelpActivity | `onCreate()`:25 `onBackInvoked()`:31 `onPageStarted()`:57 `onPageFinished()`:68 `onDestroy()`:96 `onBackPressed()`:108 |
+| [`HelpActivity.java`](../../app/src/main/java/com/limelight/HelpActivity.java) | 119 | 7.5 | HelpActivity | `onCreate()`:25 `onBackInvoked()`:31 `onPageStarted()`:57 `onPageFinished()`:68 `onDestroy()`:96 `onBackPressed()`:108 |
 | [`ProfilesActivity.java`](../../app/src/main/java/com/limelight/ProfilesActivity.java) | 78 | 4.7 | ProfilesActivity | `onCreate()`:24 `onDestroy()`:57 `onProfilesChanged()`:63 |
 | [`KeyboardAccessibilityService.java`](../../app/src/main/java/com/limelight/KeyboardAccessibilityService.java) | 72 | 2.8 | KeyboardAccessibilityService | `onKeyEvent()`:22 `onServiceConnected()`:52 `onAccessibilityEvent()`:64 `onInterrupt()`:68 |
 | [`StartExternalDisplayControlReceiver.java`](../../app/src/main/java/com/limelight/StartExternalDisplayControlReceiver.java) | 58 | 3.9 | StartExternalDisplayControlReceiver | `onReceive()`:25 |
 | [`SensitivityBean.java`](../../app/src/main/java/com/limelight/SensitivityBean.java) | 49 | 2.8 | SensitivityBean | `getLastAbsoluteX()`:17 `setLastAbsoluteX()`:21 `getLastAbsoluteY()`:25 `setLastAbsoluteY()`:29 `getLastRelativelyX()`:33 `setLastRelativelyX()`:37 `getLastRelativelyY()`:41 `setLastRelativelyY()`:45 |
-| [`LimeLog.java`](../../app/src/main/java/com/limelight/LimeLog.java) | 26 | 86.1 | LimeLog | — |
+| [`LimeLog.java`](../../app/src/main/java/com/limelight/LimeLog.java) | 26 | 86.6 | LimeLog | — |
 | [`ArtemisApplication.java`](../../app/src/main/java/com/limelight/ArtemisApplication.java) | 17 | 2.8 | ArtemisApplication | `onCreate()`:10 |
 
 ## `app/src/main/java/com/limelight/binding/`
@@ -48,10 +48,10 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 5.5 | ControllerHandler, GenericControllerContext, InputDeviceContext, UsbDeviceContext | `hasController()`:228 `onInputDeviceAdded()`:233 `onInputDeviceRemoved()`:238 `onInputDeviceChanged()`:251 `stop()`:271 `destroy()`:295 `disableSensors()`:304 `enableSensors()`:311 |
-| [`KeyboardTranslator.java`](../../app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java) | 455 | 5.2 | KeyboardTranslator, KeyboardMapping | `getDeviceKeyCodeForQwertyKeyCode()`:134 `getQwertyKeyCodeForDeviceKeyCode()`:138 `hasNormalizedMapping()`:161 `translate()`:183 `onInputDeviceAdded()`:429 `onInputDeviceRemoved()`:439 `onInputDeviceChanged()`:444 |
+| [`ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 5.6 | ControllerHandler, GenericControllerContext, InputDeviceContext, UsbDeviceContext | `hasController()`:228 `onInputDeviceAdded()`:233 `onInputDeviceRemoved()`:238 `onInputDeviceChanged()`:251 `stop()`:271 `destroy()`:295 `disableSensors()`:304 `enableSensors()`:311 |
+| [`KeyboardTranslator.java`](../../app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java) | 459 | 10.1 | KeyboardTranslator, KeyboardMapping | `getDeviceKeyCodeForQwertyKeyCode()`:138 `getQwertyKeyCodeForDeviceKeyCode()`:142 `hasNormalizedMapping()`:165 `translate()`:187 `onInputDeviceAdded()`:433 `onInputDeviceRemoved()`:443 `onInputDeviceChanged()`:448 |
 | [`TextInputPump.java`](../../app/src/main/java/com/limelight/binding/input/TextInputPump.java) | 153 | 3.1 | TextInputPump, Sink, Scheduler | `run()`:57 `run()`:73 `offerText()`:94 `offerBackspaces()`:122 `clear()`:134 `isIdle()`:141 `pendingChunks()`:145 `pendingBackspaces()`:149 |
-| [`GameInputDevice.java`](../../app/src/main/java/com/limelight/binding/input/GameInputDevice.java) | 19 | 8.1 | GameInputDevice | — |
+| [`GameInputDevice.java`](../../app/src/main/java/com/limelight/binding/input/GameInputDevice.java) | 19 | 13.1 | GameInputDevice | — |
 
 ## `app/src/main/java/com/limelight/binding/input/capture/`
 
@@ -99,7 +99,7 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 |---|--:|--:|---|---|
 | [`AnalogStickFree.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStickFree.java) | 513 | 2.8 | AnalogStickFree, AnalogStickListener, STICK_STATE, CLICK_STATE | `addAnalogStickListener()`:189 `onSizeChanged()`:226 `onElementDraw()`:237 `setBgOpacity()`:312 `setOpacity()`:319 `onElementTouchEvent()`:351 |
 | [`VirtualControllerConfigurationLoader.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java) | 450 | 2.8 | VirtualControllerConfigurationLoader | `onDirectionChange()`:40 `onClick()`:92 `onLongClick()`:101 `onRelease()`:110 |
-| [`VirtualControllerElement.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java) | 361 | 3.6 | VirtualControllerElement, Mode | `moveElement()`:78 `resizeElement()`:92 `actionDisableEnableButton()`:104 `onDraw()`:109 `actionEnableMove()`:157 `actionEnableResize()`:161 `actionCancel()`:165 `getDefaultColor()`:170 |
+| [`VirtualControllerElement.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java) | 361 | 3.7 | VirtualControllerElement, Mode | `moveElement()`:78 `resizeElement()`:92 `actionDisableEnableButton()`:104 `onDraw()`:109 `actionEnableMove()`:157 `actionEnableResize()`:161 `actionCancel()`:165 `getDefaultColor()`:170 |
 | [`AnalogStick.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java) | 350 | 2.8 | AnalogStick, AnalogStickListener, STICK_STATE, CLICK_STATE | `addAnalogStickListener()`:174 `onSizeChanged()`:211 `onElementDraw()`:221 `onElementTouchEvent()`:284 |
 | [`DigitalPad.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/DigitalPad.java) | 317 | 2.8 | DigitalPad, DigitalPadListener | `addDigitalPadListener()`:43 `onElementDraw()`:48 `rotateDrawable()`:250 `onElementTouchEvent()`:274 |
 | [`VirtualController.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java) | 278 | 7.5 | VirtualController, ControllerInputContext, ControllerMode | `run()`:55 `onClick()`:92 `hide()`:128 `show()`:136 `switchShowHide()`:142 `showElements()`:152 `showEnabledElements()`:158 `removeElements()`:164 |
@@ -178,10 +178,10 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`NvConnection.java`](../../app/src/main/java/com/limelight/nvstream/NvConnection.java) | 629 | 7.5 | NvConnection | `stop()`:92 `quitAndLaunch()`:353 `run()`:391 `sendExecServerCmd()`:484 `sendKeyboardInput()`:537 `sendMouseScroll()`:543 `sendMouseHScroll()`:549 `sendMouseHighResScroll()`:555 |
+| [`NvConnection.java`](../../app/src/main/java/com/limelight/nvstream/NvConnection.java) | 629 | 7.6 | NvConnection | `stop()`:92 `quitAndLaunch()`:353 `run()`:391 `sendExecServerCmd()`:484 `sendKeyboardInput()`:537 `sendMouseScroll()`:543 `sendMouseHScroll()`:549 `sendMouseHighResScroll()`:555 |
 | [`StreamConfiguration.java`](../../app/src/main/java/com/limelight/nvstream/StreamConfiguration.java) | 262 | 3.1 | StreamConfiguration, Builder | `setApp()`:38 `setRemoteConfiguration()`:43 `setResolution()`:48 `setRefreshRate()`:54 `setLaunchRefreshRate()`:59 `setVirtualDisplay()`:64 `setResolutionScaleFactor()`:69 `setBitrate()`:74 |
 | [`ConnectionContext.java`](../../app/src/main/java/com/limelight/nvstream/ConnectionContext.java) | 35 | 4.9 | ConnectionContext | — |
-| [`NvConnectionListener.java`](../../app/src/main/java/com/limelight/nvstream/NvConnectionListener.java) | 24 | 18.8 | NvConnectionListener | — |
+| [`NvConnectionListener.java`](../../app/src/main/java/com/limelight/nvstream/NvConnectionListener.java) | 24 | 18.1 | NvConnectionListener | — |
 
 ## `app/src/main/java/com/limelight/nvstream/av/`
 
@@ -193,13 +193,13 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`AudioRenderer.java`](../../app/src/main/java/com/limelight/nvstream/av/audio/AudioRenderer.java) | 16 | 21.2 | AudioRenderer | — |
+| [`AudioRenderer.java`](../../app/src/main/java/com/limelight/nvstream/av/audio/AudioRenderer.java) | 16 | 20.5 | AudioRenderer | — |
 
 ## `app/src/main/java/com/limelight/nvstream/av/video/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`VideoDecoderRenderer.java`](../../app/src/main/java/com/limelight/nvstream/av/video/VideoDecoderRenderer.java) | 22 | 19.5 | VideoDecoderRenderer | — |
+| [`VideoDecoderRenderer.java`](../../app/src/main/java/com/limelight/nvstream/av/video/VideoDecoderRenderer.java) | 22 | 18.9 | VideoDecoderRenderer | — |
 
 ## `app/src/main/java/com/limelight/nvstream/http/`
 
@@ -217,14 +217,14 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`ControllerPacket.java`](../../app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java) | 27 | 17.7 | ControllerPacket | — |
-| [`MouseButtonPacket.java`](../../app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java) | 13 | 7.1 | MouseButtonPacket | — |
-| [`KeyboardPacket.java`](../../app/src/main/java/com/limelight/nvstream/input/KeyboardPacket.java) | 11 | 4.6 | KeyboardPacket | — |
+| [`MouseButtonPacket.java`](../../app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java) | 13 | 7.2 | MouseButtonPacket | — |
+| [`KeyboardPacket.java`](../../app/src/main/java/com/limelight/nvstream/input/KeyboardPacket.java) | 11 | 5.6 | KeyboardPacket | — |
 
 ## `app/src/main/java/com/limelight/nvstream/jni/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`MoonBridge.java`](../../app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java) | 445 | 55.3 | MoonBridge, AudioConfiguration | `getSurroundAudioInfo()`:167 `equals()`:172 `hashCode()`:182 `toInt()`:188 `startConnection()`:345 `stopConnection()`:355 `interruptConnection()`:357 `sendExecServerCmd()`:359 |
+| [`MoonBridge.java`](../../app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java) | 445 | 52.9 | MoonBridge, AudioConfiguration | `getSurroundAudioInfo()`:167 `equals()`:172 `hashCode()`:182 `toInt()`:188 `startConnection()`:345 `stopConnection()`:355 `interruptConnection()`:357 `sendExecServerCmd()`:359 |
 
 ## `app/src/main/java/com/limelight/nvstream/mdns/`
 
@@ -246,7 +246,7 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1098 | 53.0 | PreferenceConfiguration, ScaleMode, ImeDisplayMode, FormatOption, AnalogStickForScrolling | — |
+| [`PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1098 | 48.6 | PreferenceConfiguration, ScaleMode, ImeDisplayMode, FormatOption, AnalogStickForScrolling | — |
 | [`StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 4.1 | StreamSettings, SettingsFragment | `onCreate()`:92 `onAttachedToWindow()`:106 `onConfigurationChanged()`:124 `onBackPressed()`:143 `getPrefs()`:174 `onCreateView()`:320 `onCreateView()`:326 `onCreatePreferences()`:331 |
 | [`AddComputerManually.java`](../../app/src/main/java/com/limelight/preferences/AddComputerManually.java) | 408 | 3.0 | AddComputerManually | `onServiceConnected()`:49 `onServiceDisconnected()`:54 `run()`:197 `run()`:227 `onStop()`:262 `onDestroy()`:270 `onCreate()`:280 `onEditorAction()`:333 |
 | [`SeekBarPreference.java`](../../app/src/main/java/com/limelight/preferences/SeekBarPreference.java) | 206 | 2.8 | SeekBarPreference | `getDialog()`:72 `onProgressChanged()`:102 `onStartTrackingTouch()`:127 `onStopTrackingTouch()`:130 `updateSeekbar()`:164 `setProgress()`:184 `getProgress()`:190 `showDialog()`:194 |
@@ -261,7 +261,7 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`ProfilesManager.java`](../../app/src/main/java/com/limelight/profiles/ProfilesManager.java) | 266 | 33.9 | ProfilesManager, ProfilesData, ProfileChangeListener, OverlaySharedPreferences | `load()`:49 `save()`:102 `getProfiles()`:133 `add()`:137 `update()`:143 `delete()`:149 `setActive()`:158 `getActive()`:164 |
+| [`ProfilesManager.java`](../../app/src/main/java/com/limelight/profiles/ProfilesManager.java) | 266 | 32.0 | ProfilesManager, ProfilesData, ProfileChangeListener, OverlaySharedPreferences | `load()`:49 `save()`:102 `getProfiles()`:133 `add()`:137 `update()`:143 `delete()`:149 `setActive()`:158 `getActive()`:164 |
 | [`ProfilesAdapter.java`](../../app/src/main/java/com/limelight/profiles/ProfilesAdapter.java) | 109 | 4.2 | ProfilesAdapter, ProfileViewHolder | `onCreateViewHolder()`:35 `onBindViewHolder()`:41 `getItemCount()`:89 |
 | [`SettingsProfile.java`](../../app/src/main/java/com/limelight/profiles/SettingsProfile.java) | 62 | 3.9 | SettingsProfile | `getUuid()`:23 `getName()`:27 `setName()`:31 `getCreatedUtc()`:35 `getModifiedUtc()`:39 `setModifiedUtc()`:43 `getOptions()`:47 `setOptions()`:51 |
 
@@ -269,12 +269,11 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 321 | 3.1 | VidroSession | `showConnecting()`:64 `onStageStarting()`:95 `onConnected()`:112 `getConnectingCancel()`:127 `isSheetOpen()`:133 `openSheet()`:137 `closeSheet()`:153 `run()`:169 |
 | [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 316 | 3.1 | StreamContainer, InputCallbacks, StreamMode | `init()`:66 `setDesiredAspectRatio()`:104 `setFillDisplay()`:109 `onMeasure()`:115 `setInputCallbacks()`:194 `setCommitTextEnabled()`:198 `onKeyPreIme()`:203 `onWindowFocusChanged()`:215 |
 | [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 292 | 3.3 | VidroLightView, FloatSink | `setIntensity()`:130 `set()`:148 `setQuality()`:155 `set()`:178 `set()`:184 `onAnimationUpdate()`:200 `onDetachedFromWindow()`:210 `onDraw()`:241 |
-| [`VidroIsland.java`](../../app/src/main/java/com/limelight/ui/VidroIsland.java) | 218 | 3.1 | VidroIsland | `run()`:52 `isAvailable()`:69 `getIsland()`:73 `getPill()`:77 `setAppName()`:82 `setQuality()`:92 `reopen()`:108 `isOpen()`:112 |
 | [`StreamView.java`](../../app/src/main/java/com/limelight/ui/StreamView.java) | 168 | 2.8 | StreamView, InputCallbacks | `setDesiredAspectRatio()`:24 `setInputCallbacks()`:28 `setFillDisplay()`:32 `setCommitTextEnabled()`:36 `onMeasure()`:62 `onKeyPreIme()`:97 `onWindowFocusChanged()`:117 `onCheckIsTextEditor()`:126 |
 | [`ApertureViewGroup.java`](../../app/src/main/java/com/limelight/ui/ApertureViewGroup.java) | 151 | 2.8 | ApertureViewGroup | `getOutline()`:54 `getCurrentSpeed()`:80 `setCurrentSpeed()`:84 `onSizeChanged()`:90 `dispatchDraw()`:124 |
+| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 125 | 3.1 | VidroSession | `showConnecting()`:58 `onStageStarting()`:89 `onConnected()`:106 `getConnectingCancel()`:121 |
 | [`MoqueDaStream.java`](../../app/src/main/java/com/limelight/ui/MoqueDaStream.java) | 100 | 3.1 | MoqueDaStream | `comecar()`:41 `parar()`:53 `run()`:61 |
 | [`ExternalControllerView.java`](../../app/src/main/java/com/limelight/ui/ExternalControllerView.java) | 94 | 4.2 | ExternalControllerView, InputCallbacks | `setInputCallbacks()`:16 `setCommitTextEnabled()`:20 `onKeyPreIme()`:34 `onCheckIsTextEditor()`:54 `onCreateInputConnection()`:59 `commitText()`:70 `deleteSurroundingText()`:78 |
 | [`AdapterFragment.java`](../../app/src/main/java/com/limelight/ui/AdapterFragment.java) | 36 | 3.3 | AdapterFragment | `onAttach()`:18 `onCreateView()`:25 `onActivityCreated()`:31 |
@@ -286,8 +285,8 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`Stereo3DRenderer.java`](../../app/src/main/java/com/limelight/utils/Stereo3DRenderer.java) | 1149 | 3.9 | Stereo3DRenderer, OnSurfaceReadyListener, InferenceResult, RenderResult, AiTask, AiResultHandling | `setPrefConfig()`:156 `onSurfaceDestroyed()`:160 `getVideoSurface()`:223 `onFrameAvailable()`:228 `onSurfaceCreated()`:236 `onDrawFrame()`:414 `onSurfaceChanged()`:756 `run()`:981 |
-| [`KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 6.7 | KeyMapper | — |
-| [`ExternalDisplayControlActivity.java`](../../app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java) | 567 | 8.8 | ExternalDisplayControlActivity | `onCreate()`:114 `onResume()`:199 `onPause()`:207 `onDestroy()`:215 `onKeyboardControllerVisibilityChange()`:221 `onWindowFocusChanged()`:279 `onBackPressed()`:289 `onConfigurationChanged()`:316 |
+| [`KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 5.7 | KeyMapper | — |
+| [`ExternalDisplayControlActivity.java`](../../app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java) | 567 | 8.9 | ExternalDisplayControlActivity | `onCreate()`:114 `onResume()`:199 `onPause()`:207 `onDestroy()`:215 `onKeyboardControllerVisibilityChange()`:221 `onWindowFocusChanged()`:279 `onBackPressed()`:289 `onConfigurationChanged()`:316 |
 | [`DeviceUtils.java`](../../app/src/main/java/com/limelight/utils/DeviceUtils.java) | 411 | 9.7 | DeviceUtils | — |
 | [`TvChannelHelper.java`](../../app/src/main/java/com/limelight/utils/TvChannelHelper.java) | 367 | 2.8 | TvChannelHelper, PreviewProgramBuilder, ChannelBuilder | `setChannelId()`:285 `setType()`:290 `setTitle()`:295 `setPosterArtAspectRatio()`:300 `setIntent()`:305 `setIntentUri()`:310 `setInternalProviderId()`:315 `setPosterArtUri()`:320 |
 | [`ShortcutHelper.java`](../../app/src/main/java/com/limelight/utils/ShortcutHelper.java) | 315 | 3.7 | ShortcutHelper | `reportComputerShortcutUsed()`:97 `reportGameLaunched()`:105 `createAppViewShortcut()`:110 `createAppViewShortcutForOnlineHost()`:155 `createPinnedGameShortcut()`:164 `disableComputerShortcut()`:186 `disableAppShortcut()`:206 `enableAppShortcut()`:216 |
@@ -303,7 +302,7 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 | [`ReflectivePaddingInt8Minimal.java`](../../app/src/main/java/com/limelight/utils/ReflectivePaddingInt8Minimal.java) | 80 | 2.8 | ReflectivePaddingInt8Minimal | — |
 | [`HelpLauncher.java`](../../app/src/main/java/com/limelight/utils/HelpLauncher.java) | 60 | 5.4 | HelpLauncher | — |
 | [`Vector2d.java`](../../app/src/main/java/com/limelight/utils/Vector2d.java) | 48 | 3.2 | Vector2d | `initialize()`:14 `getMagnitude()`:20 `getNormalized()`:24 `scalarMultiply()`:28 `setX()`:32 `setY()`:36 `getX()`:40 `getY()`:44 |
-| [`KeyConfigHelper.java`](../../app/src/main/java/com/limelight/utils/KeyConfigHelper.java) | 45 | 5.6 | KeyConfigHelper, ShortcutFile, Shortcut | — |
+| [`KeyConfigHelper.java`](../../app/src/main/java/com/limelight/utils/KeyConfigHelper.java) | 45 | 3.6 | KeyConfigHelper, ShortcutFile, Shortcut | — |
 | [`TrafficStatsHelper.java`](../../app/src/main/java/com/limelight/utils/TrafficStatsHelper.java) | 37 | 3.3 | TrafficStatsHelper | — |
 | [`NetHelper.java`](../../app/src/main/java/com/limelight/utils/NetHelper.java) | 33 | 3.1 | NetHelper | — |
 | [`MouseModeOption.java`](../../app/src/main/java/com/limelight/utils/MouseModeOption.java) | 17 | 3.1 | MouseModeOption | `toString()`:13 |
@@ -378,7 +377,7 @@ Total: **222 arquivos**, **66.603 linhas**, **275 tipos**, **2635 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 309 | 2.8 | VidroScreenshotTest | `telasEmRetrato()`:66 `telasEmPaisagem()`:100 `telasNoTablet()`:118 `telasNoS22Ultra()`:133 |
+| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 314 | 2.8 | VidroScreenshotTest | `telasEmRetrato()`:66 `telasEmPaisagem()`:100 `telasNoTablet()`:123 `telasNoS22Ultra()`:138 |
 | [`StartupCrashTest.java`](../../app/src/test/java/com/limelight/StartupCrashTest.java) | 288 | 2.8 | StartupCrashTest | `setUp()`:37 `testNativeLibraryLoadingFailure()`:54 `testGLSurfaceViewInitialization()`:68 `testPreferenceConfigurationCrash()`:82 `testUiHelperCrash()`:93 `testComputerManagerServiceBinding()`:106 `testSharedPreferencesCorruption()`:119 `testMissingRequiredIntentExtras()`:139 |
 | [`StartupTest.java`](../../app/src/test/java/com/limelight/StartupTest.java) | 232 | 2.8 | StartupTest | `setUp()`:35 `testApplicationStartup()`:52 `testPcViewActivityCreation()`:64 `testPcViewActivityWithIntent()`:72 `testAppViewActivityCreation()`:86 `testProfilesManagerFileSystemAccess()`:98 `testMissingPermissions()`:112 `testCorruptedProfilesFile()`:130 |
 | [`PosterContentProviderTest.java`](../../app/src/test/java/com/limelight/PosterContentProviderTest.java) | 173 | 2.8 | PosterContentProviderTest | `setUp()`:39 `legitimateBoxArtIsServed()`:77 `traversalCannotReachAFileOutsideTheBoxArtDirectory()`:91 `traversalShapedUuidsAreRejected()`:113 `nonUuidSegmentsAreRejected()`:120 `nonNumericAppIdIsRejectedWithoutCrashing()`:127 `unexpectedPathsAreRejected()`:135 `writeModesAreRefused()`:154 |
