@@ -1,5 +1,12 @@
 # VibeArtemis — base de design
 
+> **Histórico.** Este documento é o brainstorm que antecedeu a decisão. Em 4 de setembro
+> de 2026 o dono escolheu a tese **"Console"** (nem uma das quatro abaixo ao pé da letra —
+> ver `docs/design/console/BRIEF.md` para o porquê) e ela foi implementada em fatias
+> (`docs/planos/B-CONSOLE.md`). A fonte de verdade viva de tokens e telas é
+> `docs/design/console/` (`NOTA.md`, `artboards/`, `fotos/`) — leia este arquivo para
+> entender o espaço de exploração original, não para saber o que o app faz hoje.
+
 Documento de entrada para o Claude Design. Não é um manual fechado: é a divisão entre
 **o que já está decidido** e **onde há liberdade real**.
 

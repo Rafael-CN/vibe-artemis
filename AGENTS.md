@@ -91,7 +91,7 @@ app/src/test/               15 arquivos, Robolectric
 | mexer na fronteira JNI | `docs/reference/jni.md` + rode `jni-check.mjs` | — |
 | mexer em teclado / IME / janela | `docs/epics/E01-teclado-anydesk.md` | — |
 | mexer em decoder / latência | `decoder-errata.txt` (raiz) | — |
-| adicionar preferência | `docs/howto/adicionar-preferencia.md` | — |
+| adicionar preferência | `.claude/rules/prefs.md` | — |
 | saber se algo é nosso ou do upstream | subagente `upstream-diff-scout` | histórico git cru |
 | saber se a feature exige Apollo | `docs/reference/host-compatibility.md` | — |
 
