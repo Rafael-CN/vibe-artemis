@@ -383,6 +383,19 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         appGridAdapter.notifyDataSetChanged();
         updateVidroCatalogHeader();
 
+        // F6: sem isto o toque na capa "Em execução" não retomava nada no moque — só
+        // AppObject#isRunning (que pinta o selo) era semeado, e o onItemClick/
+        // onCreateContextMenu abaixo decidem "iniciar" vs. "menu de retomar" olhando
+        // para este campo, que só o ComputerManagerListener de verdade escrevia. Sem
+        // host nenhum aqui, replicamos o mesmo dado que ele escreveria.
+        for (int i = 0; i < appGridAdapter.getCount(); i++) {
+            AppObject candidate = (AppObject) appGridAdapter.getItem(i);
+            if (candidate.isRunning) {
+                lastRunningAppId = candidate.app.getAppId();
+                break;
+            }
+        }
+
         try {
             getFragmentManager().beginTransaction()
                     .replace(R.id.appFragmentContainer, new AdapterFragment())
