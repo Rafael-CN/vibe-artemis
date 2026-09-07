@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Caixa de um dígito do código de pareamento. -->
+<!--
+    Caixa de um dígito do código de pareamento (Plano B / F5). Console: superfície
+    de repouso, não mais o vidro translúcido — mesmos tokens que qualquer card da
+    Console usa (console_superficie/console_borda), raio de controle.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#0AFFFFFF" />
-    <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_stroke_glass" />
-    <corners android:radius="18dp" />
+    <solid android:color="@color/console_superficie" />
+    <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/console_borda" />
+    <corners android:radius="@dimen/console_raio_controle" />
 </shape>

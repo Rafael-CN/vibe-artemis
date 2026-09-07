@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Pareamento · passo do código. Tela 07 do handoff.
+    Pareamento · passo do código. Tela 07 do handoff — pele da Console (Plano B / F5,
+    B-CONSOLE.md §F5).
 
     Nunca chamar de "emparelhar dispositivo": aqui é um lugar novo. E nunca dizer "erro"
     nem mostrar código de status — a causa quase sempre é o código ter virado, e é isso
     que a tela diz.
 
-    Os quatro dígitos são o único lugar da home onde JetBrains Mono aparece: número que a
-    pessoa vai copiar à mão para outra tela precisa de dígito inconfundível e de largura
-    fixa, senão o olho perde a posição no meio da digitação.
+    Os quatro dígitos são o único lugar da home onde JetBrains Mono aparece, agora em
+    ConsoleText.Mono grande (B-CONSOLE.md §F5: "código de pareamento em mono grande") —
+    número que a pessoa vai copiar à mão para outra tela precisa de dígito inconfundível
+    e de largura fixa, senão o olho perde a posição no meio da digitação.
+
+    A luz radial (VidroLightView) saiu sem substituto próprio: o ponto de estado que
+    B-CONSOLE.md §F5 pede já existe aqui — é o vidroPairWaitDot logo abaixo do código,
+    que já usa vidro_dot_on (acento = ativo) desde antes desta fatia. Duplicar um
+    segundo ponto atrás do código seria o mesmo sinal duas vezes.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -17,98 +24,93 @@
         android:id="@+id/vidroPairing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/vidro_void"
+        android:background="@color/console_fundo"
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
         tools:visibility="visible">
-
-        <!--
-            Atrás do CÓDIGO, não do meio da tela. O handoff é explícito: a luz vem de onde
-            está a coisa viva, e aqui a coisa viva são os quatro dígitos. Centrada na
-            janela ela caía abaixo deles, iluminando o parágrafo de apoio.
-        -->
-        <com.limelight.ui.VidroLightView
-            android:id="@+id/vidroPairingLight"
-            android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="300dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/vidro_space_5"
-            android:paddingRight="@dimen/vidro_space_5">
+            android:paddingLeft="@dimen/console_espaco_5"
+            android:paddingRight="@dimen/console_espaco_5">
 
             <TextView
                 android:id="@+id/vidroPairingStep"
-                style="@style/VidroText.Overline"
+                style="@style/ConsoleText.Legenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:letterSpacing="0.16"
-                android:text="@string/vidro_pair_type_on_pc"
-                android:textSize="12sp" />
+                android:text="@string/vidro_pair_type_on_pc" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
+                android:layout_marginTop="@dimen/console_espaco_4"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/vidroPairDigit0"
-                    style="@style/VidroText.Code"
+                    style="@style/ConsoleText.Mono"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
                     android:background="@drawable/vidro_code_box"
+                    android:gravity="center"
+                    android:textSize="32sp"
                     tools:text="4" />
 
                 <TextView
                     android:id="@+id/vidroPairDigit1"
-                    style="@style/VidroText.Code"
+                    style="@style/ConsoleText.Mono"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="@dimen/vidro_space_3"
-                    android:layout_marginLeft="@dimen/vidro_space_3"
+                    android:layout_marginStart="@dimen/console_espaco_3"
+                    android:layout_marginLeft="@dimen/console_espaco_3"
                     android:background="@drawable/vidro_code_box"
+                    android:gravity="center"
+                    android:textSize="32sp"
                     tools:text="7" />
 
                 <TextView
                     android:id="@+id/vidroPairDigit2"
-                    style="@style/VidroText.Code"
+                    style="@style/ConsoleText.Mono"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="@dimen/vidro_space_3"
-                    android:layout_marginLeft="@dimen/vidro_space_3"
+                    android:layout_marginStart="@dimen/console_espaco_3"
+                    android:layout_marginLeft="@dimen/console_espaco_3"
                     android:background="@drawable/vidro_code_box"
+                    android:gravity="center"
+                    android:textSize="32sp"
                     tools:text="1" />
 
                 <TextView
                     android:id="@+id/vidroPairDigit3"
-                    style="@style/VidroText.Code"
+                    style="@style/ConsoleText.Mono"
                     android:layout_width="60dp"
                     android:layout_height="78dp"
-                    android:layout_marginStart="@dimen/vidro_space_3"
-                    android:layout_marginLeft="@dimen/vidro_space_3"
+                    android:layout_marginStart="@dimen/console_espaco_3"
+                    android:layout_marginLeft="@dimen/console_espaco_3"
                     android:background="@drawable/vidro_code_box"
+                    android:gravity="center"
+                    android:textSize="32sp"
                     tools:text="2" />
             </LinearLayout>
 
             <TextView
-                style="@style/VidroText.Body"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_4"
+                android:layout_marginTop="@dimen/console_espaco_4"
+                android:lineSpacingMultiplier="1.3"
                 android:maxWidth="340dp"
                 android:text="@string/vidro_pair_code_help" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginTop="@dimen/console_espaco_5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -116,13 +118,13 @@
                     android:id="@+id/vidroPairWaitDot"
                     android:layout_width="8dp"
                     android:layout_height="8dp"
-                    android:layout_marginEnd="@dimen/vidro_space_2"
-                    android:layout_marginRight="@dimen/vidro_space_2"
+                    android:layout_marginEnd="@dimen/console_espaco_2"
+                    android:layout_marginRight="@dimen/console_espaco_2"
                     android:background="@drawable/vidro_dot_on" />
 
                 <TextView
                     android:id="@+id/vidroPairStatus"
-                    style="@style/VidroText.Support"
+                    style="@style/ConsoleText.Rotulo2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/vidro_pair_waiting" />
@@ -130,11 +132,13 @@
 
             <TextView
                 android:id="@+id/vidroPairCancel"
-                style="@style/VidroButton.Ghost"
+                style="@style/ConsoleBotao.Neutro"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginTop="@dimen/vidro_space_5"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/console_espaco_5"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/console_foco_botao"
                 android:text="@string/vidro_cancel" />
         </LinearLayout>
     </FrameLayout>

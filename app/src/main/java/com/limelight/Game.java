@@ -46,7 +46,6 @@ import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.MoqueDaStream;
-import com.limelight.ui.VidroLightView;
 import com.limelight.ui.VidroSession;
 import com.limelight.ui.ExternalControllerView;
 import com.limelight.ui.GameGestures;
@@ -306,6 +305,24 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      * {@code Game} só é exportada nessa build (app/src/debug/AndroidManifest.xml).
      */
     public static final String EXTRA_MOQUE = "MoqueDeStream";
+
+    /**
+     * Qual das duas telas de sessão fotografar por cima do moque — "conectando" ou
+     * "queda" (B-CONSOLE.md §F5). Sem este extra (ou com qualquer outro valor), o moque
+     * se comporta como sempre: conecta na hora e não mostra nenhuma das duas.
+     *
+     * <pre>adb shell am start -n com.limelight.noirdebug/com.limelight.Game --ez MoqueDeStream true --es MoqueEstado conectando</pre>
+     * <pre>adb shell am start -n com.limelight.noirdebug/com.limelight.Game --ez MoqueDeStream true --es MoqueEstado queda</pre>
+     *
+     * Só lido dentro de {@link #emModoDeMoque()} — mesma trava de {@link #EXTRA_MOQUE}.
+     * "queda" não reintroduz a queda de rede real (fora do escopo desta fatia, "não mexa
+     * em rede"): ele só chama {@code connectionStarted()} e em seguida mostra
+     * {@code vidroLost}, o par exato do que uma queda de verdade faria na tela depois
+     * que o vídeo já estava de pé.
+     */
+    public static final String EXTRA_MOQUE_ESTADO = "MoqueEstado";
+    private static final String MOQUE_ESTADO_CONECTANDO = "conectando";
+    private static final String MOQUE_ESTADO_QUEDA = "queda";
 
     public static final String CLIPBOARD_IDENTIFIER = "ArtemisStreaming";
 
@@ -947,9 +964,24 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                     moque = new MoqueDaStream();
                     moque.comecar(streamContainer.getSurface());
 
+                    String estado = getIntent().getStringExtra(EXTRA_MOQUE_ESTADO);
+                    if (MOQUE_ESTADO_CONECTANDO.equals(estado)) {
+                        // Não chama connectionStarted(): a tela de conectar
+                        // (showVidroConnecting(), já visível desde onCreate) fica de pé
+                        // para sempre, de propósito — é a foto que B-CONSOLE.md §F5 pede.
+                        return;
+                    }
+
                     // O mesmo caminho que uma conexão de verdade percorre ao subir:
                     // sem chamar isto a tela de conectar fica de pé para sempre.
                     connectionStarted();
+
+                    if (MOQUE_ESTADO_QUEDA.equals(estado)) {
+                        View lost = findViewById(R.id.vidroLost);
+                        if (lost != null) {
+                            lost.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
                 return;
             }
@@ -1182,9 +1214,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             bar.setProgress(18);
         }
 
-        VidroLightView light = findViewById(R.id.vidroConnectingLight);
+        // Ponto de estado simples (B-CONSOLE.md §F5), não mais a luz radial: apagado
+        // (vidro_dot_off) até o segundo estágio da conexão acender (vidroSession#
+        // onStageStarting), acompanhando a barra.
+        View light = findViewById(R.id.vidroConnectingLight);
         if (light != null) {
-            light.setIntensity(VidroLightView.INTENSITY_ASLEEP, false);
+            light.setBackgroundResource(R.drawable.vidro_dot_off);
         }
 
         View cancel = findViewById(R.id.vidroConnectingCancel);

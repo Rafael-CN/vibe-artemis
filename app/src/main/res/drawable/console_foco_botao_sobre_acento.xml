@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Contorno de foco para ConsoleBotao.Primario especificamente (fundo console_acento
+    sólido) — achado da verificação da F5 (F5-verificacao.md): console_foco_botao.xml
+    desenha o anel/borda em console_acento sobre um botão que já é console_acento;
+    ring e fundo ficam da mesma cor e o foco fica funcional (D-pad move e ativa) mas
+    invisível (confirmado em app/src/main/res/layout/activity_add_computer_manually.xml
+    — addPcButton — com adb: mServedView muda para o botão e Enter dispara a ação, sem
+    nenhum traço visível na tela).
+
+    Mesma composição de console_foco_botao.xml, trocando a cor do anel/borda por
+    console_acento_sobre — o token que a TOKENS.md já define como "texto/ícone sobre
+    superfície de acento", ou seja, feito para ter contraste em cima do próprio
+    console_acento. Nenhuma cor nova: o 15% de opacidade do anel usa a mesma conta do
+    console_foco_botao.xml (console_acento_sobre a 15% = 0,15 × 255 ≈ 38 = 0x26).
+
+    Use em qualquer ConsoleBotao.Primario; ConsoleBotao.Neutro continua com
+    console_foco_botao.xml (fundo console_superficie escuro — o anel em console_acento
+    já contrasta ali, nada a trocar).
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_anel"
+                        android:color="#260A1F1A" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+            <item
+                android:top="@dimen/console_foco_anel"
+                android:bottom="@dimen/console_foco_anel"
+                android:left="@dimen/console_foco_anel"
+                android:right="@dimen/console_foco_anel">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_borda"
+                        android:color="@color/console_acento_sobre" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+</selector>

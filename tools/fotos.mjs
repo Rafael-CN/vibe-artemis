@@ -29,6 +29,12 @@
  *   cenas           ProfilesActivity, sem moque
  *   sessao              Game com MoqueDeStream (superfície preta, sem host) — a aba
  *                       (console_aba.xml) em repouso no centro da borda superior
+ *   sessao-conectando   idem, com MoqueEstado=conectando — trava ANTES de
+ *                       connectionStarted(), então vidro_connecting.xml (Plano B / F5)
+ *                       fica de pé em vez de sumir na hora
+ *   sessao-queda        idem, com MoqueEstado=queda — conecta normalmente e mostra
+ *                       vidro_lost.xml por cima (Plano B / F5); não reintroduz a queda
+ *                       de rede real, só a pele
  *   sessao-menu         idem, depois de KEYCODE_BACK — enableBackMenu é true por
  *                       padrão; abre a guia (console_guia.xml, Plano B / F2), não mais
  *                       a lista de antes
@@ -497,6 +503,23 @@ const ROTAS = {
   sessao: {
     componente: 'com.limelight.Game',
     extras: ['--ez', 'MoqueDeStream', 'true'],
+    paisagem: true,
+  },
+  'sessao-conectando': {
+    componente: 'com.limelight.Game',
+    // MoqueEstado=conectando trava o moque ANTES de connectionStarted(): a tela de
+    // conectar (vidro_connecting.xml, mostrada desde onCreate) fica de pé para sempre
+    // em vez de sumir no instante em que a superfície falsa aparece (B-CONSOLE.md §F5).
+    extras: ['--ez', 'MoqueDeStream', 'true', '--es', 'MoqueEstado', 'conectando'],
+    paisagem: true,
+  },
+  'sessao-queda': {
+    componente: 'com.limelight.Game',
+    // MoqueEstado=queda deixa o moque conectar normalmente e, no mesmo instante,
+    // mostra vidro_lost.xml por cima — o par exato do que uma queda de rede real
+    // mostraria depois que o vídeo já estava de pé. Não é a queda de verdade (fora do
+    // escopo desta fatia, "não mexa em rede") — só a pele fotografada sob demanda.
+    extras: ['--ez', 'MoqueDeStream', 'true', '--es', 'MoqueEstado', 'queda'],
     paisagem: true,
   },
   'sessao-menu': {
