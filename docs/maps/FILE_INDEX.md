@@ -4,14 +4,14 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.223 linhas**, **280 tipos**, **2648 métodos**.
+Total: **224 arquivos**, **67.264 linhas**, **280 tipos**, **2648 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4900 | 14.3 | Game, GameMenuCallbacks | `onServiceConnected()`:265 `onServiceDisconnected()`:274 `sendText()`:360 `sendBackspaces()`:367 `onCreate()`:389 `onCapturedPointer()`:587 `notifyCrash()`:727 `onDisplayAdded()`:1108 |
-| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1631 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:115 `run()`:122 `onServiceDisconnected()`:145 `onConfigurationChanged()`:151 `onClick()`:219 `onClick()`:243 `onClick()`:250 `onCreate()`:289 |
+| [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4935 | 14.3 | Game, GameMenuCallbacks | `onServiceConnected()`:264 `onServiceDisconnected()`:273 `sendText()`:377 `sendBackspaces()`:384 `onCreate()`:406 `onCapturedPointer()`:604 `notifyCrash()`:744 `onDisplayAdded()`:1140 |
+| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1630 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:114 `run()`:121 `onServiceDisconnected()`:144 `onConfigurationChanged()`:150 `onClick()`:218 `onClick()`:242 `onClick()`:249 `onCreate()`:288 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 913 | 9.2 | AppView, AppObject | `onServiceConnected()`:102 `run()`:109 `run()`:153 `onServiceDisconnected()`:174 `onConfigurationChanged()`:180 `notifyComputerUpdated()`:210 `run()`:225 `run()`:239 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.3 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.2 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
@@ -102,7 +102,7 @@ Total: **224 arquivos**, **67.223 linhas**, **280 tipos**, **2648 métodos**.
 | [`VirtualControllerElement.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java) | 361 | 3.6 | VirtualControllerElement, Mode | `moveElement()`:78 `resizeElement()`:92 `actionDisableEnableButton()`:104 `onDraw()`:109 `actionEnableMove()`:157 `actionEnableResize()`:161 `actionCancel()`:165 `getDefaultColor()`:170 |
 | [`AnalogStick.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java) | 350 | 2.8 | AnalogStick, AnalogStickListener, STICK_STATE, CLICK_STATE | `addAnalogStickListener()`:174 `onSizeChanged()`:211 `onElementDraw()`:221 `onElementTouchEvent()`:284 |
 | [`DigitalPad.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/DigitalPad.java) | 317 | 2.8 | DigitalPad, DigitalPadListener | `addDigitalPadListener()`:43 `onElementDraw()`:48 `rotateDrawable()`:250 `onElementTouchEvent()`:274 |
-| [`VirtualController.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java) | 278 | 7.3 | VirtualController, ControllerInputContext, ControllerMode | `run()`:55 `onClick()`:92 `hide()`:128 `show()`:136 `switchShowHide()`:142 `showElements()`:152 `showEnabledElements()`:158 `removeElements()`:164 |
+| [`VirtualController.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java) | 278 | 7.4 | VirtualController, ControllerInputContext, ControllerMode | `run()`:55 `onClick()`:92 `hide()`:128 `show()`:136 `switchShowHide()`:142 `showElements()`:152 `showEnabledElements()`:158 `removeElements()`:164 |
 | [`DigitalButton.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/DigitalButton.java) | 268 | 2.8 | DigitalButton, DigitalButtonListener | `run()`:54 `checkMovement()`:70 `addDigitalButtonListener()`:126 `setText()`:130 `setIcon()`:135 `setIconPress()`:140 `onElementDraw()`:145 `onElementTouchEvent()`:230 |
 | [`LeftAnalogStickFree.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStickFree.java) | 52 | 2.8 | LeftAnalogStickFree | `onMovement()`:19 `onClick()`:29 `onDoubleClick()`:33 `onRevoke()`:42 |
 | [`RightAnalogStickFree.java`](../../app/src/main/java/com/limelight/binding/input/virtual_controller/RightAnalogStickFree.java) | 52 | 2.8 | RightAnalogStickFree | `onMovement()`:19 `onClick()`:29 `onDoubleClick()`:33 `onRevoke()`:42 |
@@ -256,7 +256,7 @@ Total: **224 arquivos**, **67.223 linhas**, **280 tipos**, **2648 métodos**.
 | [`ConfirmDeleteOscPreference.java`](../../app/src/main/java/com/limelight/preferences/ConfirmDeleteOscPreference.java) | 52 | 2.8 | ConfirmDeleteOscPreference, DialogFragmentCompat | `onDialogClosed()`:44 |
 | [`LanguagePreference.java`](../../app/src/main/java/com/limelight/preferences/LanguagePreference.java) | 50 | 2.8 | LanguagePreference | — |
 | [`WebLauncherPreference.java`](../../app/src/main/java/com/limelight/preferences/WebLauncherPreference.java) | 46 | 2.8 | WebLauncherPreference | `onClick()`:42 |
-| [`GlPreferences.java`](../../app/src/main/java/com/limelight/preferences/GlPreferences.java) | 38 | 3.1 | GlPreferences | `writePreferences()`:31 |
+| [`GlPreferences.java`](../../app/src/main/java/com/limelight/preferences/GlPreferences.java) | 38 | 3.2 | GlPreferences | `writePreferences()`:31 |
 | [`SmallIconCheckboxPreference.java`](../../app/src/main/java/com/limelight/preferences/SmallIconCheckboxPreference.java) | 33 | 2.8 | SmallIconCheckboxPreference | `onGetDefaultValue()`:29 |
 
 ## `app/src/main/java/com/limelight/profiles/`
@@ -272,10 +272,10 @@ Total: **224 arquivos**, **67.223 linhas**, **280 tipos**, **2648 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`StreamContainer.java`](../../app/src/main/java/com/limelight/ui/StreamContainer.java) | 316 | 3.0 | StreamContainer, InputCallbacks, StreamMode | `init()`:66 `setDesiredAspectRatio()`:104 `setFillDisplay()`:109 `onMeasure()`:115 `setInputCallbacks()`:194 `setCommitTextEnabled()`:198 `onKeyPreIme()`:203 `onWindowFocusChanged()`:215 |
-| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 292 | 3.1 | VidroLightView, FloatSink | `setIntensity()`:130 `set()`:148 `setQuality()`:155 `set()`:178 `set()`:184 `onAnimationUpdate()`:200 `onDetachedFromWindow()`:210 `onDraw()`:241 |
+| [`VidroLightView.java`](../../app/src/main/java/com/limelight/ui/VidroLightView.java) | 292 | 2.8 | VidroLightView, FloatSink | `setIntensity()`:130 `set()`:148 `setQuality()`:155 `set()`:178 `set()`:184 `onAnimationUpdate()`:200 `onDetachedFromWindow()`:210 `onDraw()`:241 |
 | [`StreamView.java`](../../app/src/main/java/com/limelight/ui/StreamView.java) | 168 | 2.8 | StreamView, InputCallbacks | `setDesiredAspectRatio()`:24 `setInputCallbacks()`:28 `setFillDisplay()`:32 `setCommitTextEnabled()`:36 `onMeasure()`:62 `onKeyPreIme()`:97 `onWindowFocusChanged()`:117 `onCheckIsTextEditor()`:126 |
 | [`ApertureViewGroup.java`](../../app/src/main/java/com/limelight/ui/ApertureViewGroup.java) | 151 | 2.8 | ApertureViewGroup | `getOutline()`:54 `getCurrentSpeed()`:80 `setCurrentSpeed()`:84 `onSizeChanged()`:90 `dispatchDraw()`:124 |
-| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 125 | 3.0 | VidroSession | `showConnecting()`:58 `onStageStarting()`:89 `onConnected()`:106 `getConnectingCancel()`:121 |
+| [`VidroSession.java`](../../app/src/main/java/com/limelight/ui/VidroSession.java) | 132 | 3.0 | VidroSession | `showConnecting()`:64 `onStageStarting()`:96 `onConnected()`:113 `getConnectingCancel()`:128 |
 | [`MoqueDeApps.java`](../../app/src/main/java/com/limelight/ui/MoqueDeApps.java) | 123 | 3.3 | MoqueDeApps | — |
 | [`MoqueDaStream.java`](../../app/src/main/java/com/limelight/ui/MoqueDaStream.java) | 100 | 3.0 | MoqueDaStream | `comecar()`:41 `parar()`:53 `run()`:61 |
 | [`ExternalControllerView.java`](../../app/src/main/java/com/limelight/ui/ExternalControllerView.java) | 94 | 4.1 | ExternalControllerView, InputCallbacks | `setInputCallbacks()`:16 `setCommitTextEnabled()`:20 `onKeyPreIme()`:34 `onCheckIsTextEditor()`:54 `onCreateInputConnection()`:59 `commitText()`:70 `deleteSurroundingText()`:78 |
