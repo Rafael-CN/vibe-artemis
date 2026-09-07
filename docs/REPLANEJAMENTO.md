@@ -101,17 +101,23 @@ direção for escolhida.
 Detalhe fatia por fatia em `docs/planos/B-CONSOLE.md`; aqui só o resumo, pra este documento não
 divergir de novo do plano real:
 
-1. Arquivo do solto e volta ao HEAD de 19/08. Feito.
-2. **F0 — Ver e provar**: `tools/fotos.mjs` (fotos nos dois AVDs sem host, via moque), moques de
-   casca e de stream debug-only, ADR 0003 (Java + XML, não Compose).
-3. **F1 — Tokens da B**: cores, dimensões, tipografia e o drawable de foco, sem redesenhar tela
-   nenhuma ainda.
-4. **F2 ‖ F3** (arquivos disjuntos, correm em paralelo): **F2 — a sessão** (guia como `Dialog`,
-   aba, barra de texto — o bug que prende o Rafael na stream, resolvido antes de qualquer outra
-   tela); **F3 — Início** (tablet) **e Computadores/Apps** (celular).
-5. **F4 — Ajustes** básico + Avançado (a árvore de hoje, intocada, atrás de um card).
-6. **F5 — Conectando/parear/queda/adicionar PC**: troca de pele nas quatro telas que faltam.
-7. **F6 — Polimento** contra o mockup, com diff de pixels, e limpeza dos aliases `vidro_*`.
+1. Arquivo do solto e volta ao HEAD de 19/08. **Feito.**
+2. **F0 — Ver e provar**: `tools/fotos.mjs`, moques debug-only de casca e de stream, ADR 0003
+   (Java + XML). **Integrada.**
+3. **F1 — Tokens da B**: cores, dimensões, tipografia e o drawable de foco. **Integrada.**
+4. **F2 ‖ F3**: **F2 — a sessão** (guia em `Dialog`, aba, barra de texto) e **F3 — Início**
+   (tablet) e Computadores/Apps (celular). **Integradas.**
+5. **F4 — Ajustes** básico + Avançado (a árvore de 136 preferências, intocada, atrás de um
+   card). **Integrada.**
+6. **F5 — Conectando/parear/queda/adicionar PC**: troca de pele nas quatro telas.
+   **Integrada.**
+7. **F6 — Polimento** contra o mockup e limpeza dos aliases `vidro_*`. **Integrada** (uma
+   devolução: a tela Apps ainda carregava a faixa de contagem e o banner de retomar, que o
+   Rafael mandou remover seguindo o mockup, preservando as duas funções em outro lugar).
+
+Fora das fatias, no mesmo passe: o `tools/validate.mjs` deixou de dar **falso positivo** no
+estágio `test` — ele classificava falha nova a partir dos XML em disco sem checar se aquela
+execução tinha escrito algum, então dizia "nenhuma falha nova" quando a suíte sequer rodava.
 
 Depois das fatias: os mesmos aparelhos (S22 Ultra, Tab S8 Ultra) por depuração Wi-Fi, porque
 "verificado" sem foto de aparelho continua provisório.
