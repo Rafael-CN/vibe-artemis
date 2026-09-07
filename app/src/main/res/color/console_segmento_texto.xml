@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cor do rótulo de uma opção do controle segmentado (Plano B / F4): selecionado
+     (state_activated) usa console_acento_sobre sobre o fundo sólido de acento; o
+     resto usa console_texto, igual ao mockup. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/console_acento_sobre" android:state_activated="true" />
+    <item android:color="@color/console_texto" />
+</selector>

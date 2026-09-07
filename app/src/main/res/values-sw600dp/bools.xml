@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="console_avancado_legenda_curta">false</bool>
+</resources>

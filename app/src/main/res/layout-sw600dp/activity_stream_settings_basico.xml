@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ajustes básica (tablet) — Plano B / F4, B-CONSOLE.md. Referência:
+    B_Tablet_Ajustes.png: "coluna centrada de 720 dp no tablet" (§F4) — mesma regra de
+    largura fluida que a F3 já usa ("Larguras", B-CONSOLE.md §0): a coluna não estica
+    para acompanhar telas mais largas que o mockup (1280×800 dp), fica fixa em 720dp e
+    centralizada, com margens laterais de 32dp (console_espaco_6) quando sobra menos
+    que isso.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/console_fundo"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:paddingLeft="@dimen/console_espaco_6"
+    android:paddingTop="@dimen/console_espaco_6"
+    android:paddingRight="@dimen/console_espaco_6">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/console_ajustes_basico_conteudo"
+            android:layout_width="720dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+    </FrameLayout>
+
+</ScrollView>

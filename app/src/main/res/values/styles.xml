@@ -381,6 +381,24 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <!-- Plano B / F4: divisória fina entre linhas de ajuste, dentro de um mesmo cartão. -->
+    <style name="ConsoleDivisor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/vidro_stroke_width</item>
+        <item name="android:background">@color/console_borda</item>
+    </style>
+
+    <!--
+        Plano B / F4: slider de taxa de bits. O tema já manda colorAccent/
+        colorControlActivated para console_acento (F1) — aqui só clareamos a trilha
+        não preenchida, que herdaria um cinza do tema Material padrão sem isso.
+    -->
+    <style name="ConsoleSlider">
+        <item name="android:progressBackgroundTint">@color/console_borda</item>
+        <item name="android:progressTint">@color/console_acento</item>
+        <item name="android:thumbTint">@color/console_acento</item>
+    </style>
+
     <!--
         ================================================================
         Diálogos

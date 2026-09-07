@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ajustes básica (celular) — Plano B / F4, B-CONSOLE.md. Referência:
+    B_Celular_Ajustes.png. Largura cheia com margem lateral console_espaco_4, igual às
+    outras telas Console do celular (Computadores/Apps, F3).
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/console_fundo"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:paddingLeft="@dimen/console_espaco_4"
+    android:paddingTop="@dimen/console_espaco_4"
+    android:paddingRight="@dimen/console_espaco_4">
+
+    <include
+        layout="@layout/console_ajustes_basico_conteudo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</ScrollView>
