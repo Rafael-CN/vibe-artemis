@@ -172,6 +172,19 @@
             <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="system-default" />
             <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape" />
         </activity>
+        <!-- Plano B / F4: porta de entrada de Ajustes. "Avançado", dentro dela, é quem
+             abre .preferences.StreamSettings (acima) com a árvore inteira de sempre. -->
+        <activity
+            android:name=".preferences.StreamSettingsBasico"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:enableOnBackInvokedCallback="true"
+            android:configChanges="mcc|mnc|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:label="Streaming Settings"
+            >
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="system-default" />
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape" />
+        </activity>
         <activity
             android:name=".preferences.AddComputerManually"
             android:exported="true"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Plano B / F4: no celular a legenda completa do card Avançado ("Codec, taxa de
+    atualização e rede — mexa só sabendo por quê") não cabe em uma linha na largura da
+    coluna (B_Celular_Ajustes.png mostra só "Mexa só sabendo por quê"); no tablet
+    (values-sw600dp/bools.xml) a coluna de 720dp tem espaço de sobra e usa a frase
+    inteira (B_Tablet_Ajustes.png).
+-->
+<resources>
+    <bool name="console_avancado_legenda_curta">true</bool>
+</resources>

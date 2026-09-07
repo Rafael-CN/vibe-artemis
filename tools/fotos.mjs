@@ -408,6 +408,82 @@ const ROTAS = {
     extras: [],
     paisagem: false,
   },
+  // Plano B / F4. A porta de entrada nova — casca sobre as mesmas chaves de sempre.
+  'ajustes-basico': {
+    componente: 'com.limelight.preferences.StreamSettingsBasico',
+    extras: [],
+    paisagem: false,
+  },
+  'ajustes-avancado': {
+    // Toca no card "Avançado", que abre com um Intent (nova Activity) — a árvore
+    // inteira de preferences.xml, intocada ("esconder pode, apagar não").
+    componente: 'com.limelight.preferences.StreamSettingsBasico',
+    extras: [],
+    paisagem: false,
+    depois: (serial) => {
+      const xml = dumpUi(serial);
+      const centro = encontrarCentro(xml, ':id/consoleAvancadoCard');
+      if (!centro) {
+        console.warn('  aviso: consoleAvancadoCard não encontrado — Avançado não foi aberto');
+        return;
+      }
+      tocarEm(serial, centro.x, centro.y);
+    },
+  },
+  // Prova de persistência do "Pronto quando" da F4: muda um controle de cada família
+  // (segmentado, seekbar por toque não dá pra arrastar por coordenada fixa com
+  // confiança então troca de segmento é quem prova o mecanismo, switch) e reabre a
+  // Activity do zero (force-stop + am start de novo) — a foto final é do que
+  // SharedPreferences guardou, não do que ficou na tela por acaso.
+  'ajustes-persistencia': {
+    componente: 'com.limelight.preferences.StreamSettingsBasico',
+    extras: [],
+    paisagem: false,
+    depois: (serial) => {
+      const tocarPorId = (sufixo) => {
+        const xml = dumpUi(serial);
+        const centro = encontrarCentro(xml, sufixo);
+        if (!centro) {
+          console.warn(`  aviso: ${sufixo} não encontrado — controle não foi tocado`);
+          return;
+        }
+        tocarEm(serial, centro.x, centro.y);
+        aguardarAssentar(serial);
+      };
+
+      // Achado tocando esta rota: o PRIMEIRO toque numa TextView de segmento (nunca
+      // tocada antes nesta instância da Activity) não dispara OnClickListener nenhum
+      // — só o SEGUNDO toque no mesmo lugar dispara. Reproduz até sem uiautomator
+      // dump nenhum no meio, então não é sobre o dump; e não acontece nos
+      // SwitchCompat (tocarPorId de um toque só funciona neles), então não é sobre
+      // "primeiro toque depois que a janela ganha foco" em geral — é específico da
+      // TextView clicável comum. Por isso os segmentos usam dois toques e os
+      // switches, um: um segundo toque num switch já alternado o alternaria de volta.
+      const tocarSegmentoPorId = (sufixo) => {
+        tocarPorId(sufixo);
+        tocarPorId(sufixo);
+      };
+
+      // Resolução fica de fora de propósito: o valor padrão (1280x720) não é um dos
+      // três segmentos oferecidos, então a linha nasce em modo mono (nenhum
+      // consoleSeg1080p/1440p/Nativa existe na árvore agora) — provar que ela
+      // continua em mono, sem forçar pro segmento mais próximo, depois do relaunch
+      // é o próprio "Pronto quando" da regra, não algo pra este toque mudar.
+      tocarSegmentoPorId(':id/consoleSeg90');
+      tocarSegmentoPorId(':id/consoleSegCodecHevc');
+      tocarSegmentoPorId(':id/consoleSegTouchpad');
+      // HDR pode estar desabilitado (sem decoder HEVC/HDR10 no emulador) — o toque
+      // não faz nada nesse caso, e é o comportamento certo, não uma falha da rota.
+      tocarPorId(':id/consoleHdrSwitch');
+      tocarPorId(':id/consoleBarraTextoSwitch');
+      tocarPorId(':id/consoleControlesTelaSwitch');
+
+      adb(serial, 'shell', 'am', 'force-stop', PKG);
+      adb(serial, 'shell', 'am', 'start', '-n',
+          `${PKG}/com.limelight.preferences.StreamSettingsBasico`);
+      aguardarAssentar(serial);
+    },
+  },
   adicionar: {
     componente: 'com.limelight.preferences.AddComputerManually',
     extras: [],

@@ -253,6 +253,9 @@
     <string name="title_enable_commit_text">Ativar envio de texto concluído (gesto/voz)</string>
     <string name="summary_enable_commit_text">Encaminha textos com vários caracteres de teclados virtuais (digitação por gestos, sugestões, ditado por voz). Pode causar problemas em jogos que dependem de entrada tecla por tecla.</string>
 
+    <string name="title_compose_bar">Abrir a barra de texto pelo menu da sessão</string>
+    <string name="summary_compose_bar">Ligado: o bloco Teclado da guia da sessão abre a barra de texto. Desligado: ele alterna o teclado virtual cru.</string>
+
     <!-- Identidade Vidro - textos do protótipo, que sao a especificacao -->
     <string name="vidro_greeting_morning">Bom dia</string>
     <string name="vidro_greeting_afternoon">Boa tarde</string>
@@ -377,4 +380,28 @@
     <string name="console_computadores_titulo">Computadores</string>
     <string name="console_endereco_indisponivel">endereço indisponível</string>
     <string name="console_trocar_pc">Trocar PC</string>
+
+    <!-- ================= Console — F4: Ajustes básico + Avançado ================= -->
+    <string name="console_inicio_titulo">Início</string>
+    <string name="console_voltar_inicio_desc">Voltar para o Início</string>
+    <string name="console_ajustes_titulo">Ajustes</string>
+    <string name="console_ajuste_resolucao">Resolução</string>
+    <string name="console_ajuste_taxa">Taxa</string>
+    <string name="console_taxa_60">60 Hz</string>
+    <string name="console_taxa_90">90 Hz</string>
+    <string name="console_taxa_120">120 Hz</string>
+    <string name="console_ajuste_taxa_bits">Taxa de bits</string>
+    <string name="console_mbps_valor">%1$d Mbps</string>
+    <string name="console_hz_valor">%1$s Hz</string>
+    <string name="console_ajuste_codec">Codec</string>
+    <string name="console_codec_auto">Auto</string>
+    <string name="console_codec_hevc">HEVC</string>
+    <string name="console_codec_av1">AV1</string>
+    <string name="console_ajuste_hdr">HDR</string>
+    <string name="console_hdr_legenda_indisponivel">Exige jogo com HDR e GPU com HEVC Main 10</string>
+    <string name="console_ajuste_audio">Áudio</string>
+    <string name="console_ajuste_modo_toque">Modo do toque</string>
+    <string name="console_ajuste_avancado_titulo">Avançado</string>
+    <string name="console_ajuste_avancado_legenda">Codec, taxa de atualização e rede — mexa só sabendo por quê</string>
+    <string name="console_ajuste_avancado_legenda_curta">Mexa só sabendo por quê</string>
 </resources>

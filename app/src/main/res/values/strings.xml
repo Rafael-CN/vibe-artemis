@@ -697,6 +697,9 @@
     <string name="title_enable_commit_text">Enable commit-text input (swipe/voice)</string>
     <string name="summary_enable_commit_text">Forward multi-character text from soft keyboards (gesture typing, predictions, voice dictation). Sends Unicode instead of scancodes, so accents and non-QWERTY layouts reach the host correctly.</string>
 
+    <string name="title_compose_bar">Open the text bar from the session menu</string>
+    <string name="summary_compose_bar">On: the Keyboard block in the session guide opens the text bar. Off: it toggles the raw on-screen keyboard instead.</string>
+
     <string name="game_menu_send_text">Send text…</string>
     <string name="send_text_hint">Type here, then send it all at once</string>
     <string name="send_text_confirm">Send</string>
@@ -876,4 +879,28 @@
     <string name="console_computadores_titulo">Computers</string>
     <string name="console_endereco_indisponivel">address unavailable</string>
     <string name="console_trocar_pc">Switch PC</string>
+
+    <!-- ================= Console — F4: Ajustes básico + Avançado ================= -->
+    <string name="console_inicio_titulo">Home</string>
+    <string name="console_voltar_inicio_desc">Back to Home</string>
+    <string name="console_ajustes_titulo">Settings</string>
+    <string name="console_ajuste_resolucao">Resolution</string>
+    <string name="console_ajuste_taxa">Refresh rate</string>
+    <string name="console_taxa_60">60 Hz</string>
+    <string name="console_taxa_90">90 Hz</string>
+    <string name="console_taxa_120">120 Hz</string>
+    <string name="console_ajuste_taxa_bits">Bitrate</string>
+    <string name="console_mbps_valor">%1$d Mbps</string>
+    <string name="console_hz_valor">%1$s Hz</string>
+    <string name="console_ajuste_codec">Codec</string>
+    <string name="console_codec_auto">Auto</string>
+    <string name="console_codec_hevc">HEVC</string>
+    <string name="console_codec_av1">AV1</string>
+    <string name="console_ajuste_hdr">HDR</string>
+    <string name="console_hdr_legenda_indisponivel">Requires an HDR game and a GPU with HEVC Main10</string>
+    <string name="console_ajuste_audio">Audio</string>
+    <string name="console_ajuste_modo_toque">Touch mode</string>
+    <string name="console_ajuste_avancado_titulo">Advanced</string>
+    <string name="console_ajuste_avancado_legenda">Codec, refresh rate and network — touch only if you know why</string>
+    <string name="console_ajuste_avancado_legenda_curta">Touch only if you know why</string>
 </resources>

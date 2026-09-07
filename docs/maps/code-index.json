@@ -1,12 +1,12 @@
 {
  "generatedFrom": "tools/codemap/codemap.mjs",
  "totals": {
-  "files": 223,
-  "javaFiles": 180,
+  "files": 224,
+  "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 66733,
-  "types": 278,
-  "methods": 2625,
+  "lines": 67223,
+  "types": 280,
+  "methods": 2648,
   "packages": 30,
   "todos": 36
  },
@@ -2525,7 +2525,7 @@
   {
    "path": "app/src/main/java/com/limelight/PcView.java",
    "lang": "java",
-   "lines": 1620,
+   "lines": 1631,
    "package": "com.limelight",
    "imports": [
     "java.io.FileNotFoundException",
@@ -2555,7 +2555,7 @@
     "com.limelight.preferences.AddComputerManually",
     "com.limelight.preferences.GlPreferences",
     "com.limelight.preferences.PreferenceConfiguration",
-    "com.limelight.preferences.StreamSettings",
+    "com.limelight.preferences.StreamSettingsBasico",
     "com.limelight.profiles.ProfilesManager",
     "com.limelight.ui.AdapterFragment",
     "com.limelight.ui.MoqueDeApps",
@@ -2616,7 +2616,7 @@
     {
      "kind": "class",
      "name": "ComputerObject",
-     "line": 1600
+     "line": 1611
     }
    ],
    "methods": [
@@ -2674,476 +2674,476 @@
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 232
+     "line": 243
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 239
+     "line": 250
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 278
+     "line": 289
     },
     {
      "name": "onSurfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, EGLConfig eglConfig",
-     "line": 292
+     "line": 303
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 302
+     "line": 313
     },
     {
      "name": "onSurfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, int i, int i1",
-     "line": 309
+     "line": 320
     },
     {
      "name": "onDrawFrame",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10",
-     "line": 313
+     "line": 324
     },
     {
      "name": "completeOnCreate",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 338
+     "line": 349
     },
     {
      "name": "popularComputadoresDeMentira",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 364
+     "line": 375
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 385
+     "line": 396
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 397
+     "line": 408
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 401
+     "line": 412
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean wait",
-     "line": 432
+     "line": 443
     },
     {
      "name": "refreshProfileButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 450
+     "line": 461
     },
     {
      "name": "onDestroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 466
+     "line": 477
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 477
+     "line": 488
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 490
+     "line": 501
     },
     {
      "name": "onStop",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 498
+     "line": 509
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 505
+     "line": 516
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 569
+     "line": 580
     },
     {
      "name": "showVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "final String pinStr",
-     "line": 586
+     "line": 597
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 589
+     "line": 600
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 623
+     "line": 634
     },
     {
      "name": "hideVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 637
+     "line": 648
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 640
+     "line": 651
     },
     {
      "name": "doPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer, String otp, String passphrase",
-     "line": 649
+     "line": 660
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 662
+     "line": 673
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 746
+     "line": 757
     },
     {
      "name": "doOTPPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 765
+     "line": 776
     },
     {
      "name": "doWakeOnLan",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 810
+     "line": 821
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 823
+     "line": 834
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 835
+     "line": 846
     },
     {
      "name": "doUnpair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 843
+     "line": 854
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 856
+     "line": 867
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 887
+     "line": 898
     },
     {
      "name": "doAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails computer, boolean newlyPaired, boolean showHiddenGames",
-     "line": 895
+     "line": 906
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 914
+     "line": 925
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 941
+     "line": 952
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 973
+     "line": 984
     },
     {
      "name": "removeComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1005
+     "line": 1016
     },
     {
      "name": "updateComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1039
+     "line": 1050
     },
     {
      "name": "isConsoleInicio",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 1078
+     "line": 1089
     },
     {
      "name": "emModoDeApps",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 1087
+     "line": 1098
     },
     {
      "name": "dp",
      "modifiers": "private",
      "returns": "int",
      "params": "int valor",
-     "line": 1091
+     "line": 1102
     },
     {
      "name": "refreshConsoleInicio",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1101
+     "line": 1112
     },
     {
      "name": "escolherComputadorAtual",
      "modifiers": "private",
      "returns": "ComputerObject",
      "params": "",
-     "line": 1141
+     "line": 1152
     },
     {
      "name": "atualizarCabecalhoDoChip",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject atual",
-     "line": 1178
+     "line": 1189
     },
     {
      "name": "criarChipEsmaecido",
      "modifiers": "private",
      "returns": "View",
      "params": "final ComputerObject c",
-     "line": 1215
+     "line": 1226
     },
     {
      "name": "mostrarDialogoDePcs",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1242
+     "line": 1253
     },
     {
      "name": "selecionarComputadorAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject c",
-     "line": 1293
+     "line": 1304
     },
     {
      "name": "pararAppsDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1299
+     "line": 1310
     },
     {
      "name": "carregarAppsDoComputadorAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject atual",
-     "line": 1314
+     "line": 1325
     },
     {
      "name": "montarCarrossel",
      "modifiers": "private",
      "returns": "void",
      "params": "AppGridAdapter adapter",
-     "line": 1376
+     "line": 1387
     },
     {
      "name": "onAppFocused",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1390
+     "line": 1401
     },
     {
      "name": "onAppActivated",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1399
+     "line": 1410
     },
     {
      "name": "atualizarSecaoContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1422
+     "line": 1433
     },
     {
      "name": "retomarContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1445
+     "line": 1456
     },
     {
      "name": "encerrarContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1452
+     "line": 1463
     },
     {
      "name": "abrirApp",
      "modifiers": "private",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1461
+     "line": 1472
     },
     {
      "name": "abrirAppFocado",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1468
+     "line": 1479
     },
     {
      "name": "atualizarListaDeAppsDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "List<NvApp> appList, ComputerDetails details",
-     "line": 1475
+     "line": 1486
     },
     {
      "name": "atualizarRunningGameIdDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1518
+     "line": 1529
     },
     {
      "name": "atualizarAppsDoTabletSeForOAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1547
+     "line": 1558
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 1572
+     "line": 1583
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 1577
+     "line": 1588
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 1581
+     "line": 1592
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1611
+     "line": 1622
     },
     {
      "name": "guessManagementUrl",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1614
+     "line": 1625
     }
    ],
    "nativeMethods": [],
@@ -14908,7 +14908,7 @@
   {
    "path": "app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java",
    "lang": "java",
-   "lines": 1098,
+   "lines": 1104,
    "package": "com.limelight.preferences",
    "imports": [
     "android.content.Context",
@@ -14952,154 +14952,154 @@
      "modifiers": "static",
      "returns": "boolean",
      "params": "int width, int height",
-     "line": 418
+     "line": 423
     },
     {
      "name": "isSquarishScreen",
      "modifiers": "static",
      "returns": "boolean",
      "params": "int width, int height",
-     "line": 444
+     "line": 449
     },
     {
      "name": "isSquarishScreen",
      "modifiers": "static",
      "returns": "boolean",
      "params": "Display display",
-     "line": 452
+     "line": 457
     },
     {
      "name": "convertFromLegacyResolutionString",
      "modifiers": "static",
      "returns": "String",
      "params": "String resString",
-     "line": 467
+     "line": 472
     },
     {
      "name": "getWidthFromResolutionString",
      "modifiers": "static",
      "returns": "int",
      "params": "String resString",
-     "line": 492
+     "line": 497
     },
     {
      "name": "getHeightFromResolutionString",
      "modifiers": "static",
      "returns": "int",
      "params": "String resString",
-     "line": 496
+     "line": 501
     },
     {
      "name": "getResolutionString",
      "modifiers": "static",
      "returns": "String",
      "params": "int width, int height",
-     "line": 500
+     "line": 505
     },
     {
      "name": "getDefaultBitrate",
      "modifiers": "static",
      "returns": "int",
      "params": "String resString, String fpsString",
-     "line": 518
+     "line": 523
     },
     {
      "name": "getDefaultSmallMode",
      "modifiers": "static",
      "returns": "boolean",
      "params": "Context context",
-     "line": 581
+     "line": 586
     },
     {
      "name": "getDefaultBitrate",
      "modifiers": "static",
      "returns": "int",
      "params": "Context context",
-     "line": 601
+     "line": 606
     },
     {
      "name": "getVideoFormatValue",
      "modifiers": "static",
      "returns": "FormatOption",
      "params": "Context context",
-     "line": 608
+     "line": 613
     },
     {
      "name": "getImeDisplayMode",
      "modifiers": "static",
      "returns": "ImeDisplayMode",
      "params": "Context context",
-     "line": 630
+     "line": 635
     },
     {
      "name": "getVideoScaleMode",
      "modifiers": "static",
      "returns": "ScaleMode",
      "params": "Context context",
-     "line": 645
+     "line": 650
     },
     {
      "name": "getSelectedFramePacingName",
      "modifiers": "static",
      "returns": "String",
      "params": "Context context",
-     "line": 664
+     "line": 669
     },
     {
      "name": "getPreferLowerDelays",
      "modifiers": "static",
      "returns": "boolean",
      "params": "Context context",
-     "line": 670
+     "line": 675
     },
     {
      "name": "getFramePacingValue",
      "modifiers": "static",
      "returns": "int",
      "params": "Context context",
-     "line": 675
+     "line": 680
     },
     {
      "name": "getAnalogStickForScrollingValue",
      "modifiers": "static",
      "returns": "AnalogStickForScrolling",
      "params": "Context context",
-     "line": 706
+     "line": 711
     },
     {
      "name": "resetStreamingSettings",
      "modifiers": "static",
      "returns": "void",
      "params": "Context context",
-     "line": 721
+     "line": 726
     },
     {
      "name": "isShieldAtvFirmwareWithBrokenHdr",
      "modifiers": "static",
      "returns": "boolean",
      "params": "",
-     "line": 743
+     "line": 748
     },
     {
      "name": "writeBitrate",
      "modifiers": "static",
      "returns": "void",
      "params": "Context context, int bitrateKbps",
-     "line": 756
+     "line": 761
     },
     {
      "name": "readPreferences",
      "modifiers": "static",
      "returns": "PreferenceConfiguration",
      "params": "Context context",
-     "line": 765
+     "line": 770
     },
     {
      "name": "readPreferences",
      "modifiers": "static",
      "returns": "PreferenceConfiguration",
      "params": "Context context, SharedPreferences prefs",
-     "line": 769
+     "line": 774
     }
    ],
    "nativeMethods": [],
@@ -15110,7 +15110,7 @@
     {
      "kind": "TODO",
      "text": "Collect some empirical data to see if these defaults make sense.",
-     "line": 530
+     "line": 535
     }
    ]
   },
@@ -15582,6 +15582,212 @@
      "line": 980
     }
    ]
+  },
+  {
+   "path": "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
+   "lang": "java",
+   "lines": 467,
+   "package": "com.limelight.preferences",
+   "imports": [
+    "android.app.AlertDialog",
+    "android.content.Intent",
+    "android.content.SharedPreferences",
+    "android.content.res.Configuration",
+    "android.media.MediaCodecInfo",
+    "android.os.Build",
+    "android.os.Bundle",
+    "android.util.DisplayMetrics",
+    "android.view.Display",
+    "android.widget.LinearLayout",
+    "android.widget.SeekBar",
+    "android.widget.TextView",
+    "androidx.appcompat.app.AppCompatActivity",
+    "androidx.appcompat.widget.SwitchCompat",
+    "com.limelight.LimeLog",
+    "com.limelight.R",
+    "com.limelight.binding.video.MediaCodecHelper",
+    "com.limelight.utils.UiHelper"
+   ],
+   "types": [
+    {
+     "kind": "class",
+     "name": "StreamSettingsBasico",
+     "line": 39
+    },
+    {
+     "kind": "interface",
+     "name": "OnSegmentoEscolhido",
+     "line": 398
+    }
+   ],
+   "methods": [
+    {
+     "name": "onCreate",
+     "modifiers": "protected",
+     "returns": "void",
+     "params": "Bundle savedInstanceState",
+     "line": 101
+    },
+    {
+     "name": "onResume",
+     "modifiers": "protected",
+     "returns": "void",
+     "params": "",
+     "line": 124
+    },
+    {
+     "name": "onConfigurationChanged",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "Configuration newConfig",
+     "line": 135
+    },
+    {
+     "name": "encontrarViews",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 140
+    },
+    {
+     "name": "configurarCliques",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 191
+    },
+    {
+     "name": "onProgressChanged",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "SeekBar seekBar, int progress, boolean fromUser",
+     "line": 195
+    },
+    {
+     "name": "onStartTrackingTouch",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "SeekBar seekBar",
+     "line": 201
+    },
+    {
+     "name": "onStopTrackingTouch",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "SeekBar seekBar",
+     "line": 205
+    },
+    {
+     "name": "renderizarTudo",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 235
+    },
+    {
+     "name": "renderizarResolucao",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 257
+    },
+    {
+     "name": "renderizarTaxa",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 268
+    },
+    {
+     "name": "renderizarBitrate",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 279
+    },
+    {
+     "name": "renderizarCodec",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 289
+    },
+    {
+     "name": "calcularSuporteHdr",
+     "modifiers": "private",
+     "returns": "boolean",
+     "params": "",
+     "line": 306
+    },
+    {
+     "name": "renderizarHdr",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 337
+    },
+    {
+     "name": "renderizarAudio",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 345
+    },
+    {
+     "name": "mostrarDialogoDeAudio",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 353
+    },
+    {
+     "name": "renderizarModoToque",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 372
+    },
+    {
+     "name": "renderizarBarraTexto",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 388
+    },
+    {
+     "name": "renderizarControlesTela",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "PreferenceConfiguration cfg",
+     "line": 392
+    },
+    {
+     "name": "configurarSegmentado",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "LinearLayout container, TextView campoMono, TextView[] segmentos, String[] valores, String valorAtual, OnSegmentoEscolhido onEscolhido, String valorCruParaMono",
+     "line": 418
+    },
+    {
+     "name": "indexOf",
+     "modifiers": "static",
+     "returns": "int",
+     "params": "String[] array, String valor",
+     "line": 440
+    },
+    {
+     "name": "calcularResolucaoNativa",
+     "modifiers": "private",
+     "returns": "String",
+     "params": "",
+     "line": 449
+    }
+   ],
+   "nativeMethods": [],
+   "androidApis": [
+    "SharedPreferences"
+   ],
+   "todos": []
   },
   {
    "path": "app/src/main/java/com/limelight/preferences/WebLauncherPreference.java",
@@ -26953,7 +27159,7 @@
   {
    "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
    "lang": "java",
-   "lines": 314,
+   "lines": 320,
    "package": "com.limelight",
    "imports": [
     "android.content.Context",
@@ -27004,56 +27210,56 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 100
+     "line": 104
     },
     {
      "name": "telasNoTablet",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 123
+     "line": 127
     },
     {
      "name": "telasNoS22Ultra",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 138
+     "line": 144
     },
     {
      "name": "onlyWhenAsked",
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 152
+     "line": 158
     },
     {
      "name": "shoot",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, int layoutId, int widthDp, int heightDp",
-     "line": 160
+     "line": 166
     },
     {
      "name": "shootActivity",
      "modifiers": "private",
      "returns": "<T extends android.app.Activity> void",
      "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
-     "line": 237
+     "line": 243
     },
     {
      "name": "write",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, Bitmap bitmap, int w, int h",
-     "line": 286
+     "line": 292
     },
     {
      "name": "revealAll",
      "modifiers": "static",
      "returns": "void",
      "params": "View view",
-     "line": 301
+     "line": 307
     }
    ],
    "nativeMethods": [],
@@ -29333,6 +29539,22 @@
    ],
    [
     "com.limelight.preferences",
+    "com.limelight"
+   ],
+   [
+    "com.limelight.preferences",
+    "com.limelight"
+   ],
+   [
+    "com.limelight.preferences",
+    "com.limelight.binding.video"
+   ],
+   [
+    "com.limelight.preferences",
+    "com.limelight.utils"
+   ],
+   [
+    "com.limelight.preferences",
     "com.limelight.utils"
    ],
    [
@@ -30067,7 +30289,7 @@
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
-    "app/src/main/java/com/limelight/preferences/StreamSettings.java"
+    "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java"
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
@@ -31019,6 +31241,18 @@
    ],
    [
     "app/src/main/java/com/limelight/preferences/StreamSettings.java",
+    "app/src/main/java/com/limelight/utils/UiHelper.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
+    "app/src/main/java/com/limelight/LimeLog.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
+    "app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
     "app/src/main/java/com/limelight/utils/UiHelper.java"
    ],
    [

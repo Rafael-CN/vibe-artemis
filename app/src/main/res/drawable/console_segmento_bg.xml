@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Fundo de uma opção do controle segmentado (Resolução, Taxa, Codec, Modo do toque —
+    Plano B / F4). Composição por estado, do mais específico ao default (primeiro item
+    que casa vence):
+
+      focado + selecionado  → preenchido de acento (seleção) com o anel de foco por cima
+      focado, não selecionado → contorno de foco (igual console_foco.xml), sem fundo
+      selecionado (sem foco) → preenchido de acento sólido
+      default                → contorno console_borda vazado
+
+    Vai tudo num "android:background" só (não a técnica "View por cima" de
+    console_card_bg.xml): aqui os dois estados dependem um do outro (o anel de foco
+    precisa aparecer sobre o preenchimento quando os dois coincidem), então dois
+    desenhos empilhados em Views separadas não dava para reagir ao mesmo
+    state_activated sem duplicar lógica. android:background funciona desde a API 21,
+    diferente de android:foreground (API 23+) — por isso não esbarra no minSdk 21.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_activated="true" android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/console_acento" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_anel"
+                        android:color="#267FE0C7" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_anel"
+                        android:color="#267FE0C7" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+            <item
+                android:top="@dimen/console_foco_anel"
+                android:bottom="@dimen/console_foco_anel"
+                android:left="@dimen/console_foco_anel"
+                android:right="@dimen/console_foco_anel">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke
+                        android:width="@dimen/console_foco_borda"
+                        android:color="@color/console_acento" />
+                    <corners android:radius="@dimen/console_raio_controle" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_activated="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/console_acento" />
+            <corners android:radius="@dimen/console_raio_controle" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="@dimen/vidro_stroke_width"
+                android:color="@color/console_borda" />
+            <corners android:radius="@dimen/console_raio_controle" />
+        </shape>
+    </item>
+
+</selector>
