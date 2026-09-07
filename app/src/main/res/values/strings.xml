@@ -776,7 +776,7 @@
     <string name="vidro_session_open">%1$s is open</string>
     <string name="vidro_session_return">Pick up where you left off</string>
     <string name="vidro_return">Return</string>
-    <string name="vidro_pill_open">open</string>
+    <string name="vidro_pill_open">Running</string>
     <string name="vidro_pill_screen">screen</string>
     <string name="vidro_pill_input">input</string>
     <string name="vidro_quality_good">everything flowing well</string>
@@ -857,4 +857,25 @@
     <string name="vidro_compose_tile">type to send</string>
     <string name="vidro_compose_hint">Type here and send it all at once</string>
     <string name="vidro_compose_send">Send</string>
+
+    <!--
+        Plano B / F3 — "Início" (tablet) e "Computadores"/"Apps" (celular).
+        docs/planos/B-CONSOLE.md §F3. `vidro_pill_open` above (used by the running-app
+        badge already shared by AppGridAdapter across both platforms) changed from
+        "open" to "Running" as part of this slice, since it is the same mechanism the
+        mockup calls "Em execução" — see F3-implementacao.md.
+    -->
+    <string name="console_add_pc">Add PC</string>
+    <string name="console_estado_online">online</string>
+    <string name="console_estado_offline">offline</string>
+    <string name="console_estado_emparelhar">Pair</string>
+    <string name="console_secao_continuar">Continue</string>
+    <string name="console_secao_apps">Apps</string>
+    <string name="console_retomar">Resume</string>
+    <string name="console_encerrar_no_pc">Quit on PC</string>
+    <string name="console_abrir">Open</string>
+    <string name="console_nome_e_estado">%1$s · %2$s</string>
+    <string name="console_computadores_titulo">Computers</string>
+    <string name="console_endereco_indisponivel">address unavailable</string>
+    <string name="console_trocar_pc">Switch PC</string>
 </resources>
