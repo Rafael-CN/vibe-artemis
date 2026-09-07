@@ -39,7 +39,13 @@ public class VidroSession {
     private final TextView connectingApp;
     private final TextView connectingStep;
     private final android.widget.ProgressBar connectingBar;
-    private final VidroLightView connectingLight;
+
+    /**
+     * Ponto de estado simples (B-CONSOLE.md §F5 — "acento = ativo"), não mais a luz
+     * radial VidroLightView. Uma View comum de fundo trocável: vidro_dot_off (apagado)
+     * até o segundo estágio da conexão, vidro_dot_on (acento) dali em diante.
+     */
+    private final View connectingLight;
 
     private int stagesSeen;
 
@@ -73,9 +79,10 @@ public class VidroSession {
             connectingBar.setProgress(PROGRESS_TALKING);
         }
         if (connectingLight != null) {
-            // A luz sobe junto com o progresso: ela é o sinal de que há algo vivo do
-            // outro lado, e é por isso que não existe spinner aqui.
-            connectingLight.setIntensity(VidroLightView.INTENSITY_ASLEEP, false);
+            // Apagado até o segundo estágio — o ponto acende junto com o progresso,
+            // sinal de que há algo vivo do outro lado; é por isso que não existe
+            // spinner aqui.
+            connectingLight.setBackgroundResource(R.drawable.vidro_dot_off);
         }
 
         connecting.setVisibility(View.VISIBLE);
@@ -98,7 +105,7 @@ public class VidroSession {
             connectingBar.setProgress(PROGRESS_RESERVING);
 
             if (connectingLight != null) {
-                connectingLight.setIntensity(VidroLightView.INTENSITY_AWAKE, true);
+                connectingLight.setBackgroundResource(R.drawable.vidro_dot_on);
             }
         }
     }

@@ -33,7 +33,6 @@ import com.limelight.preferences.StreamSettingsBasico;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.AdapterFragment;
 import com.limelight.ui.MoqueDeApps;
-import com.limelight.ui.VidroLightView;
 import com.limelight.ui.AdapterFragmentCallbacks;
 import com.limelight.utils.CacheHelper;
 import com.limelight.utils.Dialog;
@@ -622,10 +621,10 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                     step.setVisibility(hasCode ? View.VISIBLE : View.GONE);
                 }
 
-                VidroLightView light = findViewById(R.id.vidroPairingLight);
-                if (light != null) {
-                    light.setIntensity(VidroLightView.INTENSITY_AWAKE, true);
-                }
+                // A luz radial saiu do layout (B-CONSOLE.md §F5): o ponto de estado que
+                // a substitui já existe atrás do código — vidroPairWaitDot, sempre
+                // vidro_dot_on (acento = ativo) enquanto esta tela está de pé — e não
+                // tem campo próprio aqui porque não muda de estado.
 
                 View cancel = findViewById(R.id.vidroPairCancel);
                 if (cancel != null) {
