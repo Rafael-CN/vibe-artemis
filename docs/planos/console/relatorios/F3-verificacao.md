@@ -275,3 +275,19 @@ Recomendação para o Integrador: antes (ou logo depois) do merge, rodar
 `node tools/fotos.mjs --avd tabs8u --port <porta livre>` uma vez para fechar o item 3 —
 é a única verificação fotográfica que falta, e o risco identificado nela (o fix do
 chevron) é pequeno.
+
+## 8. Fechamento do Integrador (item 3 resolvido)
+
+Rodei `node tools/fotos.mjs --avd tabs8u --port 5556` eu mesmo, no worktree
+`Artemis-F3`, com as duas portas (5554 e 5556) livres — nenhum emulador de outra fatia
+disputando. 13/13 rotas capturadas. Inspecionei `app/build/fotos/tabs8u/inicio.png`
+pixel a pixel (crop 4× ao redor do chip "ARTEMIS · online"): o chevron sai exatamente em
+`(127, 224, 199)` = `#7FE0C7` = `console_acento`, a mesma cor do ponto de estado e da
+borda do chip — o fix do Defeito 1 está correto no `tabs8u`, não só no código.
+Item 3 fechado. Também refotografei o `s22u` (13/13 rotas) para ter uma folha de contato
+completa e atual dos dois AVDs, copiadas para `docs/planos/console/fotos/F3-s22u.png` e
+`F3-tabs8u.png`.
+
+O **Defeito 3** (card do PC on-line sem contorno de acento no celular) segue em aberto,
+não bloqueante, para o passe de polimento **F6** — nenhuma correção foi feita aqui além
+das duas que o próprio verificador já havia aplicado.
