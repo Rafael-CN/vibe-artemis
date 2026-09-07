@@ -29,4 +29,10 @@
     <dimen name="console_aba_w">64dp</dimen>
     <dimen name="console_aba_h">20dp</dimen>
 
+    <!-- Largura mínima dos blocos da guia: valores originais do tablet (G2, defeito 3
+         — o celular encolheu em values/dimens.xml, aqui fica como sempre esteve). -->
+    <dimen name="console_bloco_min_w">96dp</dimen>
+    <dimen name="console_bloco_voltar_min_w">88dp</dimen>
+    <dimen name="console_bloco_encerrar_min_w">104dp</dimen>
+
 </resources>

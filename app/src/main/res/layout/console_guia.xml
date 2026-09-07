@@ -11,6 +11,20 @@
     esse bloco) e a fileira de teclas especiais, que a troca quando "Teclas
     especiais" é tocado. Desconectar/Encerrar no PC ficam fixos à direita, fora da
     rolagem (NOTA.md §3).
+
+    Nenhum bloco tem android:focusableInTouchMode (G2, defeito 1 do dono do fork:
+    "primeiro clique é foco, segundo é ativação"). Causa raiz é o próprio Android:
+    View#onTouchEvent() em ACTION_UP chama requestFocus() antes do clique quando a
+    view é focusable + focusableInTouchMode e ainda não está focada — se esse
+    requestFocus() "pega" (focusTaken == true), o toque daquele gesto NÃO dispara
+    o clique, só o próximo toque dispara. focusableInTouchMode só existe para
+    requestFocus() programático funcionar enquanto o aparelho está em modo de
+    toque (F3-implementacao.md); D-pad não precisa disso: uma tecla de seta tira o
+    aparelho do modo de toque antes de percorrer o foco, então a navegação por
+    D-pad entre estes blocos (capa-teclado do tablet) continua funcionando sem o
+    atributo. O foco inicial programático (GameMenu#wireGuia) só "pega" quando a
+    guia abriu por D-pad — abrir por toque não mostra anel de foco nenhum, o que
+    é o comportamento certo para quem usa o dedo.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -56,9 +70,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -85,9 +98,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -114,9 +126,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -144,9 +155,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -173,9 +183,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -202,9 +211,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -231,9 +239,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="96dp"
+                        android:minWidth="@dimen/console_bloco_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -276,9 +283,8 @@
                         android:background="@drawable/console_foco"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:gravity="center"
-                        android:minWidth="88dp"
+                        android:minWidth="@dimen/console_bloco_voltar_min_w"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/console_espaco_2"
                         android:paddingEnd="@dimen/console_espaco_2">
@@ -323,9 +329,8 @@
                 android:background="@drawable/console_foco"
                 android:clickable="true"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:minWidth="96dp"
+                android:minWidth="@dimen/console_bloco_min_w"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/console_espaco_2"
                 android:paddingEnd="@dimen/console_espaco_2">
@@ -362,9 +367,8 @@
                 android:background="@drawable/console_bloco_destrutivo_bg"
                 android:clickable="true"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:foreground="@drawable/console_foco"
-                android:minWidth="104dp">
+                android:minWidth="@dimen/console_bloco_encerrar_min_w">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

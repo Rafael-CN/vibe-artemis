@@ -5,6 +5,12 @@
     de interface comum"). Incluída duas vezes — na guia (bloco "Teclas especiais")
     e na barra de texto — cada instância vive numa árvore de View diferente
     (Dialog vs. Activity), então o id repetido não colide.
+
+    Sem android:focusableInTouchMode (G2, mesma causa raiz de console_guia.xml):
+    focusableInTouchMode + requestFocus() no primeiro toque consome o clique — o
+    Android trata esse toque como "focar", não como "ativar", e só o toque
+    seguinte ativa. D-pad não perde nada: uma seta tira o aparelho do modo de
+    toque antes do foco andar.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -17,7 +23,6 @@
         android:background="@drawable/console_foco"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:minWidth="64dp"
         android:paddingStart="@dimen/console_espaco_3"
@@ -33,7 +38,6 @@
         android:background="@drawable/console_foco"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:minWidth="64dp"
         android:paddingStart="@dimen/console_espaco_3"
@@ -49,7 +53,6 @@
         android:background="@drawable/console_foco"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:minWidth="64dp"
         android:paddingStart="@dimen/console_espaco_3"
@@ -65,7 +68,6 @@
         android:background="@drawable/console_foco"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:minWidth="80dp"
         android:paddingStart="@dimen/console_espaco_3"
@@ -82,7 +84,6 @@
         android:background="@drawable/console_foco"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:minWidth="112dp"
         android:paddingStart="@dimen/console_espaco_3"
