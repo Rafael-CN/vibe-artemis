@@ -2,15 +2,24 @@ package com.limelight;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import com.limelight.binding.PlatformBinding;
 import com.limelight.binding.crypto.AndroidCryptoProvider;
 import com.limelight.computers.ComputerManagerListener;
 import com.limelight.computers.ComputerManagerService;
+import com.limelight.grid.AppCarouselAdapter;
+import com.limelight.grid.AppGridAdapter;
 import com.limelight.grid.PcGridAdapter;
+import com.limelight.grid.assets.CachedAppAssetLoader;
 import com.limelight.grid.assets.DiskAssetLoader;
+import com.limelight.grid.assets.MemoryAssetLoader;
+import com.limelight.grid.assets.ScaledBitmap;
 import com.limelight.nvstream.http.ComputerDetails;
 import com.limelight.nvstream.http.NvApp;
 import com.limelight.nvstream.http.NvHTTP;
@@ -23,13 +32,18 @@ import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.preferences.StreamSettings;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.AdapterFragment;
+import com.limelight.ui.MoqueDeApps;
 import com.limelight.ui.VidroLightView;
 import com.limelight.ui.AdapterFragmentCallbacks;
+import com.limelight.utils.CacheHelper;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.HelpLauncher;
 import com.limelight.utils.ServerHelper;
 import com.limelight.utils.ShortcutHelper;
 import com.limelight.utils.UiHelper;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -48,10 +62,12 @@ import android.provider.Settings;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.ImageView;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -66,8 +82,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -81,6 +95,22 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
     private boolean freezeUpdates, runningPolling, inForeground, completeOnCreateCalled;
     private ComputerDetails.AddressTuple pendingPairingAddress;
     private String pendingPairingPin, pendingPairingPassphrase;
+
+    // ================= Início (tablet) — Plano B / F3, B-CONSOLE.md =================
+    // Só usados quando isConsoleInicio() é verdadeiro (layout-sw600dp/activity_pc_view
+    // tem o cabeçalho de chip que o layout de celular não tem). O PC "atual" desta
+    // seção é independente da lista de PcGridAdapter que a Fragment mostraria — aqui a
+    // navegação é o chip + diálogo, não uma lista visível.
+    private AppGridAdapter tabletAppGridAdapter;
+    private AppCarouselAdapter tabletCarouselAdapter;
+    private ComputerManagerService.ApplistPoller tabletAppPoller;
+    private ComputerDetails tabletCurrentComputerDetails;
+    private String tabletCurrentUuid;
+    private String tabletLastRawApplist;
+    private AppView.AppObject tabletFocusedApp;
+    private AppView.AppObject tabletRunningApp;
+    private AlertDialog pcDialogAtual;
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder binder) {
             final ComputerManagerService.ComputerManagerBinder localBinder =
@@ -98,6 +128,13 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
 
                     // Start updates
                     startComputerUpdates();
+
+                    // A Início do tablet pode ter tentado montar a seção de apps do PC
+                    // atual antes do binder ficar pronto (caminho de host de verdade,
+                    // não o moque) — agora que managerBinder existe, tenta de novo.
+                    if (isConsoleInicio()) {
+                        runOnUiThread(PcView.this::refreshConsoleInicio);
+                    }
 
                     // Force a keypair to be generated early to avoid discovery delays
                     new AndroidCryptoProvider(PcView.this).getClientCertificate();
@@ -185,6 +222,11 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         });
         View addPlace = findViewById(R.id.vidroAddPlace);
         if (addPlace != null) {
+            // console_borda_tracejada.xml (dashPathEffect) só desenha tracejado de
+            // verdade em LAYER_TYPE_SOFTWARE — em hardware accel ele normalmente cai
+            // pra traço sólido. O comentário do drawable já prometia isto; faltava
+            // a chamada em si.
+            addPlace.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             addPlace.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -199,6 +241,19 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
             }
         });
 
+        // Início (tablet) — Plano B / F3. O cabeçalho de chip só existe no
+        // layout-sw600dp; nada aqui roda no celular.
+        if (isConsoleInicio()) {
+            findViewById(R.id.consolePcChipAtual).setOnClickListener(v -> mostrarDialogoDePcs());
+
+            findViewById(R.id.consoleAppsOpenButton).setOnClickListener(v -> abrirAppFocado());
+            findViewById(R.id.consoleContinueResume).setOnClickListener(v -> retomarContinuar());
+            findViewById(R.id.consoleContinueQuit).setOnClickListener(v -> encerrarContinuar());
+
+            RecyclerView carousel = findViewById(R.id.consoleAppsCarousel);
+            carousel.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        }
+
         // Amazon review didn't like the help button because the wiki was not entirely
         // navigable via the Fire TV remote (though the relevant parts were). Let's hide
         // it on Fire TV.
@@ -206,11 +261,6 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         getFragmentManager().beginTransaction()
             .replace(R.id.pcFragmentContainer, new AdapterFragment())
             .commitAllowingStateLoss();
-
-        // A saudação e o título precisam existir antes do primeiro polling responder.
-        // Sem isto a home abre com dois espaços em branco no topo e só ganha texto quando
-        // um host aparece — que no caso de quem não tem nenhum é nunca.
-        updateVidroHeader();
 
         noPcFoundLayout = findViewById(R.id.no_pc_found_layout);
         if (pcGridAdapter.getCount() == 0) {
@@ -220,6 +270,8 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
             noPcFoundLayout.setVisibility(View.INVISIBLE);
         }
         pcGridAdapter.notifyDataSetChanged();
+
+        refreshConsoleInicio();
     }
 
     @Override
@@ -322,8 +374,8 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         notebook.name = "NOTEBOOK";
         notebook.state = ComputerDetails.State.OFFLINE;
         notebook.pairState = PairState.PAIRED;
-        // Um MAC presente é o que faz updateVidroHeader() dizer "dormindo" em vez de
-        // "nenhum PC por perto" — o mesmo sinal que um PC fora do ar de verdade dá.
+        // Um MAC presente é o sinal de "dá pra acordar" (Wake-on-LAN) que um PC fora
+        // do ar de verdade também carregaria.
         notebook.macAddress = "02:00:00:00:00:01";
 
         pcGridAdapter.addComputer(new ComputerObject(artemis));
@@ -348,6 +400,7 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                             @Override
                             public void run() {
                                 updateComputer(details);
+                                atualizarAppsDoTabletSeForOAtual(details);
                             }
                         });
 
@@ -412,6 +465,8 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        pararAppsDoTablet();
 
         if (managerBinder != null) {
             unbindService(serviceConnection);
@@ -977,6 +1032,8 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
                 break;
             }
         }
+
+        refreshConsoleInicio();
     }
 
     private void updateComputer(ComputerDetails details) {
@@ -1007,75 +1064,507 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         // Notify the view that the data has changed
         pcGridAdapter.notifyDataSetChanged();
 
-        updateVidroHeader();
+        refreshConsoleInicio();
+    }
+
+    // ================= Início (tablet) — Plano B / F3, B-CONSOLE.md =================
+    //
+    // A PcView do tablet (layout-sw600dp/activity_pc_view.xml) é a tela "Início"
+    // inteira: cabeçalho com o chip do PC atual, "Continuar" (app em execução) e
+    // "Apps" (fileira de capas). O que segue só roda quando esse layout está no ar —
+    // isConsoleInicio() detecta isso pela presença do id consoleHeader, que o layout
+    // de celular não tem.
+
+    private boolean isConsoleInicio() {
+        return findViewById(R.id.consoleHeader) != null;
     }
 
     /**
-     * Saudação, título de estado e intensidade da luz.
-     *
-     * O título é a única frase da home e ele muda com o que está lá fora — "O PC está
-     * acordado", "O PC está dormindo", "Nenhum PC por perto". A luz atrás dele carrega
-     * o mesmo estado em intensidade, e as duas coisas precisam concordar sempre, senão
-     * a tela diz duas coisas ao mesmo tempo.
+     * Mesmo extra que {@link AppView#MOQUE_APPS_EXTRA} — quando os dois moques
+     * (casca + apps) estão ligados juntos, a Início do tablet monta a seção "Apps" e
+     * "Continuar" com {@link MoqueDeApps}, sem tentar rede nenhuma.
      */
-    private void updateVidroHeader() {
-        TextView greeting = findViewById(R.id.vidroGreeting);
-        TextView stateTitle = findViewById(R.id.vidroStateTitle);
-        VidroLightView light = findViewById(R.id.vidroLight);
+    private boolean emModoDeApps() {
+        return BuildConfig.DEBUG && getIntent().getBooleanExtra(AppView.MOQUE_APPS_EXTRA, false);
+    }
 
-        if (greeting == null || stateTitle == null) {
+    private int dp(int valor) {
+        return Math.round(valor * getResources().getDisplayMetrics().density);
+    }
+
+    /**
+     * Recalcula tudo que a Início mostra a partir do estado atual de
+     * {@link #pcGridAdapter}: cabeçalho vazio, chip do PC atual + chips esmaecidos, e
+     * (re)carrega a seção de apps só quando o PC atual muda de verdade — trocar o
+     * app em execução no MESMO PC não deveria reconstruir o adapter inteiro.
+     */
+    private void refreshConsoleInicio() {
+        if (!isConsoleInicio()) {
             return;
         }
 
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        int greetingRes;
-        if (hour < 12) {
-            greetingRes = R.string.vidro_greeting_morning;
-        }
-        else if (hour < 18) {
-            greetingRes = R.string.vidro_greeting_afternoon;
-        }
-        else {
-            greetingRes = R.string.vidro_greeting_evening;
-        }
-        greeting.setText(greetingRes);
+        View header = findViewById(R.id.consoleHeader);
+        View empty = findViewById(R.id.no_pc_found_layout);
+        View continueSection = findViewById(R.id.consoleContinueSection);
+        View appsSection = findViewById(R.id.consoleAppsSection);
 
-        boolean anyAwake = false, anyAsleep = false, stillProbing = false;
-        int count = pcGridAdapter.getCount();
-        for (int i = 0; i < count; i++) {
-            ComputerDetails details = ((ComputerObject)pcGridAdapter.getItem(i)).details;
-            if (details.state == ComputerDetails.State.ONLINE) {
-                anyAwake = true;
-            }
-            else if (details.state == ComputerDetails.State.UNKNOWN) {
-                stillProbing = true;
-            }
-            else if (details.macAddress != null && !details.macAddress.isEmpty()) {
-                anyAsleep = true;
-            }
+        if (pcGridAdapter.getCount() == 0) {
+            header.setVisibility(View.GONE);
+            continueSection.setVisibility(View.GONE);
+            appsSection.setVisibility(View.GONE);
+            empty.setVisibility(View.VISIBLE);
+            tabletCurrentUuid = null;
+            return;
         }
 
-        float intensity;
-        if (anyAwake) {
-            stateTitle.setText(R.string.vidro_host_awake);
-            intensity = VidroLightView.INTENSITY_AWAKE;
+        header.setVisibility(View.VISIBLE);
+        empty.setVisibility(View.GONE);
+
+        ComputerObject atual = escolherComputadorAtual();
+        boolean trocouComputador = atual != null
+                && !atual.details.uuid.equals(tabletCurrentUuid);
+
+        if (atual != null) {
+            atualizarCabecalhoDoChip(atual);
+            if (trocouComputador) {
+                tabletCurrentUuid = atual.details.uuid;
+                carregarAppsDoComputadorAtual(atual);
+            }
         }
-        else if (stillProbing && count > 0) {
-            // Ainda perguntando. Não afirmamos que dormiu antes de saber.
-            stateTitle.setText(R.string.vidro_host_searching);
-            intensity = VidroLightView.INTENSITY_ASLEEP;
-        }
-        else if (anyAsleep) {
-            stateTitle.setText(R.string.vidro_host_asleep);
-            intensity = VidroLightView.INTENSITY_ASLEEP;
-        }
-        else {
-            stateTitle.setText(R.string.vidro_host_none);
-            intensity = VidroLightView.INTENSITY_NONE;
+    }
+
+    /**
+     * Mantém o PC selecionado se ele ainda for on-line + emparelhado; senão, prefere
+     * o primeiro on-line + emparelhado; senão, qualquer emparelhado; senão, o
+     * primeiro da lista (mesmo fora do ar — a Início ainda mostra o chip dele).
+     */
+    private ComputerObject escolherComputadorAtual() {
+        ComputerObject mantido = null;
+        ComputerObject primeiroOnlinePareado = null;
+        ComputerObject primeiroPareado = null;
+
+        for (int i = 0; i < pcGridAdapter.getCount(); i++) {
+            ComputerObject c = (ComputerObject) pcGridAdapter.getItem(i);
+            boolean online = c.details.state == ComputerDetails.State.ONLINE;
+            boolean paired = c.details.pairState == PairState.PAIRED;
+
+            if (c.details.uuid.equals(tabletCurrentUuid)) {
+                mantido = c;
+            }
+            if (paired && primeiroPareado == null) {
+                primeiroPareado = c;
+            }
+            if (paired && online && primeiroOnlinePareado == null) {
+                primeiroOnlinePareado = c;
+            }
         }
 
-        if (light != null) {
-            light.setIntensity(intensity, true);
+        if (mantido != null && mantido.details.pairState == PairState.PAIRED
+                && mantido.details.state == ComputerDetails.State.ONLINE) {
+            return mantido;
+        }
+        if (primeiroOnlinePareado != null) {
+            return primeiroOnlinePareado;
+        }
+        if (mantido != null) {
+            return mantido;
+        }
+        if (primeiroPareado != null) {
+            return primeiroPareado;
+        }
+        return (ComputerObject) pcGridAdapter.getItem(0);
+    }
+
+    private void atualizarCabecalhoDoChip(ComputerObject atual) {
+        ImageView dot = findViewById(R.id.consolePcChipDot);
+        TextView texto = findViewById(R.id.consolePcChipTexto);
+
+        boolean online = atual.details.state == ComputerDetails.State.ONLINE;
+        boolean paired = atual.details.pairState == PairState.PAIRED;
+
+        String estado;
+        if (online && paired) {
+            dot.setImageResource(R.drawable.vidro_dot_on);
+            estado = getString(R.string.console_estado_online);
+        } else if (online) {
+            dot.setImageResource(R.drawable.console_dot_neutro);
+            estado = getString(R.string.console_estado_emparelhar);
+        } else {
+            dot.setImageResource(R.drawable.console_dot_neutro);
+            estado = getString(R.string.console_estado_offline);
+        }
+        texto.setText(getString(R.string.console_nome_e_estado, atual.details.name, estado));
+
+        LinearLayout chipsOffline = findViewById(R.id.consolePcChipsOffline);
+        chipsOffline.removeAllViews();
+        for (int i = 0; i < pcGridAdapter.getCount(); i++) {
+            ComputerObject c = (ComputerObject) pcGridAdapter.getItem(i);
+            if (c.details.uuid.equals(atual.details.uuid)) {
+                continue;
+            }
+            chipsOffline.addView(criarChipEsmaecido(c));
+        }
+    }
+
+    /**
+     * Chip discreto dos PCs que não são o atual (NOTA.md §4: sem artboard de
+     * seletor no tablet, o chip aberto já é o diálogo — estes só avisam que existe
+     * mais gente na lista). Construído em código porque são poucos e variam de
+     * quantidade; um layout próprio por chip seria mais máquina que o problema pede.
+     */
+    private View criarChipEsmaecido(final ComputerObject c) {
+        TextView chip = new TextView(this);
+        androidx.core.widget.TextViewCompat.setTextAppearance(chip, R.style.ConsoleText_Rotulo2);
+        chip.setText(c.details.name);
+        chip.setBackgroundResource(R.drawable.console_chip_bg);
+        chip.setAlpha(0.55f);
+        chip.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        chip.setPadding(dp(12), 0, dp(12), 0);
+        chip.setClickable(true);
+        chip.setFocusable(true);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, dp(36));
+        lp.setMarginStart(dp(8));
+        chip.setLayoutParams(lp);
+
+        chip.setOnClickListener(v -> mostrarDialogoDePcs());
+        return chip;
+    }
+
+    /**
+     * O "diálogo simples" que a F3 pede: lista os PCs conhecidos com estado, mais
+     * "Adicionar PC". Toque num PC on-line+emparelhado troca o atual da Início;
+     * num PC on-line não emparelhado, abre o pareamento de sempre (doPair); num PC
+     * fora do ar, só fecha o diálogo — a ação de acordar/remover continua no menu de
+     * contexto da lista de celular, não duplicada aqui.
+     */
+    private void mostrarDialogoDePcs() {
+        LinearLayout container = new LinearLayout(this);
+        container.setOrientation(LinearLayout.VERTICAL);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < pcGridAdapter.getCount(); i++) {
+            final ComputerObject c = (ComputerObject) pcGridAdapter.getItem(i);
+            boolean online = c.details.state == ComputerDetails.State.ONLINE;
+            boolean paired = c.details.pairState == PairState.PAIRED;
+
+            View row = inflater.inflate(R.layout.console_pc_dialog_row, container, false);
+            ((ImageView) row.findViewById(R.id.consoleDialogDot)).setImageResource(
+                    online && paired ? R.drawable.vidro_dot_on : R.drawable.console_dot_neutro);
+            ((TextView) row.findViewById(R.id.consoleDialogNome)).setText(c.details.name);
+            ((TextView) row.findViewById(R.id.consoleDialogEstado)).setText(
+                    online ? (paired ? R.string.console_estado_online : R.string.console_estado_emparelhar)
+                            : R.string.console_estado_offline);
+
+            row.setOnClickListener(v -> {
+                if (online && paired) {
+                    selecionarComputadorAtual(c);
+                } else if (online) {
+                    doPair(c.details, null, null);
+                }
+                if (pcDialogAtual != null) {
+                    pcDialogAtual.dismiss();
+                }
+            });
+            container.addView(row);
+        }
+
+        View addRow = inflater.inflate(R.layout.console_pc_dialog_row, container, false);
+        addRow.findViewById(R.id.consoleDialogDot).setVisibility(View.GONE);
+        addRow.findViewById(R.id.consoleDialogEstado).setVisibility(View.GONE);
+        ((TextView) addRow.findViewById(R.id.consoleDialogNome)).setText(
+                "+ " + getString(R.string.console_add_pc));
+        addRow.setOnClickListener(v -> {
+            if (pcDialogAtual != null) {
+                pcDialogAtual.dismiss();
+            }
+            startActivity(new Intent(PcView.this, AddComputerManually.class));
+        });
+        container.addView(addRow);
+
+        pcDialogAtual = new AlertDialog.Builder(this)
+                .setTitle(R.string.console_computadores_titulo)
+                .setView(container)
+                .create();
+        pcDialogAtual.show();
+    }
+
+    private void selecionarComputadorAtual(ComputerObject c) {
+        tabletCurrentUuid = c.details.uuid;
+        atualizarCabecalhoDoChip(c);
+        carregarAppsDoComputadorAtual(c);
+    }
+
+    private void pararAppsDoTablet() {
+        if (tabletAppPoller != null) {
+            tabletAppPoller.stop();
+            tabletAppPoller = null;
+        }
+        if (tabletAppGridAdapter != null) {
+            tabletAppGridAdapter.cancelQueuedOperations();
+        }
+    }
+
+    /**
+     * Monta (ou remonta) a seção "Apps" para o PC dado. Reusa {@link AppGridAdapter}
+     * e {@link CachedAppAssetLoader} de verdade — moque ou host real, o caminho de
+     * dados é o mesmo que {@link AppView} usa, nunca uma cópia.
+     */
+    private void carregarAppsDoComputadorAtual(ComputerObject atual) {
+        pararAppsDoTablet();
+
+        tabletCurrentComputerDetails = atual.details;
+        tabletLastRawApplist = null;
+        tabletFocusedApp = null;
+        tabletRunningApp = null;
+        tabletAppGridAdapter = null;
+
+        boolean online = atual.details.state == ComputerDetails.State.ONLINE;
+        boolean paired = atual.details.pairState == PairState.PAIRED;
+
+        if (!online || !paired) {
+            // PC fora do ar ou não emparelhado: nada para listar.
+            montarCarrossel(null);
+            atualizarSecaoContinuar();
+            return;
+        }
+
+        if (emModoDeCasca()) {
+            if (emModoDeApps()) {
+                tabletAppGridAdapter = MoqueDeApps.popularAppGridDeMentira(
+                        this, PreferenceConfiguration.readPreferences(this), atual.details, false);
+                for (int i = 0; i < tabletAppGridAdapter.getCount(); i++) {
+                    AppView.AppObject obj = (AppView.AppObject) tabletAppGridAdapter.getItem(i);
+                    if (obj.isRunning) {
+                        tabletRunningApp = obj;
+                        break;
+                    }
+                }
+            }
+            // Casca de mentira sem o extra de apps: a seção "Apps" fica vazia — não
+            // há de onde vir uma lista sem inventar uma.
+            montarCarrossel(tabletAppGridAdapter);
+            atualizarSecaoContinuar();
+            return;
+        }
+
+        if (managerBinder == null) {
+            // completeOnCreate() ainda não terminou de conectar ao serviço; o bind
+            // chama refreshConsoleInicio() de novo assim que managerBinder existir.
+            return;
+        }
+
+        tabletAppGridAdapter = new AppGridAdapter(this, PreferenceConfiguration.readPreferences(this),
+                atual.details, managerBinder.getUniqueId(), false);
+        montarCarrossel(tabletAppGridAdapter);
+
+        // Cache em disco primeiro — mesmo caminho de AppView#populateAppGridWithCache.
+        try {
+            tabletLastRawApplist = CacheHelper.readInputStreamToString(
+                    CacheHelper.openCacheFileForInput(getCacheDir(), "applist", atual.details.uuid));
+            atualizarListaDeAppsDoTablet(
+                    NvHTTP.getAppListByReader(new StringReader(tabletLastRawApplist)), atual.details);
+        } catch (IOException | XmlPullParserException e) {
+            tabletLastRawApplist = null;
+        }
+
+        tabletAppPoller = managerBinder.createAppListPoller(atual.details);
+        tabletAppPoller.start();
+    }
+
+    private void montarCarrossel(AppGridAdapter adapter) {
+        RecyclerView carousel = findViewById(R.id.consoleAppsCarousel);
+        View appsSection = findViewById(R.id.consoleAppsSection);
+
+        if (adapter == null || adapter.getCount() == 0) {
+            appsSection.setVisibility(View.GONE);
+            carousel.setAdapter(null);
+            tabletCarouselAdapter = null;
+            return;
+        }
+
+        appsSection.setVisibility(View.VISIBLE);
+        tabletCarouselAdapter = new AppCarouselAdapter(adapter, new AppCarouselAdapter.Listener() {
+            @Override
+            public void onAppFocused(AppView.AppObject app) {
+                tabletFocusedApp = app;
+                TextView name = findViewById(R.id.consoleAppsFocusedName);
+                if (name != null) {
+                    name.setText(app.app.getAppName());
+                }
+            }
+
+            @Override
+            public void onAppActivated(AppView.AppObject app) {
+                abrirApp(app);
+            }
+        });
+        carousel.setAdapter(tabletCarouselAdapter);
+        carousel.post(carousel::requestFocus);
+
+        // Nome/estado inicial: o primeiro item, antes de qualquer foco explícito do
+        // usuário (teclado, D-pad ou toque).
+        AppView.AppObject primeiro = (AppView.AppObject) adapter.getItem(0);
+        tabletFocusedApp = primeiro;
+        TextView name = findViewById(R.id.consoleAppsFocusedName);
+        if (name != null) {
+            name.setText(primeiro.app.getAppName());
+        }
+    }
+
+    /**
+     * "Continuar" só existe com um app rodando de verdade no PC atual (NOTA.md §4).
+     * A miniatura vem do mesmo cache em memória que {@link CachedAppAssetLoader} usa
+     * — se a capa já foi carregada para a fileira de apps, aparece aqui de graça,
+     * sem pedir de novo.
+     */
+    private void atualizarSecaoContinuar() {
+        View section = findViewById(R.id.consoleContinueSection);
+        if (tabletRunningApp == null || tabletCurrentComputerDetails == null) {
+            section.setVisibility(View.GONE);
+            return;
+        }
+
+        section.setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.consoleContinueAppName)).setText(tabletRunningApp.app.getAppName());
+        ((TextView) findViewById(R.id.consoleContinueState)).setText(getString(
+                R.string.console_nome_e_estado, tabletCurrentComputerDetails.name,
+                getString(R.string.vidro_pill_open)));
+
+        ImageView thumb = findViewById(R.id.consoleContinueThumb);
+        if (thumb != null) {
+            ScaledBitmap cache = new MemoryAssetLoader().loadBitmapFromCache(
+                    new CachedAppAssetLoader.LoaderTuple(tabletCurrentComputerDetails, tabletRunningApp.app));
+            if (cache != null) {
+                thumb.setImageBitmap(cache.bitmap);
+            }
+        }
+    }
+
+    private void retomarContinuar() {
+        if (tabletRunningApp == null || tabletCurrentComputerDetails == null) {
+            return;
+        }
+        ServerHelper.doStart(this, tabletRunningApp.app, tabletCurrentComputerDetails, managerBinder, false);
+    }
+
+    private void encerrarContinuar() {
+        if (tabletRunningApp == null || tabletCurrentComputerDetails == null || managerBinder == null) {
+            return;
+        }
+        UiHelper.displayQuitConfirmationDialog(this, () ->
+                ServerHelper.doQuit(PcView.this, tabletCurrentComputerDetails, tabletRunningApp.app,
+                        managerBinder, null), null);
+    }
+
+    private void abrirApp(AppView.AppObject app) {
+        if (tabletCurrentComputerDetails == null) {
+            return;
+        }
+        ServerHelper.doStart(this, app.app, tabletCurrentComputerDetails, managerBinder, false);
+    }
+
+    private void abrirAppFocado() {
+        if (tabletFocusedApp != null) {
+            abrirApp(tabletFocusedApp);
+        }
+    }
+
+    /** Espelha {@code AppView#updateUiWithAppList}, mas para o adapter da Início. */
+    private void atualizarListaDeAppsDoTablet(List<NvApp> appList, ComputerDetails details) {
+        if (tabletAppGridAdapter == null) {
+            return;
+        }
+
+        for (NvApp app : appList) {
+            boolean found = false;
+            for (int i = 0; i < tabletAppGridAdapter.getCount(); i++) {
+                if (((AppView.AppObject) tabletAppGridAdapter.getItem(i)).app.getAppId() == app.getAppId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                tabletAppGridAdapter.addApp(new AppView.AppObject(app));
+            }
+        }
+
+        int i = 0;
+        while (i < tabletAppGridAdapter.getCount()) {
+            AppView.AppObject existing = (AppView.AppObject) tabletAppGridAdapter.getItem(i);
+            boolean stillThere = false;
+            for (NvApp app : appList) {
+                if (existing.app.getAppId() == app.getAppId()) {
+                    stillThere = true;
+                    break;
+                }
+            }
+            if (!stillThere) {
+                tabletAppGridAdapter.removeApp(existing);
+                continue;
+            }
+            i++;
+        }
+
+        tabletAppGridAdapter.notifyDataSetChanged();
+        if (tabletCarouselAdapter != null) {
+            tabletCarouselAdapter.notifyDataSetChanged();
+        }
+        atualizarRunningGameIdDoTablet(details);
+    }
+
+    /** Espelha {@code AppView#updateUiWithServerinfo}, mas para o adapter da Início. */
+    private void atualizarRunningGameIdDoTablet(ComputerDetails details) {
+        if (tabletAppGridAdapter == null) {
+            return;
+        }
+
+        boolean updated = false;
+        tabletRunningApp = null;
+        for (int i = 0; i < tabletAppGridAdapter.getCount(); i++) {
+            AppView.AppObject obj = (AppView.AppObject) tabletAppGridAdapter.getItem(i);
+            boolean deveriaEstarRodando = obj.app.getAppId() == details.runningGameId;
+            if (obj.isRunning != deveriaEstarRodando) {
+                obj.isRunning = deveriaEstarRodando;
+                updated = true;
+            }
+            if (deveriaEstarRodando) {
+                tabletRunningApp = obj;
+            }
+        }
+
+        if (updated) {
+            tabletAppGridAdapter.notifyDataSetChanged();
+            if (tabletCarouselAdapter != null) {
+                tabletCarouselAdapter.notifyDataSetChanged();
+            }
+        }
+        atualizarSecaoContinuar();
+    }
+
+    /** Chamado a cada notifyComputerUpdated real (não-moque) — ver startComputerUpdates(). */
+    private void atualizarAppsDoTabletSeForOAtual(ComputerDetails details) {
+        if (!isConsoleInicio() || tabletCurrentUuid == null || !tabletCurrentUuid.equals(details.uuid)) {
+            return;
+        }
+
+        tabletCurrentComputerDetails = details;
+
+        if (tabletAppGridAdapter == null) {
+            return;
+        }
+
+        if (details.rawAppList != null && !details.rawAppList.equals(tabletLastRawApplist)) {
+            tabletLastRawApplist = details.rawAppList;
+            try {
+                atualizarListaDeAppsDoTablet(
+                        NvHTTP.getAppListByReader(new StringReader(details.rawAppList)), details);
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            atualizarRunningGameIdDoTablet(details);
         }
     }
 

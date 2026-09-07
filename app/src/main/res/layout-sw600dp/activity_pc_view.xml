@@ -1,247 +1,323 @@
 <!--
-    Home no tablet. Mesma hierarquia da versão de celular; o que muda é a MEDIDA.
+    Início (tablet) — Plano B / F3, B-CONSOLE.md. Referência: B_Tablet_Inicio.png /
+    Tablet_Inicio.dc.html.
 
-    O layout de celular esticado para 1722dp virava outro problema: o rodapé com dois
-    botões de ~850dp cada, "Seus lugares" e "Adicionar" a mais de um metro de distância um
-    do outro, e um vazio no meio que não é respiro, é abandono. Largura de leitura não
-    cresce com a tela — o olho tem o alcance que tem.
+        cabeçalho: chip do PC atual (● ARTEMIS · on-line ⌄) + chips esmaecidos dos
+        PCs fora do ar + Ajustes → CONTINUAR (só com app rodando) → APPS (fileira
+        horizontal de capas, foco 1,2x) → nome da capa focada + Abrir.
 
-    Por isso o conteúdo vive numa coluna centrada de 720dp e a luz continua atravessando a
-    largura inteira, que é o que faz a tela parecer grande sem ficar oca.
+    pcFragmentContainer continua existindo (0dp, invisível) só porque
+    PcView#initializeViews e #removeComputer o usam sem checar nulo — é o mesmo
+    AdapterFragment/PcGridAdapter de sempre, sem lugar visível nesta tela: aqui a
+    navegação entre PCs é o chip + diálogo, não uma lista. O emparelhamento continua
+    o overlay vidro_pairing de sempre (fatia F5, não mexida aqui).
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
+    android:background="@color/console_fundo"
     tools:context=".PcView"
     android:fitsSystemWindows="true">
 
-    <!-- A luz é ambiente: ela pega a largura toda mesmo com o conteúdo centrado. -->
-    <com.limelight.ui.VidroLightView
-        android:id="@+id/vidroLight"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_alignParentTop="true"
-        app:vidro_intensity="0.07"
-        app:vidro_quality="good"
-        app:vidro_center_y="0" />
+    <!-- ================= cabeçalho ================= -->
 
     <LinearLayout
-        android:id="@+id/vidroHeader"
-        android:layout_width="720dp"
+        android:id="@+id/consoleHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_6"
-        android:paddingRight="@dimen/vidro_space_5">
-
-        <TextView
-            android:id="@+id/vidroGreeting"
-            style="@style/VidroText.Support"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            tools:text="Boa noite" />
-
-        <!-- Título maior aqui: a 1722dp de largura, 32sp some. -->
-        <TextView
-            android:id="@+id/vidroStateTitle"
-            style="@style/VidroText.Display"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textSize="40sp"
-            tools:text="O PC está acordado" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/console_espaco_6"
+        android:paddingTop="@dimen/console_espaco_5"
+        android:paddingRight="@dimen/console_espaco_6"
+        android:paddingBottom="@dimen/console_espaco_4">
 
         <LinearLayout
-            android:id="@+id/vidroAnticipation"
+            android:id="@+id/consolePcChipAtual"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:background="@drawable/console_chip_bg_atual"
+            android:clickable="true"
+            android:contentDescription="@string/console_trocar_pc"
+            android:focusable="true"
+            android:foreground="@drawable/console_foco"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/console_espaco_3"
+            android:paddingRight="@dimen/console_espaco_3">
+
+            <ImageView
+                android:id="@+id/consolePcChipDot"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="@dimen/console_espaco_2"
+                android:layout_marginRight="@dimen/console_espaco_2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/vidro_dot_on" />
+
+            <TextView
+                android:id="@+id/consolePcChipTexto"
+                style="@style/ConsoleText.Rotulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="ARTEMIS · on-line" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="@dimen/console_espaco_2"
+                android:layout_marginLeft="@dimen/console_espaco_2"
+                android:importantForAccessibility="no"
+                android:rotation="90"
+                android:src="@drawable/console_ic_chevron"
+                app:tint="@color/console_acento" />
+        </LinearLayout>
+
+        <!-- Chips esmaecidos dos demais PCs (fora do ar), preenchidos em código. -->
+        <LinearLayout
+            android:id="@+id/consolePcChipsOffline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/console_espaco_3"
+            android:layout_marginLeft="@dimen/console_espaco_3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/profilesButton"
+            style="@style/ConsoleText.Rotulo2"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginEnd="@dimen/console_espaco_4"
+            android:layout_marginRight="@dimen/console_espaco_4"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/profile_manager_choose_profile"
+            android:gravity="center"
+            android:paddingLeft="@dimen/console_espaco_3"
+            android:paddingRight="@dimen/console_espaco_3"
+            android:text="@string/vidro_scenes" />
+
+        <!-- Ajustes é fatia F4 — o botão existe (44dp, ícone + rótulo) mas continua
+             abrindo a StreamSettings de sempre, ainda sem a pele da Console. -->
+        <LinearLayout
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:background="@drawable/console_chip_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/console_foco"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/console_espaco_3"
+            android:paddingRight="@dimen/console_espaco_3">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="@dimen/console_espaco_2"
+                android:layout_marginRight="@dimen/console_espaco_2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/console_texto_2" />
+
+            <TextView
+                style="@style/ConsoleText.Rotulo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vidro_settings" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ================= corpo ================= -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/consoleHeader"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/console_espaco_6"
+        android:paddingRight="@dimen/console_espaco_6">
+
+        <!-- ================= Continuar ================= -->
+
+        <LinearLayout
+            android:id="@+id/consoleContinueSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_5"
-            android:background="@drawable/vidro_card_accent"
             android:orientation="vertical"
-            android:paddingLeft="26dp"
-            android:paddingTop="22dp"
-            android:paddingRight="26dp"
-            android:paddingBottom="18dp"
             android:visibility="gone"
             tools:visibility="visible">
 
             <TextView
-                style="@style/VidroText.Overline"
+                style="@style/ConsoleText.Legenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/vidro_likely_now"
-                android:textColor="@color/vidro_accent_text" />
+                android:layout_marginBottom="@dimen/console_espaco_3"
+                android:text="@string/console_secao_continuar" />
 
-            <TextView
-                android:id="@+id/vidroAnticipationTitle"
-                style="@style/VidroText.Title"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="26sp"
-                tools:text="Retomar Desktop" />
+                android:layout_marginBottom="@dimen/console_espaco_6"
+                android:background="@drawable/console_card_bg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/console_espaco_4">
+
+                    <ImageView
+                        android:id="@+id/consoleContinueThumb"
+                        android:layout_width="120dp"
+                        android:layout_height="90dp"
+                        android:background="@color/console_superficie_elevada"
+                        android:scaleType="centerCrop" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_4"
+                        android:layout_marginLeft="@dimen/console_espaco_4"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/consoleContinueAppName"
+                            style="@style/ConsoleText.Card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            tools:text="Área de trabalho" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginEnd="@dimen/console_espaco_2"
+                                android:layout_marginRight="@dimen/console_espaco_2"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/vidro_dot_on" />
+
+                            <TextView
+                                android:id="@+id/consoleContinueState"
+                                style="@style/ConsoleText.Rotulo2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="ARTEMIS · em execução" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_3"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/consoleContinueResume"
+                                style="@style/ConsoleBotao.Primario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:layout_marginEnd="@dimen/console_espaco_3"
+                                android:layout_marginRight="@dimen/console_espaco_3"
+                                android:minHeight="0dp"
+                                android:text="@string/console_retomar" />
+
+                            <TextView
+                                android:id="@+id/consoleContinueQuit"
+                                style="@style/ConsoleBotao.Neutro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:minHeight="0dp"
+                                android:text="@string/console_encerrar_no_pc"
+                                android:textColor="@color/console_destrutivo" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- ================= Apps ================= -->
+
+        <LinearLayout
+            android:id="@+id/consoleAppsSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
-                android:id="@+id/vidroAnticipationWhy"
-                style="@style/VidroText.Body"
-                android:layout_width="match_parent"
+                style="@style/ConsoleText.Legenda"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                tools:text="Você faz isso quase toda noite por volta desta hora." />
+                android:layout_marginBottom="@dimen/console_espaco_3"
+                android:text="@string/console_secao_apps" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/consoleAppsCarousel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/console_capa_h"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                tools:listitem="@layout/console_capa_carousel_item" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_3"
+                android:layout_marginTop="@dimen/console_espaco_4"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/vidroNotNow"
-                    style="@style/VidroText.Support"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/consoleAppsFocusedName"
+                    style="@style/ConsoleText.Card"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/vidro_touch_target"
-                    android:paddingEnd="@dimen/vidro_space_5"
-                    android:paddingRight="@dimen/vidro_space_5"
-                    android:text="@string/vidro_not_now" />
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Fortaleza" />
 
                 <TextView
-                    android:id="@+id/vidroNotToday"
-                    style="@style/VidroText.Support"
+                    android:id="@+id/consoleAppsOpenButton"
+                    style="@style/ConsoleBotao.Primario"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/vidro_touch_target"
-                    android:text="@string/vidro_not_today" />
+                    android:layout_height="44dp"
+                    android:minHeight="0dp"
+                    android:text="@string/console_abrir" />
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/vidroContinueSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                style="@style/VidroText.Section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
-                android:layout_marginBottom="@dimen/vidro_space_2"
-                android:text="@string/vidro_continue" />
-
-            <LinearLayout
-                android:id="@+id/vidroContinueList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_6"
-            android:layout_marginBottom="@dimen/vidro_space_2">
-
-            <TextView
-                style="@style/VidroText.Section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/vidro_your_places" />
-
-            <TextView
-                android:id="@+id/vidroAddPlace"
-                style="@style/VidroText.Action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/vidro_add" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <!--
-        Rodapé de largura natural, encostado à direita da coluna. Dois botões esticados
-        por 1722dp não são um par, são duas faixas.
-    -->
-    <LinearLayout
-        android:id="@+id/vidroFooter"
-        android:layout_width="720dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_3"
-        android:paddingRight="@dimen/vidro_space_5"
-        android:paddingBottom="@dimen/vidro_space_6">
-
-        <TextView
-            android:id="@+id/profilesButton"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/profile_manager_choose_profile"
-            android:gravity="center"
-            android:minWidth="180dp"
-            android:text="@string/vidro_scenes" />
-
-        <TextView
-            android:id="@+id/settingsButton"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:gravity="center"
-            android:minWidth="180dp"
-            android:text="@string/vidro_settings" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/pcFragmentContainer"
-        android:layout_width="720dp"
-        android:layout_height="match_parent"
-        android:layout_above="@id/vidroFooter"
-        android:layout_below="@id/vidroHeader"
-        android:layout_centerHorizontal="true">
-
-        <!--
-            Estado de procura, tela 12 do protótipo.
-
-            O que estava aqui era a cópia herdada do Moonlight — "Ensure Apollo is running
-            on your host PC" — que além de estar fora da linguagem do produto nomeia o
-            host errado: o dono deste fork usa Vibeshine. As strings certas já existiam e
-            ninguém as tinha ligado.
-        -->
+        <!-- Estado vazio: nenhum PC conhecido ainda. -->
         <LinearLayout
             android:id="@+id/no_pc_found_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/vidro_inset_text"
-            android:paddingRight="@dimen/vidro_inset_text">
+            android:paddingLeft="@dimen/console_espaco_6"
+            android:paddingRight="@dimen/console_espaco_6">
 
             <FrameLayout
                 android:layout_width="74dp"
@@ -254,29 +330,36 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/vidro_accent_glow" />
+                    android:indeterminateTint="@color/console_acento" />
             </FrameLayout>
 
             <TextView
-                style="@style/VidroText.Display"
+                style="@style/ConsoleText.Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginTop="@dimen/console_espaco_5"
                 android:gravity="center"
                 android:text="@string/vidro_searching_title"
-                android:textSize="24sp" />
+                android:textSize="26sp" />
 
             <TextView
-                style="@style/VidroText.Body"
-                android:layout_width="match_parent"
+                style="@style/ConsoleText.Rotulo2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_2"
+                android:layout_marginTop="@dimen/console_espaco_2"
                 android:gravity="center"
-                android:maxWidth="300dp"
+                android:maxWidth="420dp"
                 android:text="@string/vidro_searching_sub" />
         </LinearLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
+    <!-- AdapterFragment/PcGridAdapter de sempre — invisível nesta tela (ver nota no
+         topo do arquivo), mas precisa existir. -->
+    <FrameLayout
+        android:id="@+id/pcFragmentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
 
     <include layout="@layout/vidro_pairing" />
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Capa da fileira horizontal "APPS" da Início (tablet, B-CONSOLE.md §F3). 160x213dp
+    (console_capa_w/h), 3:4 — mesma medida do repouso no protótipo; o foco escala 1,2x
+    via ViewPropertyAnimator em tempo de execução (AppCarouselAdapter), não aqui.
+
+    Os ids grid_image/grid_mask/grid_overlay/grid_pill/grid_spinner/grid_text são os
+    que GenericGridAdapter.getView() espera encontrar — este layout é inflado pelo
+    próprio AppGridAdapter (via AppCarouselAdapter, que delega nele) para reusar 100%
+    do carregamento de capa (CachedAppAssetLoader). grid_text não tem lugar nesta
+    fileira (o nome da capa focada mora abaixo do carrossel, uma vez só) — fica com
+    tamanho 0dp para nunca ocupar espaço, mas presente porque
+    CachedAppAssetLoader#populateImageView escreve nele incondicionalmente.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/consoleCapaItem"
+    android:layout_width="@dimen/console_capa_w"
+    android:layout_height="@dimen/console_capa_h"
+    android:layout_marginEnd="@dimen/console_espaco_4"
+    android:layout_marginRight="@dimen/console_espaco_4"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/grid_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/grid_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/console_superficie_elevada"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/grid_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/grid_overlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/grid_pill"
+        style="@style/ConsoleText.Legenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/console_espaco_3"
+        android:background="@drawable/console_chip_bg"
+        android:gravity="center"
+        android:paddingLeft="@dimen/console_espaco_2"
+        android:paddingTop="4dp"
+        android:paddingRight="@dimen/console_espaco_2"
+        android:paddingBottom="4dp"
+        android:singleLine="true"
+        android:visibility="gone"
+        tools:text="Em execução"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/grid_spinner"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/console_acento"
+        android:visibility="gone" />
+
+    <!-- Contorno de foco por cima de tudo, do jeito que grid_frame já faz nas outras
+         grades (app_grid_item/pc_grid_item): última View, fundo transparente exceto
+         quando focada. -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/console_capa_foco"
+        android:duplicateParentState="true" />
+</FrameLayout>

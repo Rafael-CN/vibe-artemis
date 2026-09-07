@@ -321,6 +321,57 @@ const ROTAS = {
     extras: ['--ez', 'MoqueDeApps', 'true'],
     paisagem: false,
   },
+  'apps-foco': {
+    // Mesma rota, com o foco movido pro terceiro item da grade de 2 colunas
+    // (Corrida Noturna, índice 2) por D-pad — B-CONSOLE.md §F3, "Pronto quando".
+    // Um DPAD_DOWN a partir do primeiro item desce uma linha inteira numa GridView
+    // de 2 colunas e pousa direto no índice 2, sem depender de como DPAD_RIGHT
+    // resolve o fim de uma linha.
+    componente: 'com.limelight.AppView',
+    extras: ['--ez', 'MoqueDeApps', 'true'],
+    paisagem: false,
+    depois: (serial) => adb(serial, 'shell', 'input', 'keyevent', '20'),
+  },
+  // Início (tablet) — Plano B / F3. PcView com os dois moques juntos: a Início
+  // mostra "Continuar" (a primeira capa de MoqueDeApps é a "em execução") e a
+  // fileira "Apps" das outras cinco.
+  inicio: {
+    componente: 'com.limelight.PcView',
+    extras: ['--ez', 'MoqueDeCasca', 'true', '--ez', 'MoqueDeApps', 'true'],
+    paisagem: false,
+  },
+  'inicio-foco': {
+    componente: 'com.limelight.PcView',
+    extras: ['--ez', 'MoqueDeCasca', 'true', '--ez', 'MoqueDeApps', 'true'],
+    paisagem: false,
+    // ←/→ movem o foco na fileira de capas (KEYCODE_DPAD_RIGHT = 22), duas vezes.
+    depois: (serial) => {
+      adb(serial, 'shell', 'input', 'keyevent', '22');
+      adb(serial, 'shell', 'input', 'keyevent', '22');
+    },
+  },
+  'inicio-dialogo': {
+    componente: 'com.limelight.PcView',
+    extras: ['--ez', 'MoqueDeCasca', 'true', '--ez', 'MoqueDeApps', 'true'],
+    paisagem: false,
+    // Toque no chip do PC atual abre o diálogo simples (NOTA.md §4).
+    depois: (serial) => {
+      const xml = dumpUi(serial);
+      const centro = encontrarCentro(xml, ':id/consolePcChipAtual');
+      if (!centro) {
+        console.warn('  aviso: consolePcChipAtual não encontrado — diálogo não foi aberto');
+        return;
+      }
+      tocarEm(serial, centro.x, centro.y);
+    },
+  },
+  // PcView sem moque nenhum: nenhum PC cadastrado, nenhuma rede — o estado "nenhum
+  // PC" de verdade (não um moque fingindo vazio).
+  vazio: {
+    componente: 'com.limelight.PcView',
+    extras: [],
+    paisagem: false,
+  },
   ajustes: {
     componente: 'com.limelight.preferences.StreamSettings',
     extras: [],

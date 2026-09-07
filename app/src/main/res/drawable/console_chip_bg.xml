@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chip de PC esmaecido (fora do ar) no cabeçalho da Início (tablet). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/console_superficie_elevada" />
+    <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/console_borda" />
+    <corners android:radius="@dimen/console_raio_controle" />
+</shape>
