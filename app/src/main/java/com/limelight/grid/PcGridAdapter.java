@@ -54,6 +54,7 @@ public class PcGridAdapter extends GenericGridAdapter<PcView.ComputerObject> {
         Context context = parentView.getContext();
         ComputerDetails.State state = obj.details.state;
         boolean paired = obj.details.pairState == PairingManager.PairState.PAIRED;
+        boolean online = state == ComputerDetails.State.ONLINE;
 
         txtView.setText(obj.details.name);
 
@@ -67,24 +68,42 @@ public class PcGridAdapter extends GenericGridAdapter<PcView.ComputerObject> {
             stateView.setVisibility(probing ? View.GONE : View.VISIBLE);
         }
 
-        if (state == ComputerDetails.State.ONLINE) {
+        // O ponto NUNCA muda de cor por estado (NOTA.md §2 / B-CONSOLE.md §F3): acento
+        // só quando on-line e emparelhado, console_texto_2 em qualquer outro caso. O
+        // rótulo ao lado é quem diz a diferença — "fora do ar" tanto para o PC que dorme
+        // (tem MAC, WOL acorda) quanto para o que só está inacessível; o menu de
+        // contexto (Wake on LAN) continua distinguindo os dois por baixo, só o texto
+        // desta linha uniu no vocabulário literal do protótipo.
+        if (online && paired) {
             imgView.setImageResource(R.drawable.vidro_dot_on);
             if (stateView != null) {
-                stateView.setText(paired ? R.string.vidro_state_ready : R.string.vidro_state_unpaired);
+                stateView.setText(R.string.console_estado_online);
             }
-        }
-        else if (probing) {
-            imgView.setImageResource(R.drawable.vidro_dot_off);
         }
         else {
-            // Dormindo e fora do ar são estados diferentes para quem está olhando: um
-            // pode ser acordado daqui, o outro não. O que separa os dois é ter MAC
-            // guardado, que é o que o Wake-on-LAN precisa.
-            boolean canWake = obj.details.macAddress != null && !obj.details.macAddress.isEmpty();
-            imgView.setImageResource(canWake ? R.drawable.vidro_dot_off : R.drawable.vidro_dot_far);
+            imgView.setImageResource(R.drawable.console_dot_neutro);
             if (stateView != null) {
-                stateView.setText(canWake ? R.string.vidro_state_asleep : R.string.vidro_state_offline);
+                stateView.setText(online ? R.string.console_estado_emparelhar : R.string.console_estado_offline);
             }
+        }
+
+        // Endereço em mono quando on-line; "endereço indisponível" fora do ar — nunca
+        // um IP que pode já não valer mais nada.
+        TextView enderecoView = parentView.findViewById(R.id.consolePcEndereco);
+        if (enderecoView != null) {
+            if (online && obj.details.activeAddress != null) {
+                enderecoView.setText(obj.details.activeAddress.address);
+            } else {
+                enderecoView.setText(R.string.console_endereco_indisponivel);
+            }
+        }
+
+        // O chevron só existe quando há algo do outro lado para abrir — PC on-line e
+        // emparelhado. Ele e o cadeado (abaixo) e o giro de "procurando" nunca
+        // aparecem ao mesmo tempo: os três estados são mutuamente exclusivos.
+        ImageView chevronView = parentView.findViewById(R.id.consolePcChevron);
+        if (chevronView != null) {
+            chevronView.setVisibility(online && paired ? View.VISIBLE : View.GONE);
         }
 
         // O cadeado só aparece quando há o que destrancar.
