@@ -29,7 +29,7 @@ import com.limelight.nvstream.wol.WakeOnLanSender;
 import com.limelight.preferences.AddComputerManually;
 import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
-import com.limelight.preferences.StreamSettings;
+import com.limelight.preferences.StreamSettingsBasico;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.AdapterFragment;
 import com.limelight.ui.MoqueDeApps;
@@ -217,7 +217,18 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PcView.this, StreamSettings.class));
+                // Plano B / F4: a porta de entrada de Ajustes agora é a tela básica —
+                // ela é quem sabe abrir a árvore inteira atrás do card "Avançado".
+                Intent settingsIntent = new Intent(PcView.this, StreamSettingsBasico.class);
+                // Só a Início do tablet tem noção de "PC atual" (isConsoleInicio());
+                // no celular a tela de Computadores não elege um PC, então o cabeçalho
+                // de Ajustes fica sem o trecho do PC — "o PC atual, se houver" (B-CONSOLE.md §F4).
+                if (isConsoleInicio() && tabletCurrentComputerDetails != null
+                        && tabletCurrentComputerDetails.activeAddress != null) {
+                    settingsIntent.putExtra(StreamSettingsBasico.EXTRA_PC_NAME, tabletCurrentComputerDetails.name);
+                    settingsIntent.putExtra(StreamSettingsBasico.EXTRA_PC_ADDRESS, tabletCurrentComputerDetails.activeAddress.address);
+                }
+                startActivity(settingsIntent);
             }
         });
         View addPlace = findViewById(R.id.vidroAddPlace);
