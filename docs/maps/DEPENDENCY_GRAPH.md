@@ -13,7 +13,7 @@
 | `com.limelight.utils` | 97.2 | 22 | 5747 |
 | `com.limelight.nvstream.jni` | 70.6 | 1 | 445 |
 | `com.limelight.nvstream` | 50.8 | 4 | 950 |
-| `com.limelight.preferences` | 50.1 | 11 | 3540 |
+| `com.limelight.preferences` | 50.1 | 11 | 3548 |
 | `com.limelight.nvstream.av.audio` | 36.4 | 1 | 16 |
 | `com.limelight.nvstream.av.video` | 31.4 | 1 | 22 |
 | `com.limelight.ui` | 29.1 | 13 | 1602 |

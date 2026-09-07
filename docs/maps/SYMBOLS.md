@@ -4,7 +4,7 @@
 
 > Busca `símbolo -> arquivo:linha`. Use `Grep` neste arquivo para localizar uma classe ou método sem varrer o codebase inteiro.
 
-2148 símbolos indexados.
+2147 símbolos indexados.
 
 | Símbolo | Tipo | Local |
 |---|---|---|
@@ -1040,7 +1040,6 @@
 | `onBindViewHolder()` | method | `app/src/main/java/com/limelight/profiles/ProfilesAdapter.java:41` |
 | `onCancel()` | method | `app/src/main/java/com/limelight/utils/SpinnerDialog.java:112` |
 | `onCapturedPointer()` | method | `app/src/main/java/com/limelight/Game.java:587` |
-| `onCheckedChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:204` |
 | `onCheckIsTextEditor()` | method | `app/src/main/java/com/limelight/ui/ExternalControllerView.java:54` |
 | `onCheckIsTextEditor()` | method | `app/src/main/java/com/limelight/ui/StreamContainer.java:223` |
 | `onCheckIsTextEditor()` | method | `app/src/main/java/com/limelight/ui/StreamView.java:126` |
@@ -1083,7 +1082,7 @@
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/Game.java:1495` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/PcView.java:151` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:124` |
-| `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:126` |
+| `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:135` |
 | `onConfigurationChanged()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:316` |
 | `onConnected()` | method | `app/src/main/java/com/limelight/ui/VidroSession.java:106` |
 | `onContextItemSelected()` | method | `app/src/main/java/com/limelight/AppView.java:555` |
@@ -1105,7 +1104,7 @@
 | `onCreate()` | method | `app/src/main/java/com/limelight/discovery/DiscoveryService.java:41` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/preferences/AddComputerManually.java:280` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:92` |
-| `onCreate()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:92` |
+| `onCreate()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:101` |
 | `onCreate()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:114` |
 | `onCreateContextMenu()` | method | `app/src/main/java/com/limelight/AppView.java:494` |
 | `onCreateContextMenu()` | method | `app/src/main/java/com/limelight/PcView.java:516` |
@@ -1254,7 +1253,7 @@
 | `onProfilesChanged()` | method | `app/src/main/java/com/limelight/ProfilesActivity.java:63` |
 | `onProgressChanged()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:168` |
 | `onProgressChanged()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:102` |
-| `onProgressChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:186` |
+| `onProgressChanged()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:195` |
 | `onProgressUpdate()` | method | `app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java:188` |
 | `onReceive()` | method | `app/src/main/java/com/limelight/StartExternalDisplayControlReceiver.java:25` |
 | `onReceive()` | method | `app/src/main/java/com/limelight/binding/input/driver/UsbDriverService.java:83` |
@@ -1269,7 +1268,7 @@
 | `onRequestPermissionsResult()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:551` |
 | `onResume()` | method | `app/src/main/java/com/limelight/AppView.java:455` |
 | `onResume()` | method | `app/src/main/java/com/limelight/PcView.java:488` |
-| `onResume()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:115` |
+| `onResume()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:124` |
 | `onResume()` | method | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java:199` |
 | `onRevoke()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStick.java:40` |
 | `onRevoke()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/LeftAnalogStickFree.java:42` |
@@ -1280,7 +1279,7 @@
 | `onScale()` | method | `app/src/main/java/com/limelight/utils/PanZoomHandler.java:113` |
 | `onScaleEnd()` | method | `app/src/main/java/com/limelight/utils/PanZoomHandler.java:140` |
 | `onScroll()` | method | `app/src/main/java/com/limelight/utils/PanZoomHandler.java:147` |
-| `OnSegmentoEscolhido` | interface | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:390` |
+| `OnSegmentoEscolhido` | interface | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:398` |
 | `onSensorChanged()` | method | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java:2277` |
 | `onServiceConnected()` | method | `app/src/main/java/com/limelight/AppView.java:102` |
 | `onServiceConnected()` | method | `app/src/main/java/com/limelight/Game.java:265` |
@@ -1311,7 +1310,7 @@
 | `onStartDiscoveryFailed()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:33` |
 | `onStartTrackingTouch()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:174` |
 | `onStartTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:127` |
-| `onStartTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:192` |
+| `onStartTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:201` |
 | `onStereo3DSurfaceReady()` | method | `app/src/main/java/com/limelight/ui/StreamContainer.java:303` |
 | `onStop()` | method | `app/src/main/java/com/limelight/Game.java:2215` |
 | `onStop()` | method | `app/src/main/java/com/limelight/PcView.java:509` |
@@ -1320,7 +1319,7 @@
 | `onStopDiscoveryFailed()` | method | `app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java:49` |
 | `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:177` |
 | `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/SeekBarPreference.java:130` |
-| `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:196` |
+| `onStopTrackingTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:205` |
 | `onSurfaceChanged()` | method | `app/src/main/java/com/limelight/PcView.java:320` |
 | `onSurfaceChanged()` | method | `app/src/main/java/com/limelight/utils/Stereo3DRenderer.java:756` |
 | `onSurfaceCreated()` | method | `app/src/main/java/com/limelight/PcView.java:303` |
@@ -2001,7 +2000,7 @@
 | `StreamContainerAspectRatioTest` | class | `app/src/test/java/com/limelight/ui/StreamContainerAspectRatioTest.java:31` |
 | `StreamMode` | enum | `app/src/main/java/com/limelight/ui/StreamContainer.java:37` |
 | `StreamSettings` | class | `app/src/main/java/com/limelight/preferences/StreamSettings.java:68` |
-| `StreamSettingsBasico` | class | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:40` |
+| `StreamSettingsBasico` | class | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:39` |
 | `StreamView` | class | `app/src/main/java/com/limelight/ui/StreamView.java:15` |
 | `StreamViewCommitTextTest` | class | `app/src/test/java/com/limelight/ui/StreamViewCommitTextTest.java:19` |
 | `stringifyPortFlags()` | method | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java:430` |

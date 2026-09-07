@@ -4,9 +4,9 @@
   "files": 224,
   "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 67215,
+  "lines": 67223,
   "types": 280,
-  "methods": 2649,
+  "methods": 2648,
   "packages": 30,
   "todos": 36
  },
@@ -15586,7 +15586,7 @@
   {
    "path": "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
    "lang": "java",
-   "lines": 459,
+   "lines": 467,
    "package": "com.limelight.preferences",
    "imports": [
     "android.app.AlertDialog",
@@ -15598,7 +15598,6 @@
     "android.os.Bundle",
     "android.util.DisplayMetrics",
     "android.view.Display",
-    "android.widget.CompoundButton",
     "android.widget.LinearLayout",
     "android.widget.SeekBar",
     "android.widget.TextView",
@@ -15613,12 +15612,12 @@
     {
      "kind": "class",
      "name": "StreamSettingsBasico",
-     "line": 40
+     "line": 39
     },
     {
      "kind": "interface",
      "name": "OnSegmentoEscolhido",
-     "line": 390
+     "line": 398
     }
    ],
    "methods": [
@@ -15627,168 +15626,161 @@
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 92
+     "line": 101
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 115
+     "line": 124
     },
     {
      "name": "onConfigurationChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "Configuration newConfig",
-     "line": 126
+     "line": 135
     },
     {
      "name": "encontrarViews",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 131
+     "line": 140
     },
     {
      "name": "configurarCliques",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 182
+     "line": 191
     },
     {
      "name": "onProgressChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "SeekBar seekBar, int progress, boolean fromUser",
-     "line": 186
+     "line": 195
     },
     {
      "name": "onStartTrackingTouch",
      "modifiers": "public",
      "returns": "void",
      "params": "SeekBar seekBar",
-     "line": 192
+     "line": 201
     },
     {
      "name": "onStopTrackingTouch",
      "modifiers": "public",
      "returns": "void",
      "params": "SeekBar seekBar",
-     "line": 196
-    },
-    {
-     "name": "onCheckedChanged",
-     "modifiers": "public",
-     "returns": "void",
-     "params": "CompoundButton buttonView, boolean isChecked",
-     "line": 204
+     "line": 205
     },
     {
      "name": "renderizarTudo",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 232
+     "line": 235
     },
     {
      "name": "renderizarResolucao",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 249
+     "line": 257
     },
     {
      "name": "renderizarTaxa",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 260
+     "line": 268
     },
     {
      "name": "renderizarBitrate",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 271
+     "line": 279
     },
     {
      "name": "renderizarCodec",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 281
+     "line": 289
     },
     {
      "name": "calcularSuporteHdr",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 298
+     "line": 306
     },
     {
      "name": "renderizarHdr",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 329
+     "line": 337
     },
     {
      "name": "renderizarAudio",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 337
+     "line": 345
     },
     {
      "name": "mostrarDialogoDeAudio",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 345
+     "line": 353
     },
     {
      "name": "renderizarModoToque",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 364
+     "line": 372
     },
     {
      "name": "renderizarBarraTexto",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 380
+     "line": 388
     },
     {
      "name": "renderizarControlesTela",
      "modifiers": "private",
      "returns": "void",
      "params": "PreferenceConfiguration cfg",
-     "line": 384
+     "line": 392
     },
     {
      "name": "configurarSegmentado",
      "modifiers": "private",
      "returns": "void",
      "params": "LinearLayout container, TextView campoMono, TextView[] segmentos, String[] valores, String valorAtual, OnSegmentoEscolhido onEscolhido, String valorCruParaMono",
-     "line": 410
+     "line": 418
     },
     {
      "name": "indexOf",
      "modifiers": "static",
      "returns": "int",
      "params": "String[] array, String valor",
-     "line": 432
+     "line": 440
     },
     {
      "name": "calcularResolucaoNativa",
      "modifiers": "private",
      "returns": "String",
      "params": "",
-     "line": 441
+     "line": 449
     }
    ],
    "nativeMethods": [],

@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.215 linhas**, **280 tipos**, **2649 métodos**.
+Total: **224 arquivos**, **67.223 linhas**, **280 tipos**, **2648 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -249,7 +249,7 @@ Total: **224 arquivos**, **67.215 linhas**, **280 tipos**, **2649 métodos**.
 |---|--:|--:|---|---|
 | [`PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1104 | 48.7 | PreferenceConfiguration, ScaleMode, ImeDisplayMode, FormatOption, AnalogStickForScrolling | — |
 | [`StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 3.8 | StreamSettings, SettingsFragment | `onCreate()`:92 `onAttachedToWindow()`:106 `onConfigurationChanged()`:124 `onBackPressed()`:143 `getPrefs()`:174 `onCreateView()`:320 `onCreateView()`:326 `onCreatePreferences()`:331 |
-| [`StreamSettingsBasico.java`](../../app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java) | 459 | 2.9 | StreamSettingsBasico, OnSegmentoEscolhido | `onCreate()`:92 `onResume()`:115 `onConfigurationChanged()`:126 `onProgressChanged()`:186 `onStartTrackingTouch()`:192 `onStopTrackingTouch()`:196 `onCheckedChanged()`:204 |
+| [`StreamSettingsBasico.java`](../../app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java) | 467 | 2.9 | StreamSettingsBasico, OnSegmentoEscolhido | `onCreate()`:101 `onResume()`:124 `onConfigurationChanged()`:135 `onProgressChanged()`:195 `onStartTrackingTouch()`:201 `onStopTrackingTouch()`:205 |
 | [`AddComputerManually.java`](../../app/src/main/java/com/limelight/preferences/AddComputerManually.java) | 408 | 2.9 | AddComputerManually | `onServiceConnected()`:49 `onServiceDisconnected()`:54 `run()`:197 `run()`:227 `onStop()`:262 `onDestroy()`:270 `onCreate()`:280 `onEditorAction()`:333 |
 | [`SeekBarPreference.java`](../../app/src/main/java/com/limelight/preferences/SeekBarPreference.java) | 206 | 2.8 | SeekBarPreference | `getDialog()`:72 `onProgressChanged()`:102 `onStartTrackingTouch()`:127 `onStopTrackingTouch()`:130 `updateSeekbar()`:164 `setProgress()`:184 `getProgress()`:190 `showDialog()`:194 |
 | [`ConfirmDeleteKeyboardPreference.java`](../../app/src/main/java/com/limelight/preferences/ConfirmDeleteKeyboardPreference.java) | 56 | 2.8 | ConfirmDeleteKeyboardPreference, DialogFragmentCompat | `onDialogClosed()`:47 |

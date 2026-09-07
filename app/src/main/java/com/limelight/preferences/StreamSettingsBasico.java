@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -87,6 +86,16 @@ public class StreamSettingsBasico extends AppCompatActivity {
     private TextView avancadoLegenda;
 
     private boolean hdrSuportado;
+
+    // Guarda os três switches (HDR/Barra de texto/Controles na tela) contra o próprio
+    // setChecked(...) de renderizarTudo(): CompoundButton dispara onCheckedChanged tanto
+    // para clique do usuário (toque OU D-pad/Enter) quanto para setChecked() por código, e
+    // View#isPressed() não é confiável para diferenciar os dois — um clique disparado por
+    // KEYCODE_DPAD_CENTER troca o estado visual sem deixar isPressed()==true no momento em
+    // que o listener roda, então a gravação nunca acontecia por D-pad (bug encontrado na
+    // verificação desta fatia). Um flag explícito ligado só durante a atualização
+    // programática resolve para os dois casos de entrada.
+    private boolean atualizandoProgramaticamente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,26 +208,20 @@ public class StreamSettingsBasico extends AppCompatActivity {
             }
         });
 
-        hdrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!buttonView.isPressed()) {
-                    // setChecked chamado por código (renderizarTudo) também dispara este
-                    // listener; só grava quando foi o próprio toque do usuário.
-                    return;
-                }
+        hdrSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!atualizandoProgramaticamente) {
                 prefs.edit().putBoolean(KEY_HDR, isChecked).apply();
             }
         });
 
         barraTextoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (buttonView.isPressed()) {
+            if (!atualizandoProgramaticamente) {
                 prefs.edit().putBoolean(PreferenceConfiguration.CHECKBOX_COMPOSE_BAR, isChecked).apply();
             }
         });
 
         controlesTelaSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (buttonView.isPressed()) {
+            if (!atualizandoProgramaticamente) {
                 prefs.edit().putBoolean(KEY_ONSCREEN_CONTROLS, isChecked).apply();
             }
         });
@@ -237,11 +240,16 @@ public class StreamSettingsBasico extends AppCompatActivity {
         renderizarTaxa(cfg);
         renderizarBitrate(cfg);
         renderizarCodec(cfg);
-        renderizarHdr(cfg);
+        atualizandoProgramaticamente = true;
+        try {
+            renderizarHdr(cfg);
+            renderizarBarraTexto(cfg);
+            renderizarControlesTela(cfg);
+        } finally {
+            atualizandoProgramaticamente = false;
+        }
         renderizarAudio(cfg);
         renderizarModoToque();
-        renderizarBarraTexto(cfg);
-        renderizarControlesTela(cfg);
     }
 
     // ================= Resolução =================
