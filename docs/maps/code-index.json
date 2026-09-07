@@ -1,12 +1,12 @@
 {
  "generatedFrom": "tools/codemap/codemap.mjs",
  "totals": {
-  "files": 221,
-  "javaFiles": 178,
+  "files": 223,
+  "javaFiles": 180,
   "nativeFiles": 42,
-  "lines": 66037,
-  "types": 274,
-  "methods": 2599,
+  "lines": 66733,
+  "types": 278,
+  "methods": 2625,
   "packages": 30,
   "todos": 36
  },
@@ -14,7 +14,7 @@
   {
    "path": "app/src/main/java/com/limelight/AppView.java",
    "lang": "java",
-   "lines": 965,
+   "lines": 913,
    "package": "com.limelight",
    "imports": [
     "java.io.IOException",
@@ -25,9 +25,6 @@
     "com.limelight.computers.ComputerManagerListener",
     "com.limelight.computers.ComputerManagerService",
     "com.limelight.grid.AppGridAdapter",
-    "com.limelight.grid.assets.CachedAppAssetLoader",
-    "com.limelight.grid.assets.MemoryAssetLoader",
-    "com.limelight.grid.assets.ScaledBitmap",
     "com.limelight.nvstream.http.ComputerDetails",
     "com.limelight.nvstream.http.NvApp",
     "com.limelight.nvstream.http.NvHTTP",
@@ -36,6 +33,7 @@
     "com.limelight.profiles.ProfilesManager",
     "com.limelight.ui.AdapterFragment",
     "com.limelight.ui.AdapterFragmentCallbacks",
+    "com.limelight.ui.MoqueDeApps",
     "com.limelight.utils.CacheHelper",
     "com.limelight.utils.Dialog",
     "com.limelight.utils.ServerHelper",
@@ -50,9 +48,6 @@
     "android.content.SharedPreferences",
     "android.content.res.Configuration",
     "android.graphics.Bitmap",
-    "android.graphics.Canvas",
-    "android.graphics.Color",
-    "android.graphics.Paint",
     "android.graphics.drawable.BitmapDrawable",
     "android.net.Uri",
     "android.os.Build",
@@ -78,12 +73,12 @@
     {
      "kind": "class",
      "name": "AppView",
-     "line": 64
+     "line": 59
     },
     {
      "kind": "class",
      "name": "AppObject",
-     "line": 947
+     "line": 895
     }
    ],
    "methods": [
@@ -92,259 +87,252 @@
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className, IBinder binder",
-     "line": 107
+     "line": 102
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 114
+     "line": 109
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 158
+     "line": 153
     },
     {
      "name": "onServiceDisconnected",
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className",
-     "line": 179
+     "line": 174
     },
     {
      "name": "onConfigurationChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "Configuration newConfig",
-     "line": 185
+     "line": 180
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 207
+     "line": 202
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 215
+     "line": 210
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 230
+     "line": 225
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 244
+     "line": 239
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 294
+     "line": 289
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 309
+     "line": 304
     },
     {
      "name": "popularAppsDeMentira",
      "modifiers": "private",
      "returns": "void",
      "params": "String computerName",
-     "line": 383
-    },
-    {
-     "name": "criarCapaDeMentira",
-     "modifiers": "static",
-     "returns": "Bitmap",
-     "params": "String nome",
-     "line": 434
+     "line": 379
     },
     {
      "name": "emModoDeApps",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 464
+     "line": 400
     },
     {
      "name": "updateHiddenApps",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean hideImmediately",
-     "line": 468
+     "line": 404
     },
     {
      "name": "populateAppGridWithCache",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 483
+     "line": 419
     },
     {
      "name": "loadAppsBlocking",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 501
+     "line": 437
     },
     {
      "name": "onDestroy",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 507
+     "line": 443
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 519
+     "line": 455
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 531
+     "line": 467
     },
     {
      "name": "onActivityResult",
      "modifiers": "protected",
      "returns": "void",
      "params": "int requestCode, int resultCode, @Nullable Intent data",
-     "line": 539
+     "line": 475
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 558
+     "line": 494
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 615
+     "line": 551
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 619
+     "line": 555
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 633
+     "line": 569
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 643
+     "line": 579
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 672
+     "line": 608
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 677
+     "line": 613
     },
     {
      "name": "updateVidroCatalogHeader",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 746
+     "line": 682
     },
     {
      "name": "updateUiWithServerinfo",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 785
+     "line": 733
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 788
+     "line": 736
     },
     {
      "name": "updateUiWithAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "final List<NvApp> appList",
-     "line": 824
+     "line": 772
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 827
+     "line": 775
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 900
+     "line": 848
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 913
+     "line": 861
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 917
+     "line": 865
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 960
+     "line": 908
     }
    ],
    "nativeMethods": [],
@@ -355,7 +343,7 @@
     {
      "kind": "TODO",
      "text": "celular — até o S22 Ultra, com 460dp. Na prática o",
-     "line": 904
+     "line": 852
     }
    ]
   },
@@ -2537,19 +2525,27 @@
   {
    "path": "app/src/main/java/com/limelight/PcView.java",
    "lang": "java",
-   "lines": 1131,
+   "lines": 1620,
    "package": "com.limelight",
    "imports": [
     "java.io.FileNotFoundException",
     "java.io.IOException",
+    "java.io.StringReader",
     "java.net.UnknownHostException",
     "java.util.Calendar",
+    "java.util.List",
+    "org.xmlpull.v1.XmlPullParserException",
     "com.limelight.binding.PlatformBinding",
     "com.limelight.binding.crypto.AndroidCryptoProvider",
     "com.limelight.computers.ComputerManagerListener",
     "com.limelight.computers.ComputerManagerService",
+    "com.limelight.grid.AppCarouselAdapter",
+    "com.limelight.grid.AppGridAdapter",
     "com.limelight.grid.PcGridAdapter",
+    "com.limelight.grid.assets.CachedAppAssetLoader",
     "com.limelight.grid.assets.DiskAssetLoader",
+    "com.limelight.grid.assets.MemoryAssetLoader",
+    "com.limelight.grid.assets.ScaledBitmap",
     "com.limelight.nvstream.http.ComputerDetails",
     "com.limelight.nvstream.http.NvApp",
     "com.limelight.nvstream.http.NvHTTP",
@@ -2562,13 +2558,17 @@
     "com.limelight.preferences.StreamSettings",
     "com.limelight.profiles.ProfilesManager",
     "com.limelight.ui.AdapterFragment",
+    "com.limelight.ui.MoqueDeApps",
     "com.limelight.ui.VidroLightView",
     "com.limelight.ui.AdapterFragmentCallbacks",
+    "com.limelight.utils.CacheHelper",
     "com.limelight.utils.Dialog",
     "com.limelight.utils.HelpLauncher",
     "com.limelight.utils.ServerHelper",
     "com.limelight.utils.ShortcutHelper",
     "com.limelight.utils.UiHelper",
+    "androidx.recyclerview.widget.LinearLayoutManager",
+    "androidx.recyclerview.widget.RecyclerView",
     "android.app.ActivityManager",
     "android.app.AlertDialog",
     "android.app.Service",
@@ -2586,10 +2586,12 @@
     "android.text.InputFilter",
     "android.text.InputType",
     "android.view.ContextMenu",
+    "android.view.LayoutInflater",
     "android.view.Menu",
     "android.view.MenuItem",
     "android.view.View",
     "android.view.ContextMenu.ContextMenuInfo",
+    "android.widget.ImageView",
     "android.view.View.OnClickListener",
     "android.widget.AbsListView",
     "android.widget.AdapterView",
@@ -2602,7 +2604,6 @@
     "android.widget.AdapterView.AdapterContextMenuInfo",
     "androidx.appcompat.app.AppCompatActivity",
     "androidx.preference.PreferenceManager",
-    "org.xmlpull.v1.XmlPullParserException",
     "javax.microedition.khronos.egl.EGLConfig",
     "javax.microedition.khronos.opengles.GL10"
    ],
@@ -2610,12 +2611,12 @@
     {
      "kind": "class",
      "name": "PcView",
-     "line": 74
+     "line": 88
     },
     {
      "kind": "class",
      "name": "ComputerObject",
-     "line": 1111
+     "line": 1600
     }
    ],
    "methods": [
@@ -2624,378 +2625,525 @@
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className, IBinder binder",
-     "line": 85
+     "line": 115
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 92
+     "line": 122
     },
     {
      "name": "onServiceDisconnected",
      "modifiers": "public",
      "returns": "void",
      "params": "ComponentName className",
-     "line": 108
+     "line": 145
     },
     {
      "name": "onConfigurationChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "Configuration newConfig",
-     "line": 114
+     "line": 151
     },
     {
      "name": "emModoDeCasca",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 152
+     "line": 189
     },
     {
      "name": "initializeViews",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 156
+     "line": 193
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 182
+     "line": 219
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 190
+     "line": 232
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 197
+     "line": 239
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 226
+     "line": 278
     },
     {
      "name": "onSurfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, EGLConfig eglConfig",
-     "line": 240
+     "line": 292
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 250
+     "line": 302
     },
     {
      "name": "onSurfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, int i, int i1",
-     "line": 257
+     "line": 309
     },
     {
      "name": "onDrawFrame",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10",
-     "line": 261
+     "line": 313
     },
     {
      "name": "completeOnCreate",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 286
+     "line": 338
     },
     {
      "name": "popularComputadoresDeMentira",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 312
+     "line": 364
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 333
+     "line": 385
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 345
+     "line": 397
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 349
+     "line": 401
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean wait",
-     "line": 379
+     "line": 432
     },
     {
      "name": "refreshProfileButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 397
+     "line": 450
     },
     {
      "name": "onDestroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 413
+     "line": 466
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 422
+     "line": 477
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 435
+     "line": 490
     },
     {
      "name": "onStop",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 443
+     "line": 498
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 450
+     "line": 505
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 514
+     "line": 569
     },
     {
      "name": "showVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "final String pinStr",
-     "line": 531
+     "line": 586
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 534
+     "line": 589
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 568
+     "line": 623
     },
     {
      "name": "hideVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 582
+     "line": 637
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 585
+     "line": 640
     },
     {
      "name": "doPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer, String otp, String passphrase",
-     "line": 594
+     "line": 649
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 607
+     "line": 662
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 691
+     "line": 746
     },
     {
      "name": "doOTPPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 710
+     "line": 765
     },
     {
      "name": "doWakeOnLan",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 755
+     "line": 810
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 768
+     "line": 823
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 780
+     "line": 835
     },
     {
      "name": "doUnpair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 788
+     "line": 843
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 801
+     "line": 856
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 832
+     "line": 887
     },
     {
      "name": "doAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails computer, boolean newlyPaired, boolean showHiddenGames",
-     "line": 840
+     "line": 895
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 859
+     "line": 914
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 886
+     "line": 941
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 918
+     "line": 973
     },
     {
      "name": "removeComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 950
+     "line": 1005
     },
     {
      "name": "updateComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 982
+     "line": 1039
     },
     {
-     "name": "updateVidroHeader",
+     "name": "isConsoleInicio",
+     "modifiers": "private",
+     "returns": "boolean",
+     "params": "",
+     "line": 1078
+    },
+    {
+     "name": "emModoDeApps",
+     "modifiers": "private",
+     "returns": "boolean",
+     "params": "",
+     "line": 1087
+    },
+    {
+     "name": "dp",
+     "modifiers": "private",
+     "returns": "int",
+     "params": "int valor",
+     "line": 1091
+    },
+    {
+     "name": "refreshConsoleInicio",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1021
+     "line": 1101
+    },
+    {
+     "name": "escolherComputadorAtual",
+     "modifiers": "private",
+     "returns": "ComputerObject",
+     "params": "",
+     "line": 1141
+    },
+    {
+     "name": "atualizarCabecalhoDoChip",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "ComputerObject atual",
+     "line": 1178
+    },
+    {
+     "name": "criarChipEsmaecido",
+     "modifiers": "private",
+     "returns": "View",
+     "params": "final ComputerObject c",
+     "line": 1215
+    },
+    {
+     "name": "mostrarDialogoDePcs",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1242
+    },
+    {
+     "name": "selecionarComputadorAtual",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "ComputerObject c",
+     "line": 1293
+    },
+    {
+     "name": "pararAppsDoTablet",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1299
+    },
+    {
+     "name": "carregarAppsDoComputadorAtual",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "ComputerObject atual",
+     "line": 1314
+    },
+    {
+     "name": "montarCarrossel",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "AppGridAdapter adapter",
+     "line": 1376
+    },
+    {
+     "name": "onAppFocused",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "AppView.AppObject app",
+     "line": 1390
+    },
+    {
+     "name": "onAppActivated",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "AppView.AppObject app",
+     "line": 1399
+    },
+    {
+     "name": "atualizarSecaoContinuar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1422
+    },
+    {
+     "name": "retomarContinuar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1445
+    },
+    {
+     "name": "encerrarContinuar",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1452
+    },
+    {
+     "name": "abrirApp",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "AppView.AppObject app",
+     "line": 1461
+    },
+    {
+     "name": "abrirAppFocado",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "",
+     "line": 1468
+    },
+    {
+     "name": "atualizarListaDeAppsDoTablet",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "List<NvApp> appList, ComputerDetails details",
+     "line": 1475
+    },
+    {
+     "name": "atualizarRunningGameIdDoTablet",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "ComputerDetails details",
+     "line": 1518
+    },
+    {
+     "name": "atualizarAppsDoTabletSeForOAtual",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "ComputerDetails details",
+     "line": 1547
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 1083
+     "line": 1572
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 1088
+     "line": 1577
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 1092
+     "line": 1581
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1122
+     "line": 1611
     },
     {
      "name": "guessManagementUrl",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1125
+     "line": 1614
     }
    ],
    "nativeMethods": [],
@@ -10792,6 +10940,63 @@
    "todos": []
   },
   {
+   "path": "app/src/main/java/com/limelight/grid/AppCarouselAdapter.java",
+   "lang": "java",
+   "lines": 117,
+   "package": "com.limelight.grid",
+   "imports": [
+    "android.view.LayoutInflater",
+    "android.view.View",
+    "android.view.ViewGroup",
+    "androidx.recyclerview.widget.RecyclerView",
+    "com.limelight.AppView",
+    "com.limelight.R"
+   ],
+   "types": [
+    {
+     "kind": "class",
+     "name": "AppCarouselAdapter",
+     "line": 30
+    },
+    {
+     "kind": "interface",
+     "name": "Listener",
+     "line": 36
+    },
+    {
+     "kind": "class",
+     "name": "ViewHolder",
+     "line": 111
+    }
+   ],
+   "methods": [
+    {
+     "name": "onCreateViewHolder",
+     "modifiers": "public",
+     "returns": "ViewHolder",
+     "params": "ViewGroup parent, int viewType",
+     "line": 67
+    },
+    {
+     "name": "onBindViewHolder",
+     "modifiers": "public",
+     "returns": "void",
+     "params": "ViewHolder holder, int position",
+     "line": 74
+    },
+    {
+     "name": "getItemCount",
+     "modifiers": "public",
+     "returns": "int",
+     "params": "",
+     "line": 107
+    }
+   ],
+   "nativeMethods": [],
+   "androidApis": [],
+   "todos": []
+  },
+  {
    "path": "app/src/main/java/com/limelight/grid/AppGridAdapter.java",
    "lang": "java",
    "lines": 250,
@@ -11001,7 +11206,7 @@
   {
    "path": "app/src/main/java/com/limelight/grid/PcGridAdapter.java",
    "lang": "java",
-   "lines": 104,
+   "lines": 123,
    "package": "com.limelight.grid",
    "imports": [
     "android.content.Context",
@@ -16039,6 +16244,61 @@
      "returns": "void",
      "params": "",
      "line": 70
+    }
+   ],
+   "nativeMethods": [],
+   "androidApis": [],
+   "todos": []
+  },
+  {
+   "path": "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+   "lang": "java",
+   "lines": 123,
+   "package": "com.limelight.ui",
+   "imports": [
+    "android.content.Context",
+    "android.graphics.Bitmap",
+    "android.graphics.Canvas",
+    "android.graphics.Color",
+    "android.graphics.Paint",
+    "com.limelight.AppView",
+    "com.limelight.grid.AppGridAdapter",
+    "com.limelight.grid.assets.CachedAppAssetLoader",
+    "com.limelight.grid.assets.MemoryAssetLoader",
+    "com.limelight.grid.assets.ScaledBitmap",
+    "com.limelight.nvstream.http.ComputerDetails",
+    "com.limelight.nvstream.http.NvApp",
+    "com.limelight.nvstream.http.PairingManager",
+    "com.limelight.preferences.PreferenceConfiguration"
+   ],
+   "types": [
+    {
+     "kind": "class",
+     "name": "MoqueDeApps",
+     "line": 30
+    }
+   ],
+   "methods": [
+    {
+     "name": "computadorDeMentira",
+     "modifiers": "static",
+     "returns": "ComputerDetails",
+     "params": "String uuid, String nome",
+     "line": 45
+    },
+    {
+     "name": "popularAppGridDeMentira",
+     "modifiers": "static",
+     "returns": "AppGridAdapter",
+     "params": "Context context, PreferenceConfiguration prefConfig, ComputerDetails computer, boolean showHiddenApps",
+     "line": 64
+    },
+    {
+     "name": "criarCapaDeMentira",
+     "modifiers": "static",
+     "returns": "Bitmap",
+     "params": "String nome",
+     "line": 93
     }
    ],
    "nativeMethods": [],
@@ -27649,18 +27909,6 @@
    ],
    [
     "com.limelight",
-    "com.limelight.grid.assets"
-   ],
-   [
-    "com.limelight",
-    "com.limelight.grid.assets"
-   ],
-   [
-    "com.limelight",
-    "com.limelight.grid.assets"
-   ],
-   [
-    "com.limelight",
     "com.limelight.nvstream.http"
    ],
    [
@@ -27682,6 +27930,10 @@
    [
     "com.limelight",
     "com.limelight.profiles"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.ui"
    ],
    [
     "com.limelight",
@@ -27969,6 +28221,26 @@
    ],
    [
     "com.limelight",
+    "com.limelight.grid"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.grid"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight",
     "com.limelight.grid.assets"
    ],
    [
@@ -28022,6 +28294,14 @@
    [
     "com.limelight",
     "com.limelight.ui"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.ui"
+   ],
+   [
+    "com.limelight",
+    "com.limelight.utils"
    ],
    [
     "com.limelight",
@@ -28709,6 +28989,14 @@
    ],
    [
     "com.limelight.grid",
+    "com.limelight"
+   ],
+   [
+    "com.limelight.grid",
+    "com.limelight"
+   ],
+   [
+    "com.limelight.grid",
     "com.limelight.nvstream.http"
    ],
    [
@@ -29085,6 +29373,42 @@
    ],
    [
     "com.limelight.ui",
+    "com.limelight.grid"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.grid.assets"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.nvstream.http"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.nvstream.http"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.nvstream.http"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight.preferences"
+   ],
+   [
+    "com.limelight.ui",
+    "com.limelight"
+   ],
+   [
+    "com.limelight.ui",
     "com.limelight"
    ],
    [
@@ -29375,18 +29699,6 @@
    ],
    [
     "app/src/main/java/com/limelight/AppView.java",
-    "app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java"
-   ],
-   [
-    "app/src/main/java/com/limelight/AppView.java",
-    "app/src/main/java/com/limelight/grid/assets/MemoryAssetLoader.java"
-   ],
-   [
-    "app/src/main/java/com/limelight/AppView.java",
-    "app/src/main/java/com/limelight/grid/assets/ScaledBitmap.java"
-   ],
-   [
-    "app/src/main/java/com/limelight/AppView.java",
     "app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java"
    ],
    [
@@ -29416,6 +29728,10 @@
    [
     "app/src/main/java/com/limelight/AppView.java",
     "app/src/main/java/com/limelight/ui/AdapterFragmentCallbacks.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/AppView.java",
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java"
    ],
    [
     "app/src/main/java/com/limelight/AppView.java",
@@ -29691,11 +30007,31 @@
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/grid/AppCarouselAdapter.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/grid/AppGridAdapter.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
     "app/src/main/java/com/limelight/grid/PcGridAdapter.java"
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
     "app/src/main/java/com/limelight/grid/assets/DiskAssetLoader.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/grid/assets/MemoryAssetLoader.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/grid/assets/ScaledBitmap.java"
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
@@ -29743,11 +30079,19 @@
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
     "app/src/main/java/com/limelight/ui/VidroLightView.java"
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
     "app/src/main/java/com/limelight/ui/AdapterFragmentCallbacks.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/PcView.java",
+    "app/src/main/java/com/limelight/utils/CacheHelper.java"
    ],
    [
     "app/src/main/java/com/limelight/PcView.java",
@@ -30370,6 +30714,10 @@
     "app/src/main/java/com/limelight/nvstream/mdns/NsdManagerDiscoveryAgent.java"
    ],
    [
+    "app/src/main/java/com/limelight/grid/AppCarouselAdapter.java",
+    "app/src/main/java/com/limelight/AppView.java"
+   ],
+   [
     "app/src/main/java/com/limelight/grid/AppGridAdapter.java",
     "app/src/main/java/com/limelight/AppView.java"
    ],
@@ -30696,6 +31044,42 @@
    [
     "app/src/main/java/com/limelight/ui/GameGestures.java",
     "app/src/main/java/com/limelight/binding/input/GameInputDevice.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/AppView.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/grid/AppGridAdapter.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/grid/assets/CachedAppAssetLoader.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/grid/assets/MemoryAssetLoader.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/grid/assets/ScaledBitmap.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/nvstream/http/NvApp.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/nvstream/http/PairingManager.java"
+   ],
+   [
+    "app/src/main/java/com/limelight/ui/MoqueDeApps.java",
+    "app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java"
    ],
    [
     "app/src/main/java/com/limelight/ui/StreamContainer.java",

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ponto de estado neutro: fora do ar / precisa emparelhar. As duas leem igual —
+    console_texto_2 — porque a Console nunca usa uma segunda cor para distinguir
+    estado (NOTA.md §2); a diferença mora no RÓTULO ao lado ("fora do ar" vs
+    "Emparelhar"), não na cor do ponto. O estado on-line reusa vidro_dot_on, que já
+    resolve para console_acento pelo alias de F1.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/console_texto_2" />
+    <size android:width="9dp" android:height="9dp" />
+</shape>

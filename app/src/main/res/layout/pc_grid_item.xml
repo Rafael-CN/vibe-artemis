@@ -1,93 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Um lugar, não um ladrilho. O protótipo lista hosts como linhas: ponto de estado,
-    nome, e a condição dita em PALAVRA à direita — "pronto", "dormindo", "fora do ar".
-    Nada de número, nada de ícone de computador.
+    Card de PC — "Computadores" (celular), Plano B / F3, B-CONSOLE.md.
+    Referência: B_Celular_Computadores.png / Celular_Computadores.dc.html.
 
-    O ponto muda de forma junto com a cor: aceso é preenchido, o resto é só contorno.
-    Assim o estado sobrevive a quem não distingue o azul.
+        ● ON-LINE (ou FORA DO AR / EMPARELHAR)
+        NOME
+        192.168.0.10 (mono) — ou "endereço indisponível" quando fora do ar
+                                                                    ›  (só on-line)
+
+    O ponto NUNCA muda de cor por estado (NOTA.md §2: uma cor só) — acento quando
+    on-line, console_texto_2 nos outros dois. O que muda é o RÓTULO ao lado.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/vidro_inset_card"
-    android:paddingTop="@dimen/vidro_space_1"
-    android:paddingRight="@dimen/vidro_inset_card"
-    android:paddingBottom="@dimen/vidro_space_1">
+    android:paddingLeft="@dimen/console_espaco_4"
+    android:paddingTop="@dimen/console_espaco_2"
+    android:paddingRight="@dimen/console_espaco_4"
+    android:paddingBottom="@dimen/console_espaco_2">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/vidro_row_bg"
-        android:minHeight="52dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="15dp">
+        android:background="@drawable/console_card_bg"
+        android:minHeight="112dp"
+        android:padding="20dp">
 
-        <ImageView
-            android:id="@+id/grid_image"
-            android:layout_width="9dp"
-            android:layout_height="9dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:importantForAccessibility="no" />
-
-        <ProgressBar
-            android:id="@+id/grid_spinner"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/vidro_text_3" />
-
-        <TextView
-            android:id="@+id/grid_state"
-            style="@style/VidroText.Support"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            tools:text="pronto" />
-
-        <ImageView
-            android:id="@+id/grid_overlay"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/vidro_space_2"
-            android:layout_marginRight="@dimen/vidro_space_2"
-            android:layout_toStartOf="@id/grid_state"
-            android:layout_toLeftOf="@id/grid_state"
-            android:importantForAccessibility="no" />
-
-        <TextView
-            android:id="@+id/grid_text"
-            style="@style/VidroText.Item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/vidro_space_3"
-            android:layout_marginLeft="@dimen/vidro_space_3"
-            android:layout_marginEnd="@dimen/vidro_space_3"
-            android:layout_marginRight="@dimen/vidro_space_3"
-            android:layout_toStartOf="@id/grid_overlay"
-            android:layout_toLeftOf="@id/grid_overlay"
-            android:layout_toEndOf="@id/grid_image"
-            android:layout_toRightOf="@id/grid_image"
-            android:ellipsize="end"
-            android:maxLines="1"
-            tools:text="PC-RAFAEL" />
-
-        <!-- O adapter pinta esta camada quando o item precisa recuar. -->
         <RelativeLayout
             android:id="@+id/grid_mask"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/consolePcEstadoRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/grid_image"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_marginEnd="@dimen/console_espaco_2"
+                    android:layout_marginRight="@dimen/console_espaco_2"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/grid_state"
+                    style="@style/ConsoleText.Legenda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="On-line" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/grid_text"
+                style="@style/ConsoleText.Rotulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/consolePcEstadoRow"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/console_espaco_2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="18sp"
+                tools:text="ARTEMIS" />
+
+            <TextView
+                android:id="@+id/consolePcEndereco"
+                style="@style/ConsoleText.Mono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/grid_text"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/console_espaco_1"
+                android:textColor="@color/console_texto_2"
+                tools:text="192.168.0.10" />
+
+            <ImageView
+                android:id="@+id/consolePcChevron"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:importantForAccessibility="no"
+                android:src="@drawable/console_ic_chevron"
+                app:tint="@color/console_acento" />
+
+            <ImageView
+                android:id="@+id/grid_overlay"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:importantForAccessibility="no" />
+
+            <ProgressBar
+                android:id="@+id/grid_spinner"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/console_texto_2" />
+        </RelativeLayout>
+
+        <!-- Contorno de foco por cima de tudo — mesma convenção de grid_frame. -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/console_foco"
+            android:duplicateParentState="true" />
+    </FrameLayout>
 </FrameLayout>

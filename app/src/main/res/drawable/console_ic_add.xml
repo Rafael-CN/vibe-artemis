@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    "+" do card tracejado "Adicionar PC" (Celular_Computadores.dc.html). Mesmo traçado
+    de ic_add.xml, mas com android:fillColor apontando direto para console_acento — um
+    vetor resolve cor de recurso no próprio fillColor, sem precisar de tint em tempo de
+    execução (que TextView/compound drawable não dá de graça no minSdk 21 deste app).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/console_acento"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM17,13h-4v4h-2v-4L7,13v-2h4L11,7h2v4h4v2z" />
+</vector>

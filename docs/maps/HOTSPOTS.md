@@ -12,20 +12,20 @@
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1620 | 75 | 4 | 31 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c) | 1603 | 35 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c) | 1420 | 19 | — | — |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java) | 1206 | 40 | 2 | 2 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c) | 1189 | 32 | — | — |
 | [`app/src/main/java/com/limelight/utils/Stereo3DRenderer.java`](../../app/src/main/java/com/limelight/utils/Stereo3DRenderer.java) | 1149 | 36 | 2 | 2 |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1131 | 54 | 4 | 24 |
-| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1098 | 22 | 32 | 2 |
+| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1098 | 22 | 33 | 2 |
 | [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 2 | 10 |
 | [`app/src/main/java/com/limelight/utils/KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 2 | 3 | 0 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c) | 1001 | 24 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h) | 978 | 52 | — | — |
 | [`app/src/main/java/com/limelight/computers/ComputerManagerService.java`](../../app/src/main/java/com/limelight/computers/ComputerManagerService.java) | 969 | 42 | 5 | 13 |
-| [`app/src/main/java/com/limelight/AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 965 | 37 | 5 | 20 |
 | [`app/src/main/java/com/limelight/nvstream/http/NvHTTP.java`](../../app/src/main/java/com/limelight/nvstream/http/NvHTTP.java) | 939 | 59 | 13 | 4 |
+| [`app/src/main/java/com/limelight/AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 913 | 36 | 7 | 18 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtpVideoQueue.c) | 802 | 12 | — | — |
 
 ## Mais dependidos (fan-in alto — mudanças aqui propagam)
@@ -33,23 +33,23 @@
 | Arquivo | Fan-in | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/LimeLog.java` | 47 | 26 |
-| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 32 | 1098 |
-| `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java` | 21 | 240 |
+| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 33 | 1098 |
+| `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java` | 22 | 240 |
 | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java` | 15 | 445 |
+| `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 13 | 101 |
 | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java` | 13 | 939 |
-| `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 12 | 101 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 11 | 296 |
 | `app/src/main/java/com/limelight/Game.java` | 10 | 4900 |
 | `app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java` | 10 | 27 |
 | `app/src/main/java/com/limelight/profiles/ProfilesManager.java` | 10 | 266 |
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 8 | 629 |
 | `app/src/test/java/com/limelight/TestLogSuppressor.java` | 8 | 37 |
+| `app/src/main/java/com/limelight/AppView.java` | 7 | 913 |
+| `app/src/main/java/com/limelight/nvstream/http/PairingManager.java` | 7 | 357 |
 | `app/src/main/java/com/limelight/utils/ServerHelper.java` | 7 | 278 |
 | `app/src/main/java/com/limelight/GameMenu.java` | 6 | 300 |
-| `app/src/main/java/com/limelight/nvstream/http/PairingManager.java` | 6 | 357 |
 | `app/src/main/java/com/limelight/nvstream/input/MouseButtonPacket.java` | 6 | 13 |
 | `app/src/main/java/com/limelight/utils/Dialog.java` | 6 | 132 |
-| `app/src/main/java/com/limelight/AppView.java` | 5 | 965 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 5 | 15 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 5 | 969 |
 
@@ -58,8 +58,8 @@
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/Game.java` | 48 | 4900 |
-| `app/src/main/java/com/limelight/PcView.java` | 24 | 1131 |
-| `app/src/main/java/com/limelight/AppView.java` | 20 | 965 |
+| `app/src/main/java/com/limelight/PcView.java` | 31 | 1620 |
+| `app/src/main/java/com/limelight/AppView.java` | 18 | 913 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
 | `app/src/main/java/com/limelight/binding/input/ControllerHandler.java` | 12 | 3473 |
@@ -68,6 +68,7 @@
 | `app/src/main/java/com/limelight/nvstream/NvConnection.java` | 11 | 629 |
 | `app/src/main/java/com/limelight/preferences/StreamSettings.java` | 10 | 1088 |
 | `app/src/main/java/com/limelight/grid/AppGridAdapter.java` | 9 | 250 |
+| `app/src/main/java/com/limelight/ui/MoqueDeApps.java` | 9 | 123 |
 | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java` | 8 | 796 |
 | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java` | 7 | 591 |
 | `app/src/main/java/com/limelight/utils/ExternalDisplayControlActivity.java` | 7 | 567 |
@@ -76,7 +77,6 @@
 | `app/src/main/java/com/limelight/discovery/DiscoveryService.java` | 5 | 91 |
 | `app/src/main/java/com/limelight/utils/UiHelper.java` | 5 | 296 |
 | `app/src/main/java/com/limelight/binding/PlatformBinding.java` | 4 | 15 |
-| `app/src/main/java/com/limelight/binding/input/KeyboardTranslator.java` | 4 | 459 |
 
 ## Marcadores TODO/FIXME/HACK (36)
 
@@ -103,7 +103,7 @@
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:598` | This is a workaround for the fact that GFE doesn't appear to synchronize keyboard |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1047` | We previously used a short for the buttonFlags argument, but we switched to an |
 | HACK | `app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c:945` | In order to get GFE to respect our request for a lower audio bitrate, we must |
-| TODO | `app/src/main/java/com/limelight/AppView.java:904` | celular — até o S22 Ultra, com 460dp. Na prática o |
+| TODO | `app/src/main/java/com/limelight/AppView.java:852` | celular — até o S22 Ultra, com 460dp. Na prática o |
 | TODO | `app/src/main/java/com/limelight/Game.java:1942` | Improve this |
 | TODO | `app/src/main/java/com/limelight/Game.java:1956` | Do we want to use WindowInsetsController here on R+ instead of |
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/AnalogStick.java:93` | implement square sick for simulations |

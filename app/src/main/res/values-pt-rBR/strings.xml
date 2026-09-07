@@ -283,7 +283,7 @@
     <string name="vidro_session_open">%1$s está aberto</string>
     <string name="vidro_session_return">Volte de onde parou</string>
     <string name="vidro_return">Voltar</string>
-    <string name="vidro_pill_open">aberto</string>
+    <string name="vidro_pill_open">Em execução</string>
     <string name="vidro_pill_screen">tela</string>
     <string name="vidro_pill_input">entrada</string>
     <string name="vidro_quality_good">tudo fluindo bem</string>
@@ -362,4 +362,19 @@
     <string name="console_tecla_alt_tab">Alt+Tab</string>
     <string name="console_tecla_ctrl_alt_del">Ctrl+Alt+Del</string>
     <string name="console_barra_texto_titulo">BARRA DE TEXTO</string>
+
+    <!-- Plano B / F3 — "Início" (tablet) e "Computadores"/"Apps" (celular). -->
+    <string name="console_add_pc">Adicionar PC</string>
+    <string name="console_estado_online">on-line</string>
+    <string name="console_estado_offline">fora do ar</string>
+    <string name="console_estado_emparelhar">Emparelhar</string>
+    <string name="console_secao_continuar">Continuar</string>
+    <string name="console_secao_apps">Apps</string>
+    <string name="console_retomar">Retomar</string>
+    <string name="console_encerrar_no_pc">Encerrar no PC</string>
+    <string name="console_abrir">Abrir</string>
+    <string name="console_nome_e_estado">%1$s · %2$s</string>
+    <string name="console_computadores_titulo">Computadores</string>
+    <string name="console_endereco_indisponivel">endereço indisponível</string>
+    <string name="console_trocar_pc">Trocar PC</string>
 </resources>

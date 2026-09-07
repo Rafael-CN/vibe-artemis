@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Chevron único da Console (Plano B / F3). Aponta para a direita por padrão; quem usa
+    gira via android:rotation (baixo = 90, esquerda = 180, cima = 270) em vez de manter
+    três vetores quase idênticos. Tint sempre por quem usa (console_texto_2 ou
+    console_acento, conforme o papel do elemento).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9,6 L15,12 L9,18" />
+</vector>

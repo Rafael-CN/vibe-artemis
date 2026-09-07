@@ -1,30 +1,22 @@
 <!--
-    Catálogo do host. Hierarquia da tela 02 do handoff:
+    Apps (celular) — Plano B / F3, B-CONSOLE.md. Hierarquia da referência
+    B_Celular_Apps.png / Celular_Apps.dc.html:
 
-        "‹ Lugares" → nome do host + linha de estado → contagem de apps · "Recarregar"
-        → faixa de sessão aberta (quando existe) → grade de 2 colunas → luz atrás do
-        app aberto.
+        "‹ ● ARTEMIS · on-line" → título "Apps" → contagem · Recarregar → faixa de
+        sessão aberta (quando existe) → grade de 2 colunas.
 
-    Sem abas e sem categorias: o protocolo entrega nome, UUID e box art, e nada mais.
-    Inventar "Jogos / Trabalho" seria uma taxonomia que nenhum dado sustenta.
+    vidroBack agora é o próprio cabeçalho clicável (chevron + ponto de estado + nome),
+    não só um link "‹ Lugares" — o nome do id não mudou porque AppView#onCreate só
+    chama setOnClickListener nele, nunca lê texto seu.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
+    android:background="@color/console_fundo"
     tools:context=".AppView"
     android:fitsSystemWindows="true">
-
-    <com.limelight.ui.VidroLightView
-        android:id="@+id/vidroLight"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        app:vidro_intensity="0.07"
-        app:vidro_quality="good"
-        app:vidro_center_y="0" />
 
     <LinearLayout
         android:id="@+id/vidroCatalogHeader"
@@ -32,41 +24,68 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_3"
-        android:paddingRight="@dimen/vidro_space_5">
+        android:paddingLeft="@dimen/console_espaco_5"
+        android:paddingTop="@dimen/console_espaco_4"
+        android:paddingRight="@dimen/console_espaco_5">
 
-        <TextView
+        <LinearLayout
             android:id="@+id/vidroBack"
-            style="@style/VidroText.Support"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawablePadding="7dp"
+            android:background="@drawable/console_foco"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:minHeight="@dimen/vidro_touch_target"
-            android:text="@string/vidro_back_places"
-            android:textColor="@color/vidro_text_2" />
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/console_espaco_2"
+            android:paddingRight="@dimen/console_espaco_3">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="@dimen/console_espaco_2"
+                android:layout_marginRight="@dimen/console_espaco_2"
+                android:importantForAccessibility="no"
+                android:rotation="180"
+                android:src="@drawable/console_ic_chevron"
+                app:tint="@color/console_texto_2" />
+
+            <ImageView
+                android:id="@+id/consoleAppsHeaderDot"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="@dimen/console_espaco_2"
+                android:layout_marginRight="@dimen/console_espaco_2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/vidro_dot_on" />
+
+            <TextView
+                android:id="@+id/appListText"
+                style="@style/ConsoleText.Rotulo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="ARTEMIS · on-line" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/appListText"
-            style="@style/VidroText.Display"
-            android:layout_width="match_parent"
+            style="@style/ConsoleText.Titulo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:preferKeepClear="true"
-            tools:text="PC-RAFAEL" />
+            android:layout_marginTop="@dimen/console_espaco_2"
+            android:text="@string/console_secao_apps" />
 
         <!-- Contagem e recarregar. Nada de número técnico: quantos apps não é telemetria. -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_3">
+            android:layout_marginTop="@dimen/console_espaco_3">
 
             <TextView
                 android:id="@+id/vidroAppCount"
-                style="@style/VidroText.Support"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -76,13 +95,19 @@
 
             <TextView
                 android:id="@+id/vidroReload"
-                style="@style/VidroText.Action"
+                style="@style/ConsoleText.Rotulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@string/vidro_reload" />
+                android:background="?android:attr/selectableItemBackground"
+                android:minHeight="@dimen/vidro_touch_target"
+                android:gravity="center"
+                android:paddingLeft="@dimen/console_espaco_3"
+                android:paddingRight="@dimen/console_espaco_3"
+                android:text="@string/vidro_reload"
+                android:textColor="@color/console_acento" />
         </RelativeLayout>
 
         <!--
@@ -93,12 +118,12 @@
             android:id="@+id/vidroResumeStrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_3"
-            android:background="@drawable/vidro_card_accent"
-            android:paddingLeft="@dimen/vidro_space_4"
-            android:paddingTop="@dimen/vidro_space_3"
-            android:paddingRight="@dimen/vidro_space_3"
-            android:paddingBottom="@dimen/vidro_space_3"
+            android:layout_marginTop="@dimen/console_espaco_3"
+            android:background="@drawable/console_card_bg"
+            android:paddingLeft="@dimen/console_espaco_4"
+            android:paddingTop="@dimen/console_espaco_3"
+            android:paddingRight="@dimen/console_espaco_3"
+            android:paddingBottom="@dimen/console_espaco_3"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -113,18 +138,15 @@
 
             <TextView
                 android:id="@+id/vidroResumeAction"
-                style="@style/VidroText"
+                style="@style/ConsoleBotao.Primario"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/vidro_pill"
-                android:fontFamily="@font/manrope_bold"
-                android:paddingLeft="@dimen/vidro_space_4"
-                android:paddingTop="@dimen/vidro_space_2"
-                android:paddingRight="@dimen/vidro_space_4"
-                android:paddingBottom="@dimen/vidro_space_2"
+                android:minHeight="0dp"
+                android:paddingLeft="@dimen/console_espaco_4"
+                android:paddingRight="@dimen/console_espaco_4"
                 android:text="@string/vidro_return"
                 android:textSize="13sp" />
 
@@ -132,10 +154,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/vidro_space_3"
-                android:layout_marginLeft="@dimen/vidro_space_3"
-                android:layout_marginEnd="@dimen/vidro_space_3"
-                android:layout_marginRight="@dimen/vidro_space_3"
+                android:layout_marginStart="@dimen/console_espaco_3"
+                android:layout_marginLeft="@dimen/console_espaco_3"
+                android:layout_marginEnd="@dimen/console_espaco_3"
+                android:layout_marginRight="@dimen/console_espaco_3"
                 android:layout_toStartOf="@id/vidroResumeAction"
                 android:layout_toLeftOf="@id/vidroResumeAction"
                 android:layout_toEndOf="@id/vidroResumeDot"
@@ -144,23 +166,20 @@
 
                 <TextView
                     android:id="@+id/vidroResumeTitle"
-                    style="@style/VidroText.Item"
+                    style="@style/ConsoleText.Rotulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="15sp"
                     tools:text="Desktop está aberto" />
 
                 <TextView
-                    style="@style/VidroText.Support"
+                    style="@style/ConsoleText.Rotulo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@string/vidro_session_return"
-                    android:textColor="@color/vidro_text_2"
-                    android:textSize="12sp" />
+                    android:text="@string/vidro_session_return" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -170,6 +189,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/vidroCatalogHeader"
-        android:layout_marginTop="@dimen/vidro_space_3" />
+        android:layout_marginTop="@dimen/console_espaco_3" />
 
 </RelativeLayout>

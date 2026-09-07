@@ -9,9 +9,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.limelight.computers.ComputerManagerListener;
 import com.limelight.computers.ComputerManagerService;
 import com.limelight.grid.AppGridAdapter;
-import com.limelight.grid.assets.CachedAppAssetLoader;
-import com.limelight.grid.assets.MemoryAssetLoader;
-import com.limelight.grid.assets.ScaledBitmap;
 import com.limelight.nvstream.http.ComputerDetails;
 import com.limelight.nvstream.http.NvApp;
 import com.limelight.nvstream.http.NvHTTP;
@@ -20,6 +17,7 @@ import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.AdapterFragment;
 import com.limelight.ui.AdapterFragmentCallbacks;
+import com.limelight.ui.MoqueDeApps;
 import com.limelight.utils.CacheHelper;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.ServerHelper;
@@ -35,9 +33,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -375,44 +370,21 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
      *
      * <pre>adb shell am start -n com.limelight.noirdebug/com.limelight.AppView --ez MoqueDeApps true</pre>
      *
-     * <p>Reusa {@link AppGridAdapter} e {@link CachedAppAssetLoader} de verdade — a
-     * única diferença é que a capa de cada app é semeada direto no cache de memória do
-     * loader antes do {@code addApp}, então {@code populateImageView} nunca chega a
+     * <p>Delega para {@link MoqueDeApps} (extraído nesta fixture na fatia F3, para a
+     * Início do tablet reusar a mesma lista sem duplicar), que monta um
+     * {@link AppGridAdapter} de verdade e semeia cada capa direto no cache de memória
+     * do loader antes do {@code addApp} — {@code populateImageView} nunca chega a
      * tentar a rede. Nada de duplicar a lógica de carregamento de capa aqui.
      */
     private void popularAppsDeMentira(String computerName) {
-        computer = new ComputerDetails();
-        computer.uuid = uuidString != null ? uuidString : "moque-artemis";
-        computer.name = computerName;
-        computer.state = ComputerDetails.State.ONLINE;
-        computer.pairState = PairingManager.PairState.PAIRED;
-        computer.activeAddress = new ComputerDetails.AddressTuple("192.168.0.10", NvHTTP.DEFAULT_HTTP_PORT);
+        computer = MoqueDeApps.computadorDeMentira(uuidString != null ? uuidString : "moque-artemis", computerName);
 
-        appGridAdapter = new AppGridAdapter(this, prefConfig, computer, "moque", showHiddenApps);
+        // MoqueDeApps (extraído nesta fatia, F3, para a Início do tablet reusar sem
+        // duplicar) monta o AppGridAdapter de verdade e semeia as seis capas no cache
+        // em memória do CachedAppAssetLoader antes de addApp — populateImageView nunca
+        // chega a tentar a rede.
+        appGridAdapter = MoqueDeApps.popularAppGridDeMentira(this, prefConfig, computer, showHiddenApps);
         appGridAdapter.updateHiddenApps(hiddenAppIds, true);
-
-        MemoryAssetLoader cacheDeCapas = new MemoryAssetLoader();
-        String[] nomes = {
-                "Área de trabalho", "Steam", "Corrida Noturna",
-                "Fortaleza", "Vale Silencioso", "Estrada Sem Fim",
-        };
-        for (int i = 0; i < nomes.length; i++) {
-            NvApp app = new NvApp(nomes[i], "", i + 1, false);
-            app.setAppIndex(i);
-
-            Bitmap capa = criarCapaDeMentira(nomes[i]);
-            cacheDeCapas.populateCache(
-                    new CachedAppAssetLoader.LoaderTuple(computer, app),
-                    new ScaledBitmap(capa.getWidth(), capa.getHeight(), capa));
-
-            AppObject obj = new AppObject(app);
-            // A primeira da lista é a única "em execução" que o extra promete — é o
-            // que acende a pílula ABERTO e a faixa de retomada existentes, sem
-            // inventar um estado novo pra isso.
-            obj.isRunning = (i == 0);
-            appGridAdapter.addApp(obj);
-        }
-
         appGridAdapter.notifyDataSetChanged();
         updateVidroCatalogHeader();
 
@@ -423,42 +395,6 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Uma capa 3:4 com o nome desenhado nela — a "capa gerada" que o extra
-     * {@code MoqueDeApps} promete, pra não depender de rede nenhuma pra ter o que
-     * fotografar. A cor vem do hash do nome só pra cada jogo ter a sua sem precisar
-     * manter uma paleta à parte; não é identidade visual de nada.
-     */
-    private static Bitmap criarCapaDeMentira(String nome) {
-        int w = 300, h = 400;
-        Bitmap capa = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas tela = new Canvas(capa);
-
-        float matiz = Math.abs(nome.hashCode()) % 360;
-        tela.drawColor(Color.HSVToColor(new float[]{matiz, 0.42f, 0.30f}));
-
-        Paint texto = new Paint(Paint.ANTI_ALIAS_FLAG);
-        texto.setColor(Color.WHITE);
-        texto.setTextAlign(Paint.Align.CENTER);
-        texto.setTextSize(34f);
-        texto.setFakeBoldText(true);
-
-        // Quebra ingênua no espaço mais próximo do meio: os seis nomes de teste têm no
-        // máximo três palavras curtas, então não precisa de StaticLayout pra isso.
-        int meio = nome.indexOf(' ', Math.max(0, nome.length() / 2 - 2));
-        if (meio < 0) {
-            meio = nome.indexOf(' ');
-        }
-        if (meio < 0) {
-            tela.drawText(nome, w / 2f, h / 2f + 12, texto);
-        } else {
-            tela.drawText(nome.substring(0, meio), w / 2f, h / 2f - 10, texto);
-            tela.drawText(nome.substring(meio + 1), w / 2f, h / 2f + 36, texto);
-        }
-
-        return capa;
     }
 
     private boolean emModoDeApps() {
@@ -744,6 +680,18 @@ public class AppView extends AppCompatActivity implements AdapterFragmentCallbac
      * aparecia, nem quando havia sessão de verdade no host.
      */
     private void updateVidroCatalogHeader() {
+        // "‹ ● ARTEMIS · on-line" (B-CONSOLE.md §F3). Enquanto esta tela está aberta o
+        // PC só pode estar on-line — notifyComputerUpdated() já fecha a Activity se o
+        // host cair ou perder o pareamento (mais acima nesta classe) — então não há
+        // estado "fora do ar" a desenhar aqui.
+        if (computer != null) {
+            TextView label = findViewById(R.id.appListText);
+            if (label != null) {
+                label.setText(getString(R.string.console_nome_e_estado,
+                        computer.name, getString(R.string.console_estado_online)));
+            }
+        }
+
         TextView count = findViewById(R.id.vidroAppCount);
         if (count != null) {
             int n = appGridAdapter != null ? appGridAdapter.getCount() : 0;

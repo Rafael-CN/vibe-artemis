@@ -8,33 +8,33 @@
 
 | Pacote | PageRank | Arquivos | Linhas |
 |---|--:|--:|--:|
-| `com.limelight` | 233.1 | 22 | 10400 |
-| `com.limelight.nvstream.http` | 104.0 | 6 | 1678 |
-| `com.limelight.utils` | 100.3 | 22 | 5747 |
-| `com.limelight.nvstream.jni` | 71.0 | 1 | 445 |
-| `com.limelight.nvstream` | 51.1 | 4 | 950 |
-| `com.limelight.preferences` | 50.9 | 10 | 3075 |
-| `com.limelight.nvstream.av.audio` | 36.6 | 1 | 16 |
-| `com.limelight.nvstream.av.video` | 31.5 | 1 | 22 |
-| `com.limelight.ui` | 27.1 | 12 | 1479 |
-| `com.limelight.nvstream.input` | 25.6 | 3 | 51 |
-| `com.limelight.profiles` | 25.5 | 8 | 1019 |
-| `com.limelight.computers` | 21.3 | 7 | 1598 |
-| `com.limelight.binding.input` | 19.4 | 5 | 4308 |
-| `com.limelight.grid.assets` | 17.0 | 5 | 718 |
-| `com.limelight.nvstream.mdns` | 15.0 | 5 | 733 |
-| `com.limelight.binding.input.capture` | 14.8 | 6 | 403 |
-| `com.limelight.binding.video` | 14.6 | 5 | 3758 |
-| `com.limelight.binding` | 14.3 | 1 | 15 |
-| `com.limelight.binding.input.evdev` | 13.6 | 6 | 627 |
-| `com.limelight.binding.input.virtual_controller.keyboard` | 13.5 | 12 | 4198 |
-| `com.limelight.binding.input.touch` | 13.3 | 4 | 1104 |
-| `com.limelight.binding.audio` | 11.6 | 1 | 234 |
-| `com.limelight.binding.crypto` | 11.6 | 1 | 260 |
-| `com.limelight.binding.input.driver` | 11.3 | 8 | 1695 |
-| `com.limelight.binding.input.virtual_controller` | 10.2 | 13 | 2815 |
-| `com.limelight.grid` | 10.1 | 3 | 431 |
-| `com.limelight.nvstream.wol` | 10.1 | 1 | 150 |
+| `com.limelight` | 230.3 | 22 | 10837 |
+| `com.limelight.nvstream.http` | 106.9 | 6 | 1678 |
+| `com.limelight.utils` | 97.3 | 22 | 5747 |
+| `com.limelight.nvstream.jni` | 70.9 | 1 | 445 |
+| `com.limelight.nvstream` | 51.0 | 4 | 950 |
+| `com.limelight.preferences` | 50.0 | 10 | 3075 |
+| `com.limelight.nvstream.av.audio` | 36.5 | 1 | 16 |
+| `com.limelight.nvstream.av.video` | 31.4 | 1 | 22 |
+| `com.limelight.ui` | 29.0 | 13 | 1602 |
+| `com.limelight.nvstream.input` | 25.0 | 3 | 51 |
+| `com.limelight.profiles` | 24.6 | 8 | 1019 |
+| `com.limelight.grid.assets` | 20.8 | 5 | 718 |
+| `com.limelight.computers` | 20.6 | 7 | 1598 |
+| `com.limelight.binding.input` | 18.0 | 5 | 4308 |
+| `com.limelight.nvstream.mdns` | 14.9 | 5 | 733 |
+| `com.limelight.binding.input.capture` | 14.5 | 6 | 403 |
+| `com.limelight.binding` | 14.4 | 1 | 15 |
+| `com.limelight.binding.video` | 14.3 | 5 | 3758 |
+| `com.limelight.grid` | 14.2 | 4 | 567 |
+| `com.limelight.binding.input.evdev` | 13.4 | 6 | 627 |
+| `com.limelight.binding.input.virtual_controller.keyboard` | 13.2 | 12 | 4198 |
+| `com.limelight.binding.input.touch` | 12.9 | 4 | 1104 |
+| `com.limelight.binding.audio` | 11.5 | 1 | 234 |
+| `com.limelight.binding.crypto` | 11.5 | 1 | 260 |
+| `com.limelight.binding.input.driver` | 11.0 | 8 | 1695 |
+| `com.limelight.binding.input.virtual_controller` | 10.1 | 13 | 2815 |
+| `com.limelight.nvstream.wol` | 10.0 | 1 | 150 |
 | `com.limelight.discovery` | 7.7 | 1 | 91 |
 | `com.limelight.nvstream.av` | 7.0 | 1 | 58 |
 | `com.limelight.shadows` | 7.0 | 3 | 72 |
@@ -45,25 +45,25 @@ Arestas com peso >= 3 (número de imports distintos entre os pacotes).
 
 ```mermaid
 graph LR
-  cl["cl"] -->|32| cl_utils["cl.utils"]
+  cl["cl"] -->|33| cl_utils["cl.utils"]
   cl_utils["cl.utils"] -->|24| cl["cl"]
   cl["cl"] -->|15| cl_nvstream_http["cl.nvstream.http"]
   cl_preferences["cl.preferences"] -->|14| cl["cl"]
   cl_profiles["cl.profiles"] -->|14| cl["cl"]
+  cl["cl"] -->|13| cl_ui["cl.ui"]
   cl_computers["cl.computers"] -->|13| cl_nvstream_http["cl.nvstream.http"]
   cl["cl"] -->|11| cl_preferences["cl.preferences"]
   cl["cl"] -->|11| cl_profiles["cl.profiles"]
-  cl["cl"] -->|11| cl_ui["cl.ui"]
   cl_binding_input_virtual_controller_keyboard["cl.binding.input.virtual_controller.keyboard"] -->|11| cl["cl"]
   cl_preferences["cl.preferences"] -->|10| cl_utils["cl.utils"]
   cl_utils["cl.utils"] -->|9| cl_nvstream_http["cl.nvstream.http"]
+  cl_grid["cl.grid"] -->|8| cl["cl"]
   cl_nvstream["cl.nvstream"] -->|8| cl_nvstream_http["cl.nvstream.http"]
   cl["cl"] -->|7| cl_computers["cl.computers"]
   cl_binding_input_driver["cl.binding.input.driver"] -->|7| cl["cl"]
+  cl_ui["cl.ui"] -->|7| cl["cl"]
   cl["cl"] -->|6| cl_binding_input["cl.binding.input"]
   cl_binding_input_virtual_controller["cl.binding.input.virtual_controller"] -->|6| cl["cl"]
-  cl_grid["cl.grid"] -->|6| cl["cl"]
-  cl_ui["cl.ui"] -->|6| cl["cl"]
   cl["cl"] -->|5| cl_grid_assets["cl.grid.assets"]
   cl_binding_input["cl.binding.input"] -->|5| cl["cl"]
   cl_binding_input_virtual_controller["cl.binding.input.virtual_controller"] -->|5| cl_preferences["cl.preferences"]
@@ -71,6 +71,7 @@ graph LR
   cl_binding_input_virtual_controller_keyboard["cl.binding.input.virtual_controller.keyboard"] -->|5| cl_preferences["cl.preferences"]
   cl_discovery["cl.discovery"] -->|5| cl_nvstream_mdns["cl.nvstream.mdns"]
   cl_utils["cl.utils"] -->|5| cl_preferences["cl.preferences"]
+  cl["cl"] -->|4| cl_grid["cl.grid"]
   cl["cl"] -->|4| cl_binding_input_touch["cl.binding.input.touch"]
   cl["cl"] -->|4| cl_binding_video["cl.binding.video"]
   cl_binding_input_driver["cl.binding.input.driver"] -->|4| cl_nvstream_jni["cl.nvstream.jni"]
@@ -94,6 +95,8 @@ graph LR
   cl_grid_assets["cl.grid.assets"] -->|3| cl_nvstream_http["cl.nvstream.http"]
   cl_nvstream_mdns["cl.nvstream.mdns"] -->|3| cl["cl"]
   cl_ui["cl.ui"] -->|3| cl_utils["cl.utils"]
+  cl_ui["cl.ui"] -->|3| cl_grid_assets["cl.grid.assets"]
+  cl_ui["cl.ui"] -->|3| cl_nvstream_http["cl.nvstream.http"]
 ```
 
 ## Comunidades detectadas

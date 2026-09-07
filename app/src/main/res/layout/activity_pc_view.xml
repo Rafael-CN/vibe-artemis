@@ -1,263 +1,108 @@
 <!--
-    Home · início. Hierarquia da seção 6 do handoff, tela 01:
+    Computadores (celular) — Plano B / F3, B-CONSOLE.md. Referência:
+    B_Celular_Computadores.png / Celular_Computadores.dc.html.
 
-        saudação → título de estado do host → card de antecipação → "Continuar" →
-        "Seus lugares" → rodapé Cenas · Ajustes, com a luz atrás do topo.
+        "Computadores" (título) → lista de cards altos (pc_grid_item/PcGridAdapter,
+        AdapterFragment de sempre) → "Adicionar PC" tracejado, fixo no rodapé →
+        Cenas · Ajustes, discreto, porque nem um nem outro têm tela dedicada nesta
+        fatia (F4 e a home de cenas são fora de escopo aqui).
 
-    ZERO número técnico nesta tela. Nem ms, nem Mbps, nem FPS — o estado do host é dito
-    em palavra e a luz diz o resto.
-
-    O cabeçalho é fixo e só a lista de lugares rola. O protótipo rola a página inteira,
-    mas ali a lista é estática; aqui ela é um AdapterView de verdade, com menu de
-    contexto para parear, acordar e remover, e aninhar isso num scroll quebraria o
-    arrasto. Foi a única liberdade estrutural tomada nesta tela.
+    settingsButton/profilesButton continuam existindo porque PcView#initializeViews
+    os acessa sem checar nulo — "esconder pode, apagar não" também vale para uma
+    entrada que o código já depende de existir.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
+    android:background="@color/console_fundo"
     tools:context=".PcView"
     android:fitsSystemWindows="true">
 
-    <!-- A luz vem de onde está a coisa viva: atrás do nome do host, no topo. -->
-    <com.limelight.ui.VidroLightView
-        android:id="@+id/vidroLight"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_alignParentTop="true"
-        app:vidro_intensity="0.07"
-        app:vidro_quality="good"
-        app:vidro_center_y="0" />
-
-    <!-- ================= topo ================= -->
-
-    <LinearLayout
-        android:id="@+id/vidroHeader"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/consoleComputadoresTitulo"
+        style="@style/ConsoleText.Titulo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/vidro_space_5"
-        android:paddingTop="@dimen/vidro_space_4"
-        android:paddingRight="@dimen/vidro_space_5">
+        android:paddingLeft="@dimen/console_espaco_5"
+        android:paddingTop="@dimen/console_espaco_5"
+        android:paddingRight="@dimen/console_espaco_5"
+        android:paddingBottom="@dimen/console_espaco_3"
+        android:text="@string/console_computadores_titulo" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!--
-                Sem ícones neste canto. O protótipo não tem nenhum: "Adicionar" mora na
-                linha de "Seus lugares" e ajuda mora em Ajustes. Os dois que estavam aqui
-                eram herança do Moonlight, e ainda por cima desenhavam um disco branco.
-            -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/vidroGreeting"
-                    style="@style/VidroText.Support"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Boa noite" />
-
-                <TextView
-                    android:id="@+id/vidroStateTitle"
-                    style="@style/VidroText.Display"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    tools:text="O PC está acordado" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!--
-            Card de antecipação. Só existe quando há palpite de verdade — histórico
-            local de sessão, mesma faixa de horário. Sem histórico, some inteiro:
-            um palpite inventado é pior que nenhum.
-        -->
-        <LinearLayout
-            android:id="@+id/vidroAnticipation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_5"
-            android:background="@drawable/vidro_card_accent"
-            android:orientation="vertical"
-            android:paddingLeft="19dp"
-            android:paddingTop="@dimen/vidro_space_4"
-            android:paddingRight="19dp"
-            android:paddingBottom="@dimen/vidro_space_4"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                style="@style/VidroText.Overline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/vidro_likely_now"
-                android:textColor="@color/vidro_accent_text" />
-
-            <TextView
-                android:id="@+id/vidroAnticipationTitle"
-                style="@style/VidroText.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_2"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="Retomar Desktop" />
-
-            <TextView
-                android:id="@+id/vidroAnticipationWhy"
-                style="@style/VidroText.Body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_1"
-                tools:text="Você faz isso quase toda noite por volta desta hora, no PC-RAFAEL." />
-
-            <!-- As saídas. Um palpite sem recusa fácil vira imposição. -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_3"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/vidroNotNow"
-                    style="@style/VidroText.Support"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:minHeight="@dimen/vidro_touch_target"
-                    android:gravity="center_vertical"
-                    android:paddingRight="@dimen/vidro_space_4"
-                    android:paddingEnd="@dimen/vidro_space_4"
-                    android:text="@string/vidro_not_now" />
-
-                <TextView
-                    android:id="@+id/vidroNotToday"
-                    style="@style/VidroText.Support"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:minHeight="@dimen/vidro_touch_target"
-                    android:gravity="center_vertical"
-                    android:text="@string/vidro_not_today" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- ================= Continuar ================= -->
-
-        <LinearLayout
-            android:id="@+id/vidroContinueSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                style="@style/VidroText.Section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
-                android:layout_marginBottom="@dimen/vidro_space_2"
-                android:text="@string/vidro_continue" />
-
-            <LinearLayout
-                android:id="@+id/vidroContinueList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </LinearLayout>
-
-        <!-- ================= Seus lugares ================= -->
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vidro_space_5"
-            android:layout_marginBottom="@dimen/vidro_space_2">
-
-            <TextView
-                style="@style/VidroText.Section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/vidro_your_places" />
-
-            <TextView
-                android:id="@+id/vidroAddPlace"
-                style="@style/VidroText.Action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/vidro_add" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <!-- ================= rodapé ================= -->
+    <!-- ================= rodapé: Adicionar PC + Cenas/Ajustes discretos ================= -->
 
     <LinearLayout
         android:id="@+id/vidroFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/vidro_space_4"
-        android:paddingTop="@dimen/vidro_space_3"
-        android:paddingRight="@dimen/vidro_space_4"
-        android:paddingBottom="@dimen/vidro_space_4">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/console_espaco_5"
+        android:paddingRight="@dimen/console_espaco_5"
+        android:paddingBottom="@dimen/console_espaco_4">
 
-        <TextView
-            android:id="@+id/profilesButton"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="@dimen/vidro_space_2"
-            android:layout_marginRight="@dimen/vidro_space_2"
-            android:layout_weight="1"
-            android:contentDescription="@string/profile_manager_choose_profile"
-            android:gravity="center"
-            android:text="@string/vidro_scenes" />
+        <FrameLayout
+            android:id="@+id/vidroAddPlace"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="@dimen/console_espaco_3"
+            android:background="@drawable/console_borda_tracejada"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/console_foco">
 
-        <TextView
-            android:id="@+id/settingsButton"
-            style="@style/VidroButton.Ghost"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/vidro_settings" />
+            <TextView
+                style="@style/ConsoleText.Rotulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/console_espaco_2"
+                android:gravity="center_vertical"
+                android:text="@string/console_add_pc"
+                app:drawableStartCompat="@drawable/console_ic_add" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesButton"
+                style="@style/ConsoleText.Rotulo2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/vidro_touch_target"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/profile_manager_choose_profile"
+                android:gravity="center"
+                android:text="@string/vidro_scenes" />
+
+            <TextView
+                android:id="@+id/settingsButton"
+                style="@style/ConsoleText.Rotulo2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/vidro_touch_target"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/vidro_settings" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- ================= lista de lugares ================= -->
+    <!-- ================= lista de PCs ================= -->
 
     <RelativeLayout
         android:id="@+id/pcFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/vidroFooter"
-        android:layout_below="@id/vidroHeader">
+        android:layout_below="@id/consoleComputadoresTitulo">
 
-        <!--
-            Estado de procura, tela 12 do protótipo.
-
-            O que estava aqui era a cópia herdada do Moonlight — "Ensure Apollo is running
-            on your host PC" — que além de estar fora da linguagem do produto nomeia o
-            host errado: o dono deste fork usa Vibeshine. As strings certas já existiam e
-            ninguém as tinha ligado.
-        -->
+        <!-- Estado vazio: nenhum PC encontrado ainda. -->
         <LinearLayout
             android:id="@+id/no_pc_found_layout"
             android:layout_width="match_parent"
@@ -265,8 +110,8 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/vidro_inset_text"
-            android:paddingRight="@dimen/vidro_inset_text">
+            android:paddingLeft="@dimen/console_espaco_6"
+            android:paddingRight="@dimen/console_espaco_6">
 
             <FrameLayout
                 android:layout_width="74dp"
@@ -279,23 +124,22 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/vidro_accent_glow" />
+                    android:indeterminateTint="@color/console_acento" />
             </FrameLayout>
 
             <TextView
-                style="@style/VidroText.Display"
+                style="@style/ConsoleText.Card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_5"
+                android:layout_marginTop="@dimen/console_espaco_5"
                 android:gravity="center"
-                android:text="@string/vidro_searching_title"
-                android:textSize="24sp" />
+                android:text="@string/vidro_searching_title" />
 
             <TextView
-                style="@style/VidroText.Body"
+                style="@style/ConsoleText.Rotulo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vidro_space_2"
+                android:layout_marginTop="@dimen/console_espaco_2"
                 android:gravity="center"
                 android:maxWidth="300dp"
                 android:text="@string/vidro_searching_sub" />
