@@ -495,7 +495,7 @@
 | `getIpv6Address()` | method | `app/src/main/java/com/limelight/nvstream/mdns/MdnsComputer.java:27` |
 | `getIsland()` | method | `app/src/main/java/com/limelight/ui/VidroIsland.java:73` |
 | `getItem()` | method | `app/src/main/java/com/limelight/grid/GenericGridAdapter.java:49` |
-| `getItemCount()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:94` |
+| `getItemCount()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:107` |
 | `getItemCount()` | method | `app/src/main/java/com/limelight/profiles/ProfilesAdapter.java:89` |
 | `getItemId()` | method | `app/src/main/java/com/limelight/grid/GenericGridAdapter.java:54` |
 | `getLastAbsoluteX()` | method | `app/src/main/java/com/limelight/SensitivityBean.java:17` |
@@ -1043,7 +1043,7 @@
 | `onBind()` | method | `app/src/main/java/com/limelight/binding/input/driver/UsbDriverService.java:358` |
 | `onBind()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:795` |
 | `onBind()` | method | `app/src/main/java/com/limelight/discovery/DiscoveryService.java:77` |
-| `onBindViewHolder()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:66` |
+| `onBindViewHolder()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:74` |
 | `onBindViewHolder()` | method | `app/src/main/java/com/limelight/profiles/ProfilesAdapter.java:41` |
 | `onCancel()` | method | `app/src/main/java/com/limelight/utils/SpinnerDialog.java:112` |
 | `onCapturedPointer()` | method | `app/src/main/java/com/limelight/Game.java:589` |
@@ -1132,7 +1132,7 @@
 | `onCreateView()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:320` |
 | `onCreateView()` | method | `app/src/main/java/com/limelight/preferences/StreamSettings.java:326` |
 | `onCreateView()` | method | `app/src/main/java/com/limelight/ui/AdapterFragment.java:25` |
-| `onCreateViewHolder()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:59` |
+| `onCreateViewHolder()` | method | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:67` |
 | `onCreateViewHolder()` | method | `app/src/main/java/com/limelight/profiles/ProfilesAdapter.java:35` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/AppView.java:443` |
 | `onDestroy()` | method | `app/src/main/java/com/limelight/DebugInfoActivity.java:197` |
@@ -2160,7 +2160,7 @@
 | `VidroScreenshotTest` | class | `app/src/test/java/com/limelight/VidroScreenshotTest.java:48` |
 | `VidroSession` | class | `app/src/main/java/com/limelight/ui/VidroSession.java:18` |
 | `ViewCallbacks` | interface | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardLayoutController.java:376` |
-| `ViewHolder` | class | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:98` |
+| `ViewHolder` | class | `app/src/main/java/com/limelight/grid/AppCarouselAdapter.java:111` |
 | `VirtualController` | class | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:28` |
 | `VirtualControllerConfigurationLoader` | class | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java:19` |
 | `VirtualControllerElement` | class | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java:22` |

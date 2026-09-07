@@ -26,7 +26,7 @@
 | `com.limelight.binding.input.capture` | 14.4 | 6 | 403 |
 | `com.limelight.binding` | 14.2 | 1 | 15 |
 | `com.limelight.binding.video` | 14.1 | 5 | 3758 |
-| `com.limelight.grid` | 13.9 | 4 | 554 |
+| `com.limelight.grid` | 13.9 | 4 | 567 |
 | `com.limelight.binding.input.evdev` | 13.3 | 6 | 627 |
 | `com.limelight.binding.input.virtual_controller.keyboard` | 13.2 | 12 | 4198 |
 | `com.limelight.binding.input.touch` | 12.8 | 4 | 1104 |

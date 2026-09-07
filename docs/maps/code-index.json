@@ -4,7 +4,7 @@
   "files": 224,
   "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 67281,
+  "lines": 67294,
   "types": 279,
   "methods": 2661,
   "packages": 30,
@@ -10978,7 +10978,7 @@
   {
    "path": "app/src/main/java/com/limelight/grid/AppCarouselAdapter.java",
    "lang": "java",
-   "lines": 104,
+   "lines": 117,
    "package": "com.limelight.grid",
    "imports": [
     "android.view.LayoutInflater",
@@ -11002,7 +11002,7 @@
     {
      "kind": "class",
      "name": "ViewHolder",
-     "line": 98
+     "line": 111
     }
    ],
    "methods": [
@@ -11011,21 +11011,21 @@
      "modifiers": "public",
      "returns": "ViewHolder",
      "params": "ViewGroup parent, int viewType",
-     "line": 59
+     "line": 67
     },
     {
      "name": "onBindViewHolder",
      "modifiers": "public",
      "returns": "void",
      "params": "ViewHolder holder, int position",
-     "line": 66
+     "line": 74
     },
     {
      "name": "getItemCount",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 94
+     "line": 107
     }
    ],
    "nativeMethods": [],

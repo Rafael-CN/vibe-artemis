@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.281 linhas**, **279 tipos**, **2661 métodos**.
+Total: **224 arquivos**, **67.294 linhas**, **279 tipos**, **2661 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -162,7 +162,7 @@ Total: **224 arquivos**, **67.281 linhas**, **279 tipos**, **2661 métodos**.
 |---|--:|--:|---|---|
 | [`AppGridAdapter.java`](../../app/src/main/java/com/limelight/grid/AppGridAdapter.java) | 250 | 3.7 | AppGridAdapter | `updateHiddenApps()`:55 `updateLayoutWithPreferences()`:89 `cancelQueuedOperations()`:122 `compare()`:131 `addApp()`:143 `removeApp()`:162 `clear()`:168 `populateView()`:174 |
 | [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 123 | 2.9 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
-| [`AppCarouselAdapter.java`](../../app/src/main/java/com/limelight/grid/AppCarouselAdapter.java) | 104 | 2.9 | AppCarouselAdapter, Listener, ViewHolder | `onCreateViewHolder()`:59 `onBindViewHolder()`:66 `getItemCount()`:94 |
+| [`AppCarouselAdapter.java`](../../app/src/main/java/com/limelight/grid/AppCarouselAdapter.java) | 117 | 2.9 | AppCarouselAdapter, Listener, ViewHolder | `onCreateViewHolder()`:67 `onBindViewHolder()`:74 `getItemCount()`:107 |
 | [`GenericGridAdapter.java`](../../app/src/main/java/com/limelight/grid/GenericGridAdapter.java) | 77 | 2.8 | GenericGridAdapter | `clear()`:39 `getCount()`:44 `getItem()`:49 `getItemId()`:54 `getView()`:61 |
 
 ## `app/src/main/java/com/limelight/grid/assets/`
