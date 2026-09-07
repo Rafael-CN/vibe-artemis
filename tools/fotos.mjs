@@ -45,11 +45,16 @@
  *   sessao-guia-fecha   idem, depois de abrir a guia e fechar com KEYCODE_ESCAPE
  *   sessao-texto        idem, depois de abrir a guia e tocar no bloco "Barra de texto"
  *                       (abre a barra de texto do E01 — openComposeBar)
+ *   sessao-retrato      idem, sem girar pra paisagem (G2, defeito 5: "no modo vertical
+ *                       a stream n se adapta e fica cortada") — mostra a superfície
+ *                       do moque em pé, pra conferir que ela cabe em letterbox e não
+ *                       corta nem estica
  *
- * As três rotas de sessão giram o `s22u` (celular) para paisagem antes de abrir —
- * sem isto `Game` renderiza na orientação corrente do aparelho (autoOrientation), que
- * no celular é retrato. O `tabs8u` já nasce em paisagem (é a forma do tablet) e não é
- * tocado. As demais rotas ficam em retrato no `s22u`; a rotação volta a 0 no fim.
+ * As rotas de sessão (exceto `sessao-retrato`) giram o `s22u` (celular) para paisagem
+ * antes de abrir — sem isto `Game` renderiza na orientação corrente do aparelho
+ * (autoOrientation), que no celular é retrato. O `tabs8u` já nasce em paisagem (é a
+ * forma do tablet) e não é tocado. As demais rotas ficam em retrato no `s22u`; a
+ * rotação volta a 0 no fim.
  *
  * Cada rota: `am force-stop` (estado limpo, sem singleTask/onNewIntent para gerenciar),
  * `am start -n <pacote>/<Activity> [extras]`, espera a tela assentar (uiautomator dump
@@ -504,6 +509,15 @@ const ROTAS = {
     componente: 'com.limelight.Game',
     extras: ['--ez', 'MoqueDeStream', 'true'],
     paisagem: true,
+  },
+  'sessao-retrato': {
+    componente: 'com.limelight.Game',
+    // Sem paisagem: true — fica na orientação de retrato do s22u (G2, defeito 5).
+    // allowPortraitSession é true por padrão (PreferenceConfiguration), então Game
+    // roda em SCREEN_ORIENTATION_FULL_USER e deveria caber a superfície do moque em
+    // letterbox em vez de cortar ou esticar.
+    extras: ['--ez', 'MoqueDeStream', 'true'],
+    paisagem: false,
   },
   'sessao-conectando': {
     componente: 'com.limelight.Game',
