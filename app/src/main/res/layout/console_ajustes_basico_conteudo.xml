@@ -12,6 +12,17 @@
 
     Cada linha é fixa (não um adapter): a tela básica tem uma lista finita e conhecida
     de controles, igual ao mockup — não há necessidade de RecyclerView aqui.
+
+    G1: os segmentos (consoleSeg*) eram clicáveis E focusableInTouchMode ao mesmo tempo.
+    Isso é o gatilho documentado do "toque duplo" — em View.onTouchEvent(ACTION_UP), se a
+    view é focusable + focusableInTouchMode e AINDA NÃO estava focada, o primeiro toque
+    chama requestFocus() e, quando ele pega o foco, o clique daquele mesmo toque é
+    descartado (performClick só roda quando focusTaken é falso); o clique só dispara no
+    toque seguinte, com a view já focada. Confirmado no s22ub: um toque em "90 Hz" só
+    desenhava o anel de foco, sem trocar a seleção — segundo toque é que mudava o valor.
+    focusable="true" sozinho basta para o D-pad (o modo toque é abandonado no primeiro
+    evento de tecla, e a partir daí a busca de foco não depende mais deste atributo) —
+    por isso os segmentos ficaram só com focusable, sem focusableInTouchMode.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -130,7 +141,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/resolution_1080p"
@@ -147,7 +157,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/resolution_1440p"
@@ -164,7 +173,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/resolution_prefix_native"
@@ -213,7 +221,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_taxa_60"
@@ -230,7 +237,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_taxa_90"
@@ -247,7 +253,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_taxa_120"
@@ -337,7 +342,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_codec_auto"
@@ -354,7 +358,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_codec_hevc"
@@ -371,7 +374,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_codec_av1"
@@ -501,7 +503,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_modo_toque_direto"
@@ -518,7 +519,6 @@
                     android:background="@drawable/console_segmento_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:paddingLeft="@dimen/console_espaco_4"
                     android:paddingRight="@dimen/console_espaco_4"
                     android:text="@string/console_modo_touchpad"

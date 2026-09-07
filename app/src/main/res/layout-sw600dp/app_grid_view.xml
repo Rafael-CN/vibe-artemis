@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- No tablet cabem quatro colunas sem esticar a capa, como no protótipo de paisagem. -->
+<!--
+    No tablet cabem quatro colunas sem esticar a capa, como no protótipo de paisagem.
+
+    G1: focusableInTouchMode fica no container por focar por D-pad assim que a tela
+    abre; não é a causa do "toque duplo" — mesma explicação de layout/app_grid_view.xml.
+-->
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
     android:layout_width="match_parent"

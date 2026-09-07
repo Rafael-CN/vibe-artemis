@@ -2,6 +2,11 @@
 <!--
     Uma coluna. O protótipo lista lugares, não os dispõe em grade: uma linha por host,
     com o estado em palavra à direita. Grade de ladrilhos era a herança do Moonlight.
+
+    G1: focusableInTouchMode fica no container por focar por D-pad assim que a tela
+    abre; não é a causa do "toque duplo" (o clique de item de GridView passa pelo
+    AbsListView, não pelo requestFocus() de View.onTouchEvent) — mesma explicação de
+    app_grid_view.xml, testada tocando o card "RAFAEL" no s22ub: ativou no 1º toque.
 -->
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
