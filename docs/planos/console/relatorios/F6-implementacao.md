@@ -146,10 +146,12 @@ pareciam sem uso pelo mesmo grep raso, mas são usados de dentro do próprio
 ## 4. `values-pt-rBR` — conferência string a string
 
 Comparei os nomes de string entre `values/strings.xml` e o commit `17b35652` ("Merge F1
-tokens", o baseline antes de F2 começar) para isolar as strings **novas de F2–F5**: 55
-nomes (53 `console_*`/`vidro_scenes`-like do redesenho + `summary_compose_bar` +
-`title_compose_bar`, do E01 exposto pela F4). As 55 já existem em
-`values-pt-rBR/strings.xml` — nenhuma faltando. Conferi à mão uma amostra (não só que a
+tokens", o baseline antes de F2 começar) para isolar as strings **novas de F2–F5**: 53
+nomes (`console_*`/`vidro_scenes`-like do redesenho, incluindo `summary_compose_bar` e
+`title_compose_bar`, do E01 exposto pela F4 — as duas já estão dentro das 53, não são
+categorias à parte; correção desta imprecisão de redação apontada pela verificação da
+F6, `F6-verificacao.md` §5). As 53 já existem em `values-pt-rBR/strings.xml` — nenhuma
+faltando. Conferi à mão uma amostra (não só que a
 chave existe: que o texto é tradução real, não cópia do inglês) —
 `console_abrir_menu`, `console_ajuste_avancado_legenda`, `console_hz_valor`,
 `console_mbps_valor`, `console_encerrar_no_pc`, `summary_compose_bar`,
