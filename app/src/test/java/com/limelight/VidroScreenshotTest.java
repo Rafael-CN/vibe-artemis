@@ -84,7 +84,10 @@ public class VidroScreenshotTest {
         shoot("07-pareamento", R.layout.vidro_pairing, 393, 852, true);
 
         // Peças soltas, no tamanho em que a grade as usa.
-        shoot("peca-card-de-app", R.layout.app_grid_item, 180, 230);
+        // G1: altura 0 (a view decide) em vez do 230 fixo de antes — a capa agora mede a
+        // própria altura a partir da largura (3:4, CapaAspectFrameLayout), então uma
+        // altura de canvas fixa e antiga cortava o rótulo abaixo da capa na captura.
+        shoot("peca-card-de-app", R.layout.app_grid_item, 180, 0);
         shoot("peca-linha-de-host", R.layout.pc_grid_item, 393, 0);
         shoot("peca-card-de-cena", R.layout.row_profile, 357, 0);
         shoot("08-debug-info", R.layout.activity_axitest, 393, 852);

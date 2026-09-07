@@ -1,12 +1,12 @@
 {
  "generatedFrom": "tools/codemap/codemap.mjs",
  "totals": {
-  "files": 224,
-  "javaFiles": 181,
+  "files": 225,
+  "javaFiles": 182,
   "nativeFiles": 42,
-  "lines": 67261,
-  "types": 280,
-  "methods": 2648,
+  "lines": 67308,
+  "types": 281,
+  "methods": 2649,
   "packages": 30,
   "todos": 36
  },
@@ -11122,6 +11122,37 @@
      "returns": "boolean",
      "params": "NvApp app",
      "line": 244
+    }
+   ],
+   "nativeMethods": [],
+   "androidApis": [],
+   "todos": []
+  },
+  {
+   "path": "app/src/main/java/com/limelight/grid/CapaAspectFrameLayout.java",
+   "lang": "java",
+   "lines": 44,
+   "package": "com.limelight.grid",
+   "imports": [
+    "android.content.Context",
+    "android.util.AttributeSet",
+    "android.view.View",
+    "android.widget.FrameLayout"
+   ],
+   "types": [
+    {
+     "kind": "class",
+     "name": "CapaAspectFrameLayout",
+     "line": 21
+    }
+   ],
+   "methods": [
+    {
+     "name": "onMeasure",
+     "modifiers": "protected",
+     "returns": "void",
+     "params": "int widthMeasureSpec, int heightMeasureSpec",
+     "line": 38
     }
    ],
    "nativeMethods": [],
@@ -27157,7 +27188,7 @@
   {
    "path": "app/src/test/java/com/limelight/VidroScreenshotTest.java",
    "lang": "java",
-   "lines": 319,
+   "lines": 322,
    "package": "com.limelight",
    "imports": [
     "android.content.Context",
@@ -27208,56 +27239,56 @@
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 103
+     "line": 106
     },
     {
      "name": "telasNoTablet",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 126
+     "line": 129
     },
     {
      "name": "telasNoS22Ultra",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 143
+     "line": 146
     },
     {
      "name": "onlyWhenAsked",
      "modifiers": "static",
      "returns": "void",
      "params": "",
-     "line": 157
+     "line": 160
     },
     {
      "name": "shoot",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, int layoutId, int widthDp, int heightDp",
-     "line": 165
+     "line": 168
     },
     {
      "name": "shootActivity",
      "modifiers": "private",
      "returns": "<T extends android.app.Activity> void",
      "params": "String name, Class<T> activityClass, int widthDp, int heightDp",
-     "line": 242
+     "line": 245
     },
     {
      "name": "write",
      "modifiers": "private",
      "returns": "void",
      "params": "String name, Bitmap bitmap, int w, int h",
-     "line": 291
+     "line": 294
     },
     {
      "name": "revealAll",
      "modifiers": "static",
      "returns": "void",
      "params": "View view",
-     "line": 306
+     "line": 309
     }
    ],
    "nativeMethods": [],
