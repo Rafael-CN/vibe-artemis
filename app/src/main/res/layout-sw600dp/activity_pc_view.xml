@@ -75,7 +75,7 @@
                 android:importantForAccessibility="no"
                 android:rotation="90"
                 android:src="@drawable/console_ic_chevron"
-                app:tint="@color/console_texto_2" />
+                app:tint="@color/console_acento" />
         </LinearLayout>
 
         <!-- Chips esmaecidos dos demais PCs (fora do ar), preenchidos em código. -->

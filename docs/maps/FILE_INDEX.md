@@ -4,14 +4,14 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.294 linhas**, **279 tipos**, **2661 métodos**.
+Total: **224 arquivos**, **67.299 linhas**, **279 tipos**, **2661 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4956 | 14.2 | Game, GameMenuCallbacks | `onServiceConnected()`:266 `onServiceDisconnected()`:275 `sendText()`:362 `sendBackspaces()`:369 `onCreate()`:391 `onCapturedPointer()`:589 `notifyCrash()`:729 `onDisplayAdded()`:1114 |
-| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1615 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:115 `run()`:122 `onServiceDisconnected()`:145 `onConfigurationChanged()`:151 `onClick()`:219 `onClick()`:227 `onClick()`:234 `onCreate()`:273 |
+| [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1620 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:115 `run()`:122 `onServiceDisconnected()`:145 `onConfigurationChanged()`:151 `onClick()`:219 `onClick()`:232 `onClick()`:239 `onCreate()`:278 |
 | [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 913 | 9.1 | AppView, AppObject | `onServiceConnected()`:102 `run()`:109 `run()`:153 `onServiceDisconnected()`:174 `onConfigurationChanged()`:180 `notifyComputerUpdated()`:210 `run()`:225 `run()`:239 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.3 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.3 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |

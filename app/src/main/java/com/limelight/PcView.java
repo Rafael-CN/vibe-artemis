@@ -222,6 +222,11 @@ public class PcView extends AppCompatActivity implements AdapterFragmentCallback
         });
         View addPlace = findViewById(R.id.vidroAddPlace);
         if (addPlace != null) {
+            // console_borda_tracejada.xml (dashPathEffect) só desenha tracejado de
+            // verdade em LAYER_TYPE_SOFTWARE — em hardware accel ele normalmente cai
+            // pra traço sólido. O comentário do drawable já prometia isto; faltava
+            // a chamada em si.
+            addPlace.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             addPlace.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

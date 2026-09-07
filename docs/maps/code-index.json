@@ -4,7 +4,7 @@
   "files": 224,
   "javaFiles": 181,
   "nativeFiles": 42,
-  "lines": 67294,
+  "lines": 67299,
   "types": 279,
   "methods": 2661,
   "packages": 30,
@@ -2561,7 +2561,7 @@
   {
    "path": "app/src/main/java/com/limelight/PcView.java",
    "lang": "java",
-   "lines": 1615,
+   "lines": 1620,
    "package": "com.limelight",
    "imports": [
     "java.io.FileNotFoundException",
@@ -2652,7 +2652,7 @@
     {
      "kind": "class",
      "name": "ComputerObject",
-     "line": 1595
+     "line": 1600
     }
    ],
    "methods": [
@@ -2710,476 +2710,476 @@
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 227
+     "line": 232
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 234
+     "line": 239
     },
     {
      "name": "onCreate",
      "modifiers": "protected",
      "returns": "void",
      "params": "Bundle savedInstanceState",
-     "line": 273
+     "line": 278
     },
     {
      "name": "onSurfaceCreated",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, EGLConfig eglConfig",
-     "line": 287
+     "line": 292
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 297
+     "line": 302
     },
     {
      "name": "onSurfaceChanged",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10, int i, int i1",
-     "line": 304
+     "line": 309
     },
     {
      "name": "onDrawFrame",
      "modifiers": "public",
      "returns": "void",
      "params": "GL10 gl10",
-     "line": 308
+     "line": 313
     },
     {
      "name": "completeOnCreate",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 333
+     "line": 338
     },
     {
      "name": "popularComputadoresDeMentira",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 359
+     "line": 364
     },
     {
      "name": "startComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 380
+     "line": 385
     },
     {
      "name": "notifyComputerUpdated",
      "modifiers": "public",
      "returns": "void",
      "params": "final ComputerDetails details",
-     "line": 392
+     "line": 397
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 396
+     "line": 401
     },
     {
      "name": "stopComputerUpdates",
      "modifiers": "private",
      "returns": "void",
      "params": "boolean wait",
-     "line": 427
+     "line": 432
     },
     {
      "name": "refreshProfileButton",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 445
+     "line": 450
     },
     {
      "name": "onDestroy",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 461
+     "line": 466
     },
     {
      "name": "onResume",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 472
+     "line": 477
     },
     {
      "name": "onPause",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 485
+     "line": 490
     },
     {
      "name": "onStop",
      "modifiers": "protected",
      "returns": "void",
      "params": "",
-     "line": 493
+     "line": 498
     },
     {
      "name": "onCreateContextMenu",
      "modifiers": "public",
      "returns": "void",
      "params": "ContextMenu menu, View v, ContextMenuInfo menuInfo",
-     "line": 500
+     "line": 505
     },
     {
      "name": "onContextMenuClosed",
      "modifiers": "public",
      "returns": "void",
      "params": "Menu menu",
-     "line": 564
+     "line": 569
     },
     {
      "name": "showVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "final String pinStr",
-     "line": 581
+     "line": 586
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 584
+     "line": 589
     },
     {
      "name": "onClick",
      "modifiers": "public",
      "returns": "void",
      "params": "View v",
-     "line": 618
+     "line": 623
     },
     {
      "name": "hideVidroPairing",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 632
+     "line": 637
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 635
+     "line": 640
     },
     {
      "name": "doPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer, String otp, String passphrase",
-     "line": 644
+     "line": 649
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 657
+     "line": 662
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 741
+     "line": 746
     },
     {
      "name": "doOTPPair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 760
+     "line": 765
     },
     {
      "name": "doWakeOnLan",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 805
+     "line": 810
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 818
+     "line": 823
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 830
+     "line": 835
     },
     {
      "name": "doUnpair",
      "modifiers": "private",
      "returns": "void",
      "params": "final ComputerDetails computer",
-     "line": 838
+     "line": 843
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 851
+     "line": 856
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 882
+     "line": 887
     },
     {
      "name": "doAppList",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails computer, boolean newlyPaired, boolean showHiddenGames",
-     "line": 890
+     "line": 895
     },
     {
      "name": "onContextItemSelected",
      "modifiers": "public",
      "returns": "boolean",
      "params": "MenuItem item",
-     "line": 909
+     "line": 914
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 936
+     "line": 941
     },
     {
      "name": "run",
      "modifiers": "public",
      "returns": "void",
      "params": "",
-     "line": 968
+     "line": 973
     },
     {
      "name": "removeComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1000
+     "line": 1005
     },
     {
      "name": "updateComputer",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1034
+     "line": 1039
     },
     {
      "name": "isConsoleInicio",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 1073
+     "line": 1078
     },
     {
      "name": "emModoDeApps",
      "modifiers": "private",
      "returns": "boolean",
      "params": "",
-     "line": 1082
+     "line": 1087
     },
     {
      "name": "dp",
      "modifiers": "private",
      "returns": "int",
      "params": "int valor",
-     "line": 1086
+     "line": 1091
     },
     {
      "name": "refreshConsoleInicio",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1096
+     "line": 1101
     },
     {
      "name": "escolherComputadorAtual",
      "modifiers": "private",
      "returns": "ComputerObject",
      "params": "",
-     "line": 1136
+     "line": 1141
     },
     {
      "name": "atualizarCabecalhoDoChip",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject atual",
-     "line": 1173
+     "line": 1178
     },
     {
      "name": "criarChipEsmaecido",
      "modifiers": "private",
      "returns": "View",
      "params": "final ComputerObject c",
-     "line": 1210
+     "line": 1215
     },
     {
      "name": "mostrarDialogoDePcs",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1237
+     "line": 1242
     },
     {
      "name": "selecionarComputadorAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject c",
-     "line": 1288
+     "line": 1293
     },
     {
      "name": "pararAppsDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1294
+     "line": 1299
     },
     {
      "name": "carregarAppsDoComputadorAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerObject atual",
-     "line": 1309
+     "line": 1314
     },
     {
      "name": "montarCarrossel",
      "modifiers": "private",
      "returns": "void",
      "params": "AppGridAdapter adapter",
-     "line": 1371
+     "line": 1376
     },
     {
      "name": "onAppFocused",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1385
+     "line": 1390
     },
     {
      "name": "onAppActivated",
      "modifiers": "public",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1394
+     "line": 1399
     },
     {
      "name": "atualizarSecaoContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1417
+     "line": 1422
     },
     {
      "name": "retomarContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1440
+     "line": 1445
     },
     {
      "name": "encerrarContinuar",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1447
+     "line": 1452
     },
     {
      "name": "abrirApp",
      "modifiers": "private",
      "returns": "void",
      "params": "AppView.AppObject app",
-     "line": 1456
+     "line": 1461
     },
     {
      "name": "abrirAppFocado",
      "modifiers": "private",
      "returns": "void",
      "params": "",
-     "line": 1463
+     "line": 1468
     },
     {
      "name": "atualizarListaDeAppsDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "List<NvApp> appList, ComputerDetails details",
-     "line": 1470
+     "line": 1475
     },
     {
      "name": "atualizarRunningGameIdDoTablet",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1513
+     "line": 1518
     },
     {
      "name": "atualizarAppsDoTabletSeForOAtual",
      "modifiers": "private",
      "returns": "void",
      "params": "ComputerDetails details",
-     "line": 1542
+     "line": 1547
     },
     {
      "name": "getAdapterFragmentLayoutId",
      "modifiers": "public",
      "returns": "int",
      "params": "",
-     "line": 1567
+     "line": 1572
     },
     {
      "name": "receiveAbsListView",
      "modifiers": "public",
      "returns": "void",
      "params": "AbsListView listView",
-     "line": 1572
+     "line": 1577
     },
     {
      "name": "onItemClick",
      "modifiers": "public",
      "returns": "void",
      "params": "AdapterView<?> arg0, View arg1, int pos, long id",
-     "line": 1576
+     "line": 1581
     },
     {
      "name": "toString",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1606
+     "line": 1611
     },
     {
      "name": "guessManagementUrl",
      "modifiers": "public",
      "returns": "String",
      "params": "",
-     "line": 1609
+     "line": 1614
     }
    ],
    "nativeMethods": [],

@@ -12,7 +12,7 @@
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1615 | 75 | 4 | 31 |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1620 | 75 | 4 | 31 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c) | 1603 | 35 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c) | 1420 | 19 | — | — |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java) | 1206 | 40 | 2 | 2 |
@@ -58,7 +58,7 @@
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/Game.java` | 49 | 4956 |
-| `app/src/main/java/com/limelight/PcView.java` | 31 | 1615 |
+| `app/src/main/java/com/limelight/PcView.java` | 31 | 1620 |
 | `app/src/main/java/com/limelight/AppView.java` | 18 | 913 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
