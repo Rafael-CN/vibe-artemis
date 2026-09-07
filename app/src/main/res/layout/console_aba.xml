@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A aba: gatilho fixo do menu da sessão (NOTA.md §3). Vive sempre no centro da
+    borda superior do vídeo, meio para dentro / meio para fora da moldura, e toca
+    para abrir a guia.
+
+    O MESMO layout serve de alça para recolher, presa à borda de baixo da guia
+    aberta — GameMenu inclui esta view de novo dentro do Dialog, com o chevron
+    invertido (ic_console_chevron_up) e o clique fechando em vez de abrir. Duas
+    árvores de View diferentes (Activity vs. Dialog), então repetir o id não colide.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/consoleAba"
+    android:layout_width="@dimen/console_aba_w"
+    android:layout_height="@dimen/console_aba_h"
+    android:layout_gravity="top|center_horizontal"
+    android:background="@drawable/console_aba_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:visibility="gone"
+    android:contentDescription="@string/console_abrir_menu">
+
+    <ImageView
+        android:id="@+id/consoleAbaChevron"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_console_chevron_down" />
+
+</FrameLayout>

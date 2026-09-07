@@ -111,35 +111,22 @@
     </LinearLayout>
 
     <!--
-        A ilha de controle e a pílula em que ela vira. Ficam por último no merge
-        para desenhar por cima do vídeo, e nos 96 dp de baixo, onde o polegar chega
-        sem soltar o aparelho.
+        A aba: gatilho fixo do menu da sessão (Plano B / F2). Fica no centro da
+        borda superior do vídeo, sempre visível — Game.java esconde só enquanto a
+        barra de texto ou um diálogo de conexão estiver aberto. Antes da guia
+        (console_guia.xml) e da barra de texto no merge para as duas desenharem
+        por cima quando abertas.
     -->
-    <include layout="@layout/vidro_session_island" />
+    <include layout="@layout/console_aba" />
 
     <!--
-        Folha de ajustes, aviso de queda e a tela de conectar. Vêm DEPOIS da ilha no
-        merge porque precisam cobri-la: enquanto a conexão não voltou, mexer nos
-        controles não leva a lugar nenhum.
+        Barra de texto, aviso de queda e a tela de conectar. Vêm depois da aba no
+        merge porque precisam cobri-la quando abertas: enquanto a conexão não
+        voltou, mexer nos controles não leva a lugar nenhum.
     -->
-    <include layout="@layout/vidro_compose_bar" />
-    <include layout="@layout/vidro_session_sheet" />
+    <include layout="@layout/console_barra_texto" />
     <include layout="@layout/vidro_lost" />
     <include layout="@layout/vidro_connecting" />
-
-    <!-- Floating Menu Button -->
-    <ImageButton
-        android:id="@+id/floatingMenuButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="top|start"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/floating_menu_button"
-        android:contentDescription="@string/menu_button"
-        android:src="@drawable/ic_menu"
-        android:padding="6dp"
-        android:visibility="gone"
-        android:elevation="9999dp" />
 
     <ImageButton
         android:id="@+id/overlayToggleZoomButton"

@@ -289,8 +289,6 @@
     <string name="vidro_quality_good">tudo fluindo bem</string>
     <string name="vidro_quality_holding">oscilando um pouco</string>
     <string name="vidro_quality_poor">a rede está apertada</string>
-    <string name="vidro_leave_screen">Sair da tela</string>
-    <string name="vidro_numbers_on_screen">Números na tela</string>
     <string name="vidro_step_talking">Falando com %1$s</string>
     <string name="vidro_step_reserving">Reservando a tela no PC</string>
     <string name="vidro_step_video">Chegando o vídeo</string>
@@ -311,27 +309,11 @@
     <string name="vidro_code_expired">O Vibeshine no %1$s mostra um código novo a cada minuto. O que você digitou já tinha virado.</string>
     <string name="vidro_where_to_look">Onde olhar</string>
     <string name="vidro_ask_new_code">Pedir um código novo</string>
-    <string name="vidro_controls">controles</string>
     <string name="vidro_keyboard">Teclado</string>
     <string name="vidro_mouse">Mouse</string>
     <string name="vidro_zoom">Zoom</string>
-    <string name="vidro_adjust">Ajustes</string>
-    <string name="vidro_without_leaving">sem sair</string>
-    <string name="vidro_details">Detalhes</string>
 
     <!-- Vidro - telas restantes -->
-    <string name="vidro_sheet_title">Ajustes desta sessão</string>
-    <string name="vidro_close">Fechar</string>
-    <string name="vidro_sheet_sub">Valem agora, sem cortar o vídeo. O resto fica em Ajustes.</string>
-    <string name="vidro_bitrate">Taxa de bits</string>
-    <string name="vidro_frame_pacing">Ritmo de quadros</string>
-    <string name="vidro_mouse_mode">Modo do mouse</string>
-    <string name="vidro_pacing_smooth">Suave</string>
-    <string name="vidro_pacing_balanced">Equilibrado</string>
-    <string name="vidro_pacing_latency">Menor atraso</string>
-    <string name="vidro_mouse_multitouch">Multitoque</string>
-    <string name="vidro_mouse_trackpad">Trackpad</string>
-    <string name="vidro_numbers_sub">latência, quadros, decodificação</string>
     <string name="vidro_scenes_sub">Um toque troca papel, tela, taxa e entrada. A cena ativa aparece no topo da sessão.</string>
     <string name="vidro_scene_active">cena ativa</string>
     <string name="vidro_scene_save">Salvar a sessão atual como cena</string>
@@ -352,7 +334,6 @@
     <string name="vidro_searching_sub">Nenhum PC respondeu ainda. Deixe o app aberto — ele continua ouvindo.</string>
     <string name="vidro_search_by_address">Adicionar um PC pelo endereço</string>
     <string name="vidro_search_again">Procurar de novo</string>
-    <string name="vidro_next_session">vale na próxima sessão</string>
     <string name="vidro_pc_address">Endereço do PC</string>
     <string name="vidro_address_help">IP ou nome na rede. A porta padrão é 47989 — só mude se você trocou no host.</string>
     <string name="vidro_connect">Conectar</string>
@@ -361,7 +342,24 @@
     <string name="vidro_no_scenes_sub">Salve a sessão atual abaixo e ela vira uma.</string>
     <string name="title_allow_portrait_session">Permitir retrato na sessão</string>
     <string name="summary_allow_portrait_session">O vídeo se ajusta em letterbox e o teclado abre embaixo dele. Desligue para manter a sessão travada em paisagem.</string>
-    <string name="vidro_compose_tile">digitar e enviar</string>
     <string name="vidro_compose_hint">Digite aqui e mande de uma vez</string>
     <string name="vidro_compose_send">Enviar</string>
+
+    <!-- ================= Console — F2: guia, aba, barra de texto ================= -->
+    <string name="console_abrir_menu">Abrir o menu da sessão</string>
+    <string name="console_guia_barra_texto">Barra de texto</string>
+    <string name="console_modo_touchpad">Touchpad</string>
+    <string name="console_modo_toque_direto">Toque direto</string>
+    <string name="console_guia_teclas_especiais">Teclas especiais</string>
+    <string name="console_guia_girar_tela">Girar a tela</string>
+    <string name="console_guia_estatisticas">Estatísticas</string>
+    <string name="console_guia_controles_tela">Controles na tela</string>
+    <string name="console_guia_encerrar_pc">Encerrar no PC</string>
+    <string name="console_guia_voltar">Voltar</string>
+    <string name="console_tecla_esc">Esc</string>
+    <string name="console_tecla_tab">Tab</string>
+    <string name="console_tecla_win">Win</string>
+    <string name="console_tecla_alt_tab">Alt+Tab</string>
+    <string name="console_tecla_ctrl_alt_del">Ctrl+Alt+Del</string>
+    <string name="console_barra_texto_titulo">BARRA DE TEXTO</string>
 </resources>

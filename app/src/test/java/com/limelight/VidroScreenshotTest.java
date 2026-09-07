@@ -101,8 +101,13 @@ public class VidroScreenshotTest {
         onlyWhenAsked();
 
         shoot("03-conectando", R.layout.vidro_connecting, 852, 393, true);
-        shoot("04-sessao-ilha", R.layout.vidro_session_island, 852, 393, true);
-        shoot("05-folha-de-ajustes", R.layout.vidro_session_sheet, 852, 393, true);
+        // F2 (Plano B): a ilha e a folha de ajustes em sessão foram aposentadas —
+        // a guia (console_guia.xml) e a barra de texto (console_barra_texto.xml) as
+        // substituem. A guia já nasce com a fileira padrão visível (só a fileira de
+        // teclas especiais e a alça de recolher nascem GONE); forceVisible=false
+        // evita as duas fileiras aparecerem sobrepostas na mesma captura.
+        shoot("04-sessao-guia", R.layout.console_guia, 852, 393);
+        shoot("05-sessao-barra-de-texto", R.layout.console_barra_texto, 852, 393, true);
         shoot("09-perdemos-o-host", R.layout.vidro_lost, 852, 393, true);
     }
 
@@ -120,8 +125,8 @@ public class VidroScreenshotTest {
 
         shoot("tab-01-home", R.layout.activity_pc_view, 1722, 1075);
         shoot("tab-02-catalogo", R.layout.activity_app_view, 1722, 1075);
-        shoot("tab-04-sessao-ilha", R.layout.vidro_session_island, 1722, 1075, true);
-        shoot("tab-05-folha-de-ajustes", R.layout.vidro_session_sheet, 1722, 1075, true);
+        shoot("tab-04-sessao-guia", R.layout.console_guia, 1722, 1075);
+        shoot("tab-05-sessao-barra-de-texto", R.layout.console_barra_texto, 1722, 1075, true);
         shoot("tab-06-cenas", R.layout.activity_profiles, 1722, 1075);
     }
 

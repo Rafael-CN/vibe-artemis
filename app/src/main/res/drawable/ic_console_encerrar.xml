@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bloco "Encerrar no PC": o símbolo de energia. Cor vem do texto do bloco
+     (console_destrutivo), não fixa aqui, para acompanhar o tema destrutivo. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:strokeColor="#F2555B"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M12,4 L12,11" />
+    <path
+        android:strokeColor="#F2555B"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M7.5,6.5 A7,7 0 1,0 16.5,6.5" />
+</vector>

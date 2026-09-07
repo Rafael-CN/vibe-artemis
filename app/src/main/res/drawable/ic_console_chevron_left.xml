@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "‹" do bloco Voltar, na fileira de teclas especiais. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15,6 L9,12 L15,18 L16.4,16.6 L11.8,12 L16.4,7.4 Z" />
+</vector>

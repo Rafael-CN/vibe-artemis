@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A fileira fixa de teclas especiais: Esc · Tab · Win · Alt+Tab · Ctrl+Alt+Del,
+    em ConsoleText.Mono (NOTA.md: "tratei essas teclas como código, não como rótulo
+    de interface comum"). Incluída duas vezes — na guia (bloco "Teclas especiais")
+    e na barra de texto — cada instância vive numa árvore de View diferente
+    (Dialog vs. Activity), então o id repetido não colide.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/consoleKeyEsc"
+        style="@style/ConsoleText.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/console_botao"
+        android:layout_marginStart="@dimen/console_espaco_2"
+        android:background="@drawable/console_foco"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="64dp"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:text="@string/console_tecla_esc" />
+
+    <TextView
+        android:id="@+id/consoleKeyTab"
+        style="@style/ConsoleText.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/console_botao"
+        android:layout_marginStart="@dimen/console_espaco_2"
+        android:background="@drawable/console_foco"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="64dp"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:text="@string/console_tecla_tab" />
+
+    <TextView
+        android:id="@+id/consoleKeyWin"
+        style="@style/ConsoleText.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/console_botao"
+        android:layout_marginStart="@dimen/console_espaco_2"
+        android:background="@drawable/console_foco"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="64dp"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:text="@string/console_tecla_win" />
+
+    <TextView
+        android:id="@+id/consoleKeyAltTab"
+        style="@style/ConsoleText.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/console_botao"
+        android:layout_marginStart="@dimen/console_espaco_2"
+        android:background="@drawable/console_foco"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="80dp"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:text="@string/console_tecla_alt_tab" />
+
+    <TextView
+        android:id="@+id/consoleKeyCtrlAltDel"
+        style="@style/ConsoleText.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/console_botao"
+        android:layout_marginStart="@dimen/console_espaco_2"
+        android:layout_marginEnd="@dimen/console_espaco_2"
+        android:background="@drawable/console_foco"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="112dp"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:text="@string/console_tecla_ctrl_alt_del" />
+
+</merge>

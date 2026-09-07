@@ -46,7 +46,6 @@ import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.profiles.ProfilesManager;
 import com.limelight.ui.MoqueDaStream;
-import com.limelight.ui.VidroIsland;
 import com.limelight.ui.VidroLightView;
 import com.limelight.ui.VidroSession;
 import com.limelight.ui.ExternalControllerView;
@@ -244,7 +243,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     private boolean quitOnStop = false;
     private boolean isHidingOverlays;
-    private boolean floatingButtonShown;
+    private boolean consoleAbaShown;
     private boolean overlayToggleZoomButtonShown;
     private TextView notificationOverlayView;
     private int requestedNotificationOverlayVisibility = View.GONE;
@@ -337,15 +336,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     public boolean isInputOnly = true;
     public boolean allowChangeMouseMode = true;
     private boolean onExternelDisplay = false;
-    private ImageButton floatingMenuButton;
-    private VidroIsland vidroIsland;
     private VidroSession vidroSession;
     private boolean composeSawKeyboard;
     private ImageButton overlayToggleButton;
-    private float floatingButtonDX, floatingButtonDY;
-    private boolean isButtonMoving = false;
     private static final float CLICK_ACTION_THRESHOLD = 5;
-    private float floatingButtonStartX, floatingButtonStartY;
+
+    // A aba: gatilho fixo do menu da sessão (Plano B / F2). Substitui a ilha e o
+    // botão flutuante — ver docs/planos/console/relatorios/F2-implementacao.md.
+    private View consoleAba;
 
     // Zoom button drag state
     private float zoomButtonDX, zoomButtonDY;
@@ -975,13 +973,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         gameMenuCallbacks = new GameMenu(this);
 
-        floatingMenuButton = findViewById(R.id.floatingMenuButton);
-
-        setupVidroIsland();
+        setupConsoleAba();
         setupComposeBar();
-        vidroSession = new VidroSession(this, prefConfig);
-        updateFloatingButtonVisibility(prefConfig.enableBackMenu && prefConfig.enableFloatingButton);
-        initFloatingButton();
+        vidroSession = new VidroSession(this);
 
         overlayToggleButton = findViewById(R.id.overlayToggleZoomButton);
         setupOverlayToggleButton();
@@ -1133,60 +1127,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         closeExternalDisplayControl();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void initFloatingButton() {
-        // Touch listener for drag and click
-        if (floatingMenuButton != null) {
-            floatingMenuButton.setOnTouchListener((view, event) -> {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        floatingButtonStartX = event.getRawX();
-                        floatingButtonStartY = event.getRawY();
-                        floatingButtonDX = view.getX() - event.getRawX();
-                        floatingButtonDY = view.getY() - event.getRawY();
-                        isButtonMoving = false;
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        float newX = event.getRawX() + floatingButtonDX;
-                        float newY = event.getRawY() + floatingButtonDY;
-
-                        // Check if it's a move or just a tap
-                        if (Math.abs(event.getRawX() - floatingButtonStartX) > CLICK_ACTION_THRESHOLD ||
-                                Math.abs(event.getRawY() - floatingButtonStartY) > CLICK_ACTION_THRESHOLD) {
-                            isButtonMoving = true;
-                        }
-
-                        // Ensure the button stays within screen bounds
-                        if (newX < 0) newX = 0;
-                        if (newY < 0) newY = 0;
-
-                        int maxOffsetX = getWindow().getDecorView().getWidth() - view.getWidth();
-                        if (newX > maxOffsetX) {
-                            newX = maxOffsetX;
-                        }
-
-                        int maxOffsetY = getWindow().getDecorView().getHeight() - view.getHeight();
-                        if (newY > maxOffsetY) {
-                            newY = maxOffsetY;
-                        }
-
-                        view.setX(newX);
-                        view.setY(newY);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        if (!isButtonMoving) {
-                            // It's a click event, show menu
-                            showGameMenu(null);
-                        }
-                        isButtonMoving = false;
-                        return true;
-                    default:
-                        return false;
-                }
-            });
-        }
-    }
-
     private void initKeyboardController(){
         keyBoardController = new KeyBoardController(conn,(FrameLayout)rootView, this);
         keyBoardController.refreshLayout();
@@ -1211,14 +1151,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     //显示隐藏虚拟特殊按键
 
-    /**
-     * A ilha de controle da sessão.
-     *
-     * Ela substitui o botão flutuante como superfície principal: aparece ao entrar,
-     * recolhe sozinha em pílula depois de 6,2 s e volta ao toque. Os blocos que já têm
-     * ação equivalente no app vão direto; o resto abre o menu existente, porque um botão
-     * que não faz nada é pior que um botão que não existe.
-     */
     /**
      * Mostra a tela de conectar com o nome do app e do host.
      *
@@ -1291,11 +1223,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
         }
 
-        if (vidroIsland != null) {
-            // A ilha sai da frente: com a barra aberta ela só disputaria espaço com o
-            // teclado, e o assunto agora é o texto.
-            vidroIsland.setOpen(false, true);
-        }
+        // A aba some enquanto a barra ocupa a borda superior — as duas por cima do
+        // vídeo ao mesmo tempo não é o desenho da B (B-CONSOLE.md §F2).
+        setConsoleAbaVisible(false);
+
+        refreshComposeBarMetrics();
     }
 
     private void closeComposeBar() {
@@ -1314,6 +1246,30 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             if (imm != null) {
                 imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
             }
+        }
+
+        setConsoleAbaVisible(true);
+    }
+
+    /**
+     * Latência e taxa de bits no cabeçalho da barra, só se o overlay de desempenho já
+     * estiver ligado — o mesmo texto que ele já calcula, nunca um número inventado
+     * (B-CONSOLE.md §F2: "não inventar '18 ms'").
+     */
+    private void refreshComposeBarMetrics() {
+        TextView metrica = findViewById(R.id.consoleBarraTextoMetrica);
+        if (metrica == null) {
+            return;
+        }
+
+        TextView fonte = prefConfig.enablePerfOverlayLite ? performanceOverlayLite : performanceOverlayBig;
+        CharSequence texto = (fonte != null && fonte.getVisibility() == View.VISIBLE) ? fonte.getText() : null;
+
+        if (texto != null && texto.length() > 0) {
+            metrica.setText(texto);
+            metrica.setVisibility(View.VISIBLE);
+        } else {
+            metrica.setVisibility(View.GONE);
         }
     }
 
@@ -1370,6 +1326,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
         });
 
+        wireComposeBarTecla(R.id.consoleKeyEsc, new short[]{KeyboardTranslator.VK_ESCAPE});
+        wireComposeBarTecla(R.id.consoleKeyTab, new short[]{KeyboardTranslator.VK_TAB});
+        wireComposeBarTecla(R.id.consoleKeyWin, new short[]{KeyboardTranslator.VK_LWIN});
+        wireComposeBarTecla(R.id.consoleKeyAltTab,
+                new short[]{KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_TAB});
+        wireComposeBarTecla(R.id.consoleKeyCtrlAltDel, new short[]{
+                KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_DELETE});
+
         // A ação de envio do próprio teclado faz a mesma coisa: quem digita com o teclado
         // físico da capa não deveria ter de largar as teclas para tocar num botão.
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -1386,73 +1350,56 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         });
     }
 
-    private void setupVidroIsland() {
-        vidroIsland = new VidroIsland(this);
-        if (!vidroIsland.isAvailable()) {
+    /** Fileira Esc·Tab·Win·Alt+Tab·Ctrl+Alt+Del da barra de texto (console_teclas_fileira.xml,
+     *  incluída em console_barra_texto.xml) — mesmas teclas que a guia manda, mecânica
+     *  intacta (sendKeys), sem precisar fechar diálogo nenhum aqui. */
+    private void wireComposeBarTecla(int viewId, final short[] keys) {
+        View key = findViewById(viewId);
+        if (key == null) {
+            return;
+        }
+        key.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendKeys(keys);
+            }
+        });
+    }
+
+    /**
+     * A aba: gatilho fixo do menu da sessão (B-CONSOLE.md §F2). Sempre presa ao centro
+     * da borda superior do vídeo — o toque abre a guia (GameMenu), e o mesmo toque a
+     * fecha de novo quando ela já está aberta.
+     */
+    private void setupConsoleAba() {
+        consoleAba = findViewById(R.id.consoleAba);
+        if (consoleAba == null) {
             return;
         }
 
-        vidroIsland.setAppName(appName != null ? appName : "");
-        vidroIsland.setQuality(VidroIsland.QUALITY_GOOD);
-
-        vidroIsland.setTile(R.id.vidroTileKeyboard, R.string.vidro_keyboard,
-                getString(R.string.vidro_compose_tile));
-        vidroIsland.setTileClickListener(R.id.vidroTileKeyboard, new View.OnClickListener() {
+        consoleAba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openComposeBar();
-            }
-        });
-
-        vidroIsland.setTile(R.id.vidroTileMouse, R.string.vidro_adjust,
-                getString(R.string.vidro_without_leaving));
-        vidroIsland.setTileClickListener(R.id.vidroTileMouse, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (vidroSession != null) {
-                    vidroSession.openSheet();
+                if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
+                    hideGameMenu();
+                } else {
+                    showGameMenu(null);
                 }
             }
         });
+    }
 
-        vidroIsland.setTile(R.id.vidroTileDetails, R.string.vidro_details, "");
-        vidroIsland.setTileClickListener(R.id.vidroTileDetails, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGameMenu(null);
-            }
-        });
+    /** GameMenu chama isto ao abrir/fechar a guia, para a aba subjacente sumir —
+     *  a guia desenha a própria alça de recolher (mesmo layout, chevron invertido),
+     *  então mostrar as duas ao mesmo tempo duplicaria o gatilho. */
+    public void setConsoleGuiaOpen(boolean open) {
+        setConsoleAbaVisible(!open);
+    }
 
-        View leave = findViewById(R.id.vidroIslandLeave);
-        if (leave != null) {
-            leave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+    private void setConsoleAbaVisible(boolean visible) {
+        if (consoleAba != null) {
+            consoleAba.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
-
-        // A pílula é alvo de toque: encostar nela devolve a ilha inteira.
-        View pill = vidroIsland.getPill();
-        if (pill != null) {
-            pill.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    vidroIsland.reopen();
-                }
-            });
-        }
-
-        // O botão flutuante era a porta de entrada do menu; com a ilha ele vira ruído.
-        if (floatingMenuButton != null) {
-            floatingMenuButton.setVisibility(View.GONE);
-        }
-
-        // Fechada até o vídeo chegar. Antes disso ela ficava por cima da tela de
-        // conectar — e chegava a recolher em pílula enquanto a conexão ainda estava
-        // sendo estabelecida, o que anunciava controles que não controlavam nada.
-        vidroIsland.hide();
     }
 
     public void toggleKeyboardController(){
@@ -1569,10 +1516,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             if (isInPictureInPictureMode()) {
                 isHidingOverlays = true;
 
-                floatingButtonShown = floatingMenuButton.isShown();
+                consoleAbaShown = consoleAba != null && consoleAba.isShown();
 
-                if (floatingButtonShown) {
-                    floatingMenuButton.setVisibility(View.GONE);
+                if (consoleAbaShown) {
+                    consoleAba.setVisibility(View.GONE);
                 }
 
                 overlayToggleZoomButtonShown = overlayToggleButton != null && overlayToggleButton.isShown();
@@ -1607,8 +1554,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             else {
                 isHidingOverlays = false;
 
-                if (floatingButtonShown) {
-                    floatingMenuButton.setVisibility(View.VISIBLE);
+                if (consoleAbaShown && consoleAba != null) {
+                    consoleAba.setVisibility(View.VISIBLE);
                 }
 
                 if (overlayToggleZoomButtonShown) {
@@ -2202,10 +2149,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     @Override
     protected void onDestroy() {
-        if (vidroIsland != null) {
-            vidroIsland.destroy();
-        }
-
         if (moque != null) {
             moque.parar();
             moque = null;
@@ -4264,17 +4207,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                             + " · " + getResources().getString(R.string.vidro_holding_support));
 
                     requestedNotificationOverlayVisibility = View.VISIBLE;
-
-                    if (vidroIsland != null) {
-                        vidroIsland.setQuality(VidroIsland.QUALITY_POOR);
-                    }
                 }
                 else if (connectionStatus == MoonBridge.CONN_STATUS_OKAY) {
                     requestedNotificationOverlayVisibility = View.GONE;
-
-                    if (vidroIsland != null) {
-                        vidroIsland.setQuality(VidroIsland.QUALITY_GOOD);
-                    }
                 }
 
                 if (!isHidingOverlays) {
@@ -4302,10 +4237,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                     vidroSession.onConnected();
                 }
 
-                // Agora sim: há vídeo, então há o que controlar.
-                if (vidroIsland != null) {
-                    vidroIsland.setOpen(true, false);
-                }
+                // Agora sim: há vídeo, então há o que controlar — a aba aparece.
+                setConsoleAbaVisible(true);
 
                 // Hide the mouse cursor now after a short delay.
                 // Doing it before dismissing the spinner seems to be undone
@@ -4827,6 +4760,26 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         updateZoomButtonAppearance();
     }
 
+    /** Estado atual do "Modo do toque" — a guia usa isto para rotular o bloco (Touchpad
+     *  / Toque direto), sem reler preferências do disco: a mudança feita por
+     *  {@link #toggleTouchscreenTrackpad()} vale só nesta sessão. */
+    public boolean isTouchscreenTrackpad() {
+        return prefConfig.touchscreenTrackpad;
+    }
+
+    /** "Modo do toque" da guia da sessão: alterna entre multitoque direto e trackpad,
+     *  reaproveitando {@link #applyMouseMode} para reconstruir touchContextMap — os
+     *  mesmos dois modos que {@link #selectMouseMode} já oferece (0 e 2). */
+    public void toggleTouchscreenTrackpad() {
+        applyMouseMode(prefConfig.touchscreenTrackpad ? 0 : 2);
+    }
+
+    /** Ponte pública para {@link #openComposeBar()}, usada pelo bloco "Barra de texto"
+     *  da guia (GameMenu vive num pacote diferente). */
+    public void openComposeBarFromGuia() {
+        openComposeBar();
+    }
+
     public void toggleHUD() {
         prefConfig.enablePerfOverlay = !prefConfig.enablePerfOverlay;
         if (prefConfig.enablePerfOverlay) {
@@ -4893,15 +4846,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         }
     }
 
-    private void updateFloatingButtonVisibility(boolean show) {
-        floatingMenuButton.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    public void toggleFloatingButtonVisibility() {
-        if (floatingMenuButton != null) {
-            updateFloatingButtonVisibility(floatingMenuButton.getVisibility() == View.GONE);
-        }
-    }
 
 
     // 设置surfaceView的圆角 setSurfaceviewCorner(UiHelper.dpToPx(this,24));

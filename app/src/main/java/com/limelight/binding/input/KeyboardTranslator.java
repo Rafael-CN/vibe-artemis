@@ -38,6 +38,10 @@ public class KeyboardTranslator implements InputManager.InputDeviceListener {
     public static final int VK_BACK_SPACE = 8;
     public static final int VK_EQUALS = 61;
     public static final int VK_ESCAPE = 27;
+    // Só usada como scancode bruto em GameMenu#sendKeys (bloco "Ctrl+Alt+Del" da
+    // guia da sessão, Plano B / F2) — não entra em nenhuma tabela de tradução de
+    // KeyEvent, então não muda o caminho de teclado físico existente.
+    public static final int VK_DELETE = 46;
     public static final int VK_F1 = 112;
     public static final int VK_F12 = 123;
 
