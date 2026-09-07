@@ -344,7 +344,17 @@
                     android:text="@string/game_menu_disconnect" />
             </LinearLayout>
 
-            <LinearLayout
+            <!--
+                Raiz FrameLayout, não LinearLayout (F6, achado registrado pela
+                verificação: mesmo defeito que consolePcChipAtual/settingsButton/
+                console_pc_dialog_row.xml já corrigiram) — android:foreground num
+                ViewGroup genérico só existe da API 23 em diante, e minSdk é 21; em
+                FrameLayout é nativo desde a API 1. O conteúdo (ícone acima do texto)
+                foi para um LinearLayout filho, para não repetir o bug que a F5 pegou
+                (View de foco por cima escondendo o segundo controle de uma fileira) —
+                aqui não há View irmã nenhuma, só o foreground da própria raiz.
+            -->
+            <FrameLayout
                 android:id="@+id/consoleBlocoEncerrar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -354,26 +364,32 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:foreground="@drawable/console_foco"
-                android:gravity="center"
-                android:minWidth="104dp"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/console_espaco_3"
-                android:paddingEnd="@dimen/console_espaco_3">
+                android:minWidth="104dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_console_encerrar" />
-
-                <TextView
-                    style="@style/ConsoleText.Rotulo"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/console_espaco_1"
-                    android:text="@string/console_guia_encerrar_pc"
-                    android:textColor="@color/console_destrutivo" />
-            </LinearLayout>
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/console_espaco_3"
+                    android:paddingEnd="@dimen/console_espaco_3">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_console_encerrar" />
+
+                    <TextView
+                        style="@style/ConsoleText.Rotulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/console_espaco_1"
+                        android:text="@string/console_guia_encerrar_pc"
+                        android:textColor="@color/console_destrutivo" />
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 
