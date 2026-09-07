@@ -91,6 +91,10 @@ public class VidroScreenshotTest {
         shoot("08-debug-info", R.layout.activity_axitest, 393, 852);
         shoot("09-endereco", R.layout.activity_add_computer_manually, 393, 852);
         shoot("10-ajustes", R.layout.activity_stream_settings, 393, 852);
+        // Plano B / F4: a Ajustes básica é Activity de verdade (segmentos e legendas só
+        // existem depois de onCreate) — shootActivity, não shoot.
+        shootActivity("10-ajustes-basico",
+                com.limelight.preferences.StreamSettingsBasico.class, 393, 852);
     }
 
     // ==================== paisagem · 852×393 ====================
@@ -128,6 +132,8 @@ public class VidroScreenshotTest {
         shoot("tab-04-sessao-guia", R.layout.console_guia, 1722, 1075);
         shoot("tab-05-sessao-barra-de-texto", R.layout.console_barra_texto, 1722, 1075, true);
         shoot("tab-06-cenas", R.layout.activity_profiles, 1722, 1075);
+        shootActivity("tab-10-ajustes-basico",
+                com.limelight.preferences.StreamSettingsBasico.class, 1722, 1075);
     }
 
     // ==================== celular alto · S22 Ultra ====================
