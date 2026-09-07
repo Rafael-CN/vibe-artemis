@@ -35,7 +35,15 @@
         android:paddingRight="@dimen/console_espaco_6"
         android:paddingBottom="@dimen/console_espaco_4">
 
-        <LinearLayout
+        <!--
+            FrameLayout, não LinearLayout (F6): android:foreground num ViewGroup
+            genérico só existe a partir da API 23 (minSdk é 21); em FrameLayout o
+            mesmo atributo é nativo desde a API 1 — sem precisar de uma View irmã por
+            cima (a técnica que quebrou a fileira de dois botões na F5 não se aplica
+            aqui, o foreground é da própria raiz). O conteúdo horizontal foi para um
+            LinearLayout filho, wrap_content como antes.
+        -->
+        <FrameLayout
             android:id="@+id/consolePcChipAtual"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
@@ -43,40 +51,45 @@
             android:clickable="true"
             android:contentDescription="@string/console_trocar_pc"
             android:focusable="true"
-            android:foreground="@drawable/console_foco"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/console_espaco_3"
-            android:paddingRight="@dimen/console_espaco_3">
+            android:foreground="@drawable/console_foco">
 
-            <ImageView
-                android:id="@+id/consolePcChipDot"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginEnd="@dimen/console_espaco_2"
-                android:layout_marginRight="@dimen/console_espaco_2"
-                android:importantForAccessibility="no"
-                android:src="@drawable/vidro_dot_on" />
-
-            <TextView
-                android:id="@+id/consolePcChipTexto"
-                style="@style/ConsoleText.Rotulo"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="ARTEMIS · on-line" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/console_espaco_3"
+                android:paddingRight="@dimen/console_espaco_3">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="@dimen/console_espaco_2"
-                android:layout_marginLeft="@dimen/console_espaco_2"
-                android:importantForAccessibility="no"
-                android:rotation="90"
-                android:src="@drawable/console_ic_chevron"
-                app:tint="@color/console_acento" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/consolePcChipDot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginEnd="@dimen/console_espaco_2"
+                    android:layout_marginRight="@dimen/console_espaco_2"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/vidro_dot_on" />
+
+                <TextView
+                    android:id="@+id/consolePcChipTexto"
+                    style="@style/ConsoleText.Rotulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="ARTEMIS · on-line" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="@dimen/console_espaco_2"
+                    android:layout_marginLeft="@dimen/console_espaco_2"
+                    android:importantForAccessibility="no"
+                    android:rotation="90"
+                    android:src="@drawable/console_ic_chevron"
+                    app:tint="@color/console_acento" />
+            </LinearLayout>
+        </FrameLayout>
 
         <!-- Chips esmaecidos dos demais PCs (fora do ar), preenchidos em código. -->
         <LinearLayout
@@ -108,35 +121,44 @@
             android:text="@string/vidro_scenes" />
 
         <!-- Ajustes é fatia F4 — o botão existe (44dp, ícone + rótulo) mas continua
-             abrindo a StreamSettings de sempre, ainda sem a pele da Console. -->
-        <LinearLayout
+             abrindo a StreamSettings de sempre, ainda sem a pele da Console.
+
+             FrameLayout, não LinearLayout (F6): mesma razão do consolePcChipAtual
+             acima — android:foreground num ViewGroup genérico só existe da API 23 em
+             diante, e em FrameLayout é nativo desde a API 1. -->
+        <FrameLayout
             android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:background="@drawable/console_chip_bg"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/console_foco"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/console_espaco_3"
-            android:paddingRight="@dimen/console_espaco_3">
+            android:foreground="@drawable/console_foco">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginEnd="@dimen/console_espaco_2"
-                android:layout_marginRight="@dimen/console_espaco_2"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_settings"
-                app:tint="@color/console_texto_2" />
-
-            <TextView
-                style="@style/ConsoleText.Rotulo2"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/vidro_settings" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/console_espaco_3"
+                android:paddingRight="@dimen/console_espaco_3">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="@dimen/console_espaco_2"
+                    android:layout_marginRight="@dimen/console_espaco_2"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_settings"
+                    app:tint="@color/console_texto_2" />
+
+                <TextView
+                    style="@style/ConsoleText.Rotulo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vidro_settings" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
     <!-- ================= corpo ================= -->

@@ -5,8 +5,15 @@
     estado). Construída em código (PcView#mostrarDialogoDePcs), não por um adapter —
     são no máximo poucos PCs, uma ListView/RecyclerView seria mais máquina que o
     problema pede.
+
+    Raiz é FrameLayout, não LinearLayout (F6): android:foreground num ViewGroup
+    genérico só existe a partir da API 23 (minSdk é 21) — em FrameLayout o mesmo
+    atributo é nativo desde a API 1, sem precisar de uma View irmã por cima (essa
+    técnica quebrou uma fileira de dois botões na F5 quando o container era
+    wrap_content; aqui nem se aplica, porque o foreground é da própria raiz). O
+    conteúdo horizontal (ponto + nome + estado) foi para um LinearLayout filho.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/consoleDialogRow"
     android:layout_width="match_parent"
@@ -15,37 +22,42 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/console_foco"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/console_espaco_4"
-    android:paddingTop="@dimen/console_espaco_3"
-    android:paddingRight="@dimen/console_espaco_4"
-    android:paddingBottom="@dimen/console_espaco_3">
+    android:foreground="@drawable/console_foco">
 
-    <ImageView
-        android:id="@+id/consoleDialogDot"
-        android:layout_width="9dp"
-        android:layout_height="9dp"
-        android:layout_marginEnd="@dimen/console_espaco_3"
-        android:layout_marginRight="@dimen/console_espaco_3"
-        android:importantForAccessibility="no"
-        android:src="@drawable/console_dot_neutro" />
-
-    <TextView
-        android:id="@+id/consoleDialogNome"
-        style="@style/ConsoleText.Rotulo"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        tools:text="ARTEMIS" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/console_espaco_4"
+        android:paddingTop="@dimen/console_espaco_3"
+        android:paddingRight="@dimen/console_espaco_4"
+        android:paddingBottom="@dimen/console_espaco_3">
 
-    <TextView
-        android:id="@+id/consoleDialogEstado"
-        style="@style/ConsoleText.Rotulo2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="on-line" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/consoleDialogDot"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginEnd="@dimen/console_espaco_3"
+            android:layout_marginRight="@dimen/console_espaco_3"
+            android:importantForAccessibility="no"
+            android:src="@drawable/console_dot_neutro" />
+
+        <TextView
+            android:id="@+id/consoleDialogNome"
+            style="@style/ConsoleText.Rotulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="ARTEMIS" />
+
+        <TextView
+            android:id="@+id/consoleDialogEstado"
+            style="@style/ConsoleText.Rotulo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="on-line" />
+    </LinearLayout>
+</FrameLayout>
