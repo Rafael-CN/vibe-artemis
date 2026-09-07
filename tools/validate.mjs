@@ -13,7 +13,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { writeFileSync, mkdirSync, existsSync, readdirSync, readFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -63,16 +63,24 @@ function resolveJavaHome() {
  * Lê os XML de resultado do Gradle e separa falha nova de falha já conhecida.
  * Os XML são a fonte confiável — o texto do console varia com a versão do Gradle.
  */
-function classifyTestFailures() {
+function classifyTestFailures(since) {
   const dir = join(REPO, 'app/build/test-results/testNonRoot_gameDebugUnitTest');
   const baselinePath = join(REPO, 'tools/test-baseline.json');
   const baseline = existsSync(baselinePath)
     ? new Set(JSON.parse(readFileSync(baselinePath, 'utf8')).knownFailures.map((k) => k.test))
     : new Set();
 
+  // Quando o Gradle falha ANTES de rodar teste — erro de compilação em app/src/test/, por
+  // exemplo — ele não escreve XML nenhum, e os arquivos que estão no diretório são da
+  // execução anterior, que passou. Ler aqueles é como fotografar o app de ontem: o gate
+  // dizia "nenhuma falha nova" sobre uma suíte que nem chegou a existir nesta rodada.
+  const xmls = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.xml')) : [];
+  const fresh = xmls.filter((f) => statSync(join(dir, f)).mtimeMs >= since);
+  if (!fresh.length) return { stale: true, newFailures: [], known: [] };
+
   const failed = [];
   if (existsSync(dir)) {
-    for (const file of readdirSync(dir).filter((f) => f.endsWith('.xml'))) {
+    for (const file of fresh) {
       const xml = readFileSync(join(dir, file), 'utf8');
       // Fatiar por <testcase é mais confiável que casar o elemento inteiro com regex:
       // testcases que passam vêm self-closing (`/>`), e uma alternância `/>|>...</testcase>`
@@ -94,6 +102,7 @@ function classifyTestFailures() {
   }
 
   return {
+    stale: false,
     newFailures: failed.filter((t) => !baseline.has(t)),
     known: failed.filter((t) => baseline.has(t)),
   };
@@ -160,6 +169,9 @@ for (const s of STAGES) {
   // aqui são literais deste arquivo, não entrada do usuário.
   const needsShell = isWin && bin.endsWith('.bat');
   const cmd = needsShell ? `${bin} ${args.join(' ')}` : bin;
+  // Marca d'água para separar resultado desta execução de resultado velho em disco.
+  // 2s de folga porque mtime de arquivo e relógio do processo não têm a mesma resolução.
+  const startedAt = Date.now() - 2000;
   const r = spawnSync(cmd, needsShell ? [] : args, {
     cwd: REPO,
     encoding: 'utf8',
@@ -180,7 +192,20 @@ for (const s of STAGES) {
   // por elas tornaria a definição de pronto inalcançável e treinaria todo mundo a
   // ignorar o gate. Reprovamos só o que é NOVO.
   if (s.name === 'test') {
-    const { newFailures, known } = classifyTestFailures();
+    const { stale, newFailures, known } = classifyTestFailures(startedAt);
+    // Sem XML desta execução, não há o que classificar: a suíte não rodou. Isso é
+    // reprovação normal do estágio, com a saída do Gradle, não "nenhuma falha nova".
+    if (stale) {
+      result.ok = false;
+      result.stage = s.name;
+      result.failures = output
+        .split('\n')
+        .filter((l) => /error:|FAILED|FAILURE:|Exception/i.test(l))
+        .slice(0, 40);
+      console.error('[FAIL] test — a suíte não chegou a rodar (nenhum resultado novo em app/build/test-results/)');
+      console.error(result.failures.join('\n'));
+      break;
+    }
     result.knownFailures = known;
     result.failures = newFailures;
     if (!newFailures.length) {
