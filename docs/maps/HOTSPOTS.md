@@ -12,14 +12,14 @@
 | [`app/src/main/java/com/limelight/binding/input/ControllerHandler.java`](../../app/src/main/java/com/limelight/binding/input/ControllerHandler.java) | 3473 | 72 | 3 | 12 |
 | [`app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecDecoderRenderer.java) | 2447 | 58 | 1 | 6 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/ControlStream.c) | 2077 | 40 | — | — |
-| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1620 | 75 | 4 | 31 |
+| [`app/src/main/java/com/limelight/PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1631 | 75 | 4 | 31 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c) | 1603 | 35 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/RtspConnection.c) | 1420 | 19 | — | — |
-| [`app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java) | 1206 | 40 | 2 | 2 |
+| [`app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java`](../../app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java) | 1206 | 40 | 3 | 2 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/VideoDepacketizer.c) | 1189 | 32 | — | — |
 | [`app/src/main/java/com/limelight/utils/Stereo3DRenderer.java`](../../app/src/main/java/com/limelight/utils/Stereo3DRenderer.java) | 1149 | 36 | 2 | 2 |
-| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1098 | 22 | 33 | 2 |
-| [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 2 | 10 |
+| [`app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java`](../../app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java) | 1104 | 22 | 33 | 2 |
+| [`app/src/main/java/com/limelight/preferences/StreamSettings.java`](../../app/src/main/java/com/limelight/preferences/StreamSettings.java) | 1088 | 34 | 1 | 10 |
 | [`app/src/main/java/com/limelight/utils/KeyMapper.java`](../../app/src/main/java/com/limelight/utils/KeyMapper.java) | 1077 | 2 | 3 | 0 |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/PlatformSockets.c) | 1001 | 24 | — | — |
 | [`app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h`](../../app/src/main/jni/moonlight-core/moonlight-common-c/src/Limelight.h) | 978 | 52 | — | — |
@@ -32,13 +32,13 @@
 
 | Arquivo | Fan-in | Linhas |
 |---|--:|--:|
-| `app/src/main/java/com/limelight/LimeLog.java` | 47 | 26 |
-| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 33 | 1098 |
+| `app/src/main/java/com/limelight/LimeLog.java` | 48 | 26 |
+| `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java` | 33 | 1104 |
 | `app/src/main/java/com/limelight/nvstream/http/ComputerDetails.java` | 22 | 240 |
 | `app/src/main/java/com/limelight/nvstream/jni/MoonBridge.java` | 15 | 445 |
 | `app/src/main/java/com/limelight/nvstream/http/NvApp.java` | 13 | 101 |
 | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java` | 13 | 939 |
-| `app/src/main/java/com/limelight/utils/UiHelper.java` | 11 | 296 |
+| `app/src/main/java/com/limelight/utils/UiHelper.java` | 12 | 296 |
 | `app/src/main/java/com/limelight/Game.java` | 10 | 4900 |
 | `app/src/main/java/com/limelight/nvstream/input/ControllerPacket.java` | 10 | 27 |
 | `app/src/main/java/com/limelight/profiles/ProfilesManager.java` | 10 | 266 |
@@ -58,7 +58,7 @@
 | Arquivo | Fan-out | Linhas |
 |---|--:|--:|
 | `app/src/main/java/com/limelight/Game.java` | 48 | 4900 |
-| `app/src/main/java/com/limelight/PcView.java` | 31 | 1620 |
+| `app/src/main/java/com/limelight/PcView.java` | 31 | 1631 |
 | `app/src/main/java/com/limelight/AppView.java` | 18 | 913 |
 | `app/src/main/java/com/limelight/ShortcutTrampoline.java` | 15 | 531 |
 | `app/src/main/java/com/limelight/computers/ComputerManagerService.java` | 13 | 969 |
@@ -112,7 +112,7 @@
 | TODO | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyAnalogStickFree.java:93` | implement square sick for simulations |
 | TODO | `app/src/main/java/com/limelight/binding/video/MediaCodecHelper.java:883` | Test some AV1 decoders |
 | TODO | `app/src/main/java/com/limelight/nvstream/http/NvHTTP.java:349` | Shield Hub uses HTTP for this and is able to get an accurate PairStatus with HTTP. |
-| TODO | `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java:530` | Collect some empirical data to see if these defaults make sense. |
+| TODO | `app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java:535` | Collect some empirical data to see if these defaults make sense. |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:781` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:842` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |
 | TODO | `app/src/main/jni/moonlight-core/moonlight-common-c/src/InputStream.c:1085` | Send this as unreliable sequenced when we have a delayed reliable retransmission thread |

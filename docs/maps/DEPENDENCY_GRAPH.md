@@ -8,27 +8,27 @@
 
 | Pacote | PageRank | Arquivos | Linhas |
 |---|--:|--:|--:|
-| `com.limelight` | 230.3 | 22 | 10837 |
-| `com.limelight.nvstream.http` | 106.9 | 6 | 1678 |
-| `com.limelight.utils` | 97.3 | 22 | 5747 |
-| `com.limelight.nvstream.jni` | 70.9 | 1 | 445 |
-| `com.limelight.nvstream` | 51.0 | 4 | 950 |
-| `com.limelight.preferences` | 50.0 | 10 | 3075 |
-| `com.limelight.nvstream.av.audio` | 36.5 | 1 | 16 |
+| `com.limelight` | 230.6 | 22 | 10854 |
+| `com.limelight.nvstream.http` | 106.5 | 6 | 1678 |
+| `com.limelight.utils` | 97.2 | 22 | 5747 |
+| `com.limelight.nvstream.jni` | 70.6 | 1 | 445 |
+| `com.limelight.nvstream` | 50.8 | 4 | 950 |
+| `com.limelight.preferences` | 50.1 | 11 | 3540 |
+| `com.limelight.nvstream.av.audio` | 36.4 | 1 | 16 |
 | `com.limelight.nvstream.av.video` | 31.4 | 1 | 22 |
-| `com.limelight.ui` | 29.0 | 13 | 1602 |
+| `com.limelight.ui` | 29.1 | 13 | 1602 |
 | `com.limelight.nvstream.input` | 25.0 | 3 | 51 |
-| `com.limelight.profiles` | 24.6 | 8 | 1019 |
+| `com.limelight.profiles` | 24.5 | 8 | 1019 |
 | `com.limelight.grid.assets` | 20.8 | 5 | 718 |
-| `com.limelight.computers` | 20.6 | 7 | 1598 |
+| `com.limelight.computers` | 20.5 | 7 | 1598 |
 | `com.limelight.binding.input` | 18.0 | 5 | 4308 |
+| `com.limelight.binding.video` | 15.3 | 5 | 3758 |
 | `com.limelight.nvstream.mdns` | 14.9 | 5 | 733 |
 | `com.limelight.binding.input.capture` | 14.5 | 6 | 403 |
-| `com.limelight.binding` | 14.4 | 1 | 15 |
-| `com.limelight.binding.video` | 14.3 | 5 | 3758 |
+| `com.limelight.binding` | 14.3 | 1 | 15 |
 | `com.limelight.grid` | 14.2 | 4 | 567 |
 | `com.limelight.binding.input.evdev` | 13.4 | 6 | 627 |
-| `com.limelight.binding.input.virtual_controller.keyboard` | 13.2 | 12 | 4198 |
+| `com.limelight.binding.input.virtual_controller.keyboard` | 13.1 | 12 | 4198 |
 | `com.limelight.binding.input.touch` | 12.9 | 4 | 1104 |
 | `com.limelight.binding.audio` | 11.5 | 1 | 234 |
 | `com.limelight.binding.crypto` | 11.5 | 1 | 260 |
@@ -47,15 +47,15 @@ Arestas com peso >= 3 (número de imports distintos entre os pacotes).
 graph LR
   cl["cl"] -->|33| cl_utils["cl.utils"]
   cl_utils["cl.utils"] -->|24| cl["cl"]
+  cl_preferences["cl.preferences"] -->|16| cl["cl"]
   cl["cl"] -->|15| cl_nvstream_http["cl.nvstream.http"]
-  cl_preferences["cl.preferences"] -->|14| cl["cl"]
   cl_profiles["cl.profiles"] -->|14| cl["cl"]
   cl["cl"] -->|13| cl_ui["cl.ui"]
   cl_computers["cl.computers"] -->|13| cl_nvstream_http["cl.nvstream.http"]
   cl["cl"] -->|11| cl_preferences["cl.preferences"]
   cl["cl"] -->|11| cl_profiles["cl.profiles"]
   cl_binding_input_virtual_controller_keyboard["cl.binding.input.virtual_controller.keyboard"] -->|11| cl["cl"]
-  cl_preferences["cl.preferences"] -->|10| cl_utils["cl.utils"]
+  cl_preferences["cl.preferences"] -->|11| cl_utils["cl.utils"]
   cl_utils["cl.utils"] -->|9| cl_nvstream_http["cl.nvstream.http"]
   cl_grid["cl.grid"] -->|8| cl["cl"]
   cl_nvstream["cl.nvstream"] -->|8| cl_nvstream_http["cl.nvstream.http"]
