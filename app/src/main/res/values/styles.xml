@@ -45,7 +45,7 @@
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
         <item name="alertDialogTheme">@style/VidroDialog</item>
-        <item name="android:alertDialogTheme">@style/VidroDialogPlatform</item>
+        <item name="android:alertDialogTheme">@style/ConsoleDialog</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">
@@ -72,7 +72,7 @@
         <item name="colorButtonNormal">@android:color/white</item>
         <!-- O menu da sessão sai daqui; sem isto ele abre com a cara do sistema. -->
         <item name="alertDialogTheme">@style/VidroDialog</item>
-        <item name="android:alertDialogTheme">@style/VidroDialogPlatform</item>
+        <item name="android:alertDialogTheme">@style/ConsoleDialog</item>
     </style>
 
     <!--
@@ -406,10 +406,11 @@
     </style>
 
     <!--
-        O GameMenu usa android.app.AlertDialog, não o do AppCompat — e um tema AppCompat
-        num diálogo de plataforma não pega. Este é o par do VidroDialog para esse lado.
+        A guia da sessão (GameMenu, Plano B / F2) usa um android.app.Dialog de
+        plataforma, não o AlertDialog do AppCompat — e um tema AppCompat num diálogo
+        de plataforma não pega. Este é o par do VidroDialog para esse lado.
     -->
-    <style name="VidroDialogPlatform" parent="android:Theme.Material.Dialog.Alert">
+    <style name="ConsoleDialog" parent="android:Theme.Material.Dialog.Alert">
         <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
         <item name="android:colorBackground">@color/vidro_surface_alt</item>
         <item name="android:textColorPrimary">@color/vidro_text</item>

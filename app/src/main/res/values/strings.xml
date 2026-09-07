@@ -782,8 +782,6 @@
     <string name="vidro_quality_good">everything flowing well</string>
     <string name="vidro_quality_holding">wobbling a little</string>
     <string name="vidro_quality_poor">the network is tight</string>
-    <string name="vidro_leave_screen">Leave the screen</string>
-    <string name="vidro_numbers_on_screen">Numbers on screen</string>
     <string name="vidro_step_talking">Talking to %1$s</string>
     <string name="vidro_step_reserving">Reserving the screen on the PC</string>
     <string name="vidro_step_video">Video arriving</string>
@@ -804,27 +802,11 @@
     <string name="vidro_code_expired">%1$s on the PC shows a new code every minute. The one you typed had already turned over.</string>
     <string name="vidro_where_to_look">Where to look</string>
     <string name="vidro_ask_new_code">Ask for a new code</string>
-    <string name="vidro_controls">controls</string>
     <string name="vidro_keyboard">Keyboard</string>
     <string name="vidro_mouse">Mouse</string>
     <string name="vidro_zoom">Zoom</string>
-    <string name="vidro_adjust">Adjust</string>
-    <string name="vidro_without_leaving">without leaving</string>
-    <string name="vidro_details">Details</string>
 
     <!-- Vidro - telas restantes -->
-    <string name="vidro_sheet_title">Settings for this session</string>
-    <string name="vidro_close">Close</string>
-    <string name="vidro_sheet_sub">They apply now, without cutting the video. The rest lives in Settings.</string>
-    <string name="vidro_bitrate">Bit rate</string>
-    <string name="vidro_frame_pacing">Frame pacing</string>
-    <string name="vidro_mouse_mode">Mouse mode</string>
-    <string name="vidro_pacing_smooth">Smooth</string>
-    <string name="vidro_pacing_balanced">Balanced</string>
-    <string name="vidro_pacing_latency">Least delay</string>
-    <string name="vidro_mouse_multitouch">Multitouch</string>
-    <string name="vidro_mouse_trackpad">Trackpad</string>
-    <string name="vidro_numbers_sub">latency, frames, decoding</string>
     <string name="vidro_scenes_sub">One tap swaps role, screen, rate and input. The active scene shows at the top of the session.</string>
     <string name="vidro_scene_active">active scene</string>
     <string name="vidro_scene_save">Save the current session as a scene</string>
@@ -845,7 +827,6 @@
     <string name="vidro_searching_sub">No PC has answered yet. Leave the app open — it keeps listening.</string>
     <string name="vidro_search_by_address">Add a PC by address</string>
     <string name="vidro_search_again">Look again</string>
-    <string name="vidro_next_session">applies to the next session</string>
     <string name="vidro_pc_address">PC address</string>
     <string name="vidro_address_help">IP or name on the network. The default port is 47989 — only change it if you changed it on the host.</string>
     <string name="vidro_connect">Connect</string>
@@ -854,9 +835,26 @@
     <string name="vidro_no_scenes_sub">Save the current session below and it becomes one.</string>
     <string name="title_allow_portrait_session">Allow portrait during the session</string>
     <string name="summary_allow_portrait_session">The video letterboxes to fit and the keyboard opens below it. Turn off to keep the session locked to landscape.</string>
-    <string name="vidro_compose_tile">type to send</string>
     <string name="vidro_compose_hint">Type here and send it all at once</string>
     <string name="vidro_compose_send">Send</string>
+
+    <!-- ================= Console — F2: guia, aba, barra de texto ================= -->
+    <string name="console_abrir_menu">Open the session menu</string>
+    <string name="console_guia_barra_texto">Text bar</string>
+    <string name="console_modo_touchpad">Touchpad</string>
+    <string name="console_modo_toque_direto">Direct touch</string>
+    <string name="console_guia_teclas_especiais">Special keys</string>
+    <string name="console_guia_girar_tela">Rotate screen</string>
+    <string name="console_guia_estatisticas">Statistics</string>
+    <string name="console_guia_controles_tela">On-screen controls</string>
+    <string name="console_guia_encerrar_pc">End on the PC</string>
+    <string name="console_guia_voltar">Back</string>
+    <string name="console_tecla_esc">Esc</string>
+    <string name="console_tecla_tab">Tab</string>
+    <string name="console_tecla_win">Win</string>
+    <string name="console_tecla_alt_tab">Alt+Tab</string>
+    <string name="console_tecla_ctrl_alt_del">Ctrl+Alt+Del</string>
+    <string name="console_barra_texto_titulo">TEXT BAR</string>
 
     <!--
         Plano B / F3 — "Início" (tablet) e "Computadores"/"Apps" (celular).

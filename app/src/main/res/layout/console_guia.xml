@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A guia: conteúdo do menu da sessão (B-CONSOLE.md §F2). Vive dentro de um
+    android.app.Dialog comum (tema ConsoleDialog, Gravity.TOP, largura cheia,
+    sem dim) — a única classe de janela que comprovadamente aparece por cima da
+    SurfaceView no S22 do dono do fork. GameMenu infla isto como conteúdo do
+    Dialog; nenhuma destas Views mora na árvore da Activity.
+
+    Duas fileiras dividem o mesmo espaço de rolagem: a fileira padrão (8 blocos,
+    menos Picture-in-picture — ver F2-implementacao.md, não existe ação hoje para
+    esse bloco) e a fileira de teclas especiais, que a troca quando "Teclas
+    especiais" é tocado. Desconectar/Encerrar no PC ficam fixos à direita, fora da
+    rolagem (NOTA.md §3).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/consoleGuiaBarra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/console_guia_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/console_espaco_3"
+        android:paddingEnd="@dimen/console_espaco_3"
+        android:paddingTop="@dimen/console_espaco_2"
+        android:paddingBottom="@dimen/console_espaco_2">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <!-- ================= fileira padrão ================= -->
+            <HorizontalScrollView
+                android:id="@+id/consoleGuiaScrollBlocos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/consoleGuiaBlocos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoTeclado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_android_keyboard" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/vidro_keyboard" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoBarraTexto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_barra_texto" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_barra_texto" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoModoToque"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_modo_toque" />
+
+                        <TextView
+                            android:id="@+id/consoleBlocoModoToqueRotulo"
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            tools:text="Touchpad" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoTeclasEspeciais"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_teclas_especiais" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_teclas_especiais" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoGirar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_girar_tela" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_girar_tela" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoEstatisticas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_estatisticas" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_estatisticas" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoControles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/console_espaco_1"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="96dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_controles_tela" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_controles_tela" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- ================= fileira de teclas especiais ================= -->
+            <HorizontalScrollView
+                android:id="@+id/consoleGuiaScrollTeclas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/consoleGuiaTeclas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/consoleBlocoVoltar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/console_foco"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="88dp"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/console_espaco_2"
+                        android:paddingEnd="@dimen/console_espaco_2">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_console_chevron_left" />
+
+                        <TextView
+                            style="@style/ConsoleText.Rotulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/console_espaco_1"
+                            android:text="@string/console_guia_voltar" />
+                    </LinearLayout>
+
+                    <include layout="@layout/console_teclas_fileira" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </FrameLayout>
+
+        <View
+            android:layout_width="@dimen/vidro_stroke_width"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/console_espaco_3"
+            android:layout_marginEnd="@dimen/console_espaco_3"
+            android:background="@color/console_borda" />
+
+        <!-- ================= fixos: Desconectar · Encerrar no PC ================= -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/consoleBlocoDesconectar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/console_foco"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minWidth="96dp"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/console_espaco_2"
+                android:paddingEnd="@dimen/console_espaco_2">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_console_desconectar" />
+
+                <TextView
+                    style="@style/ConsoleText.Rotulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/console_espaco_1"
+                    android:text="@string/game_menu_disconnect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/consoleBlocoEncerrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/console_espaco_2"
+                android:background="@drawable/console_bloco_destrutivo_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/console_foco"
+                android:gravity="center"
+                android:minWidth="104dp"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/console_espaco_3"
+                android:paddingEnd="@dimen/console_espaco_3">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_console_encerrar" />
+
+                <TextView
+                    style="@style/ConsoleText.Rotulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/console_espaco_1"
+                    android:text="@string/console_guia_encerrar_pc"
+                    android:textColor="@color/console_destrutivo" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ================= alça de recolher ================= -->
+    <include
+        android:id="@+id/consoleGuiaAlca"
+        layout="@layout/console_aba"
+        android:layout_width="@dimen/console_aba_w"
+        android:layout_height="@dimen/console_aba_h"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

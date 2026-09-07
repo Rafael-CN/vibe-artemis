@@ -1,38 +1,33 @@
 package com.limelight;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.limelight.binding.input.GameInputDevice;
 import com.limelight.binding.input.KeyboardTranslator;
-import com.limelight.preferences.PreferenceConfiguration;
-import com.limelight.utils.KeyConfigHelper;
-import com.limelight.utils.KeyMapper;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Provide options for ongoing Game Stream.
+ * A guia da sessão (Plano B / "Console" — B-CONSOLE.md §F2).
  * <p>
- * Shown on back action in game activity.
+ * Substitui a lista do {@code AlertDialog} que o Quick Menu usava até aqui por uma
+ * barra horizontal de blocos, dentro do MESMO tipo de janela: um {@link Dialog} comum,
+ * porque é a única classe de janela que comprovadamente aparece por cima da
+ * {@code SurfaceView} no S22 Ultra do dono do fork (overlay de View na mesma janela da
+ * Activity, sobre vídeo vivo, simplesmente não desenha ali — já custou quatro entregas
+ * quebradas antes desta).
+ * <p>
+ * Cada bloco chama a ação que o app já tem — nenhuma ação nova nasce aqui. O bloco
+ * "Picture-in-picture" do mockup não existe nesta implementação porque não há, hoje,
+ * uma ação de PiP manual equivalente (só entrada automática ao sair do app); ver
+ * docs/planos/console/relatorios/F2-implementacao.md.
  */
 public class GameMenu implements Game.GameMenuCallbacks {
 
@@ -43,6 +38,13 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
     public static final String KEY_NAME = "special_key"; // 要保存的键名称
 
+    /**
+     * Uma ação de bloco. Mantido público porque {@link GameInputDevice#getGameMenuOptions()}
+     * (opções específicas de controle, por exemplo alternar emulação de mouse num
+     * gamepad — fora do escopo desta fatia, que é sobre a sessão, não sobre entrada)
+     * ainda devolve uma lista deste tipo a partir de {@code ControllerHandler}. A guia
+     * desta fatia não lê essa lista — ver o relatório da F2 para a decisão.
+     */
     public static class MenuOption {
         private final String label;
         private final boolean withGameFocus;
@@ -62,7 +64,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
     private final Game game;
     private final Context dialogScreenContext;
 
-    private AlertDialog currentDialog;
+    private Dialog guiaDialog;
 
     public GameMenu(Game game, Context dialogScreenContext) {
         this.game = game;
@@ -74,331 +76,224 @@ public class GameMenu implements Game.GameMenuCallbacks {
         this.dialogScreenContext = game;
     }
 
-    private String getString(int id) {
-        return game.getResources().getString(id);
-    }
-
-
     private void sendKeys(short[] keys) {
         game.sendKeys(keys);
     }
 
+    /**
+     * Roda uma ação depois de garantir que a janela da Game recuperou o foco — o
+     * Dialog da guia rouba o foco da janela enquanto está de pé, e uma ação que lê
+     * estado de jogo (girar tela, estatísticas etc.) correndo antes desse foco voltar
+     * historicamente pegava a Activity num estado inconsistente.
+     */
     private void runWithGameFocus(Runnable runnable) {
-        // Ensure that the Game activity is still active (not finished)
         if (game.isFinishing()) {
             return;
         }
-        // Check if the game window has focus again, if not try again after delay
         if (!game.hasWindowFocus() && dialogScreenContext instanceof Game) {
             new Handler().postDelayed(() -> runWithGameFocus(runnable), TEST_GAME_FOCUS_DELAY);
             return;
         }
-        // Game Activity has focus, run runnable
         runnable.run();
     }
 
-    private void run(MenuOption option) {
-        if (option.runnable == null) {
-            return;
-        }
+    // ==================== a guia ====================
 
-        if (option.withGameFocus) {
-            runWithGameFocus(option.runnable);
-        } else {
-            option.runnable.run();
-        }
-    }
-
-    /**
-     * Lets the user compose text locally and send it to the host in one go.
-     *
-     * Typing straight into the stream is painful: every keystroke travels as a scancode, so
-     * the result depends on the host's keyboard layout, and the on-screen keyboard hides
-     * what you are typing. Here the text is composed on the device — no traffic at all until
-     * you confirm — and then sent as Unicode code points, which land correctly regardless of
-     * the layout configured on the host.
-     */
-    private void showSendTextDialog() {
-        int themeResId = game.getApplicationInfo().theme;
-        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
-
-        final EditText input = new EditText(themedContext);
-        input.setHint(R.string.send_text_hint);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        input.setMinLines(2);
-        input.setMaxLines(6);
-        input.setGravity(Gravity.TOP | Gravity.START);
-
-        int padding = (int) (16 * themedContext.getResources().getDisplayMetrics().density);
-        FrameLayout wrapper = new FrameLayout(themedContext);
-        wrapper.setPadding(padding, padding / 2, padding, 0);
-        wrapper.addView(input);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(themedContext);
-        builder.setTitle(R.string.game_menu_send_text);
-        builder.setView(wrapper);
-
-        builder.setPositiveButton(R.string.send_text_confirm, (dialog, which) -> {
-            String text = input.getText().toString();
-            if (!text.isEmpty()) {
-                game.sendTextBlock(text);
-            }
-            hideMenu();
-        });
-        builder.setNegativeButton(R.string.game_menu_cancel, (dialog, which) -> hideMenu());
-        builder.setOnCancelListener(dialog -> hideMenu());
-
-        if (currentDialog != null) {
-            currentDialog.dismiss();
-        }
-        currentDialog = builder.show();
-
-        input.requestFocus();
-    }
-
-    private void showMenuDialog(String title, MenuOption[] options) {
-        int themeResId = game.getApplicationInfo().theme;
-
-        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
-        AlertDialog.Builder builder = new AlertDialog.Builder(themedContext);
-        builder.setTitle(title);
-
-        // Linha própria em vez de simple_list_item_1: aquele layout traz Roboto e o
-        // espaçamento do sistema para dentro do menu.
-        final ArrayAdapter<String> actions = new ArrayAdapter<>(themedContext, R.layout.vidro_menu_row);
-
-        builder.setAdapter(actions, (dialog, which) -> {
-            String label = actions.getItem(which);
-            for (MenuOption option : options) {
-                if (label != null && label.equals(option.label)) {
-                    run(option);
-                    break;
-                }
-            }
-        });
-
-        builder.setOnCancelListener(dialog -> hideMenu());
-
-        if (currentDialog != null) {
-            currentDialog.dismiss();
-        }
-        currentDialog = builder.show();
-
-        Window window = currentDialog.getWindow();
-
-        if (window != null) {
-            View decorView = window.getDecorView();
-            decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-
-                    decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        for (MenuOption option : options) {
-                            actions.add(option.label);
-                        }
-                        actions.notifyDataSetChanged();
-                    });
-                }
-            });
-        }
-    }
-
-    private void showSpecialKeysMenu() {
-        List<MenuOption> options = new ArrayList<>();
-
-        if(!PreferenceConfiguration.readPreferences(game).disableDefaultExtraKeys){
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_esc),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_ESCAPE})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_f11),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_F11})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_alt_f4),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_F4})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_alt_enter),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_RETURN})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_ctrl_v),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_V})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_win),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_win_d),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN, KeyboardTranslator.VK_D})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_win_g),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN, KeyboardTranslator.VK_G})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_ctrl_alt_tab),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_TAB})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_shift_tab),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_TAB})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_win_shift_left),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN, KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_LEFT})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_ctrl_alt_shift_f1),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL,KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_F1})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_ctrl_alt_shift_f12),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL,KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_F12})));
-
-            options.add(new MenuOption(getString(R.string.game_menu_send_keys_alt_b),
-                    () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN, KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_B})));
-        }
-
-        // Import custom shortcuts
-        SharedPreferences preferences = game.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
-        String value = preferences.getString(KEY_NAME,"");
-
-        if(!TextUtils.isEmpty(value)){
-            try {
-                KeyConfigHelper.ShortcutFile shortcutFile = KeyConfigHelper.parseShortcutFile(value);
-                if (shortcutFile != null && shortcutFile.data != null && !shortcutFile.data.isEmpty()) {
-                    List<KeyConfigHelper.Shortcut> data = shortcutFile.data;
-                    for (KeyConfigHelper.Shortcut sc : data) {
-                        List<String> keys = sc.keys;
-                        short[] keyCodes = new short[keys.size()];
-
-                        for (int i = 0; i < keys.size(); i++) {
-                            String code = keys.get(i);
-                            int keycode;
-
-                            if (code.startsWith("0x")) {               // literal hex value
-                                keycode = Integer.parseInt(code.substring(2), 16);
-                            } else if (code.startsWith("VK_")) {       // symbolic constant in KeyMapper
-                                Field field = KeyMapper.class.getDeclaredField(code);
-                                keycode = field.getInt(null);
-                            } else {                                   // unsupported
-                                throw new IllegalArgumentException("Unknown key code: " + code);
-                            }
-                            keyCodes[i] = (short) keycode;
-                        }
-
-                        // Whatever MenuOption looks like in your project
-                        MenuOption option = new MenuOption(sc.name, () -> sendKeys(keyCodes));
-                        options.add(option);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(game,getString(R.string.wrong_import_format),Toast.LENGTH_SHORT).show();
-            }
-        }
-        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
-
-        showMenuDialog(getString(R.string.game_menu_send_keys), options.toArray(new MenuOption[options.size()]));
-    }
-
-    private void showAdvancedMenu(GameInputDevice device) {
-        List<MenuOption> options = new ArrayList<>();
-        if (game.allowChangeMouseMode) {
-            options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
-        }
-        
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_hud), true, game::toggleHUD));
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_floating_button), true, game::toggleFloatingButtonVisibility));
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
-        if (!game.isOnExternalDisplay()) {
-            options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_model), true, game::toggleVirtualController));
-        }
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
-        options.add(new MenuOption(getString(R.string.game_menu_task_manager), true, () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_ESCAPE})));
-
-        // **FIXED:** This is a UI navigation action, so it should not use withGameFocus.
-        options.add(new MenuOption(getString(R.string.game_menu_send_keys), () -> {
-            hideMenu();
-            showSpecialKeysMenu();
-        }));
-
-        options.add(new MenuOption(getString(R.string.game_menu_switch_touch_sensitivity_model), true, game::switchTouchSensitivity));
-        if (device != null) {
-            options.addAll(device.getGameMenuOptions());
-        }
-        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
-        showMenuDialog(getString(R.string.game_menu_advanced), options.toArray(new MenuOption[options.size()]));
-    }
-
-    private void showServerCmd(ArrayList<String> serverCmds) {
-        List<MenuOption> options = new ArrayList<>();
-
-        AtomicInteger index = new AtomicInteger(0);
-        for (String str : serverCmds) {
-            final int finalI = index.getAndIncrement();
-            options.add(new MenuOption("> " + str, true, () -> game.sendExecServerCmd(finalI)));
-        };
-
-        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
-
-        showMenuDialog(getString(R.string.game_menu_server_cmd), options.toArray(new MenuOption[options.size()]));
-    }
-
+    @Override
     public void showMenu(GameInputDevice device) {
-        List<MenuOption> options = new ArrayList<>();
-
-        options.add(new MenuOption(getString(R.string.game_menu_disconnect), game::disconnect));
-
-        options.add(new MenuOption(getString(R.string.game_menu_quit_session), game::quit));
-
-        options.add(new MenuOption(getString(R.string.game_menu_upload_clipboard), true,
-                () -> game.sendClipboard(true)));
-
-        options.add(new MenuOption(getString(R.string.game_menu_fetch_clipboard), true,
-                () -> game.getClipboard(0)));
-
-        options.add(new MenuOption(getString(R.string.game_menu_server_cmd), true,
-                () -> {
-                    ArrayList<String> serverCmds = game.getServerCmds();
-                    if (serverCmds.isEmpty()) {
-                        int themeResId = game.getApplicationInfo().theme;
-                        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
-                        new AlertDialog.Builder(themedContext)
-                                .setTitle(R.string.game_dialog_title_server_cmd_empty)
-                                .setMessage(R.string.game_dialog_message_server_cmd_empty)
-                                .show();
-                    } else {
-                        hideMenu();
-                        this.showServerCmd(serverCmds);
-                    }
-                }));
-
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true,
-                game::toggleKeyboard));
-
-        options.add(new MenuOption(getString(R.string.game_menu_send_text), false,
-                this::showSendTextDialog));
-
-        options.add(new MenuOption(getString(game.isZoomModeEnabled() ? R.string.game_menu_disable_zoom_mode : R.string.game_menu_enable_zoom_mode), true,
-                game::toggleZoomMode));
-
-        if (dialogScreenContext == game) {
-            options.add(new MenuOption(getString(R.string.game_menu_rotate_screen), true,
-                    game::rotateScreen));
+        if (guiaDialog != null && guiaDialog.isShowing()) {
+            guiaDialog.dismiss();
         }
 
-        options.add(new MenuOption(getString(R.string.game_menu_advanced), true,
-                () -> showAdvancedMenu(device)));
+        int themeResId = game.getApplicationInfo().theme;
+        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
 
-        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
+        guiaDialog = new Dialog(themedContext, R.style.ConsoleDialog);
+        guiaDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        guiaDialog.setContentView(R.layout.console_guia);
+        guiaDialog.setCanceledOnTouchOutside(true);
+        guiaDialog.setCancelable(true);
 
-        showMenuDialog(getString(R.string.quick_menu_title), options.toArray(new MenuOption[options.size()]));
+        Window window = guiaDialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.gravity = Gravity.TOP;
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(lp);
+        }
+
+        wireGuia(guiaDialog, device);
+
+        // Esc fecha a guia — o Dialog já fecha sozinho no Voltar (setCancelable).
+        guiaDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ESCAPE && event.getAction() == KeyEvent.ACTION_UP) {
+                dialog.dismiss();
+                return true;
+            }
+            return false;
+        });
+
+        guiaDialog.setOnDismissListener(dialog -> game.setConsoleGuiaOpen(false));
+
+        guiaDialog.show();
+        game.setConsoleGuiaOpen(true);
     }
 
     @Override
     public void hideMenu() {
-        if (currentDialog != null && currentDialog.isShowing()) {
-            currentDialog.dismiss();
+        if (guiaDialog != null && guiaDialog.isShowing()) {
+            guiaDialog.dismiss();
         }
-        currentDialog = null;
+        guiaDialog = null;
     }
 
     @Override
     public boolean isMenuOpen() {
-        return currentDialog != null && currentDialog.isShowing();
+        return guiaDialog != null && guiaDialog.isShowing();
+    }
+
+    /**
+     * Liga cada bloco à ação que já existe no app. A ordem segue NOTA.md §2: Teclado ·
+     * Barra de texto · Modo do toque · Teclas especiais · Girar a tela · Estatísticas ·
+     * Controles na tela, com Desconectar/Encerrar no PC fixos à direita.
+     */
+    private void wireGuia(final Dialog dialog, final GameInputDevice device) {
+        // A alça de recolher: mesmo layout da aba, chevron pra cima, fecha ao toque.
+        View alca = dialog.findViewById(R.id.consoleGuiaAlca);
+        if (alca != null) {
+            alca.setVisibility(View.VISIBLE);
+            android.widget.ImageView chevron = dialog.findViewById(R.id.consoleAbaChevron);
+            if (chevron != null) {
+                chevron.setImageResource(R.drawable.ic_console_chevron_up);
+            }
+            alca.setOnClickListener(v -> dialog.dismiss());
+        }
+
+        final View blocosScroll = dialog.findViewById(R.id.consoleGuiaScrollBlocos);
+        final View teclasScroll = dialog.findViewById(R.id.consoleGuiaScrollTeclas);
+
+        onBlock(dialog, R.id.consoleBlocoTeclado, true, game::toggleKeyboard);
+
+        onBlock(dialog, R.id.consoleBlocoBarraTexto, true, game::openComposeBarFromGuia);
+
+        final TextView modoToqueRotulo = dialog.findViewById(R.id.consoleBlocoModoToqueRotulo);
+        refreshModoToqueLabel(modoToqueRotulo);
+        onBlock(dialog, R.id.consoleBlocoModoToque, true, game::toggleTouchscreenTrackpad);
+
+        // "Teclas especiais" troca a fileira em vez de fechar a guia.
+        View teclasEspeciais = dialog.findViewById(R.id.consoleBlocoTeclasEspeciais);
+        if (teclasEspeciais != null) {
+            teclasEspeciais.setOnClickListener(v -> {
+                if (blocosScroll != null) blocosScroll.setVisibility(View.GONE);
+                if (teclasScroll != null) {
+                    teclasScroll.setVisibility(View.VISIBLE);
+                    View primeiraTecla = dialog.findViewById(R.id.consoleBlocoVoltar);
+                    if (primeiraTecla != null) {
+                        primeiraTecla.requestFocus();
+                    }
+                }
+            });
+        }
+
+        View voltar = dialog.findViewById(R.id.consoleBlocoVoltar);
+        if (voltar != null) {
+            voltar.setOnClickListener(v -> {
+                if (teclasScroll != null) teclasScroll.setVisibility(View.GONE);
+                if (blocosScroll != null) {
+                    blocosScroll.setVisibility(View.VISIBLE);
+                    if (teclasEspeciais != null) {
+                        teclasEspeciais.requestFocus();
+                    }
+                }
+            });
+        }
+
+        wireTecla(dialog, R.id.consoleKeyEsc, new short[]{KeyboardTranslator.VK_ESCAPE});
+        wireTecla(dialog, R.id.consoleKeyTab, new short[]{KeyboardTranslator.VK_TAB});
+        wireTecla(dialog, R.id.consoleKeyWin, new short[]{KeyboardTranslator.VK_LWIN});
+        wireTecla(dialog, R.id.consoleKeyAltTab,
+                new short[]{KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_TAB});
+        wireTecla(dialog, R.id.consoleKeyCtrlAltDel, new short[]{
+                KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_LMENU, KeyboardTranslator.VK_DELETE});
+
+        // Girar a tela: só faz sentido dentro da própria Game (não no display externo,
+        // igual ao Quick Menu de antes desta fatia).
+        View girar = dialog.findViewById(R.id.consoleBlocoGirar);
+        if (girar != null) {
+            if (dialogScreenContext == game) {
+                onBlock(dialog, R.id.consoleBlocoGirar, true, game::rotateScreen);
+            } else {
+                girar.setVisibility(View.GONE);
+            }
+        }
+
+        onBlock(dialog, R.id.consoleBlocoEstatisticas, true, game::toggleHUD);
+
+        if (!game.isOnExternalDisplay()) {
+            onBlock(dialog, R.id.consoleBlocoControles, true, game::toggleVirtualController);
+        } else {
+            View controles = dialog.findViewById(R.id.consoleBlocoControles);
+            if (controles != null) {
+                controles.setVisibility(View.GONE);
+            }
+        }
+
+        onBlock(dialog, R.id.consoleBlocoDesconectar, false, game::disconnect);
+
+        onBlock(dialog, R.id.consoleBlocoEncerrar, false, game::quit);
+
+        // Foco inicial no primeiro bloco (B-CONSOLE.md §F2).
+        View primeiro = dialog.findViewById(R.id.consoleBlocoTeclado);
+        if (primeiro != null) {
+            primeiro.post(primeiro::requestFocus);
+        }
+    }
+
+    private void refreshModoToqueLabel(TextView rotulo) {
+        if (rotulo == null) {
+            return;
+        }
+        rotulo.setText(game.isTouchscreenTrackpad()
+                ? R.string.console_modo_touchpad
+                : R.string.console_modo_toque_direto);
+    }
+
+    /**
+     * Fecha a guia e roda a ação — nessa ordem, sempre. {@code runWithGameFocus}
+     * espera {@code game.hasWindowFocus()} voltar a {@code true}, e isso só acontece
+     * DEPOIS que o Dialog é dispensado (mostrar um Dialog tira o foco de janela da
+     * Activity por baixo). Fechar a guia dentro da própria ação — como o código fazia
+     * antes desta correção — trava num laço que nunca termina: a ação some enquanto
+     * espera o foco, e o foco nunca volta porque é a mesma ação que fecharia a guia.
+     * Achado fotografando a guia de verdade (input keyevent trava em "Modo do
+     * toque"/"Estatísticas" sem soltar); ver docs/planos/console/relatorios/F2-implementacao.md.
+     */
+    private void onBlock(Dialog dialog, int viewId, boolean withGameFocus, Runnable action) {
+        View block = dialog.findViewById(viewId);
+        if (block == null) {
+            return;
+        }
+        block.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (withGameFocus) {
+                runWithGameFocus(action);
+            } else {
+                action.run();
+            }
+        });
+    }
+
+    private void wireTecla(Dialog dialog, int viewId, short[] keys) {
+        View key = dialog.findViewById(viewId);
+        if (key == null) {
+            return;
+        }
+        key.setOnClickListener(v -> {
+            dialog.dismiss();
+            sendKeys(keys);
+        });
     }
 }

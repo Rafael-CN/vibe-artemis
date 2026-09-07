@@ -27,12 +27,18 @@
  *   ajustes         StreamSettings, sem moque — é a árvore de preferências de hoje
  *   adicionar       AddComputerManually, sem moque
  *   cenas           ProfilesActivity, sem moque
- *   sessao          Game com MoqueDeStream (superfície preta, sem host)
- *   sessao-menu     idem, depois de KEYCODE_BACK (abre o menu — enableBackMenu é true
- *                   por padrão; é o mesmo caminho que o usuário tem hoje sem tocar em
- *                   nenhum botão flutuante, que fica invisível por padrão)
- *   sessao-texto    idem, depois de tocar no bloco "Teclado" da ilha da sessão
- *                   (abre a barra de texto do E01 — openComposeBar)
+ *   sessao              Game com MoqueDeStream (superfície preta, sem host) — a aba
+ *                       (console_aba.xml) em repouso no centro da borda superior
+ *   sessao-menu         idem, depois de KEYCODE_BACK — enableBackMenu é true por
+ *                       padrão; abre a guia (console_guia.xml, Plano B / F2), não mais
+ *                       a lista de antes
+ *   sessao-guia         idem, depois de um toque na aba (o gatilho de verdade da guia)
+ *   sessao-guia-teclas  idem, depois de abrir a guia e navegar por D-pad (3×
+ *                       DPAD_RIGHT + ENTER) até o bloco "Teclas especiais", que troca
+ *                       a fileira pelas teclas Esc·Tab·Win·Alt+Tab·Ctrl+Alt+Del
+ *   sessao-guia-fecha   idem, depois de abrir a guia e fechar com KEYCODE_ESCAPE
+ *   sessao-texto        idem, depois de abrir a guia e tocar no bloco "Barra de texto"
+ *                       (abre a barra de texto do E01 — openComposeBar)
  *
  * As três rotas de sessão giram o `s22u` (celular) para paisagem antes de abrir —
  * sem isto `Game` renderiza na orientação corrente do aparelho (autoOrientation), que
@@ -282,6 +288,31 @@ function tocarEm(serial, x, y) {
   adb(serial, 'shell', 'input', 'tap', String(x), String(y));
 }
 
+/** O nó com resource-id terminando no sufixo dado está com focused="true"? */
+function estaFocado(xml, sufixoId) {
+  for (const trecho of xml.split('<node ')) {
+    const idMatch = trecho.match(/resource-id="([^"]*)"/);
+    if (!idMatch || !idMatch[1].endsWith(sufixoId)) continue;
+    return /focused="true"/.test(trecho);
+  }
+  return false;
+}
+
+/**
+ * Navega por D-pad até o bloco focado ser o sufixo pedido, conferindo o foco de
+ * verdade a cada passo em vez de contar toques às cegas — mandar vários
+ * `input keyevent` em sequência rápida perdia evento (o foco só andava 2 blocos
+ * em vez de 3, achado fotografando `sessao-guia-teclas`). Devolve true se chegou.
+ */
+function navegarAteFoco(serial, keycode, sufixoAlvo, maxPassos) {
+  for (let passo = 0; passo < maxPassos; passo++) {
+    if (estaFocado(dumpUi(serial), sufixoAlvo)) return true;
+    adb(serial, 'shell', 'input', 'keyevent', String(keycode));
+    esperarMs(400);
+  }
+  return estaFocado(dumpUi(serial), sufixoAlvo);
+}
+
 function definirRotacao(serial, paisagem) {
   adb(serial, 'shell', 'settings', 'put', 'system', 'accelerometer_rotation', '0');
   adb(serial, 'shell', 'settings', 'put', 'system', 'user_rotation', paisagem ? '1' : '0');
@@ -396,42 +427,78 @@ const ROTAS = {
     componente: 'com.limelight.Game',
     extras: ['--ez', 'MoqueDeStream', 'true'],
     paisagem: true,
-    // enableBackMenu é true por padrão — é o caminho de hoje pra abrir o menu, sem
-    // depender do botão flutuante (que fica invisível por padrão: enableFloatingButton
-    // é false). Ver Game.onBackPressed().
+    // enableBackMenu é true por padrão — é o caminho de hoje pra abrir a guia sem
+    // tocar em nada na tela. Ver Game.onBackPressed()/GameMenu (Plano B / F2).
     depois: (serial) => adb(serial, 'shell', 'input', 'keyevent', '4'),
+  },
+  'sessao-guia': {
+    componente: 'com.limelight.Game',
+    extras: ['--ez', 'MoqueDeStream', 'true'],
+    paisagem: true,
+    // A aba (console_aba.xml) é o gatilho de verdade da guia — sempre presa ao
+    // centro da borda superior do vídeo desde que connectionStarted() a mostra.
+    depois: (serial) => abrirGuiaPorToque(serial),
+  },
+  'sessao-guia-teclas': {
+    componente: 'com.limelight.Game',
+    extras: ['--ez', 'MoqueDeStream', 'true'],
+    paisagem: true,
+    // 3× DPAD_RIGHT a partir do foco inicial (Teclado) chega em "Teclas especiais"
+    // (Teclado · Barra de texto · Modo do toque · Teclas especiais); ENTER troca a
+    // fileira pelas teclas especiais em vez de fechar a guia.
+    depois: (serial) => {
+      if (!abrirGuiaPorToque(serial)) return;
+      const chegou = navegarAteFoco(serial, 22 /* DPAD_RIGHT */, ':id/consoleBlocoTeclasEspeciais', 6);
+      if (!chegou) {
+        console.warn('  aviso: D-pad não chegou em "Teclas especiais" — foto mostra o foco onde parou');
+      }
+      adb(serial, 'shell', 'input', 'keyevent', '66'); // ENTER
+      esperarMs(300);
+    },
+  },
+  'sessao-guia-fecha': {
+    componente: 'com.limelight.Game',
+    extras: ['--ez', 'MoqueDeStream', 'true'],
+    paisagem: true,
+    // KEYCODE_ESCAPE fecha a guia (GameMenu#showMenu — setOnKeyListener).
+    depois: (serial) => {
+      if (!abrirGuiaPorToque(serial)) return;
+      adb(serial, 'shell', 'input', 'keyevent', '111'); // ESCAPE
+    },
   },
   'sessao-texto': {
     componente: 'com.limelight.Game',
     extras: ['--ez', 'MoqueDeStream', 'true'],
     paisagem: true,
-    // A ilha da sessão abre sozinha ao conectar (connectionStarted() chama
-    // vidroIsland.setOpen(true, false)), mas recolhe em pílula sozinha depois de
-    // 6,2 s (VidroIsland.COLLAPSE_DELAY_MS) — e as rotas antes desta já consomem mais
-    // que isso. Se achar a ilha aberta, toca direto no bloco Teclado; se só achar a
-    // pílula, toca nela primeiro (reabre a ilha, vidroPill.setOnClickListener) e tenta
-    // de novo. Sem nenhuma das duas, avisa e segue sem tocar — a foto ainda mostra o
-    // estado real, só não abre a barra.
+    // A barra de texto vive atrás da guia agora (ilha e botão flutuante foram
+    // aposentados na F2): abre a guia pela aba e toca no bloco "Barra de texto".
     depois: (serial) => {
-      let xml = dumpUi(serial);
-      let centro = encontrarCentro(xml, ':id/vidroTileKeyboard');
+      if (!abrirGuiaPorToque(serial)) return;
+      const xml = dumpUi(serial);
+      const centro = encontrarCentro(xml, ':id/consoleBlocoBarraTexto');
       if (!centro) {
-        const pilula = encontrarCentro(xml, ':id/vidroPill');
-        if (pilula) {
-          tocarEm(serial, pilula.x, pilula.y);
-          aguardarAssentar(serial);
-          xml = dumpUi(serial);
-          centro = encontrarCentro(xml, ':id/vidroTileKeyboard');
-        }
-      }
-      if (!centro) {
-        console.warn('  aviso: bloco Teclado da ilha não encontrado (nem aberta, nem em pílula) — barra de texto não foi aberta');
+        console.warn('  aviso: bloco "Barra de texto" não encontrado na guia — barra de texto não foi aberta');
         return;
       }
       tocarEm(serial, centro.x, centro.y);
     },
   },
 };
+
+/** Toca na aba (console_aba.xml) pra abrir a guia; devolve false com aviso se não
+ *  achar (a aba só aparece depois de connectionStarted() — deveria estar sempre lá
+ *  no moque de stream, ver Game.setConsoleGuiaOpen/setupConsoleAba). */
+function abrirGuiaPorToque(serial) {
+  const xml = dumpUi(serial);
+  const centro = encontrarCentro(xml, ':id/consoleAba');
+  if (!centro) {
+    console.warn('  aviso: aba (consoleAba) não encontrada — guia não foi aberta');
+    return false;
+  }
+  tocarEm(serial, centro.x, centro.y);
+  aguardarAssentar(serial);
+  return true;
+}
 
 const ORDEM_PADRAO = Object.keys(ROTAS);
 
