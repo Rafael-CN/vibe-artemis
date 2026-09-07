@@ -492,6 +492,12 @@
             android:summary="@string/summary_enable_commit_text"
             android:title="@string/title_enable_commit_text"
             app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="checkbox_compose_bar"
+            android:summary="@string/summary_compose_bar"
+            android:title="@string/title_compose_bar"
+            app:iconSpaceReserved="false" />
         <ListPreference
             android:defaultValue="resize"
             android:entries="@array/ime_display_mode_names"

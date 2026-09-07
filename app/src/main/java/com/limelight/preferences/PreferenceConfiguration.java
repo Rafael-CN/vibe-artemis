@@ -150,6 +150,9 @@ public class PreferenceConfiguration {
     private static final String CHECKBOX_ALLOW_PORTRAIT_SESSION = "checkbox_allow_portrait_session";
 
     private static final String CHECKBOX_ENABLE_COMMIT_TEXT = "checkbox_enable_commit_text";
+    // Plano B / F4: liga o bloco Teclado da guia da sessão à barra de texto (E01) em vez
+    // do teclado virtual cru. Consumida pelo GameMenu (F2); aqui só existe leitura+default.
+    static final String CHECKBOX_COMPOSE_BAR = "checkbox_compose_bar";
 
     static final String DEFAULT_RESOLUTION = "1280x720";
     static final String DEFAULT_FPS = "60";
@@ -225,6 +228,7 @@ public class PreferenceConfiguration {
     // It also enables swipe typing and voice dictation. Turn it off only if the host does
     // not understand UTF-8 text events.
     private static final boolean DEFAULT_ENABLE_COMMIT_TEXT = true;
+    private static final boolean DEFAULT_COMPOSE_BAR = true;
     private static final String DEFAULT_IME_DISPLAY_MODE = "resize";
     private static final String DEFAULT_ONSCREEN_KEYBOARD_ALIGN_MODE = "center";
     private static final boolean DEFAULT_SHOW_OVERLAY_TOGGLE_BUTTON = false;
@@ -387,6 +391,7 @@ public class PreferenceConfiguration {
     public boolean vibrateFallbackToDevice;
     public int vibrateFallbackToDeviceStrength;
     public boolean touchscreenTrackpad;
+    public boolean composeBarEnabled;
     public MoonBridge.AudioConfiguration audioConfiguration;
     public int framePacing;
     public boolean absoluteMouseMode;
@@ -987,6 +992,7 @@ private static int getFramePacingValue(Context context) {
         config.vibrateFallbackToDevice = prefs.getBoolean(VIBRATE_FALLBACK_PREF_STRING, DEFAULT_VIBRATE_FALLBACK);
         config.vibrateFallbackToDeviceStrength = prefs.getInt(VIBRATE_FALLBACK_STRENGTH_PREF_STRING, DEFAULT_VIBRATE_FALLBACK_STRENGTH);
         config.flipFaceButtons = prefs.getBoolean(FLIP_FACE_BUTTONS_PREF_STRING, DEFAULT_FLIP_FACE_BUTTONS);
+        config.composeBarEnabled = prefs.getBoolean(CHECKBOX_COMPOSE_BAR, DEFAULT_COMPOSE_BAR);
 //        config.touchscreenTrackpad = prefs.getBoolean(TOUCHSCREEN_TRACKPAD_PREF_STRING, DEFAULT_TOUCHSCREEN_TRACKPAD);
         config.enableLatencyToast = prefs.getBoolean(LATENCY_TOAST_PREF_STRING, DEFAULT_LATENCY_TOAST);
         config.enableBackMenu = prefs.getBoolean(CHECKBOX_ENABLE_QUIT_DIALOG,true);
