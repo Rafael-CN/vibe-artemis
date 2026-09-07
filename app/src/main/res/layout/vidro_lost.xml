@@ -66,7 +66,7 @@
                     android:layout_marginRight="@dimen/console_espaco_3"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="@drawable/console_foco_botao"
+                    android:foreground="@drawable/console_foco_botao_sobre_acento"
                     android:text="@string/vidro_try_again" />
 
                 <TextView

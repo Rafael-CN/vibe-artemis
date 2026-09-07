@@ -79,7 +79,7 @@
             android:layout_marginTop="@dimen/console_espaco_4"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/console_foco_botao"
+            android:foreground="@drawable/console_foco_botao_sobre_acento"
             android:preferKeepClear="true"
             android:text="@string/vidro_connect" />
     </LinearLayout>
