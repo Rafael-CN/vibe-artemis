@@ -19,13 +19,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:statusBarColor">@color/vidro_void</item>
-        <item name="android:navigationBarColor">@color/vidro_void</item>
-        <item name="android:colorBackground">@color/vidro_void</item>
+        <item name="android:statusBarColor">@color/console_fundo</item>
+        <item name="android:navigationBarColor">@color/console_fundo</item>
+        <item name="android:colorBackground">@color/console_fundo</item>
         <!-- Plano B / F1: fundo da janela aponta direto para o token Console. -->
         <item name="android:windowBackground">@color/console_fundo</item>
-        <item name="android:textColorPrimary">@color/vidro_text</item>
-        <item name="android:textColorSecondary">@color/vidro_text_3</item>
+        <item name="android:textColorPrimary">@color/console_texto</item>
+        <item name="android:textColorSecondary">@color/console_texto_2</item>
         <!--
             Plano B / F1: acento, primária e controle ativado apontam direto para o
             token Console — é o único papel que o acento tem agora (contorno de foco,
@@ -81,15 +81,15 @@
         certos — sem isso ela abria em cinza de sistema com o azul do Android.
     -->
     <style name="SettingsTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:statusBarColor">@color/vidro_void</item>
-        <item name="android:navigationBarColor">@color/vidro_void</item>
-        <item name="android:colorBackground">@color/vidro_void</item>
-        <item name="android:windowBackground">@color/vidro_void</item>
-        <item name="android:textColorPrimary">@color/vidro_text</item>
-        <item name="android:textColorSecondary">@color/vidro_text_3</item>
-        <item name="colorAccent">@color/vidro_accent_text</item>
-        <item name="android:colorAccent">@color/vidro_accent_text</item>
-        <item name="colorControlActivated">@color/vidro_accent_text</item>
+        <item name="android:statusBarColor">@color/console_fundo</item>
+        <item name="android:navigationBarColor">@color/console_fundo</item>
+        <item name="android:colorBackground">@color/console_fundo</item>
+        <item name="android:windowBackground">@color/console_fundo</item>
+        <item name="android:textColorPrimary">@color/console_texto</item>
+        <item name="android:textColorSecondary">@color/console_texto_2</item>
+        <item name="colorAccent">@color/console_acento</item>
+        <item name="android:colorAccent">@color/console_acento</item>
+        <item name="colorControlActivated">@color/console_acento</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
         <item name="alertDialogTheme">@style/VidroDialog</item>
@@ -98,9 +98,9 @@
     </style>
 
     <style name="VidroPreferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="preferenceCategoryTitleTextColor">@color/vidro_accent_text</item>
-        <item name="android:textColorPrimary">@color/vidro_text</item>
-        <item name="android:textColorSecondary">@color/vidro_text_3</item>
+        <item name="preferenceCategoryTitleTextColor">@color/console_acento</item>
+        <item name="android:textColorPrimary">@color/console_texto</item>
+        <item name="android:textColorSecondary">@color/console_texto_2</item>
     </style>
 
     <style name="ExternalDisplayControllerTheme" parent="AppTheme">
@@ -125,7 +125,7 @@
     -->
     <style name="VidroText">
         <item name="android:fontFamily">@font/manrope_regular</item>
-        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:textColor">@color/console_texto</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
@@ -136,11 +136,6 @@
         <!-- -0.04em, como o protótipo. -->
         <item name="android:letterSpacing">-0.04</item>
         <item name="android:lineSpacingMultiplier">1.06</item>
-    </style>
-
-    <!-- Variante curta, para quando o nome do host é longo -->
-    <style name="VidroText.Display.Small" parent="VidroText.Display">
-        <item name="android:textSize">29sp</item>
     </style>
 
     <!-- Título de card · 19–21 sp · 700 · -0.03em -->
@@ -160,7 +155,7 @@
     <!-- Corpo / apoio · 13–14 sp · 400–500 · sem tracking -->
     <style name="VidroText.Body" parent="VidroText">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/vidro_text_2</item>
+        <item name="android:textColor">@color/console_texto_2</item>
         <item name="android:lineSpacingMultiplier">1.45</item>
     </style>
 
@@ -172,39 +167,7 @@
     <style name="VidroText.Support" parent="VidroText">
         <item name="android:fontFamily">@font/manrope_medium</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/vidro_text_3</item>
-    </style>
-
-    <!-- Rótulo de seção · 12 sp · 700–800 · +0.10em caixa alta -->
-    <style name="VidroText.Overline" parent="VidroText">
-        <item name="android:fontFamily">@font/manrope_extrabold</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.1</item>
-        <item name="android:textColor">@color/vidro_text_3</item>
-    </style>
-
-    <!--
-        Rótulo de seção — "Continuar", "Seus lugares".
-
-        13sp semibold, como no protótipo. Eu vinha usando VidroText.Item (16sp), que é o
-        tamanho do NOME DE UM ITEM: o rótulo competia com o conteúdo que ele nomeia, e a
-        lista inteira perdia hierarquia.
-    -->
-    <style name="VidroText.Section" parent="VidroText">
-        <item name="android:fontFamily">@font/manrope_semibold</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/vidro_text_2</item>
-    </style>
-
-    <!-- Ação inline ao lado de um rótulo de seção: "Adicionar", "Recarregar". -->
-    <style name="VidroText.Action" parent="VidroText">
-        <item name="android:fontFamily">@font/manrope_bold</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/vidro_accent_text</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:minHeight">44dp</item>
+        <item name="android:textColor">@color/console_texto_2</item>
     </style>
 
     <!-- Número técnico · JetBrains Mono · tabular -->
@@ -212,38 +175,15 @@
         <item name="android:fontFamily">@font/jetbrains_mono_regular</item>
         <item name="android:fontFeatureSettings">tnum</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/vidro_text_2</item>
-    </style>
-
-    <!-- Código de pareamento: quatro dígitos grandes, um por caixa -->
-    <style name="VidroText.Code" parent="VidroText">
-        <item name="android:fontFamily">@font/jetbrains_mono_bold</item>
-        <item name="android:fontFeatureSettings">tnum</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/vidro_text</item>
-        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/console_texto_2</item>
     </style>
 
     <!-- ================= Componentes ================= -->
 
-    <style name="VidroButton.Accent" parent="VidroText">
-        <item name="android:fontFamily">@font/manrope_bold</item>
-        <item name="android:background">@drawable/vidro_button_accent</item>
-        <item name="android:textColor">@color/vidro_on_accent</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:letterSpacing">-0.02</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:minHeight">@dimen/vidro_touch_target</item>
-        <item name="android:paddingLeft">26dp</item>
-        <item name="android:paddingRight">26dp</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:elevation">0dp</item>
-    </style>
-
     <style name="VidroButton.Ghost" parent="VidroText">
         <item name="android:fontFamily">@font/manrope_semibold</item>
         <item name="android:background">@drawable/vidro_button_ghost_bg</item>
-        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:textColor">@color/console_texto</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textAllCaps">false</item>
@@ -254,27 +194,11 @@
         <item name="android:elevation">0dp</item>
     </style>
 
-    <!--
-        Chip de escolha. É o único padrão de seleção do app — o mesmo na folha de
-        ajustes e em qualquer lugar que peça "um destes". Alvo de 44dp: abaixo do piso
-        de 48 que o handoff declara, mas é a medida do protótipo e são três numa linha
-        de 352dp; forçar 48 quebraria a linha.
-    -->
-    <style name="VidroChip" parent="VidroText">
-        <item name="android:layout_height">44dp</item>
-        <item name="android:background">@drawable/vidro_chip_bg</item>
-        <item name="android:textColor">@drawable/vidro_chip_text</item>
-        <item name="android:fontFamily">@font/manrope_semibold</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:letterSpacing">-0.01</item>
-    </style>
-
     <style name="VidroIconButton">
         <item name="android:background">@drawable/vidro_icon_button_bg</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:padding">12dp</item>
-        <item name="android:tint">@color/vidro_text_2</item>
+        <item name="android:tint">@color/console_texto_2</item>
     </style>
 
     <!--
@@ -287,8 +211,9 @@
         pareamento/queda) trocar o layout. Esta fatia (F1) só cria o vocabulário —
         nenhum layout muda, e por isso os estilos Vidro NÃO herdam destes: mudar o
         parent também mudaria letterSpacing/lineSpacing das telas antigas, que essa
-        fatia não deveria tocar. O que já muda em toda tela, sem redesenho nenhum,
-        é a cor: vem dos aliases `vidro_*` → `console_*` em colors.xml.
+        fatia não deveria tocar. A cor já é a mesma em toda tela desde a F1 (então via
+        alias `vidro_*` → `console_*`; a F6 apagou o alias e repontou os estilos Vidro
+        direto para `console_*`, mesmo valor).
         ================================================================
     -->
     <style name="ConsoleText">
@@ -411,10 +336,10 @@
     -->
     <style name="VidroDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
-        <item name="android:colorBackground">@color/vidro_surface_alt</item>
-        <item name="android:textColorPrimary">@color/vidro_text</item>
-        <item name="android:textColorSecondary">@color/vidro_text_2</item>
-        <item name="colorAccent">@color/vidro_accent_text</item>
+        <item name="android:colorBackground">@color/console_superficie_elevada</item>
+        <item name="android:textColorPrimary">@color/console_texto</item>
+        <item name="android:textColorSecondary">@color/console_texto_2</item>
+        <item name="colorAccent">@color/console_acento</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="fontFamily">@font/manrope</item>
         <item name="buttonBarPositiveButtonStyle">@style/VidroDialogButton</item>
@@ -430,10 +355,10 @@
     -->
     <style name="ConsoleDialog" parent="android:Theme.Material.Dialog.Alert">
         <item name="android:windowBackground">@drawable/vidro_dialog_bg</item>
-        <item name="android:colorBackground">@color/vidro_surface_alt</item>
-        <item name="android:textColorPrimary">@color/vidro_text</item>
-        <item name="android:textColorSecondary">@color/vidro_text_2</item>
-        <item name="android:colorAccent">@color/vidro_accent_text</item>
+        <item name="android:colorBackground">@color/console_superficie_elevada</item>
+        <item name="android:textColorPrimary">@color/console_texto</item>
+        <item name="android:textColorSecondary">@color/console_texto_2</item>
+        <item name="android:colorAccent">@color/console_acento</item>
         <item name="android:fontFamily">@font/manrope</item>
         <item name="android:textAllCaps">false</item>
     </style>
@@ -442,12 +367,12 @@
         <item name="android:fontFamily">@font/manrope_extrabold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:letterSpacing">-0.03</item>
-        <item name="android:textColor">@color/vidro_text</item>
+        <item name="android:textColor">@color/console_texto</item>
     </style>
 
     <style name="VidroDialogButton" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:fontFamily">@font/manrope_semibold</item>
-        <item name="android:textColor">@color/vidro_accent_text</item>
+        <item name="android:textColor">@color/console_acento</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">-0.01</item>

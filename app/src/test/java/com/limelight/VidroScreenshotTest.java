@@ -87,7 +87,6 @@ public class VidroScreenshotTest {
         shoot("peca-card-de-app", R.layout.app_grid_item, 180, 230);
         shoot("peca-linha-de-host", R.layout.pc_grid_item, 393, 0);
         shoot("peca-card-de-cena", R.layout.row_profile, 357, 0);
-        shoot("peca-linha-de-menu", R.layout.vidro_menu_row, 320, 0);
         shoot("08-debug-info", R.layout.activity_axitest, 393, 852);
         shoot("09-endereco", R.layout.activity_add_computer_manually, 393, 852);
         shoot("10-ajustes", R.layout.activity_stream_settings, 393, 852);
@@ -214,7 +213,7 @@ public class VidroScreenshotTest {
         // O void por baixo. Sem isto o PNG sai com alpha zero onde a view não pinta, e
         // qualquer visualizador mostra branco — que é exatamente a cor que este app
         // nunca tem, e me faria caçar um bug que não existe.
-        canvas.drawColor(context.getResources().getColor(R.color.vidro_void));
+        canvas.drawColor(context.getResources().getColor(R.color.console_fundo));
 
         root.draw(canvas);
 
@@ -260,7 +259,7 @@ public class VidroScreenshotTest {
 
             Bitmap bitmap = Bitmap.createBitmap(widthPx, heightPx, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawColor(activity.getResources().getColor(R.color.vidro_void));
+            canvas.drawColor(activity.getResources().getColor(R.color.console_fundo));
             decor.draw(canvas);
 
             write(name, bitmap, widthPx, heightPx);

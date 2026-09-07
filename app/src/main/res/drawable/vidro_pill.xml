@@ -11,9 +11,9 @@
     tem que trazer o próprio contraste em vez de contar com o que estiver atrás.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/vidro_glass_fill_session" />
+    <solid android:color="@color/console_superficie_elevada" />
     <stroke
         android:width="@dimen/vidro_stroke_width"
-        android:color="@color/vidro_stroke_glass" />
+        android:color="@color/console_borda" />
     <corners android:radius="@dimen/vidro_radius_pill" />
 </shape>

@@ -104,7 +104,7 @@ public class Dialog implements Runnable {
                 // AlertDialog resolve a cor do botão contra o tema da Activity, que sob
                 // Material3 devolve o roxo padrão do sistema — e roxo é justamente o que
                 // esta identidade não tem. Pintar aqui não depende dessa resolução.
-                int accent = activity.getResources().getColor(R.color.vidro_accent_text);
+                int accent = activity.getResources().getColor(R.color.console_acento);
                 for (int which : new int[] { AlertDialog.BUTTON_POSITIVE,
                         AlertDialog.BUTTON_NEGATIVE, AlertDialog.BUTTON_NEUTRAL }) {
                     Button b = alert.getButton(which);

@@ -60,7 +60,7 @@
         android:paddingRight="@dimen/vidro_space_4"
         android:paddingBottom="@dimen/vidro_space_2"
         android:preferKeepClear="true"
-        android:textColor="@color/vidro_text"
+        android:textColor="@color/console_texto"
         android:visibility="gone" />
 
     <LinearLayout

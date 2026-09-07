@@ -7,8 +7,8 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="@color/vidro_surface_alt" />
-            <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_stroke_hairline" />
+            <solid android:color="@color/console_superficie_elevada" />
+            <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/console_borda" />
             <corners android:radius="8dp" />
         </shape>
     </item>

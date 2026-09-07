@@ -98,7 +98,7 @@ public class VidroLightView extends View {
     public VidroLightView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        coreColor = getResources().getColor(R.color.vidro_accent_glow);
+        coreColor = getResources().getColor(R.color.console_acento);
 
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VidroLightView);

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- O toque não muda de cor, só de altura de luz. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/vidro_surface_alt" />
-    <stroke
-        android:width="@dimen/vidro_stroke_width"
-        android:color="@color/vidro_stroke_glass" />
-    <corners android:radius="@dimen/vidro_radius_m" />
-</shape>

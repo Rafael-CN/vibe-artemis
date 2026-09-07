@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/vidro_space_3"
         android:layout_marginLeft="@dimen/vidro_space_3"
-        android:buttonTint="@color/vidro_accent_text" />
+        android:buttonTint="@color/console_acento" />
 
     <ImageButton
         android:id="@+id/editProfile"
