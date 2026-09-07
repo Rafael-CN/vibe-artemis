@@ -4,7 +4,7 @@
 
 > Um registro por arquivo de código. Use para localizar o arquivo certo **sem abri-lo**. Colunas: linhas, tipos declarados, métodos públicos relevantes. Rank = PageRank no grafo de imports (quão central o arquivo é).
 
-Total: **224 arquivos**, **67.264 linhas**, **280 tipos**, **2648 métodos**.
+Total: **224 arquivos**, **67.261 linhas**, **280 tipos**, **2648 métodos**.
 
 ## `app/src/main/java/com/limelight/`
 
@@ -12,7 +12,7 @@ Total: **224 arquivos**, **67.264 linhas**, **280 tipos**, **2648 métodos**.
 |---|--:|--:|---|---|
 | [`Game.java`](../../app/src/main/java/com/limelight/Game.java) | 4935 | 14.3 | Game, GameMenuCallbacks | `onServiceConnected()`:264 `onServiceDisconnected()`:273 `sendText()`:377 `sendBackspaces()`:384 `onCreate()`:406 `onCapturedPointer()`:604 `notifyCrash()`:744 `onDisplayAdded()`:1140 |
 | [`PcView.java`](../../app/src/main/java/com/limelight/PcView.java) | 1630 | 4.5 | PcView, ComputerObject | `onServiceConnected()`:114 `run()`:121 `onServiceDisconnected()`:144 `onConfigurationChanged()`:150 `onClick()`:218 `onClick()`:242 `onClick()`:249 `onCreate()`:288 |
-| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 913 | 9.2 | AppView, AppObject | `onServiceConnected()`:102 `run()`:109 `run()`:153 `onServiceDisconnected()`:174 `onConfigurationChanged()`:180 `notifyComputerUpdated()`:210 `run()`:225 `run()`:239 |
+| [`AppView.java`](../../app/src/main/java/com/limelight/AppView.java) | 901 | 9.2 | AppView, AppObject | `onServiceConnected()`:103 `run()`:110 `run()`:154 `onServiceDisconnected()`:175 `onConfigurationChanged()`:181 `notifyComputerUpdated()`:211 `run()`:226 `run()`:240 |
 | [`ShortcutTrampoline.java`](../../app/src/main/java/com/limelight/ShortcutTrampoline.java) | 531 | 3.3 | ShortcutTrampoline | `onServiceConnected()`:62 `run()`:69 `notifyComputerUpdated()`:104 `run()`:130 `run()`:163 `run()`:174 `onServiceDisconnected()`:237 `validateHostInput()`:242 |
 | [`EditProfileActivity.java`](../../app/src/main/java/com/limelight/EditProfileActivity.java) | 476 | 6.2 | EditProfileActivity, ProfilePreferenceFragment, InMemoryPreferenceDataStore, InMemorySharedPreferences, InMemoryEditor | `onCreate()`:39 `onCreateOptionsMenu()`:89 `onOptionsItemSelected()`:95 `getInMemoryPrefs()`:191 `getPrefs()`:227 `getPrefs()`:251 `onCreateView()`:261 `onCreatePreferences()`:266 |
 | [`GameMenu.java`](../../app/src/main/java/com/limelight/GameMenu.java) | 300 | 16.1 | GameMenu, MenuOption | `showMenu()`:103 `hideMenu()`:146 `isMenuOpen()`:154 |
@@ -161,7 +161,7 @@ Total: **224 arquivos**, **67.264 linhas**, **280 tipos**, **2648 métodos**.
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
 | [`AppGridAdapter.java`](../../app/src/main/java/com/limelight/grid/AppGridAdapter.java) | 250 | 3.6 | AppGridAdapter | `updateHiddenApps()`:55 `updateLayoutWithPreferences()`:89 `cancelQueuedOperations()`:122 `compare()`:131 `addApp()`:143 `removeApp()`:162 `clear()`:168 `populateView()`:174 |
-| [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 123 | 2.9 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
+| [`PcGridAdapter.java`](../../app/src/main/java/com/limelight/grid/PcGridAdapter.java) | 133 | 2.9 | PcGridAdapter | `updateLayoutWithPreferences()`:29 `addComputer()`:34 `compare()`:42 `removeComputer()`:48 `populateView()`:53 |
 | [`AppCarouselAdapter.java`](../../app/src/main/java/com/limelight/grid/AppCarouselAdapter.java) | 117 | 2.9 | AppCarouselAdapter, Listener, ViewHolder | `onCreateViewHolder()`:67 `onBindViewHolder()`:74 `getItemCount()`:107 |
 | [`GenericGridAdapter.java`](../../app/src/main/java/com/limelight/grid/GenericGridAdapter.java) | 77 | 2.8 | GenericGridAdapter | `clear()`:39 `getCount()`:44 `getItem()`:49 `getItemId()`:54 `getView()`:61 |
 
@@ -380,7 +380,7 @@ Total: **224 arquivos**, **67.264 linhas**, **280 tipos**, **2648 métodos**.
 
 | Arquivo | Linhas | Rank | Tipos | Símbolos-chave |
 |---|--:|--:|---|---|
-| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 320 | 2.8 | VidroScreenshotTest | `telasEmRetrato()`:66 `telasEmPaisagem()`:104 `telasNoTablet()`:127 `telasNoS22Ultra()`:144 |
+| [`VidroScreenshotTest.java`](../../app/src/test/java/com/limelight/VidroScreenshotTest.java) | 319 | 2.8 | VidroScreenshotTest | `telasEmRetrato()`:66 `telasEmPaisagem()`:103 `telasNoTablet()`:126 `telasNoS22Ultra()`:143 |
 | [`StartupCrashTest.java`](../../app/src/test/java/com/limelight/StartupCrashTest.java) | 288 | 2.8 | StartupCrashTest | `setUp()`:37 `testNativeLibraryLoadingFailure()`:54 `testGLSurfaceViewInitialization()`:68 `testPreferenceConfigurationCrash()`:82 `testUiHelperCrash()`:93 `testComputerManagerServiceBinding()`:106 `testSharedPreferencesCorruption()`:119 `testMissingRequiredIntentExtras()`:139 |
 | [`StartupTest.java`](../../app/src/test/java/com/limelight/StartupTest.java) | 232 | 2.8 | StartupTest | `setUp()`:35 `testApplicationStartup()`:52 `testPcViewActivityCreation()`:64 `testPcViewActivityWithIntent()`:72 `testAppViewActivityCreation()`:86 `testProfilesManagerFileSystemAccess()`:98 `testMissingPermissions()`:112 `testCorruptedProfilesFile()`:130 |
 | [`PosterContentProviderTest.java`](../../app/src/test/java/com/limelight/PosterContentProviderTest.java) | 173 | 2.8 | PosterContentProviderTest | `setUp()`:39 `legitimateBoxArtIsServed()`:77 `traversalCannotReachAFileOutsideTheBoxArtDirectory()`:91 `traversalShapedUuidsAreRejected()`:113 `nonUuidSegmentsAreRejected()`:120 `nonNumericAppIdIsRejectedWithoutCrashing()`:127 `unexpectedPathsAreRejected()`:135 `writeModesAreRefused()`:154 |

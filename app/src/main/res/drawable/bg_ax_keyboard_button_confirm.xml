@@ -7,7 +7,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape>
-            <solid android:color="@color/vidro_accent_fill" />
+            <solid android:color="@color/console_acento" />
             <corners android:radius="8dp" />
         </shape>
     </item>

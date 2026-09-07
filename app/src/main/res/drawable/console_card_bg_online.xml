@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Variante de console_card_bg para o PC on-line e emparelhado — mesmo corpo, contorno
+    inteiro em console_acento em vez da borda neutra. B_Celular_Computadores.png mostra
+    esse contorno no card ARTEMIS (on-line) e não no NOTEBOOK (fora do ar); PcGridAdapter
+    escolhe entre os dois pela mesma condição que já pinta o ponto e o chevron de acento
+    (online && paired) — F6, pendência da verificação da F3.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/console_superficie" />
+    <stroke android:width="1.5dp" android:color="@color/console_acento" />
+    <corners android:radius="@dimen/console_raio_card" />
+</shape>

@@ -3,28 +3,28 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="2dp" android:color="@color/vidro_accent_fill" />
+            <stroke android:width="2dp" android:color="@color/console_acento" />
             <corners android:radius="@dimen/vidro_radius_m" />
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="2dp" android:color="@color/vidro_accent_fill" />
+            <stroke android:width="2dp" android:color="@color/console_acento" />
             <corners android:radius="@dimen/vidro_radius_m" />
         </shape>
     </item>
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="2dp" android:color="@color/vidro_accent_fill" />
+            <stroke android:width="2dp" android:color="@color/console_acento" />
             <corners android:radius="@dimen/vidro_radius_m" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/vidro_stroke_hairline" />
+            <stroke android:width="@dimen/vidro_stroke_width" android:color="@color/console_borda" />
             <corners android:radius="@dimen/vidro_radius_m" />
         </shape>
     </item>

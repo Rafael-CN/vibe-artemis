@@ -3,12 +3,13 @@
     Tokens do redesenho "Console" (Plano B). Fonte de verdade: docs/design/console/NOTA.md
     §2 — os hex já vêm prontos de lá, sem conversão de espaço de cor.
 
-    Os `console_*` são a paleta viva. Os `vidro_*` logo abaixo são um degrau de
-    transição: cada um agora é um ALIAS do `console_*` mais próximo (não guarda mais
-    seu hex antigo), para nenhuma tela ainda não redesenhada quebrar ou destoar
-    enquanto as fatias seguintes (F2 sessão, F3 início/computadores/apps, F5
-    conectando/pareamento/queda) trocam layout por layout. A fatia F6 apaga estes
-    aliases quando a última tela migrar — ver docs/planos/B-CONSOLE.md.
+    `console_*` é a única paleta viva. Os aliases `vidro_*` que a F1 criou como ponte de
+    transição (cada um apontando para o `console_*` mais próximo) foram apagados na F6:
+    toda tela e drawable que ainda usava um `vidro_*` de cor foi repontada direto para o
+    `console_*` equivalente (mesmo valor, sem indireção). Dimensões e drawables `vidro_*`
+    que sobram em res/ (ex.: `vidro_stroke_width`, `vidro_button_ghost_bg.xml`) não são
+    aliases — são a identidade "Vidro" original, ainda consumida por telas legadas não
+    redesenhadas (perfis, ajustes de stream) e ficam.
 -->
 <resources>
     <color name="profileAccent">#FF4081</color>
@@ -38,56 +39,4 @@
 
     <color name="console_destrutivo">#F2555B</color>             <!-- oklch(62% .19 25) aprox. · "Encerrar no PC" -->
     <color name="console_destrutivo_fundo">#1FF2555B</color>     <!-- destrutivo a 12% · fundo do bloco de confirmação -->
-
-    <!--
-        ================================================================
-        Aliases `vidro_*` — transitórios, apagados em F6
-
-        Mapeamento por PAPEL semântico (o comentário original de cada um, entre
-        parênteses abaixo), não por nome — os 24 nomes `vidro_*` não têm
-        correspondência 1:1 com os 13 `console_*`, e não precisam ter: onde o
-        Vidro tinha três tons de acento (glow/text/fill) o Console tem um só, e
-        onde tinha três pesos de borda o Console tem um só. Os que já não têm
-        nenhum uso em res/ hoje (light_core, halo_night, halo_none, text_night)
-        recebem o alias mais neutro possível, porque não há tela para conferir
-        contra o mockup.
-        ================================================================
-    -->
-
-    <!-- Fundos -->
-    <color name="vidro_void">@color/console_fundo</color>                       <!-- fundo do app -->
-    <color name="vidro_surface">@color/console_superficie</color>               <!-- cartão, folha -->
-    <color name="vidro_surface_alt">@color/console_superficie_elevada</color>   <!-- cartão elevado -->
-    <color name="vidro_glass_session">@color/console_superficie_elevada</color> <!-- base do vidro / painel da sessão -->
-
-    <!-- Texto -->
-    <color name="vidro_text">@color/console_texto</color>           <!-- títulos, rótulos, valores -->
-    <color name="vidro_text_2">@color/console_texto_2</color>       <!-- legendas, estado -->
-    <color name="vidro_text_3">@color/console_texto_2</color>       <!-- terciário — console só tem duas camadas de texto vivo -->
-    <color name="vidro_text_night">@color/console_texto</color>     <!-- variante "sala escura" do texto primário; sem uso hoje -->
-
-    <!-- O acento, nos seus três papéis antigos — todos colapsam no papel único da Console -->
-    <color name="vidro_accent_glow">@color/console_acento</color>
-    <color name="vidro_accent_text">@color/console_acento</color>
-    <color name="vidro_accent_fill">@color/console_acento</color>
-    <color name="vidro_on_accent">@color/console_acento_sobre</color>
-    <color name="vidro_light_core">@color/console_acento</color>    <!-- núcleo do halo; sem uso hoje -->
-
-    <!-- Vidro composto — painéis translúcidos viram sólidos na superfície mais próxima -->
-    <color name="vidro_glass_fill_session">@color/console_superficie_elevada</color>
-    <color name="vidro_glass_fill_idle">@color/console_superficie</color>
-
-    <!-- Bordas por peso — a Console tem uma borda só -->
-    <color name="vidro_stroke">@color/console_borda</color>
-    <color name="vidro_stroke_glass">@color/console_borda</color>
-    <color name="vidro_stroke_hairline">@color/console_borda</color>
-    <color name="vidro_stroke_faint">@color/console_borda</color>
-    <color name="vidro_surface_overlay">@color/console_superficie</color>
-    <color name="vidro_surface_overlay_alt">@color/console_superficie_selecionada</color>
-
-    <!-- Estado do host, dito pela luz — a Console não tem halo; aceso vira acento, o resto vira texto neutro -->
-    <color name="vidro_halo_awake">@color/console_acento</color>
-    <color name="vidro_halo_night">@color/console_texto_2</color>   <!-- sem uso hoje -->
-    <color name="vidro_halo_asleep">@color/console_texto_2</color>
-    <color name="vidro_halo_none">@color/console_texto_2</color>    <!-- sem uso hoje -->
 </resources>

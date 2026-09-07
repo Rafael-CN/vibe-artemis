@@ -239,7 +239,7 @@ Referência: `B_Tablet_Ajustes.png`, `B_Celular_Ajustes.png`.
 - Foco por D-pad em toda linha; o segmento selecionado em `console_acento`.
 - **Pronto quando**: fotos nos dois AVDs batendo com os mockups; mudar cada controle e reabrir
   a tela mantém o valor (persistência real nas mesmas chaves de hoje); "Avançado" abre a árvore
-  completa; gate verde; `docs/howto/adicionar-preferencia.md` seguido para a preferência nova.
+  completa; gate verde; `.claude/rules/prefs.md` seguido para a preferência nova.
 
 Porta: 5554.
 

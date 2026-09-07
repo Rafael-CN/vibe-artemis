@@ -36,7 +36,16 @@
                 android:cropToPadding="false"
                 android:scaleType="centerCrop" />
 
-            <!-- Camada de estado; o adapter pinta o fundo dela quando o app está aberto. -->
+            <!--
+                Camada de estado; o adapter pinta o fundo dela quando o app está aberto.
+
+                grid_overlay (ícone de play do app "em execução") vai no canto
+                inferior-direito, não centralizado (F6, pendência apontada na
+                verificação da F3): quando o host não publica box art, o nome do app
+                é desenhado dentro da própria capa gerada pelo carregador — centrado,
+                igual às outras capas sem nome embaixo — e o ícone de 46dp cobria o
+                meio dele. O canto fica livre em qualquer capa (real ou gerada).
+            -->
             <RelativeLayout
                 android:id="@+id/grid_mask"
                 android:layout_width="match_parent"
@@ -44,9 +53,12 @@
 
                 <ImageView
                     android:id="@+id/grid_overlay"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
-                    android:layout_centerInParent="true" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="@dimen/vidro_space_3" />
             </RelativeLayout>
 
             <TextView
@@ -84,7 +96,7 @@
                 android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/vidro_accent_text"
+                android:indeterminateTint="@color/console_acento"
                 android:visibility="gone" />
         </FrameLayout>
 

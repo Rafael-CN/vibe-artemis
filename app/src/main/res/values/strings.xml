@@ -773,12 +773,7 @@
     <string name="vidro_settings">Settings</string>
     <string name="vidro_open_now">open now</string>
     <string name="vidro_back_places">Places</string>
-    <string name="vidro_published_apps">%1$d apps published by the host</string>
-    <string name="vidro_published_app_one">1 app published by the host</string>
     <string name="vidro_reload">Reload</string>
-    <string name="vidro_session_open">%1$s is open</string>
-    <string name="vidro_session_return">Pick up where you left off</string>
-    <string name="vidro_return">Return</string>
     <string name="vidro_pill_open">Running</string>
     <string name="vidro_pill_screen">screen</string>
     <string name="vidro_pill_input">input</string>

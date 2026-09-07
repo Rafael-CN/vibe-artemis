@@ -11,7 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/vidro_void"
+    android:background="@color/console_fundo"
     android:fitsSystemWindows="true">
 
     <com.limelight.ui.VidroLightView
@@ -98,7 +98,7 @@
         android:fontFamily="@font/manrope_semibold"
         android:gravity="center"
         android:text="@string/vidro_scene_save"
-        android:textColor="@color/vidro_text_2"
+        android:textColor="@color/console_texto_2"
         android:textSize="14sp" />
 
 </RelativeLayout>

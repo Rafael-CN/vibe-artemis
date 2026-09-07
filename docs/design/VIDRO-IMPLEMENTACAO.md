@@ -1,5 +1,15 @@
 # Vidro — o que entrou no app
 
+> **Histórico.** A identidade "Vidro" documentada aqui foi substituída pela tese
+> **"Console"** (decidida em 4 de setembro de 2026, `docs/planos/B-CONSOLE.md`) — fonte de
+> verdade viva de tokens e telas em `docs/design/console/` (`NOTA.md`, `artboards/`,
+> `fotos/`). A fatia F6 apagou os aliases de cor `vidro_*` que ligavam este documento ao
+> `console_*` (cada nome abaixo hoje é direto `console_*` em `res/values/colors.xml`, sem
+> a camada de indireção); os achados de arquitetura (SurfaceView/blur, a regra de fosco em
+> sessão) continuam válidos e foram herdados pela Console. Dimensões e drawables `vidro_*`
+> que sobrevivem em `res/` são a identidade Vidro original, ainda usada por telas legadas
+> não redesenhadas (perfis, ajustes de stream) — não aliases.
+
 Registro do que veio do bundle do Claude Design (projeto *VibeArtemis: Sinal*, arquivos
 `Vidro Estados e Prova`, `Vidro Prototipo v2`) e como cada peça foi traduzida para Android.
 

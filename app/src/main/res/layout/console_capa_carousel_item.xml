@@ -76,6 +76,14 @@
         android:indeterminateTint="@color/console_acento"
         android:visibility="gone" />
 
+    <!-- Contorno de repouso (F6): sem isto a capa fica com canto quadrado quando não
+         focada, diferente do mockup e de app_grid_item.xml (grid_frame/vidro_poster_frame
+         já tem essa borda "sempre visível" no celular). -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/console_capa_borda" />
+
     <!-- Contorno de foco por cima de tudo, do jeito que grid_frame já faz nas outras
          grades (app_grid_item/pc_grid_item): última View, fundo transparente exceto
          quando focada. -->

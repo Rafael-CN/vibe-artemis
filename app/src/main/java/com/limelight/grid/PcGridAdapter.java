@@ -118,5 +118,15 @@ public class PcGridAdapter extends GenericGridAdapter<PcView.ComputerObject> {
         // A linha inteira recua quando o lugar não está acessível — é a mesma gramática
         // da luz: intensidade dizendo estado, sem trocar de cor.
         parentView.setAlpha(state == ComputerDetails.State.ONLINE ? 1.0f : 0.55f);
+
+        // Contorno de acento no card do PC on-line e emparelhado, como
+        // B_Celular_Computadores.png mostra (ARTEMIS com borda verde, NOTEBOOK sem) —
+        // mesma condição que já pinta o ponto e o chevron de acento (F6, pendência
+        // deixada pela verificação da F3: os dois cards usavam console_card_bg, sem
+        // distinguir o PC on-line pela borda).
+        View cardView = parentView.findViewById(R.id.consolePcCard);
+        if (cardView != null) {
+            cardView.setBackgroundResource(online && paired ? R.drawable.console_card_bg_online : R.drawable.console_card_bg);
+        }
     }
 }
