@@ -92,6 +92,7 @@ import android.os.PersistableBundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Rational;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.InputDevice;
@@ -100,6 +101,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -361,6 +363,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     // A aba: gatilho fixo do menu da sessão (Plano B / F2). Substitui a ilha e o
     // botão flutuante — ver docs/planos/console/relatorios/F2-implementacao.md.
     private View consoleAba;
+
+    // Deslize a partir da aba (G2, defeito 2: "o menu na stream tá ruim de
+    // ativar") — atalho ADICIONAL ao toque, nunca no lugar dele.
+    private float consoleAbaSwipeStartX, consoleAbaSwipeStartY;
+    private boolean consoleAbaSwiping;
 
     // Zoom button drag state
     private float zoomButtonDX, zoomButtonDY;
@@ -1415,13 +1422,110 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         consoleAba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
-                    hideGameMenu();
-                } else {
-                    showGameMenu(null);
+                toggleConsoleGuia();
+            }
+        });
+
+        expandConsoleAbaToqueArea();
+        setupConsoleAbaDeslize();
+    }
+
+    private void toggleConsoleGuia() {
+        if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
+            hideGameMenu();
+        } else {
+            showGameMenu(null);
+        }
+    }
+
+    /**
+     * A aba mede 56×16dp no celular (64×20dp no tablet, console_aba_w/h) — 16dp de
+     * altura é menos de um terço do alvo mínimo de toque (48dp, vidro_touch_target).
+     * {@link TouchDelegate} estende só a ÁREA TOCÁVEL ao redor do desenho, sem
+     * engordar a aba visualmente: o triângulo continua discreto, o alvo fica
+     * confortável (G2, defeito 2: "o menu na stream tá ruim de ativar"). Mais
+     * folga nas laterais que em cima/embaixo porque o polegar erra mais na
+     * horizontal ao mirar num alvo fino e largo como este.
+     * <p>
+     * Recalculado a cada mudança de layout — a aba muda de posição com rotação e
+     * o pai (android.R.id.content) só existe depois que a Activity monta a árvore.
+     */
+    private void expandConsoleAbaToqueArea() {
+        final ViewParent parent = consoleAba.getParent();
+        if (!(parent instanceof View)) {
+            return;
+        }
+        final View touchArea = (View) parent;
+        final int expandV = dpToPx(20);
+        final int expandH = dpToPx(32);
+
+        consoleAba.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                Rect area = new Rect();
+                consoleAba.getHitRect(area);
+                area.top -= expandV;
+                area.bottom += expandV;
+                area.left -= expandH;
+                area.right += expandH;
+                touchArea.setTouchDelegate(new TouchDelegate(area, consoleAba));
+            }
+        });
+    }
+
+    /**
+     * Deslize para baixo a partir da aba abre a guia — atalho ADICIONAL ao toque
+     * (G2, defeito 2), nunca no lugar dele: um toque simples continua abrindo
+     * normalmente pelo OnClickListener acima. Não é gesto de borda do sistema (a
+     * aba fica alguns dp abaixo do topo da tela, dentro da área que o One UI não
+     * reserva para o próprio gesto de notificações) e só reage a arrasto
+     * predominantemente vertical, para não brigar com a rolagem lateral da
+     * própria guia quando ela já estiver aberta.
+     */
+    private void setupConsoleAbaDeslize() {
+        final int slopPx = dpToPx(24);
+
+        consoleAba.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        consoleAbaSwiping = false;
+                        consoleAbaSwipeStartX = event.getRawX();
+                        consoleAbaSwipeStartY = event.getRawY();
+                        return false;
+
+                    case MotionEvent.ACTION_MOVE: {
+                        float dy = event.getRawY() - consoleAbaSwipeStartY;
+                        float dx = event.getRawX() - consoleAbaSwipeStartX;
+                        if (!consoleAbaSwiping && dy > slopPx && dy > Math.abs(dx)) {
+                            consoleAbaSwiping = true;
+                            v.setPressed(false);
+                            if (gameMenuCallbacks == null || !gameMenuCallbacks.isMenuOpen()) {
+                                toggleConsoleGuia();
+                            }
+                        }
+                        return consoleAbaSwiping;
+                    }
+
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        boolean swiped = consoleAbaSwiping;
+                        consoleAbaSwiping = false;
+                        return swiped;
+                    }
+
+                    default:
+                        return false;
                 }
             }
         });
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics()));
     }
 
     /** GameMenu chama isto ao abrir/fechar a guia, para a aba subjacente sumir —
