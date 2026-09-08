@@ -8,12 +8,12 @@
 
 | Pacote | PageRank | Arquivos | Linhas |
 |---|--:|--:|--:|
-| `com.limelight` | 230.6 | 22 | 10875 |
+| `com.limelight` | 230.6 | 22 | 10878 |
 | `com.limelight.nvstream.http` | 106.8 | 6 | 1678 |
 | `com.limelight.utils` | 97.7 | 22 | 5747 |
 | `com.limelight.nvstream.jni` | 70.8 | 1 | 445 |
 | `com.limelight.nvstream` | 51.1 | 4 | 950 |
-| `com.limelight.preferences` | 50.3 | 11 | 3548 |
+| `com.limelight.preferences` | 50.3 | 11 | 3612 |
 | `com.limelight.nvstream.av.audio` | 36.5 | 1 | 16 |
 | `com.limelight.nvstream.av.video` | 31.5 | 1 | 22 |
 | `com.limelight.ui` | 26.4 | 13 | 1609 |
@@ -26,7 +26,7 @@
 | `com.limelight.nvstream.mdns` | 15.0 | 5 | 733 |
 | `com.limelight.binding.input.capture` | 14.6 | 6 | 403 |
 | `com.limelight.binding` | 14.4 | 1 | 15 |
-| `com.limelight.grid` | 14.2 | 4 | 577 |
+| `com.limelight.grid` | 14.2 | 5 | 621 |
 | `com.limelight.binding.input.evdev` | 13.5 | 6 | 627 |
 | `com.limelight.binding.input.virtual_controller.keyboard` | 13.1 | 12 | 4198 |
 | `com.limelight.binding.input.touch` | 13.0 | 4 | 1104 |

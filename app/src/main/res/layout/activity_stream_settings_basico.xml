@@ -3,6 +3,22 @@
     Ajustes básica (celular) — Plano B / F4, B-CONSOLE.md. Referência:
     B_Celular_Ajustes.png. Largura cheia com margem lateral console_espaco_4, igual às
     outras telas Console do celular (Computadores/Apps, F3).
+
+    G1: a margem lateral não existia na prática, mesmo declarada abaixo. Causa:
+    android:fitsSystemWindows="true" e o padding explícito estavam na MESMA view (este
+    ScrollView). ViewGroup.fitSystemWindows() (o caminho legado que roda quando não há
+    OnApplyWindowInsetsListener) chama internalSetPadding(insets.left, insets.top,
+    insets.right, insets.bottom) — ele SUBSTITUI o padding declarado pelo inset do
+    sistema, não soma. Num celular sem notch lateral esse inset é 0 à esquerda/direita,
+    então console_espaco_4 lateral virava 0 (confirmado no s22ub: o cartão de ajustes
+    tocava a borda da tela). O topo "parecia" certo por coincidência — o inset da barra
+    de status é maior que os 16dp pedidos, e ninguém reportou o topo.
+
+    O padding lateral agora é MARGEM no <include> (um filho do ScrollView, não a view
+    que carrega fitsSystemWindows) — imune à substituição, porque fitSystemWindows só
+    mexe no padding da própria view onde o flag está. paddingTop continua aqui de
+    propósito, sem mudar: já era o inset do sistema na prática, e mexer nele agora
+    empurraria o conteúdo mais para baixo do que o dono do fork já viu e não reclamou.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -11,13 +27,13 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:paddingLeft="@dimen/console_espaco_4"
-    android:paddingTop="@dimen/console_espaco_4"
-    android:paddingRight="@dimen/console_espaco_4">
+    android:paddingTop="@dimen/console_espaco_4">
 
     <include
         layout="@layout/console_ajustes_basico_conteudo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/console_espaco_4"
+        android:layout_marginRight="@dimen/console_espaco_4" />
 
 </ScrollView>

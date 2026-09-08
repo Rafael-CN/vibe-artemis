@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Card de app do catálogo. Capa de 132 dp com raio 20, e o nome POR FORA, embaixo —
+    Card de app do catálogo. Capa 3:4 em pé com raio 20, e o nome POR FORA, embaixo —
     quando existe. O Vibeshine assa o nome dentro da própria box art, e nesse caso o
     carregador esconde o rótulo em vez de repetir a palavra duas vezes.
 
@@ -11,6 +11,13 @@
     pílula com wrap_content saía medida mais estreita que o próprio texto — lia-se "nput"
     em vez de "input", com a palavra transbordando o fundo. FrameLayout mede filho por
     gravidade sem essa ambiguidade.
+
+    G1: a capa era um FrameLayout com altura FIXA de 132dp. Numa grade de 2 colunas
+    (app_grid_view.xml, stretchMode columnWidth) a coluna acompanha a largura da tela —
+    a capa saía deitada (~190x132 num celular de 412dp) quando o desenho pede 3:4 em pé,
+    a mesma proporção de console_capa_w/h no carrossel do tablet. CapaAspectFrameLayout
+    mede a altura a partir da própria largura (4/3), então a proporção se mantém em
+    qualquer coluna, sem esticar a imagem (grid_image continua centerCrop).
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,9 +31,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+        <com.limelight.grid.CapaAspectFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="132dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/grid_image"
@@ -98,7 +105,7 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/console_acento"
                 android:visibility="gone" />
-        </FrameLayout>
+        </com.limelight.grid.CapaAspectFrameLayout>
 
         <TextView
             android:id="@+id/grid_text"

@@ -9,7 +9,18 @@
 
     stretchMode columnWidth: as duas colunas dividem a largura disponível por igual, então
     a capa acompanha a tela em vez de ficar presa a uma medida absoluta.
+
+    G1: focusableInTouchMode sobrevive aqui, no CONTAINER, não nos itens (nem
+    app_grid_item nem pc_grid_item declaram focusable) — é o que deixa o GridView
+    pronto para receber foco por D-pad assim que a tela abre, sem exigir um toque antes
+    para sair do modo toque. Não é a causa do "toque duplo": quem despacha o clique de
+    um item de GridView é o próprio AbsListView (performItemClick dentro do seu
+    onTouchEvent), que nunca passa pelo requestFocus() de View.onTouchEvent — testado no
+    s22ub tocando o card de PC (mesmo container) e o clique ativou no primeiro toque.
+    O bug real (console_ajustes_basico_conteudo, console_capa_carousel_item) era
+    focusableInTouchMode num item CLICÁVEL comum, não neste container de GridView.
 -->
+
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentView"
     android:layout_width="match_parent"

@@ -4,7 +4,7 @@
 
 > Busca `símbolo -> arquivo:linha`. Use `Grep` neste arquivo para localizar uma classe ou método sem varrer o codebase inteiro.
 
-2147 símbolos indexados.
+2150 símbolos indexados.
 
 | Símbolo | Tipo | Local |
 |---|---|---|
@@ -153,6 +153,7 @@
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/AbsoluteTouchContext.java:234` |
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/RelativeTouchContext.java:306` |
 | `cancelTouch()` | method | `app/src/main/java/com/limelight/binding/input/touch/TrackpadContext.java:415` |
+| `CapaAspectFrameLayout` | class | `app/src/main/java/com/limelight/grid/CapaAspectFrameLayout.java:21` |
 | `ChannelBuilder` | class | `app/src/main/java/com/limelight/utils/TvChannelHelper.java:336` |
 | `checkAndApplyResize()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyBoardVirtualControllerElement.java:138` |
 | `checkCacheExists()` | method | `app/src/main/java/com/limelight/grid/assets/DiskAssetLoader.java:35` |
@@ -1221,6 +1222,7 @@
 | `onLongClick()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java:288` |
 | `onLongClick()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java:330` |
 | `onLost()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:758` |
+| `onMeasure()` | method | `app/src/main/java/com/limelight/grid/CapaAspectFrameLayout.java:38` |
 | `onMeasure()` | method | `app/src/main/java/com/limelight/ui/StreamContainer.java:115` |
 | `onMeasure()` | method | `app/src/main/java/com/limelight/ui/StreamView.java:62` |
 | `onMove()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java:334` |
@@ -1329,6 +1331,7 @@
 | `onSystemUiVisibilityChange()` | method | `app/src/main/java/com/limelight/Game.java:4518` |
 | `onTouch()` | method | `app/src/main/java/com/limelight/Game.java:3998` |
 | `onTouch()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java:112` |
+| `onTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:466` |
 | `onTouchEvent()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java:237` |
 | `onTouchEvent()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyBoardVirtualControllerElement.java:294` |
 | `onUnbind()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:309` |
@@ -2017,10 +2020,10 @@
 | `switchShowHide()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java:142` |
 | `switchTouchSensitivity()` | method | `app/src/main/java/com/limelight/Game.java:4833` |
 | `tearDown()` | method | `app/src/test/java/com/limelight/profiles/ProfilesManagerTest.java:45` |
-| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:103` |
+| `telasEmPaisagem()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:106` |
 | `telasEmRetrato()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:66` |
-| `telasNoS22Ultra()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:143` |
-| `telasNoTablet()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:126` |
+| `telasNoS22Ultra()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:146` |
+| `telasNoTablet()` | method | `app/src/test/java/com/limelight/VidroScreenshotTest.java:129` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:56` |
 | `test_bit()` | method | `app/src/main/jni/evdev_reader/evdev_reader.c:64` |
 | `testActivityLifecycleTransitions()` | method | `app/src/test/java/com/limelight/StartupCrashTest.java:227` |

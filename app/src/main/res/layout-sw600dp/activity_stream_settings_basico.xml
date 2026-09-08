@@ -6,6 +6,14 @@
     para acompanhar telas mais largas que o mockup (1280×800 dp), fica fixa em 720dp e
     centralizada, com margens laterais de 32dp (console_espaco_6) quando sobra menos
     que isso.
+
+    G1: mesmo risco do celular (activity_stream_settings_basico.xml) — padding lateral
+    na mesma view que tem fitsSystemWindows="true" é descartado por
+    ViewGroup.fitSystemWindows(), que substitui o padding declarado pelo inset do
+    sistema (0 à esquerda/direita sem notch). No Tab S8 Ultra não dava pra notar porque
+    a tela é muito mais larga que 720+64dp e a coluna nunca chega perto da borda, mas o
+    padding lateral era enganoso — não fazia nada. Movido para o FrameLayout interno
+    (filho, imune à substituição) para a regra valer de verdade em qualquer sw600dp+.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,13 +22,13 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:paddingLeft="@dimen/console_espaco_6"
-    android:paddingTop="@dimen/console_espaco_6"
-    android:paddingRight="@dimen/console_espaco_6">
+    android:paddingTop="@dimen/console_espaco_6">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/console_espaco_6"
+        android:paddingRight="@dimen/console_espaco_6">
 
         <include
             layout="@layout/console_ajustes_basico_conteudo"
