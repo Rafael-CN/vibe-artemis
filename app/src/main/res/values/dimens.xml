@@ -94,4 +94,45 @@
     <dimen name="console_aba_w">56dp</dimen>
     <dimen name="console_aba_h">16dp</dimen>
 
+    <!--
+        G2, defeito 2 (devolvido pela verificação): o alvo REAL de toque da aba, não só
+        o desenho. A F6 tentou alargar isso com TouchDelegate no pai — não funciona,
+        porque backgroundTouchView/streamContainer são irmãos que consomem qualquer
+        toque fora do retângulo desenhado ANTES do delegate ser consultado (só entra em
+        jogo quando NENHUM filho consome o evento, o que nunca acontece aqui). A correção
+        de verdade é dar à própria consoleAba um hitRect grande — o filho consoleAbaVisual
+        (console_aba_w/h, dentro dela) continua exatamente do tamanho do desenho de
+        sempre, sem mudar 1dp visualmente; a folga (20dp cima/baixo, 32dp nas laterais,
+        os mesmos números que o
+        TouchDelegate morto usava) agora é ÁREA REAL da consoleAba, então
+        dispatchTouchEvent nunca chega a testar os irmãos ali dentro.
+    -->
+    <dimen name="console_aba_touch_w">120dp</dimen>
+    <dimen name="console_aba_touch_h">56dp</dimen>
+
+    <!--
+        Largura mínima dos blocos da guia (G2, defeito 3: "os blocos da guia estão
+        quadrados/desproporcionais no celular" — docs/design/console/fotos/
+        B_Celular_Sessao_Menu.png). O celular herdava o mesmo minWidth do tablet
+        (96/88/104dp); num ícone de 24dp com rótulo curto ("Teclado"), isso sobrava
+        tanto que o bloco ficava mais largo que alto — quadrado, não a barra fina e
+        compacta do mockup. Aqui os três encolhem na mesma proporção
+        (×0,667 arredondado ao grid de 4dp); values-sw600dp mantém os valores
+        originais do tablet, que já batem com o próprio mockup dele.
+    -->
+    <dimen name="console_bloco_min_w">64dp</dimen>
+    <dimen name="console_bloco_voltar_min_w">56dp</dimen>
+    <dimen name="console_bloco_encerrar_min_w">72dp</dimen>
+
+    <!--
+        Barra de texto (G2, defeito 4: "o digitar com input tá mto grande e n dá pra
+        ver a tela"). Com o teclado virtual aberto, cada dp que a barra ocupa é um dp
+        de vídeo a menos. Aqui os recuos e os respiros entre as três fileiras (cabeçalho
+        / campo+enviar / teclas especiais) encolhem; values-sw600dp mantém os valores
+        que a barra sempre teve (console_espaco_4/3/2), porque no tablet sobra altura.
+    -->
+    <dimen name="console_barra_texto_pad_h">12dp</dimen>
+    <dimen name="console_barra_texto_pad_v">8dp</dimen>
+    <dimen name="console_barra_texto_gap">4dp</dimen>
+
 </resources>

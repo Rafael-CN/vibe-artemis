@@ -29,4 +29,21 @@
     <dimen name="console_aba_w">64dp</dimen>
     <dimen name="console_aba_h">20dp</dimen>
 
+    <!-- Alvo real de toque da aba (G2, defeito 2), mesma folga do celular: 32dp nas
+         laterais, 20dp cima/baixo em torno do desenho de 64x20 deste arquivo. -->
+    <dimen name="console_aba_touch_w">128dp</dimen>
+    <dimen name="console_aba_touch_h">60dp</dimen>
+
+    <!-- Largura mínima dos blocos da guia: valores originais do tablet (G2, defeito 3
+         — o celular encolheu em values/dimens.xml, aqui fica como sempre esteve). -->
+    <dimen name="console_bloco_min_w">96dp</dimen>
+    <dimen name="console_bloco_voltar_min_w">88dp</dimen>
+    <dimen name="console_bloco_encerrar_min_w">104dp</dimen>
+
+    <!-- Barra de texto: os mesmos console_espaco_4/3/2 que a barra sempre usou (G2,
+         defeito 4 — só o celular encolheu, em values/dimens.xml). -->
+    <dimen name="console_barra_texto_pad_h">16dp</dimen>
+    <dimen name="console_barra_texto_pad_v">12dp</dimen>
+    <dimen name="console_barra_texto_gap">8dp</dimen>
+
 </resources>

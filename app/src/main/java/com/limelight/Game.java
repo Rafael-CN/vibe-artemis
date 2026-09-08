@@ -92,6 +92,7 @@ import android.os.PersistableBundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Rational;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.InputDevice;
@@ -115,6 +116,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
@@ -361,6 +363,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     // A aba: gatilho fixo do menu da sessão (Plano B / F2). Substitui a ilha e o
     // botão flutuante — ver docs/planos/console/relatorios/F2-implementacao.md.
     private View consoleAba;
+
+    // Deslize a partir da aba (G2, defeito 2: "o menu na stream tá ruim de
+    // ativar") — atalho ADICIONAL ao toque, nunca no lugar dele.
+    private float consoleAbaSwipeStartX, consoleAbaSwipeStartY;
+    private boolean consoleAbaSwiping;
 
     // Zoom button drag state
     private float zoomButtonDX, zoomButtonDY;
@@ -1318,16 +1325,26 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      * corrida com a animação do IME.
      *
      * Agora só fecha depois de ter visto o teclado de pé pelo menos uma vez.
+     *
+     * <p>G2, defeito 4 (verificação): o parâmetro precisa ser o inset BRUTO do IME
+     * ({@code insets.getInsets(Type.ime()).bottom}), não o {@code overlap} já descontado
+     * da barra de navegação que {@link #applyImeOffset} usa para o vídeo. A barra vive
+     * num container que vai até o fundo real da janela ({@code setDecorFitsSystemWindows
+     * (false)}), então erguê-la só pelo {@code overlap} deixava a base dela {@code
+     * navBottom} pixels ABAIXO do topo real do teclado — na prática, só a faixa de cima
+     * do alternador de teclas especiais (a última linha visível quando a fileira está
+     * recolhida) ficava acima do IME; o resto, coberto de verdade pela janela do
+     * teclado. Com o inset bruto, a base da barra encosta exatamente no topo do IME.
      */
-    private void updateComposeBar(int imeOverlap) {
+    private void updateComposeBar(int imeBottomRaw) {
         View bar = findViewById(R.id.vidroComposeBar);
         if (bar == null || bar.getVisibility() != View.VISIBLE) {
             return;
         }
 
-        if (imeOverlap > 0) {
+        if (imeBottomRaw > 0) {
             composeSawKeyboard = true;
-            bar.setTranslationY(-imeOverlap);
+            bar.setTranslationY(-imeBottomRaw);
             return;
         }
 
@@ -1383,6 +1400,49 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 return false;
             }
         });
+
+        setupComposeBarTeclasToggle();
+    }
+
+    /**
+     * G2, defeito 4 ("o digitar com input tá mto grande e n dá pra ver a tela"): no
+     * celular a fileira Esc·Tab·Win·Alt+Tab·Ctrl+Alt+Del começa recolhida atrás deste
+     * alternador — console_barra_teclas_recolhida_por_padrao é false no tablet
+     * (values-sw600dp/bools.xml), então lá o alternador nem aparece e a fileira segue
+     * sempre visível, como sempre esteve. wireComposeBarTecla continua ligando os
+     * cliques dentro dela nas duas telas; isto só decide se ela começa visível.
+     */
+    private void setupComposeBarTeclasToggle() {
+        final View toggle = findViewById(R.id.consoleBarraTextoTeclasToggle);
+        final View teclasRow = findViewById(R.id.consoleBarraTextoTeclasRow);
+        final ImageView chevron = findViewById(R.id.consoleBarraTextoTeclasToggleChevron);
+        if (toggle == null || teclasRow == null) {
+            return;
+        }
+
+        if (!getResources().getBoolean(R.bool.console_barra_teclas_recolhida_por_padrao)) {
+            toggle.setVisibility(View.GONE);
+            teclasRow.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        teclasRow.setVisibility(View.GONE);
+        if (chevron != null) {
+            chevron.setImageResource(R.drawable.ic_console_chevron_down);
+        }
+
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean expanded = teclasRow.getVisibility() == View.VISIBLE;
+                teclasRow.setVisibility(expanded ? View.GONE : View.VISIBLE);
+                if (chevron != null) {
+                    chevron.setImageResource(expanded
+                            ? R.drawable.ic_console_chevron_down
+                            : R.drawable.ic_console_chevron_up);
+                }
+            }
+        });
     }
 
     /** Fileira Esc·Tab·Win·Alt+Tab·Ctrl+Alt+Del da barra de texto (console_teclas_fileira.xml,
@@ -1415,13 +1475,73 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         consoleAba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
-                    hideGameMenu();
-                } else {
-                    showGameMenu(null);
+                toggleConsoleGuia();
+            }
+        });
+
+        setupConsoleAbaDeslize();
+    }
+
+    private void toggleConsoleGuia() {
+        if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
+            hideGameMenu();
+        } else {
+            showGameMenu(null);
+        }
+    }
+
+    /**
+     * Deslize para baixo a partir da aba abre a guia — atalho ADICIONAL ao toque
+     * (G2, defeito 2), nunca no lugar dele: um toque simples continua abrindo
+     * normalmente pelo OnClickListener acima. Não é gesto de borda do sistema (a
+     * aba fica alguns dp abaixo do topo da tela, dentro da área que o One UI não
+     * reserva para o próprio gesto de notificações) e só reage a arrasto
+     * predominantemente vertical, para não brigar com a rolagem lateral da
+     * própria guia quando ela já estiver aberta.
+     */
+    private void setupConsoleAbaDeslize() {
+        final int slopPx = dpToPx(24);
+
+        consoleAba.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        consoleAbaSwiping = false;
+                        consoleAbaSwipeStartX = event.getRawX();
+                        consoleAbaSwipeStartY = event.getRawY();
+                        return false;
+
+                    case MotionEvent.ACTION_MOVE: {
+                        float dy = event.getRawY() - consoleAbaSwipeStartY;
+                        float dx = event.getRawX() - consoleAbaSwipeStartX;
+                        if (!consoleAbaSwiping && dy > slopPx && dy > Math.abs(dx)) {
+                            consoleAbaSwiping = true;
+                            v.setPressed(false);
+                            if (gameMenuCallbacks == null || !gameMenuCallbacks.isMenuOpen()) {
+                                toggleConsoleGuia();
+                            }
+                        }
+                        return consoleAbaSwiping;
+                    }
+
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        boolean swiped = consoleAbaSwiping;
+                        consoleAbaSwiping = false;
+                        return swiped;
+                    }
+
+                    default:
+                        return false;
                 }
             }
         });
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics()));
     }
 
     /** GameMenu chama isto ao abrir/fechar a guia, para a aba subjacente sumir —
@@ -2087,7 +2207,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
 
             applyImeOffset(overlap);
-            updateComposeBar(overlap);
+            // Bruto, não overlap — ver o javadoc de updateComposeBar (G2, defeito 4).
+            updateComposeBar(imeBottom);
             return insets;
         });
     }
