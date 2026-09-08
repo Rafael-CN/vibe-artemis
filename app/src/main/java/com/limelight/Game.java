@@ -1325,16 +1325,26 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      * corrida com a animação do IME.
      *
      * Agora só fecha depois de ter visto o teclado de pé pelo menos uma vez.
+     *
+     * <p>G2, defeito 4 (verificação): o parâmetro precisa ser o inset BRUTO do IME
+     * ({@code insets.getInsets(Type.ime()).bottom}), não o {@code overlap} já descontado
+     * da barra de navegação que {@link #applyImeOffset} usa para o vídeo. A barra vive
+     * num container que vai até o fundo real da janela ({@code setDecorFitsSystemWindows
+     * (false)}), então erguê-la só pelo {@code overlap} deixava a base dela {@code
+     * navBottom} pixels ABAIXO do topo real do teclado — na prática, só a faixa de cima
+     * do alternador de teclas especiais (a última linha visível quando a fileira está
+     * recolhida) ficava acima do IME; o resto, coberto de verdade pela janela do
+     * teclado. Com o inset bruto, a base da barra encosta exatamente no topo do IME.
      */
-    private void updateComposeBar(int imeOverlap) {
+    private void updateComposeBar(int imeBottomRaw) {
         View bar = findViewById(R.id.vidroComposeBar);
         if (bar == null || bar.getVisibility() != View.VISIBLE) {
             return;
         }
 
-        if (imeOverlap > 0) {
+        if (imeBottomRaw > 0) {
             composeSawKeyboard = true;
-            bar.setTranslationY(-imeOverlap);
+            bar.setTranslationY(-imeBottomRaw);
             return;
         }
 
@@ -2197,7 +2207,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
 
             applyImeOffset(overlap);
-            updateComposeBar(overlap);
+            // Bruto, não overlap — ver o javadoc de updateComposeBar (G2, defeito 4).
+            updateComposeBar(imeBottom);
             return insets;
         });
     }

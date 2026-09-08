@@ -101,7 +101,13 @@
 
         <!-- Alternador: só existe para dar pra recolher a fileira abaixo no celular
              (console_barra_teclas_recolhida_por_padrao). No tablet Game.java o
-             deixa GONE e a fileira fica sempre visível, como sempre esteve. -->
+             deixa GONE e a fileira fica sempre visível, como sempre esteve.
+
+             G2, defeito 4 (verificação): minHeight=vidro_touch_target (48dp) — sem
+             isso o alvo real media ~25dp (texto + 2×console_espaco_1), abaixo do
+             mínimo mesmo depois de corrigida a posição acima do teclado
+             (updateComposeBar). gravity=center_vertical já centra texto+chevron
+             dentro da altura maior. -->
         <LinearLayout
             android:id="@+id/consoleBarraTextoTeclasToggle"
             android:layout_width="wrap_content"
@@ -110,6 +116,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
+            android:minHeight="@dimen/vidro_touch_target"
             android:orientation="horizontal"
             android:paddingTop="@dimen/console_espaco_1"
             android:paddingBottom="@dimen/console_espaco_1">
