@@ -435,6 +435,70 @@ public class StreamSettingsBasico extends AppCompatActivity {
             segmentos[i].setActivated(i == selecionado);
             segmentos[i].setOnClickListener(v -> onEscolhido.onEscolhido(valor));
         }
+
+        ampliarAreaDeToque(container, segmentos);
+    }
+
+    // G1 (verificação): a pílula de cada segmento tem 38dp de altura (ConsoleSegmento,
+    // NOTA.md §2/mockup F4 aprovado) — abaixo do mínimo de 48dp para alvo de toque, mas
+    // redesenhar o alvo aprovado está fora do escopo desta correção. O que dá para fazer
+    // sem reabrir a decisão de design: ampliar a área que RESPONDE ao toque sem alterar o
+    // que é DESENHADO. `container` (consoleTaxaSegmentos e equivalentes) agora ocupa a
+    // altura cheia da linha (56dp, @dimen/console_linha_ajuste — trocado de wrap_content
+    // para match_parent no layout) só para isso: sobra folga vertical acima/abaixo de
+    // cada pílula de 38dp que hoje não responde a toque nenhum.
+    //
+    // android.view.TouchDelegate só aceita UM retângulo por View pai — não serve aqui,
+    // onde três/duas pílulas dividem o mesmo pai lado a lado. Em vez disso, o próprio
+    // container ganha um OnTouchListener: ele só é chamado quando o toque cai FORA dos
+    // limites reais de qualquer pílula (senão a própria pílula, que continua clicável e
+    // focusable como sempre, consome o toque primeiro) — ou seja, isto nunca compete com
+    // o clique de dentro da pílula, só resolve o toque que hoje cai na folga e não fazia
+    // nada. Cada pílula é testada com os limites reais na horizontal (não há folga entre
+    // pílulas vizinhas, então não dá pra ampliar sem invadir a vizinha) e ampliados na
+    // vertical até ~48dp de altura total.
+    private void ampliarAreaDeToque(final LinearLayout container, final TextView[] segmentos) {
+        final int folgaVerticalPx = Math.round(UiHelper.dpToPx(this, 5f)); // 38dp + 5+5 = 48dp
+        container.setOnTouchListener(new android.view.View.OnTouchListener() {
+            private TextView alvo;
+
+            @Override
+            public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case android.view.MotionEvent.ACTION_DOWN:
+                        alvo = encontrarAlvo(event.getX(), event.getY());
+                        return alvo != null;
+                    case android.view.MotionEvent.ACTION_UP:
+                        if (alvo != null && dentroDaFolga(alvo, event.getX(), event.getY())) {
+                            alvo.performClick();
+                        }
+                        alvo = null;
+                        return true;
+                    case android.view.MotionEvent.ACTION_CANCEL:
+                        alvo = null;
+                        return true;
+                    default:
+                        return alvo != null;
+                }
+            }
+
+            private TextView encontrarAlvo(float x, float y) {
+                for (TextView segmento : segmentos) {
+                    if (dentroDaFolga(segmento, x, y)) {
+                        return segmento;
+                    }
+                }
+                return null;
+            }
+
+            private boolean dentroDaFolga(TextView segmento, float x, float y) {
+                android.graphics.Rect r = new android.graphics.Rect();
+                segmento.getHitRect(r);
+                r.top -= folgaVerticalPx;
+                r.bottom += folgaVerticalPx;
+                return r.contains(Math.round(x), Math.round(y));
+            }
+        });
     }
 
     private static int indexOf(String[] array, String valor) {

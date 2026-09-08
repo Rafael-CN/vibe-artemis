@@ -4,9 +4,9 @@
   "files": 225,
   "javaFiles": 182,
   "nativeFiles": 42,
-  "lines": 67308,
+  "lines": 67372,
   "types": 281,
-  "methods": 2649,
+  "methods": 2653,
   "packages": 30,
   "todos": 36
  },
@@ -15615,7 +15615,7 @@
   {
    "path": "app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java",
    "lang": "java",
-   "lines": 467,
+   "lines": 531,
    "package": "com.limelight.preferences",
    "imports": [
     "android.app.AlertDialog",
@@ -15798,23 +15798,52 @@
      "line": 418
     },
     {
+     "name": "ampliarAreaDeToque",
+     "modifiers": "private",
+     "returns": "void",
+     "params": "final LinearLayout container, final TextView[] segmentos",
+     "line": 460
+    },
+    {
+     "name": "onTouch",
+     "modifiers": "public",
+     "returns": "boolean",
+     "params": "android.view.View v, android.view.MotionEvent event",
+     "line": 466
+    },
+    {
+     "name": "encontrarAlvo",
+     "modifiers": "private",
+     "returns": "TextView",
+     "params": "float x, float y",
+     "line": 485
+    },
+    {
+     "name": "dentroDaFolga",
+     "modifiers": "private",
+     "returns": "boolean",
+     "params": "TextView segmento, float x, float y",
+     "line": 494
+    },
+    {
      "name": "indexOf",
      "modifiers": "static",
      "returns": "int",
      "params": "String[] array, String valor",
-     "line": 440
+     "line": 504
     },
     {
      "name": "calcularResolucaoNativa",
      "modifiers": "private",
      "returns": "String",
      "params": "",
-     "line": 449
+     "line": 513
     }
    ],
    "nativeMethods": [],
    "androidApis": [
-    "SharedPreferences"
+    "SharedPreferences",
+    "MotionEvent"
    ],
    "todos": []
   },

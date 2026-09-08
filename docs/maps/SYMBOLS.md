@@ -4,7 +4,7 @@
 
 > Busca `símbolo -> arquivo:linha`. Use `Grep` neste arquivo para localizar uma classe ou método sem varrer o codebase inteiro.
 
-2149 símbolos indexados.
+2150 símbolos indexados.
 
 | Símbolo | Tipo | Local |
 |---|---|---|
@@ -1331,6 +1331,7 @@
 | `onSystemUiVisibilityChange()` | method | `app/src/main/java/com/limelight/Game.java:4518` |
 | `onTouch()` | method | `app/src/main/java/com/limelight/Game.java:3998` |
 | `onTouch()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java:112` |
+| `onTouch()` | method | `app/src/main/java/com/limelight/preferences/StreamSettingsBasico.java:466` |
 | `onTouchEvent()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerElement.java:237` |
 | `onTouchEvent()` | method | `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/keyBoardVirtualControllerElement.java:294` |
 | `onUnbind()` | method | `app/src/main/java/com/limelight/computers/ComputerManagerService.java:309` |
