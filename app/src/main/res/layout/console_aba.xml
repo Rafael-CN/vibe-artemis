@@ -8,24 +8,45 @@
     aberta — GameMenu inclui esta view de novo dentro do Dialog, com o chevron
     invertido (ic_console_chevron_up) e o clique fechando em vez de abrir. Duas
     árvores de View diferentes (Activity vs. Dialog), então repetir o id não colide.
+    Lá dentro, console_guia.xml sobrescreve layout_width/height do <include> de volta
+    para console_aba_w/h (a alça não compete com nenhum irmão pelo toque dentro do
+    Dialog, então não precisa do alvo maior abaixo).
+
+    G2, defeito 2 (devolvido pela verificação): o FrameLayout RAIZ (consoleAba) agora
+    é o ALVO REAL de toque — console_aba_touch_w/h, ~120x56dp no celular — porque é
+    nele que Game.java liga clique/arrasto, e é o tamanho dele que dispatchTouchEvent
+    testa contra backgroundTouchView/streamContainer (ver dimens.xml para o porquê do
+    TouchDelegate anterior não funcionar). O desenho visível continua exatamente
+    56x16dp: consoleAbaVisual é um segundo FrameLayout, do tamanho de sempre, encostado
+    no topo do alvo maior (a folga extra só cresce para baixo e para os lados — a aba
+    já nasce no y=0 da tela, não há como esconder alvo acima dela).
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/consoleAba"
-    android:layout_width="@dimen/console_aba_w"
-    android:layout_height="@dimen/console_aba_h"
+    android:layout_width="@dimen/console_aba_touch_w"
+    android:layout_height="@dimen/console_aba_touch_h"
     android:layout_gravity="top|center_horizontal"
-    android:background="@drawable/console_aba_bg"
     android:clickable="true"
     android:focusable="true"
     android:visibility="gone"
     android:contentDescription="@string/console_abrir_menu">
 
-    <ImageView
-        android:id="@+id/consoleAbaChevron"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_gravity="center"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_console_chevron_down" />
+    <FrameLayout
+        android:id="@+id/consoleAbaVisual"
+        android:layout_width="@dimen/console_aba_w"
+        android:layout_height="@dimen/console_aba_h"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@drawable/console_aba_bg"
+        android:importantForAccessibility="no">
+
+        <ImageView
+            android:id="@+id/consoleAbaChevron"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_console_chevron_down" />
+
+    </FrameLayout>
 
 </FrameLayout>

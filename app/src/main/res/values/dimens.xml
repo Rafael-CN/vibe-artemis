@@ -95,6 +95,22 @@
     <dimen name="console_aba_h">16dp</dimen>
 
     <!--
+        G2, defeito 2 (devolvido pela verificação): o alvo REAL de toque da aba, não só
+        o desenho. A F6 tentou alargar isso com TouchDelegate no pai — não funciona,
+        porque backgroundTouchView/streamContainer são irmãos que consomem qualquer
+        toque fora do retângulo desenhado ANTES do delegate ser consultado (só entra em
+        jogo quando NENHUM filho consome o evento, o que nunca acontece aqui). A correção
+        de verdade é dar à própria consoleAba um hitRect grande — o filho consoleAbaVisual
+        (console_aba_w/h, dentro dela) continua exatamente do tamanho do desenho de
+        sempre, sem mudar 1dp visualmente; a folga (20dp cima/baixo, 32dp nas laterais,
+        os mesmos números que o
+        TouchDelegate morto usava) agora é ÁREA REAL da consoleAba, então
+        dispatchTouchEvent nunca chega a testar os irmãos ali dentro.
+    -->
+    <dimen name="console_aba_touch_w">120dp</dimen>
+    <dimen name="console_aba_touch_h">56dp</dimen>
+
+    <!--
         Largura mínima dos blocos da guia (G2, defeito 3: "os blocos da guia estão
         quadrados/desproporcionais no celular" — docs/design/console/fotos/
         B_Celular_Sessao_Menu.png). O celular herdava o mesmo minWidth do tablet

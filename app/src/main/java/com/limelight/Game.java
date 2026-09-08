@@ -101,7 +101,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
@@ -1470,7 +1469,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             }
         });
 
-        expandConsoleAbaToqueArea();
         setupConsoleAbaDeslize();
     }
 
@@ -1480,42 +1478,6 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         } else {
             showGameMenu(null);
         }
-    }
-
-    /**
-     * A aba mede 56×16dp no celular (64×20dp no tablet, console_aba_w/h) — 16dp de
-     * altura é menos de um terço do alvo mínimo de toque (48dp, vidro_touch_target).
-     * {@link TouchDelegate} estende só a ÁREA TOCÁVEL ao redor do desenho, sem
-     * engordar a aba visualmente: o triângulo continua discreto, o alvo fica
-     * confortável (G2, defeito 2: "o menu na stream tá ruim de ativar"). Mais
-     * folga nas laterais que em cima/embaixo porque o polegar erra mais na
-     * horizontal ao mirar num alvo fino e largo como este.
-     * <p>
-     * Recalculado a cada mudança de layout — a aba muda de posição com rotação e
-     * o pai (android.R.id.content) só existe depois que a Activity monta a árvore.
-     */
-    private void expandConsoleAbaToqueArea() {
-        final ViewParent parent = consoleAba.getParent();
-        if (!(parent instanceof View)) {
-            return;
-        }
-        final View touchArea = (View) parent;
-        final int expandV = dpToPx(20);
-        final int expandH = dpToPx(32);
-
-        consoleAba.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Rect area = new Rect();
-                consoleAba.getHitRect(area);
-                area.top -= expandV;
-                area.bottom += expandV;
-                area.left -= expandH;
-                area.right += expandH;
-                touchArea.setTouchDelegate(new TouchDelegate(area, consoleAba));
-            }
-        });
     }
 
     /**
