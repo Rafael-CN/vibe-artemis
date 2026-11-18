@@ -8,7 +8,7 @@ Fork do [Artemis (`ClassicOldSong/moonlight-android`)](https://github.com/Classi
 - **Interface "Console" (`F0`–`G2`):** redesenho fluido em Java + XML adaptado para celulares (`< sw600dp`) e tablets com capa-teclado (`>= sw600dp`), guia rápida de sessão no topo do stream e ajustes simplificados preservando acesso integral às preferências avançadas.
 - **Qualidade e engenharia (`tools/` & `docs/`):** checagem estática da fronteira JNI (`jni-check.mjs`), mapas de código automatizados (`codemap.mjs`), gate unificado de validação (`validate.mjs`) e controle de regressão de testes e Android Lint por baseline em CI.
 
-> A documentação de arquitetura, ADRs e planos técnicos deste fork está em [`docs/README.md`](docs/README.md). Abaixo segue a documentação original do **Artemis** upstream.
+> A documentação de arquitetura, ADRs e referência técnica deste fork está em [`docs/README.md`](docs/README.md). Abaixo segue a documentação original do **Artemis** upstream.
 
 ---
 
