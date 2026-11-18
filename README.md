@@ -1,4 +1,18 @@
-# Artemis Android
+# VibeArtemis
+
+Fork do [Artemis (`ClassicOldSong/moonlight-android`)](https://github.com/ClassicOldSong/moonlight-android) (linhagem [Moonlight Android](https://github.com/moonlight-stream/moonlight-android)) para streaming de jogos e desktop em Android, focado em **experiência de teclado**, **ergonomia de polegar/toque** e melhorias de qualidade de vida ao parear com **Sunshine**, **Vibeshine** ou **Apollo**.
+
+### Foco deste fork (`dev`)
+
+- **Teclado virtual e físico sem atrito (`E01`):** barra de composição dedicada para envio confiável de texto/acentos via IME, tratamento preciso de *window insets* do teclado e teclas expandidas para uso produtivo em sessões remotas.
+- **Interface "Console" (`F0`–`G2`):** redesenho fluido em Java + XML adaptado para celulares (`< sw600dp`) e tablets com capa-teclado (`>= sw600dp`), guia rápida de sessão no topo do stream e ajustes simplificados preservando acesso integral às preferências avançadas.
+- **Qualidade e engenharia (`tools/` & `docs/`):** checagem estática da fronteira JNI (`jni-check.mjs`), mapas de código automatizados (`codemap.mjs`), gate unificado de validação (`validate.mjs`) e controle de regressão de testes e Android Lint por baseline em CI.
+
+> A documentação de arquitetura, ADRs e planos técnicos deste fork está em [`docs/README.md`](docs/README.md). Abaixo segue a documentação original do **Artemis** upstream.
+
+---
+
+# Artemis Android (Upstream)
 
 Previously named Moonlight Noir
 
