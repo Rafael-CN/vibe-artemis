@@ -45,8 +45,11 @@ app/.externalNativeBuild/
 # NDK stuff
 .cxx/
 
-# NOTA DO FORK: o upstream ignorava AGENTS.md. Nós versionamos toda a
-# documentação de agentes de propósito — ver docs/adr/0001-versionar-doc-de-agentes.md
+# Configuração de agentes e mapas gerados: locais, fora do git (docs/adr/0005)
+AGENTS.md
+CLAUDE.md
+.claude/
+docs/maps/
 # codemap --check (diretorio temporario)
 .codemap-check/
 

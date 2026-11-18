@@ -114,6 +114,8 @@ const STAGES = [
     why: 'os mapas em docs/maps/ precisam refletir o código atual',
     cmd: ['node', ['tools/codemap/codemap.mjs', '--check']],
     needsSdk: false,
+    // Os mapas são locais (fora do git, ver ADR 0005). Sem eles, como no CI, não há o que checar.
+    needsMaps: true,
   },
   {
     name: 'jni',
@@ -151,6 +153,11 @@ if (javaHome && javaHome !== process.env.JAVA_HOME) {
 
 for (const s of STAGES) {
   if (FAST && s.needsSdk) { result.skipped.push(s.name); continue; }
+  if (s.needsMaps && !existsSync(join(REPO, 'docs', 'maps', 'FILE_INDEX.md'))) {
+    result.skipped.push(s.name);
+    console.log(`[SKIP] ${s.name} — docs/maps/ não existe (gere com node tools/codemap/codemap.mjs)`);
+    continue;
+  }
   if (s.needsSdk && !sdk) {
     result.skipped.push(s.name);
     console.error(

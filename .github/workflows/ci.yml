@@ -37,12 +37,6 @@ jobs:
       - name: Integridade da fronteira JNI
         run: node tools/codemap/jni-check.mjs
 
-      - name: Mapas de código atualizados
-        run: node tools/codemap/codemap.mjs --check
-
-      - name: Hooks de agente
-        run: node tools/test-hooks.mjs
-
       - name: Submódulo íntegro
         run: |
           # Um gitlink sujo faz o build divergir entre máquinas sem nenhum aviso.

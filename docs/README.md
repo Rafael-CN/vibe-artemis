@@ -3,7 +3,8 @@
 Índice único. Toda folha listada com uma linha dizendo quando abri-la.
 **Um nível de profundidade**: você chega ao que precisa em um salto a partir daqui.
 
-Instruções operacionais para agentes estão em [`AGENTS.md`](../AGENTS.md) na raiz.
+Instruções para agentes (`AGENTS.md`, `CLAUDE.md`, `.claude/`) ficam fora do git, no
+repositório privado `vibe-artemis-notes` (ADR 0005).
 Este índice é o mapa do conhecimento acumulado.
 
 ## Comece por aqui
@@ -43,14 +44,15 @@ fluxo de dados, problemas conhecidos e ideias de melhoria.
 
 ## Mapas gerados
 
-Gerados por `node tools/codemap/codemap.mjs`. **Não edite à mão** — um hook bloqueia.
+Gerados localmente por `node tools/codemap/codemap.mjs` e fora do git (ADR 0005).
+**Não edite à mão.**
 
 | Arquivo | Como consumir |
 |---|---|
-| [`maps/FILE_INDEX.md`](maps/FILE_INDEX.md) | Grep pelo nome do arquivo |
-| [`maps/DEPENDENCY_GRAPH.md`](maps/DEPENDENCY_GRAPH.md) | pode ler inteiro (103 linhas) |
-| [`maps/HOTSPOTS.md`](maps/HOTSPOTS.md) | pode ler inteiro (118 linhas) |
-| [`maps/JNI_BRIDGE.md`](maps/JNI_BRIDGE.md) | pode ler inteiro (94 linhas) |
+| `maps/FILE_INDEX.md` | Grep pelo nome do arquivo |
+| `maps/DEPENDENCY_GRAPH.md` | pode ler inteiro (103 linhas) |
+| `maps/HOTSPOTS.md` | pode ler inteiro (118 linhas) |
+| `maps/JNI_BRIDGE.md` | pode ler inteiro (94 linhas) |
 | `maps/SYMBOLS.md` | **só Grep** — 2.058 linhas |
 | `maps/code-index.json` | **nunca leia** — use `query.mjs` |
 
@@ -79,6 +81,7 @@ node tools/codemap/query.mjs --hot 15
 | [0002](adr/0002-base-do-fork-e-remotes.md) | Base do fork e topologia de remotes |
 | [0003](adr/0003-stack-da-interface.md) | Stack da interface: Java + XML |
 | [0004](adr/0004-planejamento-fora-do-repo.md) | Planejamento e backlog fora do repositório público |
+| [0005](adr/0005-agentes-fora-do-repo.md) | Configuração de agentes e mapas fora do repositório público |
 
 ADR aceito é imutável. Mudou de ideia? Escreva um novo que supersede o antigo.
 
